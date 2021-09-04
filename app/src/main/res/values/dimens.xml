@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+  <!--New design dimen-->
+  <dimen name="new_theme_txt_size_10sp">10sp</dimen>
+
+  <dimen name="page_sub_header_3">10sp</dimen>
+  <dimen name="page_sub_header_2">12sp</dimen>
+  <dimen name="page_sub_header_1">14sp</dimen>
+  <dimen name="page_header_size">16sp</dimen>
+  <dimen name="btn_txt_size">18sp</dimen>
+  <dimen name="field_padding">10dp</dimen>
+  <dimen name="page_margin">16dp</dimen>
+</resources>

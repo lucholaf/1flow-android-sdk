@@ -1,0 +1,152 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.oneflow.tryskysdk.customwidgets.CustomTextView
+            android:id="@+id/selected_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorPrimaryDark"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="title"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/selected_title"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/l0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+                <com.oneflow.tryskysdk.customwidgets.CustomTextView
+                    android:id="@+id/response_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:text="Date "
+                    android:textColor="@color/txtblack"
+                    android:textSize="@dimen/page_header_size" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/txtblack"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/attachmentparent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="0.03"
+                android:background="#d4d4d4"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/mylayout12"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ff0000"
+                android:visibility="gone"></LinearLayout>
+        </LinearLayout>
+
+
+        <!--</LinearLayout>-->
+
+        <RelativeLayout
+            android:id="@+id/read_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/main_layout"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp">
+
+            <com.oneflow.tryskysdk.customwidgets.CustomTextView
+                android:id="@+id/submit_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/submit_close"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text="Ok"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/btn_txt_size"
+                android:textStyle="bold" />
+
+
+            <com.oneflow.tryskysdk.customwidgets.CustomTextView
+                android:id="@+id/submit_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text="Cancel"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/btn_txt_size"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <com.oneflow.tryskysdk.customwidgets.CustomTextView
+                android:id="@+id/submit_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text="Yes"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/btn_txt_size"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>
