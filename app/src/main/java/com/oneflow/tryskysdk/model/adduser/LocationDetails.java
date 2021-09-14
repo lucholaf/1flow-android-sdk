@@ -1,28 +1,51 @@
 package com.oneflow.tryskysdk.model.adduser;
 
+import androidx.room.ColumnInfo;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 import com.oneflow.tryskysdk.model.BaseModel;
 
 public class LocationDetails extends BaseModel {
 
+    @ColumnInfo(name = "type")
     @SerializedName("type")
     private String type;
+
+    @ColumnInfo(name = "schema")
     @SerializedName("schema")
     private Integer schema;
+
+    @PrimaryKey
+    @ColumnInfo(name = "_id")
     @SerializedName("_id")
     private String _id;
+
+    @ColumnInfo(name = "city")
     @SerializedName("city")
     private String city;
+
+    @ColumnInfo(name = "region")
     @SerializedName("region")
     private String region;
+
+    @ColumnInfo(name = "country")
     @SerializedName("country")
     private String country;
+
+    @ColumnInfo(name = "latitude")
     @SerializedName("latitude")
     private double latitude;
+
+    @ColumnInfo(name = "longitude")
     @SerializedName("longitude")
     private double longitude;
+
+    @ColumnInfo(name = "common_id")
     @SerializedName("common_id")
     private String common_id;
+
+    @ColumnInfo(name = "__v")
     @SerializedName("__v")
     private Integer __v;
 

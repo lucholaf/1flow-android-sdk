@@ -1,38 +1,69 @@
 package com.oneflow.tryskysdk.model.adduser;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 import com.oneflow.tryskysdk.model.BaseModel;
 
+@Entity
 public class DeviceDetails extends BaseModel {
 
+    @ColumnInfo(name = "type")
     @SerializedName("type")
     private String type;
+
+    @ColumnInfo(name = "carrier")
     @SerializedName("carrier")
     private String carrier;
+
+    @ColumnInfo(name = "manufacturer")
     @SerializedName("manufacturer")
     private String manufacturer;
+
+    @ColumnInfo(name = "model")
     @SerializedName("model")
     private String model;
+
+    @ColumnInfo(name = "os_ver")
     @SerializedName("os_ver")
     private String os_ver;
+
+    @ColumnInfo(name = "screen_width")
     @SerializedName("screen_width")
-    private String screen_width;
+    private Integer screen_width;
+
+    @ColumnInfo(name = "screen_height")
     @SerializedName("screen_height")
-    private String screen_height;
+    private Integer screen_height;
+
+    @ColumnInfo(name = "schema")
     @SerializedName("schema")
     private Integer schema;
+
+    @PrimaryKey
+    @ColumnInfo(name = "_id")
     @SerializedName("_id")
     private String _id;
 
-
+    @ColumnInfo(name = "os")
     @SerializedName("os")
     private String os;
+
+    @ColumnInfo(name = "unique_id")
     @SerializedName("unique_id")
     private String unique_id;
+
+    @ColumnInfo(name = "device_id")
     @SerializedName("device_id")
     private String device_id;
+
+    @ColumnInfo(name = "common_id")
     @SerializedName("common_id")
     private String common_id;
+
+    @ColumnInfo(name = "__v")
     @SerializedName("__v")
     private Integer __v;
 
@@ -77,19 +108,19 @@ public class DeviceDetails extends BaseModel {
         this.os_ver = os_ver;
     }
 
-    public String getScreen_width() {
+    public Integer getScreen_width() {
         return screen_width;
     }
 
-    public void setScreen_width(String screen_width) {
+    public void setScreen_width(Integer screen_width) {
         this.screen_width = screen_width;
     }
 
-    public String getScreen_height() {
+    public Integer getScreen_height() {
         return screen_height;
     }
 
-    public void setScreen_height(String screen_height) {
+    public void setScreen_height(Integer screen_height) {
         this.screen_height = screen_height;
     }
 

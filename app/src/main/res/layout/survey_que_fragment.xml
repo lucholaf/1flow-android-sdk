@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.oneflow.tryskysdk.customwidgets.CustomTextView
+        android:id="@+id/survey_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/field_padding"
+        android:textColor="@color/txtblack"
+        android:textSize="@dimen/page_header_size" />
+
+    <com.oneflow.tryskysdk.customwidgets.CustomTextView
+        android:id="@+id/survey_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/survey_title"
+        android:layout_margin="@dimen/field_padding"
+        android:textColor="@color/txtgray"
+        android:textSize="@dimen/page_sub_header_1" />
+
+    <RelativeLayout
+        android:id="@+id/option_layout"
+        android:layout_width="match_parent"
+        android:layout_below="@id/survey_description"
+        android:layout_margin="@dimen/field_padding"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/survey_options_list"
+            android:layout_width="match_parent"
+            android:background="@drawable/gray_rectangle"
+            android:layout_height="wrap_content" />
+
+        <com.oneflow.tryskysdk.customwidgets.CustomTextView
+            android:id="@+id/ratings_not_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/survey_options_list"
+            android:layout_marginTop="@dimen/field_padding"
+            android:textColor="@color/txtgray"
+            android:text="Not likely at all"
+            android:textSize="@dimen/page_sub_header_1" />
+        <com.oneflow.tryskysdk.customwidgets.CustomTextView
+            android:id="@+id/ratings_full_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/survey_options_list"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/field_padding"
+            android:textColor="@color/txtgray"
+            android:text="Extremely likely"
+            android:textSize="@dimen/page_sub_header_1" />
+    </RelativeLayout>
+
+</RelativeLayout>

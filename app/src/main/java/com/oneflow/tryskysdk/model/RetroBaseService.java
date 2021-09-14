@@ -11,7 +11,7 @@ public class RetroBaseService {
 
     private static Retrofit retrofit = null;
 
-    public static String urlPrefix = "http://";
+    public static String urlPrefix = "https://";
     public static String baseDomain = "dev.1flow.app/api/";
 
     public static final String BASE_URL = urlPrefix+ baseDomain;

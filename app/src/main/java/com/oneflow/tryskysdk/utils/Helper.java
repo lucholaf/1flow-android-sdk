@@ -37,6 +37,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.oneflow.tryskysdk.BuildConfig;
 import com.oneflow.tryskysdk.R;
 import com.oneflow.tryskysdk.customwidgets.CustomTextView;
 
@@ -98,7 +99,7 @@ public class Helper {
                 i++;
             }
         } catch (Exception ex) {
-            v("JsonError", ex.getMessage());
+            v("JsonError", "OneFlow Error:"+ex.getMessage());
         }
         return localArrayList;
     }

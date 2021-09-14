@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.oneflow.tryskysdk.customwidgets.CustomTextView
+        android:id="@+id/survey_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/field_padding"
+        android:textColor="@color/txtblack"
+        android:textSize="@dimen/page_header_size" />
+
+    <com.oneflow.tryskysdk.customwidgets.CustomTextView
+        android:id="@+id/survey_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/survey_title"
+        android:layout_margin="@dimen/field_padding"
+        android:textColor="@color/txtgray"
+        android:textSize="@dimen/page_sub_header_1" />
+
+    <RelativeLayout
+        android:id="@+id/option_layout"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/field_padding"
+        android:layout_below="@id/survey_description"
+        android:background="@drawable/gray_rectangle"
+        android:layout_height="150dp">
+
+        <com.oneflow.tryskysdk.customwidgets.CustomEditText
+            android:id="@+id/child_user_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/field_padding"
+            android:layout_margin="1dp"
+            android:gravity="top|left"
+            android:maxLines="7"
+            android:textSize="@dimen/page_header_size"
+            android:background="#ffffff"
+            />
+        <com.oneflow.tryskysdk.customwidgets.CustomTextView
+            android:id="@+id/text_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/field_padding"
+
+            android:textColor="@color/txtlightgray"
+            android:text="0/265"
+            android:textSize="@dimen/page_sub_header_1" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -2,10 +2,14 @@ package com.oneflow.tryskysdk.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.oneflow.tryskysdk.model.adduser.AddUserResultResponse;
 
-import java.io.Serializable;
+public class GenericResponse<T>{// extends BaseResponse{
 
-public class BaseResponse {//implements Serializable {
+    @SerializedName("result")
+    @Expose
+    private T result;
+
     @SerializedName("success")
     @Expose
     private int success;
@@ -13,6 +17,8 @@ public class BaseResponse {//implements Serializable {
     @SerializedName("message")
     @Expose
     private String message;
+
+
 
     public int getSuccess() {
         return success;
@@ -28,5 +34,13 @@ public class BaseResponse {//implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public T getResult() {
+        return result;
+    }
+
+    public void setResult(T result) {
+        this.result = result;
     }
 }

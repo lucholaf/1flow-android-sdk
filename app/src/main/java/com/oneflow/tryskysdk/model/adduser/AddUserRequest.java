@@ -8,8 +8,18 @@ public class AddUserRequest extends BaseModel {
     private String system_id;
     @SerializedName("device")
     private DeviceDetails deviceDetails;
+    @SerializedName("location_check")
+    private Boolean locationCheck;
     @SerializedName("location")
     private LocationDetails locationDetails;
+
+    public Boolean getLocationCheck() {
+        return locationCheck;
+    }
+
+    public void setLocationCheck(Boolean locationCheck) {
+        this.locationCheck = locationCheck;
+    }
 
     public String getSystem_id() {
         return system_id;
