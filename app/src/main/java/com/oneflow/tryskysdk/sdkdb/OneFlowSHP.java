@@ -103,29 +103,29 @@ public class OneFlowSHP {
 
 
 
-    public AddUserResultResponse getUserDetails(String key) {
-        String json = pref.getString(key, null);
+    public AddUserResultResponse getUserDetails() {
+        String json = pref.getString(Constants.USERDETAILSHP, null);
         Helper.v("json", "[" + json + "]");
         AddUserResultResponse obj =
                 gson.fromJson(json, AddUserResultResponse.class);
         return obj;
     }
-    public void setUserDetails(String key,AddUserResultResponse arr) {
+    public void setUserDetails(AddUserResultResponse arr) {
         SharedPreferences.Editor prefsEditor = pref.edit();
         String json = gson.toJson(arr);
         Helper.v("json", "[" + json + "]");
-        prefsEditor.putString(key, json);
+        prefsEditor.putString(Constants.USERDETAILSHP, json);
         prefsEditor.apply();
     }
-    public void setSurveyList(ArrayList<GetSurveyListResponse> list, String key) {
+    public void setSurveyList(ArrayList<GetSurveyListResponse> list) {
         SharedPreferences.Editor editor = pref.edit();
         String json = gson.toJson(list);
-        editor.putString(key, json);
+        editor.putString(Constants.SURVEYLISTSHP, json);
         editor.apply();     // This line is IMPORTANT !!!
     }
 
-    public ArrayList<GetSurveyListResponse> getSurveyList(String key) {
-        String json = pref.getString(key, null);
+    public ArrayList<GetSurveyListResponse> getSurveyList() {
+        String json = pref.getString(Constants.SURVEYLISTSHP, null);
         Type type = new TypeToken<ArrayList<GetSurveyListResponse>>() {
         }.getType();
         return gson.fromJson(json, type);

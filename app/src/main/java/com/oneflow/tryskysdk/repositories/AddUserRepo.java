@@ -22,7 +22,8 @@ import retrofit2.Response;
 public class AddUserRepo {
 
     static String tag = "AddUserRepo";
-    public static void addUser(AddUserRequest aur, Context context){
+    MyResponseHandler myResponseHandler;
+    public static void addUser(AddUserRequest aur, Context context, MyResponseHandler mrh, Constants.ApiHitType hitType){
 
         ApiInterface connectAPI = RetroBaseService.getClient().create(ApiInterface.class);
         try {
@@ -46,7 +47,8 @@ public class AddUserRepo {
                         Helper.v(tag,"OneFlow response["+response.body().getMessage()+"]");
                         Helper.v(tag,"OneFlow response["+response.body().getResult().getAnalytic_user_id()+"]");
 
-                        new OneFlowSHP(context).setUserDetails(Constants.USERDETAILSHP,response.body().getResult());
+                        new OneFlowSHP(context).setUserDetails(response.body().getResult());
+                        mrh.onResponseReceived(hitType,null,0);
 
                        /* AsyncTask.execute(new Runnable() {
                             @Override

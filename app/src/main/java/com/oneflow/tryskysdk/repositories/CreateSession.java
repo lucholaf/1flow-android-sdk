@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 public class CreateSession {
     static String tag = "CreateSession";
-    public static void createSession(CreateSessionRequest csr, Context context){
+    public static void createSession(CreateSessionRequest csr, Context context, MyResponseHandler mrh, Constants.ApiHitType hitType){
 
         ApiInterface connectAPI = RetroBaseService.getClient().create(ApiInterface.class);
         try {
@@ -46,12 +46,13 @@ public class CreateSession {
                         Helper.v(tag,"OneFlow response["+response.body().getResult().getSystem_id()+"]");
                         new OneFlowSHP(context).storeValue(Constants.SESSIONDETAIL_IDSHP,response.body().getResult().get_id());
                         new OneFlowSHP(context).storeValue(Constants.SESSIONDETAIL_SYSTEM_IDSHP,response.body().getResult().getSystem_id());
+                        mrh.onResponseReceived(hitType,null,0);
 
                     } else {
                         //mrh.onResponseReceived(response.body(), type);
                         Helper.v(tag,"OneFlow response 0["+response.body()+"]");
-                        Helper.v(tag,"OneFlow response 1["+response.body().getMessage()+"]");
-                        Helper.v(tag,"OneFlow response 2["+response.body().getSuccess()+"]");
+                       // Helper.v(tag,"OneFlow response 1["+response.body().getMessage()+"]");
+                       // Helper.v(tag,"OneFlow response 2["+response.body().getSuccess()+"]");
 
                     }
                 }

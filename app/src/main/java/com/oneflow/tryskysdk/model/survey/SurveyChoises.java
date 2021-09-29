@@ -9,6 +9,16 @@ public class SurveyChoises implements Serializable {
     private String id;
     @SerializedName("title")
     private String title;
+    @SerializedName("is_selected")
+    private Boolean isSelected =false;
+
+    public Boolean getIsSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(Boolean isSelected) {
+        this.isSelected = isSelected;
+    }
 
     public String getId() {
         return id;

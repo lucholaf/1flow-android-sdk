@@ -40,81 +40,27 @@ public class MainActivity extends SDKBaseActivity {
     public void clickHandler(View v) {
 
         switch (v.getId()) {
-            case R.id.create_user:
-                Helper.makeText(MainActivity.this, "Clicked on button 0", 1);
-                DeviceDetails dd = new DeviceDetails();
-                dd.setUnique_id(Helper.getDeviceId(MainActivity.this));
-                dd.setDevice_id(Helper.getDeviceId(MainActivity.this));
-                dd.setOs("android");
 
-                LocationDetails ld = new LocationDetails();
-                ld.setCity("Patna");
-                ld.setRegion("Eastern");
-                ld.setCountry("India");
-                ld.setLatitude(25.5893);
-                ld.setLongitude(87.3334);
-
-
-                AddUserRequest aur = new AddUserRequest();
-                aur.setSystem_id(Helper.getDeviceId(MainActivity.this));
-                aur.setDeviceDetails(dd);
-                aur.setLocationDetails(ld);
-                aur.setLocationCheck(false);
-                FeedbackController.registerUser(this, aur);
-
-                break;
-            case R.id.create_session:
-                Helper.makeText(MainActivity.this, "Clicked on button 1", 1);
-
-                String userId = new OneFlowSHP(MainActivity.this).getUserDetails(Constants.USERDETAILSHP).getAnalytic_user_id();
-                Helper.v(tag, "OneFlow fetching data from db[" + userId + "]");
-
-                CreateSessionRequest csr = new CreateSessionRequest();
-                Connectivity con = new Connectivity();
-                con.setCarrier(true);
-                con.setRadio(false);
-                con.setWifi(false);
-
-                LocationDetails ldc = new LocationDetails();
-                ldc.setCity("Patna");
-                ldc.setRegion("Eastern");
-                ldc.setCountry("India");
-                ldc.setLatitude(25.5893);
-                ldc.setLongitude(87.3334);
-
-                DeviceDetails ddc = new DeviceDetails();
-                ddc.setUnique_id(Helper.getDeviceId(MainActivity.this));
-                ddc.setDevice_id(Helper.getDeviceId(MainActivity.this));
-                ddc.setOs("android");
-                ddc.setCarrier("jio");
-                ddc.setManufacturer("motorola");
-                ddc.setModel("G-40");
-                ddc.setOs_ver("11");
-                ddc.setScreen_width(0);
-                ddc.setScreen_height(0);
-
-                csr.setAnalytic_user_id(userId);
-                csr.setSystem_id(Helper.getDeviceId(MainActivity.this));
-                csr.setDevice(ddc);
-                csr.setLocation_check(false);
-                csr.setLocation(ldc);
-                csr.setConnectivity(con);
-                csr.setApi_version("2.2");
-                csr.setApp_build_number("23451");
-                csr.setLibrary_name("oneflow-android-sdk");
-                csr.setLibrary_version(String.valueOf(1));
-                csr.setApi_endpoint("session");
-                csr.setApi_version("2021-06-15");
-
-                FeedbackController.createSession(this, csr);
-                break;
             case R.id.get_location:
-                Helper.makeText(MainActivity.this, "Clicked on button 2", 1);
-                FeedbackController.getLocation(this);
+                Helper.makeText(MainActivity.this, "Clicked on button 3", 1);
+                //new FeedbackController(this).getLocation();
+                break;
+            case R.id.fetch_survey_list:
+                Helper.makeText(MainActivity.this, "Clicked on button 4", 1);
+                //FeedbackController.getSurvey(this);
+                break;
+            case R.id.project_details:
+                Helper.makeText(MainActivity.this, "Clicked on button 0", 1);
+                //new FeedbackController(this).getProjectDetails();
                 break;
             case R.id.record_log:
-                Helper.makeText(MainActivity.this, "Clicked on button 3", 1);
-                FeedbackController.getSurvey(this);
+                Helper.makeText(MainActivity.this, "Clicked on button 5", 1);
+                //FeedbackController.getSurvey(this);
+                break;
+
+            case R.id.configure_project:
+                Helper.makeText(MainActivity.this, "Clicked on button conf", 1);
+                FeedbackController.configure(this,"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");
                 break;
         }
     }

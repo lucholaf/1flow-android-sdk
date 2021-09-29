@@ -19,4 +19,36 @@
         <item name="android:textSelectHandleRight">@drawable/zero_px_transparent</item>
         <item name="android:textSelectHandle">@drawable/zero_px_transparent</item>
     </style>
+
+    <style name="comman_positive_button_style" parent="@android:style/Theme.Holo.Light">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/btn_selector</item>
+        <item name="android:paddingTop">@dimen/btn_top_bottom_padding</item>
+        <item name="android:paddingBottom">@dimen/btn_top_bottom_padding</item>
+        <item name="android:paddingRight">@dimen/btn_left_right_padding</item>
+        <item name="android:paddingLeft">@dimen/btn_left_right_padding</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/txtwhite</item>
+        <item name="android:textSize">@dimen/btn_txt_size</item>
+
+    </style>
+
+
+    <style name="DialogAnimationNewTheme" parent="@style/Theme.AppCompat.Dialog">
+        <item name="android:windowEnterAnimation">@anim/slide_up_dialog</item>
+        <item name="android:windowExitAnimation">@anim/slide_down_dialog</item>
+    </style>
+    <style name="AppDialog" parent="@style/Theme.AppCompat.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+
+        <item name="android:windowActionBar">false</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/DialogAnimationNewTheme</item>
+        <item name="android:windowBackground">@null</item>
+
+    </style>
+
 </resources>

@@ -8,13 +8,13 @@ import java.util.ArrayList;
 public class SurveyInputs extends BaseModel {
 
     @SerializedName("min_val")
-    private String min_val;
+    private Integer min_val = 0;
     @SerializedName("max_val")
-    private String max_val;
+    private String max_val = "5";
     @SerializedName("emoji")
-    private String emoji;
+    private Boolean emoji= false;
     @SerializedName("stars")
-    private String stars;
+    private Boolean stars = false;
     @SerializedName("emojis")
     private String[] emojis;
     @SerializedName("star_fill_color")
@@ -29,12 +29,23 @@ public class SurveyInputs extends BaseModel {
     private ArrayList<SurveyChoises> choices;
     @SerializedName("input_type")
     private String input_type;
+    @SerializedName("ratings_list")
+    private ArrayList<RatingsModel> ratingsList;
 
-    public String getMin_val() {
+
+    public ArrayList<RatingsModel> getRatingsList() {
+        return ratingsList;
+    }
+
+    public void setRatingsList(ArrayList<RatingsModel> ratingsList) {
+        this.ratingsList = ratingsList;
+    }
+
+    public Integer getMin_val() {
         return min_val;
     }
 
-    public void setMin_val(String min_val) {
+    public void setMin_val(Integer min_val) {
         this.min_val = min_val;
     }
 
@@ -51,19 +62,19 @@ public class SurveyInputs extends BaseModel {
         this.max_val = max_val;
     }
 
-    public String getEmoji() {
+    public Boolean getEmoji() {
         return emoji;
     }
 
-    public void setEmoji(String emoji) {
+    public void setEmoji(Boolean emoji) {
         this.emoji = emoji;
     }
 
-    public String getStars() {
+    public Boolean getStars() {
         return stars;
     }
 
-    public void setStars(String stars) {
+    public void setStars(Boolean stars) {
         this.stars = stars;
     }
 

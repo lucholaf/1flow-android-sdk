@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="right"
+    android:orientation="horizontal">
+
+    <com.oneflow.tryskysdk.customwidgets.CustomTextViewBold
+        android:id="@+id/submit_btn"
+        style="@style/comman_positive_button_style"
+        android:layout_width="wrap_content"
+        android:layout_margin="@dimen/field_padding"
+        android:text="Submit"
+        android:visibility="gone"
+        />
+
+    <com.oneflow.tryskysdk.customwidgets.CustomTextViewBold
+        android:id="@+id/cancel_btn"
+        style="@style/comman_positive_button_style"
+        android:layout_width="wrap_content"
+        android:layout_margin="@dimen/field_padding"
+        android:text="Cancel"
+        android:visibility="gone" />
+
+    <com.oneflow.tryskysdk.customwidgets.CustomTextViewBold
+        style="@style/comman_positive_button_style"
+        android:layout_width="wrap_content"
+        android:layout_margin="@dimen/field_padding"
+        android:text="Dummy"
+        android:visibility="gone" />
+
+</LinearLayout>

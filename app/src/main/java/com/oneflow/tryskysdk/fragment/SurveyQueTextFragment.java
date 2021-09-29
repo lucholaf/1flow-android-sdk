@@ -9,6 +9,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,26 +21,32 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.oneflow.tryskysdk.R;
+import com.oneflow.tryskysdk.SurveyActivity;
 import com.oneflow.tryskysdk.adapter.SurveyOptionsAdapter;
 import com.oneflow.tryskysdk.customwidgets.CustomEditText;
 import com.oneflow.tryskysdk.customwidgets.CustomTextView;
+import com.oneflow.tryskysdk.customwidgets.CustomTextViewBold;
 import com.oneflow.tryskysdk.model.survey.SurveyScreens;
 import com.oneflow.tryskysdk.utils.Helper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SurveyQueTextFragment extends Fragment {
+public class SurveyQueTextFragment extends Fragment implements View.OnClickListener {
 
 
     @BindView(R.id.survey_title)
-    CustomTextView surveyTitle;
+    CustomTextViewBold surveyTitle;
     @BindView(R.id.child_user_input)
     CustomEditText userInput;
     @BindView(R.id.text_limit)
     CustomTextView surveyInputLimit;
     @BindView(R.id.survey_description)
     CustomTextView surveyDescription;
+    @BindView(R.id.submit_btn)
+    CustomTextViewBold submitButton;
+    @BindView(R.id.cancel_btn)
+    CustomTextViewBold cancelButton;
 
 
     String tag = this.getClass().getName();
@@ -60,6 +68,43 @@ public class SurveyQueTextFragment extends Fragment {
 
     }
 
+    int i = 0;
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        Helper.v(tag, "OneFlow visible to user");
+        if (isVisibleToUser) {
+
+            View[] animateViews = new View[]{surveyTitle, surveyDescription};
+
+
+            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    Helper.v(tag, "OneFlow animation START [" + i + "]");
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    Helper.v(tag, "OneFlow animation END[" + i + "]");
+                    if (i < animateViews.length) {
+                        animateViews[i++].startAnimation(animation);
+                    }
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            animateViews[i++].startAnimation(animation);
+        } else {
+            Helper.makeText(getActivity(), "Visibility Gone", 1);
+        }
+    }
 
     @Nullable
     @Override
@@ -83,15 +128,38 @@ public class SurveyQueTextFragment extends Fragment {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                //Helper.v(tag,"OneAxis beforeTextChanged s["+s+"]start["+start+"]after["+after+"]count["+count+"]");
+                //Helper.v(tag," beforeTextChanged s["+s+"]start["+start+"]after["+after+"]count["+count+"]");
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+
+                if (userInput.getText().toString().length() > 0) {
+                    if (surveyScreens.getButtons().size() == 1) {
+                        submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
+                        submitButton.setVisibility(View.VISIBLE);
+
+                    } else if (surveyScreens.getButtons().size() == 2) {
+                        submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
+                        submitButton.setVisibility(View.VISIBLE);
+                        cancelButton.setText(surveyScreens.getButtons().get(1).getTitle());
+                        cancelButton.setVisibility(View.VISIBLE);
+
+                    }
+                }else{
+                    if (surveyScreens.getButtons().size() == 1) {
+                        submitButton.setVisibility(View.GONE);
+
+                    } else if (surveyScreens.getButtons().size() == 2) {
+                        submitButton.setVisibility(View.GONE);
+                        cancelButton.setVisibility(View.GONE);
+
+                    }
+                }
                 if (userInput.getText().toString().length() > surveyScreens.getInput().getMax_chars()) {
                     Helper.makeText(getActivity(), "You have exceeded max length", 1);
-                    userInput.setText(userInput.getText().toString().substring(0,userInput.getText().length()-count));
+                    userInput.setText(userInput.getText().toString().substring(0, userInput.getText().length() - count));
                     userInput.setSelection(userInput.getText().toString().length());
                 }
 
@@ -103,6 +171,11 @@ public class SurveyQueTextFragment extends Fragment {
 
             }
         });
+
+
+        submitButton.setOnClickListener(this);
+        cancelButton.setOnClickListener(this);
+
 
         return view;
 
@@ -116,15 +189,29 @@ public class SurveyQueTextFragment extends Fragment {
     }
 
 
+    SurveyActivity sa;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //mna = (mna_new)context;
+        sa = (SurveyActivity) context;
+        sa.position++;
 
     }
 
+    @Override
+    public void onClick(View v) {
 
-    Dialog dialog;
+        switch (v.getId()) {
+            case R.id.submit_btn:
+                //Helper.makeText(getActivity(),"Clicked on submit button",1);
+                //sa.surveyQueViewPager.setCurrentItem(sa.surveyQueViewPager.getCurrentItem()+1);
+                sa.addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString());
+                break;
+            case R.id.cancel_btn:
+                Helper.makeText(getActivity(), "Clicked on cancel button", 1);
+                break;
+        }
 
-
+    }
 }

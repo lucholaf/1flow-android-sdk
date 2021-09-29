@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    >
 
-    <com.oneflow.tryskysdk.customwidgets.CustomTextView
+    <com.oneflow.tryskysdk.customwidgets.CustomTextViewBold
         android:id="@+id/survey_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/field_padding"
+        android:layout_marginLeft="@dimen/field_padding"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="@dimen/field_padding"
+        android:layout_marginTop="10dp"
         android:textColor="@color/txtblack"
+        android:visibility="invisible"
         android:textSize="@dimen/page_header_size" />
 
     <com.oneflow.tryskysdk.customwidgets.CustomTextView
@@ -16,22 +22,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/survey_title"
-        android:layout_margin="@dimen/field_padding"
+        android:layout_marginLeft="@dimen/field_padding"
+        android:layout_marginRight="@dimen/field_padding"
+        android:layout_marginTop="5dp"
         android:textColor="@color/txtgray"
-        android:textSize="@dimen/page_sub_header_1" />
+        android:visibility="invisible"
+        android:textSize="@dimen/page_sub_header_2" />
 
     <RelativeLayout
         android:id="@+id/option_layout"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/survey_description"
         android:layout_margin="@dimen/field_padding"
-        android:layout_height="wrap_content">
+        android:visibility="invisible"
+        android:gravity="center_horizontal">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/survey_options_list"
-            android:layout_width="match_parent"
-            android:background="@drawable/gray_rectangle"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0.5dp"
+            android:layout_centerHorizontal="true" />
 
         <com.oneflow.tryskysdk.customwidgets.CustomTextView
             android:id="@+id/ratings_not_like"
@@ -39,9 +51,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/survey_options_list"
             android:layout_marginTop="@dimen/field_padding"
-            android:textColor="@color/txtgray"
             android:text="Not likely at all"
-            android:textSize="@dimen/page_sub_header_1" />
+            android:textColor="@color/txtgray"
+            android:textSize="@dimen/page_sub_header_4" />
+
         <com.oneflow.tryskysdk.customwidgets.CustomTextView
             android:id="@+id/ratings_full_like"
             android:layout_width="wrap_content"
@@ -49,9 +62,14 @@
             android:layout_below="@id/survey_options_list"
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/field_padding"
-            android:textColor="@color/txtgray"
             android:text="Extremely likely"
-            android:textSize="@dimen/page_sub_header_1" />
+            android:textColor="@color/txtgray"
+            android:textSize="@dimen/page_sub_header_4" />
     </RelativeLayout>
 
+    <include
+        layout="@layout/buttons_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/option_layout"></include>
 </RelativeLayout>

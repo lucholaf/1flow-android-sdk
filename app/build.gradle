@@ -31,7 +31,7 @@ android {
 def lifeCycleVersion = '1.1.1'
 def retroFitVersion = '2.3.0'
 //def daggerVersion = '2.13'
-def glideVersion = '4.8.0'
+def glideVersion = '4.12.0'
 //def mockitoVersion = '2.11.0'
 def rxjavaVersion = '2.0.1'
 def room_version = "2.3.0"

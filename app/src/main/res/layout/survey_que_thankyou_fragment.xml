@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -10,12 +10,12 @@
 
         <ImageView
             android:id="@+id/thankyou_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="53dp"
+            android:layout_height="53dp"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/thankyou" />
+            android:src="@drawable/thank_you" />
 
-        <com.oneflow.tryskysdk.customwidgets.CustomTextView
+        <com.oneflow.tryskysdk.customwidgets.CustomTextViewBold
             android:id="@+id/survey_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

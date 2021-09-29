@@ -152,14 +152,15 @@ public class Helper {
     public static void setGpsProviderInfo(String gpsProviderInfo) {
         gpsProviderInfo = gpsProviderInfo;
     }
-
+static int printCharLimit = 4000;
     //Log methods
     public static void v(String tag, String msg) {
         if (BuildConfig.DEBUG) {
 
-            if(msg.length()>4075){
-                Log.v(tag,msg.substring(0,4075));
-                Log.v("continue",msg.substring(4076,msg.length()));
+            //Log.v(tag,"OneFlow msg Length"+msg.length());
+            if(msg.length()>printCharLimit){
+                Log.v(tag,msg.substring(0,printCharLimit));
+                Log.v("continue",msg.substring(printCharLimit,msg.length()));
             }else {
                 Log.v(tag, msg);
             }

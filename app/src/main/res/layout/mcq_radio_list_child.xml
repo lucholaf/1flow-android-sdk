@@ -4,12 +4,14 @@
     android:layout_height="wrap_content">
 
 
-    <CheckBox
+    <RadioButton
         android:id="@+id/child_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/field_padding"
-        android:textSize="@dimen/page_header_size"
+        android:buttonTint="@color/colorPrimaryDark"
+        android:textColor="@color/txtblack"
+        android:textSize="@dimen/page_sub_header_1"
         android:text="this is for testing the size of text nothing else this will go in line second to test multi line" />
 
 

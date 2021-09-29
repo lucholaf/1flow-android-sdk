@@ -34,7 +34,9 @@ public class GetSurveyListResponse extends BaseModel {
     @SerializedName("screens")
     private ArrayList<SurveyScreens> screens;
     @SerializedName("trigger_event_name")
-    private String trigger_event_name;
+    private String trigger_event_name ="empty";
+    @SerializedName("color")
+    private String themeColor = "#5D5FEF";
     @SerializedName("start_date")
     private Long start_date;
     @SerializedName("created_on")
@@ -43,6 +45,19 @@ public class GetSurveyListResponse extends BaseModel {
     private Long updated_on;
     @SerializedName("__v")
     private Integer __v;
+
+    public String getThemeColor() {
+        if(themeColor.startsWith("#")){
+            return themeColor;
+        }else{
+            return "#"+themeColor;
+        }
+
+    }
+
+    public void setThemeColor(String themeColor) {
+        this.themeColor = themeColor;
+    }
 
     public String getName() {
         return name;
