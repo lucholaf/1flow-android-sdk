@@ -73,6 +73,9 @@ public class Helper {
     //static boolean debug = commanEnable;
     //static boolean error = false;
     static boolean builds = false;
+
+    public static String headerKey = "";
+
     public static String gpsProviderInfo;
 
     public static String getServiceProvider(Context context) {

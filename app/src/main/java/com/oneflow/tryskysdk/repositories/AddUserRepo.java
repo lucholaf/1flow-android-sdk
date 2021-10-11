@@ -39,8 +39,6 @@ public class AddUserRepo {
                     Helper.v(tag, "OneFlow reached success errorBody["+response.errorBody()+"]");
                     Helper.v(tag, "OneFlow reached success message["+response.message()+"]");
 
-
-
                     if (response.isSuccessful()) {
                         Helper.v(tag,"OneFlow response["+response.body().toString()+"]");
                         Helper.v(tag,"OneFlow response["+response.body().getSuccess()+"]");
@@ -57,26 +55,19 @@ public class AddUserRepo {
                                 db.userDAO().insertUser(response.body().getResult());
                                 Helper.v(tag,"OneFlow inserted data");
                             }
-                        });*/
+                        }); */
 
-                       // db.userDAO().insertUser(response.body().getResult());
                         Helper.v(tag,"OneFlow record inserted...");
                     } else {
-                        //mrh.onResponseReceived(response.body(), type);
                         Helper.v(tag,"OneFlow response 0["+response.body()+"]");
-                        Helper.v(tag,"OneFlow response 1["+response.body().getMessage()+"]");
-                        Helper.v(tag,"OneFlow response 2["+response.body().getSuccess()+"]");
+                       /* Helper.v(tag,"OneFlow response 1["+response.body().getMessage()+"]");
+                        Helper.v(tag,"OneFlow response 2["+response.body().getSuccess()+"]");*/
 
                     }
                 }
 
                 @Override
                 public void onFailure(Call<GenericResponse<AddUserResultResponse>> call, Throwable t) {
-
-                    // mrh.onErrorReceived("QuestionFetch:Something went wrong", type);
-                    /*BaseResponse br = new BaseResponse();
-                    br.setMessage(t.getMessage());
-                    br.setSuccess(0);*/
 
                     Helper.e(tag,"OneFlow error["+t.toString()+"]");
                     Helper.e(tag,"OneFlow errorMsg["+t.getMessage()+"]");

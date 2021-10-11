@@ -2,6 +2,7 @@ package com.oneflow.tryskysdk.repositories;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 
 import com.google.gson.Gson;
 import com.oneflow.tryskysdk.SurveyActivity;
@@ -14,6 +15,8 @@ import com.oneflow.tryskysdk.model.location.LocationResponse;
 import com.oneflow.tryskysdk.model.survey.GetSurveyListResponse;
 import com.oneflow.tryskysdk.model.survey.SurveyUserResponse;
 import com.oneflow.tryskysdk.sdkdb.OneFlowSHP;
+import com.oneflow.tryskysdk.sdkdb.SDKDB;
+import com.oneflow.tryskysdk.sdkdb.survey.SubmittedSurveysTab;
 import com.oneflow.tryskysdk.utils.Constants;
 import com.oneflow.tryskysdk.utils.Helper;
 
@@ -86,7 +89,8 @@ public class Survey {
         } catch (Exception ex) {
 
         }
-    }public static void submitUserResponse(Context context, SurveyUserResponse sur) {
+    }
+    public static void submitUserResponse(Context context, SurveyUserResponse sur) {
         ApiInterface connectAPI = RetroBaseService.getClient().create(ApiInterface.class);
         try {
             Call<GenericResponse<String>> responseCall = null;
@@ -107,12 +111,24 @@ public class Survey {
                     if (response.isSuccessful()) {
                         Helper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
                         Helper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
+                        new OneFlowSHP(context).storeValue(sur.getSurvey_id(),true);
+                        /*AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                Helper.v(tag,"OneFlow inserting data ["+sur.getSurvey_id()+"]");
+                                SubmittedSurveysTab sst = new SubmittedSurveysTab();
+                                sst.setSurveyId(sur.getSurvey_id());
+                                SDKDB.getInstance(context).submittedSurveyDAO().insertSubmittedSurvey(sst);
+
+                                Helper.v(tag,"OneFlow inserted data");
+                            }
+                        });*/
 
                     } else {
                         //mrh.onResponseReceived(response.body(), type);
                         Helper.v(tag, "OneFlow response 0[" + response.body() + "]");
-                        Helper.v(tag, "OneFlow response 1[" + response.body().getMessage() + "]");
-                        Helper.v(tag, "OneFlow response 2[" + response.body().getSuccess() + "]");
+                        /*Helper.v(tag, "OneFlow response 1[" + response.body().getMessage() + "]");
+                        Helper.v(tag, "OneFlow response 2[" + response.body().getSuccess() + "]");*/
                     }
 
                 }

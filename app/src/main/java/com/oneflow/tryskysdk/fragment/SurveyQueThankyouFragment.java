@@ -88,6 +88,8 @@ public class SurveyQueThankyouFragment extends Fragment {
             surveyDescription.setVisibility(View.GONE);
         }
 
+        sa.position = sa.screens.size();
+
         //Glide.with(this).load(R.drawable.thank_you).into(thankyouImage);
         Glide.with(this).load(R.drawable.thank_you).into(new DrawableImageViewTarget(thankyouImage){
             @Override
@@ -107,7 +109,8 @@ public class SurveyQueThankyouFragment extends Fragment {
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    sa.finish();
+
+                                    sa.initFragment();
                                 }
                             },500);
 

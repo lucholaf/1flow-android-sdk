@@ -8,7 +8,7 @@ public class GenericResponse<T>{// extends BaseResponse{
 
     @SerializedName("result")
     @Expose
-    private T result;
+    private T result ;
 
     @SerializedName("success")
     @Expose
@@ -37,6 +37,9 @@ public class GenericResponse<T>{// extends BaseResponse{
     }
 
     public T getResult() {
+        if(result == null){
+            return (T)new String("fake");
+        }
         return result;
     }
 

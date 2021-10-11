@@ -4,17 +4,17 @@ import com.google.gson.annotations.SerializedName;
 
 public class Connectivity {
     @SerializedName("carrier")
-    private Boolean carrier;
+    private String carrier;
     @SerializedName("wifi")
     private Boolean wifi;
     @SerializedName("radio")
-    private Boolean radio;
+    private String radio;
 
-    public Boolean getCarrier() {
+    public String getCarrier() {
         return carrier;
     }
 
-    public void setCarrier(Boolean carrier) {
+    public void setCarrier(String carrier) {
         this.carrier = carrier;
     }
 
@@ -26,11 +26,11 @@ public class Connectivity {
         this.wifi = wifi;
     }
 
-    public Boolean getRadio() {
+    public String getRadio() {
         return radio;
     }
 
-    public void setRadio(Boolean radio) {
+    public void setRadio(String radio) {
         this.radio = radio;
     }
 }

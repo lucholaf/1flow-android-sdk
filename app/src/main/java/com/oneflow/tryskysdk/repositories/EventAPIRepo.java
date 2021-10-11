@@ -1,29 +1,35 @@
 package com.oneflow.tryskysdk.repositories;
 
+import android.content.Context;
+
 import com.oneflow.tryskysdk.model.ApiInterface;
 import com.oneflow.tryskysdk.model.GenericResponse;
 import com.oneflow.tryskysdk.model.RetroBaseService;
 import com.oneflow.tryskysdk.model.adduser.AddUserRequest;
 import com.oneflow.tryskysdk.model.adduser.AddUserResultResponse;
+import com.oneflow.tryskysdk.model.events.EventAPIRequest;
+import com.oneflow.tryskysdk.model.events.RecordEventsTab;
+import com.oneflow.tryskysdk.utils.Constants;
 import com.oneflow.tryskysdk.utils.Helper;
+import com.oneflow.tryskysdk.utils.MyResponseHandler;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecordEvents {
+public class EventAPIRepo {
     static String tag = "CreateSession";
-    public static void recordLog(AddUserRequest aur){
+    public static void sendLogsToApi(Context context, EventAPIRequest ear, MyResponseHandler mrh, Constants.ApiHitType type,Integer []ids){
 
         ApiInterface connectAPI = RetroBaseService.getClient().create(ApiInterface.class);
         try {
-            Call<GenericResponse<AddUserResultResponse>> responseCall = null;
+            Call<GenericResponse<String>> responseCall = null;
 
-            responseCall = connectAPI.addUserComman(aur);
+            responseCall = connectAPI.uploadAllUnSyncedEvents(ear);
 
-            responseCall.enqueue(new Callback<GenericResponse<AddUserResultResponse>>() {
+            responseCall.enqueue(new Callback<GenericResponse<String>>() {
                 @Override
-                public void onResponse(Call<GenericResponse<AddUserResultResponse>> call, Response<GenericResponse<AddUserResultResponse>> response) {
+                public void onResponse(Call<GenericResponse<String>> call, Response<GenericResponse<String>> response) {
                     Helper.v(tag, "OneFlow reached success["+response.isSuccessful()+"]");
                     Helper.v(tag, "OneFlow reached success raw["+response.raw()+"]");
                     Helper.v(tag, "OneFlow reached success errorBody["+response.errorBody()+"]");
@@ -33,19 +39,15 @@ public class RecordEvents {
                     if (response.isSuccessful()) {
                         Helper.v(tag,"OneFlow response["+response.body().toString()+"]");
                         Helper.v(tag,"OneFlow response["+response.body().getSuccess()+"]");
-                        Helper.v(tag,"OneFlow response["+response.body().getMessage()+"]");
-                        Helper.v(tag,"OneFlow response["+response.body().getResult().getAnalytic_user_id()+"]");
+                        mrh.onResponseReceived(type,ids,0);
                     } else {
-                        //mrh.onResponseReceived(response.body(), type);
-                        Helper.v(tag,"OneFlow response 0["+response.body()+"]");
-                        Helper.v(tag,"OneFlow response 1["+response.body().getMessage()+"]");
-                        Helper.v(tag,"OneFlow response 2["+response.body().getSuccess()+"]");
 
+                        Helper.v(tag,"OneFlow response 0["+response.body()+"]");
                     }
                 }
 
                 @Override
-                public void onFailure(Call<GenericResponse<AddUserResultResponse>> call, Throwable t) {
+                public void onFailure(Call<GenericResponse<String>> call, Throwable t) {
 
                     // mrh.onErrorReceived("QuestionFetch:Something went wrong", type);
                     /*BaseResponse br = new BaseResponse();

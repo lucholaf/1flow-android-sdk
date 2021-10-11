@@ -5,9 +5,11 @@ import com.oneflow.tryskysdk.model.adduser.AddUserResponse;
 import com.oneflow.tryskysdk.model.adduser.AddUserResultResponse;
 import com.oneflow.tryskysdk.model.createsession.CreateSessionRequest;
 import com.oneflow.tryskysdk.model.createsession.CreateSessionResponse;
+import com.oneflow.tryskysdk.model.events.EventAPIRequest;
 import com.oneflow.tryskysdk.model.location.LocationResponse;
 import com.oneflow.tryskysdk.model.survey.SurveyUserResponse;
 import com.oneflow.tryskysdk.model.survey.GetSurveyListResponse;
+import com.oneflow.tryskysdk.utils.Helper;
 
 import java.util.ArrayList;
 
@@ -22,7 +24,8 @@ public interface ApiInterface {
 
     //1XdRfcEB8jVN05hkDk/+ltke3BHrQ3R9W35JBylCWzg=
 
-    String headerKey = "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";
+    //String headerKey = "1XdRfcEB8jVN05hkDk/+ltke3BHrQ3R9W35JBylCWzg=";
+    String headerKey = "2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";
 
     @Headers("one_flow_key:" + headerKey)
     @POST("v1/2021-06-15/project_users")
@@ -44,14 +47,16 @@ public interface ApiInterface {
     @POST("v1/2021-06-15/survey-response")
     Call<GenericResponse<String>> submitSurveyUserResponse(@Body SurveyUserResponse aur);
 
+
+    @Headers("one_flow_key:" + headerKey)
+    @POST("v1/2021-06-15/events/bulk")
+    Call<GenericResponse<String>> uploadAllUnSyncedEvents(@Body EventAPIRequest ear);
+
+
     @GET("v1/2021-06-15/keys/{project_id}")
     Call<String> fetchProjectDetails(@Path("project_id") String projectKey);
 
-
-    /*@POST("v1/2021-06-15/events/bulk")
-    Call<GenericResponse<AddUserResponse>> addEvents(@Body AddUserRequest aur);
-
-    @POST("v1/2021-06-15/json")
+   /* @POST("v1/2021-06-15/json")
     Call<GenericResponse<AddUserResponse>> uploadFile(@Body AddUserRequest aur);*/
 
 

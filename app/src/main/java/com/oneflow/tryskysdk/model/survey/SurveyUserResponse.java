@@ -8,12 +8,23 @@ public class SurveyUserResponse {
 
     @SerializedName("analytic_user_id")
     private String analytic_user_id;
+    @SerializedName("session_id")
+    private String session_id;
     @SerializedName("survey_id")
     private String survey_id;
     @SerializedName("os")
     private String os;
     @SerializedName("answers")
     private ArrayList<SurveyUserResponseChild> answers;
+
+
+    public String getSession_id() {
+        return session_id;
+    }
+
+    public void setSession_id(String session_id) {
+        this.session_id = session_id;
+    }
 
     public String getAnalytic_user_id() {
         return analytic_user_id;

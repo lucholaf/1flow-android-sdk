@@ -45,7 +45,7 @@ public class SurveyActivity extends AppCompatActivity {
     String tag = this.getClass().getName();
 
     public ArrayList<SurveyUserResponseChild> surveyResponseChildren;
-    private ArrayList<SurveyScreens> screens;
+    public ArrayList<SurveyScreens> screens;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,13 +64,11 @@ public class SurveyActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-       String surveyType = this.getIntent().getStringExtra("SurveyType");
+        //String surveyType = this.getIntent().getStringExtra("SurveyType");
+        GetSurveyListResponse surveyItem = (GetSurveyListResponse) this.getIntent().getSerializableExtra("SurveyType");
 
-       screens = checkSurveyTitleAndScreens(surveyType);
-
-
-
-
+        screens = surveyItem.getScreens();//checkSurveyTitleAndScreens(surveyType);
+        selectedSurveyId = surveyItem.get_id();
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,87 +80,65 @@ public class SurveyActivity extends AppCompatActivity {
         initFragment();
 
     }
-    public void checkIfAnswerAlreadyGiven(){
+
+    public void checkIfAnswerAlreadyGiven() {
 
     }
 
     /**
      * Record User inputs
+     *
      * @param screenID
      * @param answerIndex
      * @param answerValue
      */
-    public void addUserResponseToList(String screenID,String answerIndex, String answerValue){
+    public void addUserResponseToList(String screenID, String answerIndex, String answerValue) {
         SurveyUserResponseChild asrc = new SurveyUserResponseChild();
         asrc.setScreen_id(screenID);
-        if(answerValue!=null){
+        if (answerValue != null) {
             asrc.setAnswer_value(answerValue);
-        }else{
+        } else {
             asrc.setAnswer_index(answerIndex);
         }
 
         surveyResponseChildren.add(asrc);
         initFragment();
     }
+
     public String themeColor = "";
     String selectedSurveyId;
-    /**
-     * This method will check if trigger name is available in the list or not
-     * @param type
-     * @return
-     */
-    private ArrayList<SurveyScreens> checkSurveyTitleAndScreens(String type){
-        ArrayList<GetSurveyListResponse> slr = new OneFlowSHP(this).getSurveyList();
-        ArrayList<SurveyScreens> surveyScreens = null;
-        int counter = 0;
-        Helper.v(tag,"OneFlow list size["+slr.size()+"]type["+type+"]");
-        for(GetSurveyListResponse item:slr){
-            if(item.getTrigger_event_name().equalsIgnoreCase(type)){
-                surveyScreens = item.getScreens();
-                selectedSurveyId = item.get_id();
-                themeColor = item.getThemeColor();
-                Helper.v(tag,"OneFlow survey found at ["+(counter++)+"]triggerName["+item.getTrigger_event_name()+"]queSize["+item.getScreens().size()+"]");
-                Helper.v(tag,"OneFlow survey queSize["+new Gson().toJson(item.getScreens())+"]");
-                /*int i=0;
-                while(i<item.getScreens().size()) {
-                    try {
-                        if(item.getScreens().get(i).getInput()!=null) {
-                            Helper.v(tag, "OneFlow input type["+i+"][" + item.getScreens().get(i).getInput().getInput_type() + "]");
-                        }else{
-                            Helper.v(tag,"OneFlow found null");
-                        }
-                    }catch(Exception ex){
 
-                    }
-                i++;
-                }*/
-                break;
-            }
+
+
+    public void prepareAndSubmitUserResposne() {
+        if(Helper.isConnected(this)) {
+            OneFlowSHP ofs = new OneFlowSHP(this);
+            SurveyUserResponse sur = new SurveyUserResponse();
+            sur.setAnswers(surveyResponseChildren);
+            sur.setOs(Constants.os);
+            sur.setAnalytic_user_id(ofs.getUserDetails().getAnalytic_user_id());
+            sur.setSurvey_id(selectedSurveyId);
+            sur.setSession_id(ofs.getStringValue(Constants.SESSIONDETAIL_IDSHP));
+            Survey.submitUserResponse(this, sur);
+        }else{
+            Helper.makeText(this,getString(R.string.no_network),1);
         }
-        return surveyScreens;
-    }
-
-    public void prepareAndSubmitUserResposne(){
-        SurveyUserResponse sur = new SurveyUserResponse();
-        sur.setAnswers(surveyResponseChildren);
-        sur.setOs(Constants.os);
-        sur.setAnalytic_user_id(new OneFlowSHP(this).getUserDetails().getAnalytic_user_id());
-        sur.setSurvey_id(selectedSurveyId);
-        Survey.submitUserResponse(this,sur);
     }
 
     public int position = 0;
-    public void initFragment(){
-        Helper.v(tag,"OneFlow selected answers["+new Gson().toJson(surveyResponseChildren)+"]");
-        if(position>=screens.size()){
+
+    public void initFragment() {
+        Helper.v(tag, "OneFlow position ["+position+"]screensize["+screens.size()+"]selected answers[" + new Gson().toJson(surveyResponseChildren) + "]");
+        if (position >= screens.size()) {
             prepareAndSubmitUserResposne();
             SurveyActivity.this.finish();
-        }else {
+        } else {
             loadFragments(screens.get(position));
         }
 
     }
-    private void loadFragments(SurveyScreens screen){
+
+    private void loadFragments(SurveyScreens screen) {
         Fragment frag;
         try {
             if (screen.getInput().getInput_type().equalsIgnoreCase("thank_you")) {
@@ -172,17 +148,17 @@ public class SurveyActivity extends AppCompatActivity {
             } else {
                 frag = SurveyQueFragment.newInstance(screen);
             }
-        }catch(Exception ex){
-            Helper.e(tag,"OneFlow ERROR ["+ex.getMessage()+"]");
+        } catch (Exception ex) {
+            Helper.e(tag, "OneFlow ERROR [" + ex.getMessage() + "]");
             frag = SurveyQueThankyouFragment.newInstance(screen);
         }
 
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if(position==0) {
+        if (position == 0) {
             ft.add(R.id.fragment_view, frag).commit();
-        }else{
-            ft.replace(R.id.fragment_view,frag).commit();
+        } else {
+            ft.replace(R.id.fragment_view, frag).commit();
         }
     }
 

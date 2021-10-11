@@ -34,6 +34,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.oneflow.tryskysdk.customwidgets.CustomTextView
@@ -86,10 +87,13 @@
         style="@style/comman_positive_button_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/page_margin"
+        android:layout_marginTop="160dp"
+        android:layout_marginLeft="@dimen/page_margin"
+        android:layout_marginRight="@dimen/page_margin"
         android:onClick="clickHandler"
         android:padding="10dp"
         android:text="Record Log"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -107,6 +111,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.oneflow.tryskysdk.customwidgets.CustomTextView
+        android:id="@+id/send_log_to_api"
+        style="@style/comman_positive_button_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/page_margin"
+        android:onClick="clickHandler"
+        android:padding="10dp"
+        android:text="Send Events to API"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.oneflow.tryskysdk.customwidgets.CustomTextView

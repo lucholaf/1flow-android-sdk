@@ -12,8 +12,10 @@ import com.oneflow.tryskysdk.adapter.SurveyListAdapter;
 import com.oneflow.tryskysdk.model.survey.GetSurveyListResponse;
 import com.oneflow.tryskysdk.sdkdb.OneFlowSHP;
 import com.oneflow.tryskysdk.utils.Constants;
+import com.oneflow.tryskysdk.utils.FeedbackController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,22 +30,29 @@ public class SurveyList extends SDKBaseActivity {
         setContentView(R.layout.simple_survey_list);
         ButterKnife.bind(this);
 
-
         ArrayList<GetSurveyListResponse> slr = new OneFlowSHP(this).getSurveyList();
         SurveyListAdapter addb = new SurveyListAdapter(this, slr, clickListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         listOfSurvey.setLayoutManager(linearLayoutManager);
         listOfSurvey.setAdapter(addb);
-
     }
 
     View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            String tag = (String)v.getTag();
-            Intent intent = new Intent(SurveyList.this, SurveyActivity.class);
-            intent.putExtra("SurveyType", tag);//"move_file_in_folder");//""empty0");//
-            startActivity(intent);
+            String tag = (String) v.getTag();
+
+            //GetSurveyListResponse surveyItem = checkSurveyTitleAndScreens(tag);
+
+            HashMap<String,String> mapvalues = new HashMap<String, String>();
+            mapvalues.put("testKey1","testValue1");
+            mapvalues.put("testKey2","testValue2");
+            mapvalues.put("testKey3","testValue3");
+            FeedbackController.recordEvents(SurveyList.this,tag,mapvalues,150);
+
+            /*Intent intent = new Intent(SurveyList.this, SurveyActivity.class);
+            intent.putExtra("SurveyType", surveyItem);
+            startActivity(intent);*/
         }
     };
 }
