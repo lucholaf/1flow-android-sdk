@@ -5,6 +5,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -73,6 +74,7 @@ public class SurveyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SurveyActivity.this.finish();
+                overridePendingTransition(0,R.anim.slide_down_dialog);
             }
         });
         surveyResponseChildren = new ArrayList<>();
@@ -132,6 +134,8 @@ public class SurveyActivity extends AppCompatActivity {
         if (position >= screens.size()) {
             prepareAndSubmitUserResposne();
             SurveyActivity.this.finish();
+            overridePendingTransition(0,R.anim.slide_down_dialog);
+            //slideDown();
         } else {
             loadFragments(screens.get(position));
         }

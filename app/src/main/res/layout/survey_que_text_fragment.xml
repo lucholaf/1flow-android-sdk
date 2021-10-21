@@ -10,6 +10,7 @@
         android:layout_marginLeft="@dimen/field_padding"
         android:layout_marginRight="40dp"
         android:layout_marginBottom="@dimen/field_padding"
+        android:layout_marginTop="20dp"
         android:textColor="@color/txtblack"
         android:textSize="@dimen/page_header_size" />
 
@@ -18,7 +19,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/survey_title"
-        android:layout_margin="@dimen/field_padding"
+        android:layout_marginLeft="@dimen/field_padding"
+        android:layout_marginRight="@dimen/field_padding"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
         android:textColor="@color/txtgray"
         android:textSize="@dimen/page_sub_header_2" />
 
@@ -28,18 +32,21 @@
         android:layout_margin="@dimen/field_padding"
         android:layout_below="@id/survey_description"
         android:background="@drawable/gray_rectangle"
-        android:layout_height="150dp">
+        android:minHeight="100dp"
+        android:layout_height="wrap_content">
 
         <com.oneflow.tryskysdk.customwidgets.CustomEditText
             android:id="@+id/child_user_input"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="100dp"
             android:padding="@dimen/field_padding"
             android:layout_margin="1dp"
             android:gravity="top|left"
-            android:maxLines="7"
+            android:inputType="textMultiLine"
             android:textSize="@dimen/page_header_size"
             android:background="#ffffff"
+            android:isScrollContainer="false"
             android:textColor="@color/txtblack"
             />
         <com.oneflow.tryskysdk.customwidgets.CustomTextView
@@ -47,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@id/child_user_input"
             android:layout_margin="@dimen/field_padding"
             android:textColor="@color/txtlightgray"
             android:text="0/265"

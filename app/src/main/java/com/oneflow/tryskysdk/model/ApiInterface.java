@@ -6,6 +6,8 @@ import com.oneflow.tryskysdk.model.adduser.AddUserResultResponse;
 import com.oneflow.tryskysdk.model.createsession.CreateSessionRequest;
 import com.oneflow.tryskysdk.model.createsession.CreateSessionResponse;
 import com.oneflow.tryskysdk.model.events.EventAPIRequest;
+import com.oneflow.tryskysdk.model.events.EventSubmitResponse;
+import com.oneflow.tryskysdk.model.events.RecordEventsTabToAPI;
 import com.oneflow.tryskysdk.model.location.LocationResponse;
 import com.oneflow.tryskysdk.model.survey.SurveyUserResponse;
 import com.oneflow.tryskysdk.model.survey.GetSurveyListResponse;
@@ -19,6 +21,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiInterface {
 
@@ -26,6 +29,7 @@ public interface ApiInterface {
 
     //String headerKey = "1XdRfcEB8jVN05hkDk/+ltke3BHrQ3R9W35JBylCWzg=";
     String headerKey = "2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";
+    //String headerKey = "vIIocy8oMv1BUBMDFEVzQ6aQ8dKRBy9oXgjL8W0Iy4Y=";
 
     @Headers("one_flow_key:" + headerKey)
     @POST("v1/2021-06-15/project_users")
@@ -37,7 +41,7 @@ public interface ApiInterface {
 
     @Headers("one_flow_key:" + headerKey)
     @GET("v1/2021-06-15/survey")
-    Call<GenericResponse<ArrayList<GetSurveyListResponse>>> getSurvey();
+    Call<GenericResponse<ArrayList<GetSurveyListResponse>>> getSurvey(@Query("platform") String platform);
 
     @Headers("one_flow_key:" + headerKey)
     @GET("v1/2021-06-15/location")
@@ -50,7 +54,7 @@ public interface ApiInterface {
 
     @Headers("one_flow_key:" + headerKey)
     @POST("v1/2021-06-15/events/bulk")
-    Call<GenericResponse<String>> uploadAllUnSyncedEvents(@Body EventAPIRequest ear);
+    Call<GenericResponse<EventSubmitResponse>> uploadAllUnSyncedEvents(@Body EventAPIRequest ear);
 
 
     @GET("v1/2021-06-15/keys/{project_id}")

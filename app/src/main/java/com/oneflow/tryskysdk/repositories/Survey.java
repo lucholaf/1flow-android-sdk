@@ -31,30 +31,31 @@ public class Survey {
     static String tag = "Survey";
 
     public static void getSurvey(Context context) {
+        Helper.v(tag, "OneFlow survey reached getSurvey");
         ApiInterface connectAPI = RetroBaseService.getClient().create(ApiInterface.class);
         try {
             Call<GenericResponse<ArrayList<GetSurveyListResponse>>> responseCall = null;
 
-            responseCall = connectAPI.getSurvey();
+            responseCall = connectAPI.getSurvey("android");
 
             responseCall.enqueue(new Callback<GenericResponse<ArrayList<GetSurveyListResponse>>>() {
                 @Override
                 public void onResponse(Call<GenericResponse<ArrayList<GetSurveyListResponse>>> call, Response<GenericResponse<ArrayList<GetSurveyListResponse>>> response) {
 
 
-                    Helper.v(tag, "OneFlow reached success[" + response.isSuccessful() + "]");
-                    Helper.v(tag, "OneFlow reached success raw[" + response.raw() + "]");
-                    Helper.v(tag, "OneFlow reached success errorBody[" + response.errorBody() + "]");
-                    Helper.v(tag, "OneFlow reached success message[" + response.message() + "]");
+                    Helper.v(tag, "OneFlow survey reached success[" + response.isSuccessful() + "]");
+                    Helper.v(tag, "OneFlow survey reached success raw[" + response.raw() + "]");
+                    Helper.v(tag, "OneFlow survey reached success errorBody[" + response.errorBody() + "]");
+                    Helper.v(tag, "OneFlow survey reached success message[" + response.message() + "]");
 
 
                     if (response.isSuccessful()) {
-                        Helper.v(tag, "OneFlow response[" + response.body().toString() + "]");
-                        Helper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
-                        Helper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
-                        Helper.v(tag, "OneFlow response size[" + response.body().getResult().size() + "]");
-                        Helper.v(tag, "OneFlow response trigger name[" + response.body().getResult().get(0).getTrigger_event_name() + "]");
-                        Helper.v(tag, "OneFlow response event name[" + response.body().getResult().get(0).getName() + "]");
+                        Helper.v(tag, "OneFlow survey response[" + response.body().toString() + "]");
+                        Helper.v(tag, "OneFlow survey response[" + response.body().getSuccess() + "]");
+                        Helper.v(tag, "OneFlow survey response message[" + response.body().getMessage() + "]");
+                        Helper.v(tag, "OneFlow survey response size[" + response.body().getResult().size() + "]");
+                        Helper.v(tag, "OneFlow survey response trigger name[" + response.body().getResult().get(0).getTrigger_event_name() + "]");
+                        Helper.v(tag, "OneFlow survey response event name[" + response.body().getResult().get(0).getName() + "]");
 
                         int counter = 0;
                         for (GetSurveyListResponse gsl : response.body().getResult()) {
@@ -65,9 +66,11 @@ public class Survey {
 
                         Helper.v(tag,"OneFlow counter reached at["+counter+"]");
                         new OneFlowSHP(context).setSurveyList(response.body().getResult());
-                        Intent intent = new Intent(context, SurveyList.class);
+                        //Intent intent = new Intent(context, SurveyList.class);
                         //intent.putExtra("SurveyType", "tap_skip_subs");//"move_file_in_folder");//""empty0");//
-                        context.startActivity(intent);
+                        //context.startActivity(intent);
+                        Intent intent = new Intent("survey_list_fetched");
+                        context.sendBroadcast(intent);
 
                     } else {
                         //mrh.onResponseReceived(response.body(), type);
@@ -119,7 +122,6 @@ public class Survey {
                                 SubmittedSurveysTab sst = new SubmittedSurveysTab();
                                 sst.setSurveyId(sur.getSurvey_id());
                                 SDKDB.getInstance(context).submittedSurveyDAO().insertSubmittedSurvey(sst);
-
                                 Helper.v(tag,"OneFlow inserted data");
                             }
                         });*/

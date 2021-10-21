@@ -1,25 +1,16 @@
-package com.oneflow.tryskysdk.utils;
+package com.oneflow.tryskysdk.controller;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-
-import com.google.gson.Gson;
-import com.oneflow.tryskysdk.MainActivity;
 import com.oneflow.tryskysdk.SurveyActivity;
-import com.oneflow.tryskysdk.SurveyList;
-import com.oneflow.tryskysdk.model.ApiInterface;
 import com.oneflow.tryskysdk.model.Connectivity;
 import com.oneflow.tryskysdk.model.adduser.AddUserRequest;
-import com.oneflow.tryskysdk.model.adduser.AddUserResultResponse;
 import com.oneflow.tryskysdk.model.adduser.DeviceDetails;
 import com.oneflow.tryskysdk.model.adduser.LocationDetails;
 import com.oneflow.tryskysdk.model.createsession.CreateSessionRequest;
@@ -27,7 +18,6 @@ import com.oneflow.tryskysdk.model.events.EventAPIRequest;
 import com.oneflow.tryskysdk.model.events.RecordEventsTab;
 import com.oneflow.tryskysdk.model.events.RecordEventsTabToAPI;
 import com.oneflow.tryskysdk.model.survey.GetSurveyListResponse;
-import com.oneflow.tryskysdk.model.survey.SurveyScreens;
 import com.oneflow.tryskysdk.repositories.AddUserRepo;
 import com.oneflow.tryskysdk.repositories.CreateSession;
 import com.oneflow.tryskysdk.repositories.CurrentLocation;
@@ -36,19 +26,16 @@ import com.oneflow.tryskysdk.repositories.EventDBRepo;
 import com.oneflow.tryskysdk.repositories.ProjectDetails;
 import com.oneflow.tryskysdk.repositories.Survey;
 import com.oneflow.tryskysdk.sdkdb.OneFlowSHP;
-import com.oneflow.tryskysdk.sdkdb.SDKDB;
-import com.oneflow.tryskysdk.sdkdb.survey.SubmittedSurveysTab;
+import com.oneflow.tryskysdk.utils.Constants;
+import com.oneflow.tryskysdk.utils.Helper;
+import com.oneflow.tryskysdk.utils.MyResponseHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.xml.XMLConstants;
-
 public class FeedbackController implements MyResponseHandler {
 
     //TODO Convert this class to singleton
-
-
 
 
     static Context mContext;
@@ -61,7 +48,10 @@ public class FeedbackController implements MyResponseHandler {
     public static void configure(Context mContext, String projectKey) {
         new OneFlowSHP(mContext).storeValue(Constants.APPIDSHP, projectKey);
         Helper.headerKey = projectKey;
+
         FeedbackController fc = new FeedbackController(mContext);
+        SurveyController sc = SurveyController.getInstance(mContext);
+
         fc.registerUser(fc.createRequest());
     }
 
@@ -101,7 +91,7 @@ public class FeedbackController implements MyResponseHandler {
 
 
         // storage, api call and check survey if available.
-        new EventController(mContext).storeEventsInDB(eventName, eventValues,value);
+        EventController.getInstance(mContext).storeEventsInDB(eventName, eventValues,value);
 
         //Checking if any survey available under coming event.
         GetSurveyListResponse surveyItem = new FeedbackController(mContext).checkSurveyTitleAndScreens(eventName);
@@ -172,9 +162,7 @@ public class FeedbackController implements MyResponseHandler {
     }
 
 
-    public void getSurvey() {
-        Survey.getSurvey(mContext);
-    }
+
 
     public void getProjectDetails() {
         ProjectDetails.getProject(mContext);
@@ -194,29 +182,33 @@ public class FeedbackController implements MyResponseHandler {
         switch (hitType) {
             case fetchEventsFromDB:
 
+                Helper.v("FeedbackController","OneFlow fetchEventsFromDB came back");
                 FeedbackController fc = new FeedbackController(mContext);
 
                 ArrayList<RecordEventsTab> list = (ArrayList<RecordEventsTab>)obj;
-
+                Helper.v("FeedbackController","OneFlow fetchEventsFromDB list received size["+list.size()+"]");
                 //Preparing list to send api
+
+                Integer []ids = new Integer[list.size()];
+                int i=0;
                 ArrayList<RecordEventsTabToAPI> retListToAPI = new ArrayList<>();
                 RecordEventsTabToAPI retMain;
                 for(RecordEventsTab ret:list){
                     retMain = new RecordEventsTabToAPI();
                     retMain.setEventName(ret.getEventName());
                     retMain.setTime(ret.getTime());
+
                     //retMain.setDataMap(ret.getDataMap());
                     retListToAPI.add(retMain);
-                }
-                Integer []ids = new Integer[list.size()];
-                int i=0;
-                for(RecordEventsTab ret : list){
+
                     ids[i++] = ret.getId();
                 }
+
+
                 EventAPIRequest ear = new EventAPIRequest();
                 ear.setSessionId(new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP));
                 ear.setEvents(retListToAPI);
-
+                Helper.v("FeedbackController","OneFlow fetchEventsFromDB request prepared");
                 EventAPIRepo.sendLogsToApi(mContext,ear,fc, Constants.ApiHitType.sendEventsToAPI,ids);
 
                 break;
@@ -228,8 +220,13 @@ public class FeedbackController implements MyResponseHandler {
                 break;
             case deleteEventsFromDB:
                 Helper.v("FeedbackControler","OneFlow events delete count["+((Integer)obj)+"]");
+                Intent intent = new Intent("events_submitted");
+                intent.putExtra("size",String.valueOf((Integer)obj));
+                mContext.sendBroadcast(intent);
+
             case CreateSession:
-                getSurvey();
+                //TODO Call paralle with create user
+               // getSurvey();
                 break;
             case CreateUser:
 

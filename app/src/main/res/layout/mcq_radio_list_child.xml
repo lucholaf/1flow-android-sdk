@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
+
     android:layout_height="wrap_content">
 
-
-    <RadioButton
-        android:id="@+id/child_title"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/field_padding"
-        android:buttonTint="@color/colorPrimaryDark"
-        android:textColor="@color/txtblack"
-        android:textSize="@dimen/page_sub_header_1"
-        android:text="this is for testing the size of text nothing else this will go in line second to test multi line" />
+        android:layout_marginBottom="15dp"
+        android:clickable="true"
+        android:background="@drawable/radio_n_checkbox_selector">
 
+        <RadioButton
+            android:id="@+id/child_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/field_padding"
+            android:paddingLeft="10dp"
+            android:paddingTop="4dp"
+            android:buttonTint="@color/ratings_focused"
+            android:gravity="top"
+            android:text="this is for testing the size of text nothing else this will go in line second to test multi line"
+            android:textColor="@color/txtblack"
+            android:textSize="@dimen/page_sub_header_1" />
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -9,6 +9,7 @@
     <color name="txtwhite">#eeeeee</color>
     <color name="txtgray">#50555c</color>
     <color name="txtlightgray">#aaaaaa</color>
+    <color name="selector_color">#335D5FEF</color>
     <color name="graybordercolor">#5D5FEF</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

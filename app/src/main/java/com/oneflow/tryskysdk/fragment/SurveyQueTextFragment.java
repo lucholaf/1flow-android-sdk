@@ -123,6 +123,7 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
         }
 
         surveyInputLimit.setText("0/" + surveyScreens.getInput().getMax_chars());
+        Helper.v(tag," OneFlow onTextChanged min["+surveyScreens.getInput().getMin_chars()+"]max["+surveyScreens.getInput().getMax_chars()+"]");
         //setMaxLength(surveyScreens.getInput().getMax_chars());
         userInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -135,7 +136,7 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
 
-                if (userInput.getText().toString().length() > 0) {
+                if (userInput.getText().toString().length() >= surveyScreens.getInput().getMin_chars()) {
                     if (surveyScreens.getButtons().size() == 1) {
                         submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
                         submitButton.setVisibility(View.VISIBLE);
@@ -154,7 +155,6 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
                     } else if (surveyScreens.getButtons().size() == 2) {
                         submitButton.setVisibility(View.GONE);
                         cancelButton.setVisibility(View.GONE);
-
                     }
                 }
                 if (userInput.getText().toString().length() > surveyScreens.getInput().getMax_chars()) {

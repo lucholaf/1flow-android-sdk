@@ -12,7 +12,7 @@
         android:layout_marginLeft="@dimen/field_padding"
         android:layout_marginRight="40dp"
         android:layout_marginBottom="@dimen/field_padding"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:textColor="@color/txtblack"
         android:visibility="invisible"
         android:textSize="@dimen/page_header_size" />
@@ -24,6 +24,7 @@
         android:layout_below="@id/survey_title"
         android:layout_marginLeft="@dimen/field_padding"
         android:layout_marginRight="@dimen/field_padding"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp"
         android:textColor="@color/txtgray"
         android:visibility="invisible"

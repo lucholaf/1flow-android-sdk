@@ -3,24 +3,27 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
-        android:background="@drawable/rounded_rectangle_with_border_gray">
+        android:clickable="true"
+        android:background="@drawable/radio_n_checkbox_selector">
 
 
         <CheckBox
             android:id="@+id/child_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_margin="@dimen/field_padding"
             android:paddingTop="4dp"
+            android:paddingLeft="10dp"
+            android:buttonTint="@color/ratings_focused"
             android:gravity="top"
             android:text="this is for testing the size of text nothing else this will go in line second to test multi line"
             android:textColor="@color/txtblack"
             android:textSize="@dimen/page_sub_header_1" />
+
 
     </RelativeLayout>
 </RelativeLayout>

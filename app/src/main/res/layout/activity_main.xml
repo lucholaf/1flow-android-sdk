@@ -8,6 +8,12 @@
     android:padding="10dp"
     tools:context=".MainActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_of_survey"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        />
     <com.oneflow.tryskysdk.customwidgets.CustomTextView
         android:id="@+id/configure_project"
         style="@style/comman_positive_button_style"
@@ -17,6 +23,7 @@
         android:onClick="clickHandler"
         android:padding="10dp"
         android:text="Configure Project"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -93,7 +100,7 @@
         android:onClick="clickHandler"
         android:padding="10dp"
         android:text="Record Log"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -123,11 +130,9 @@
         android:onClick="clickHandler"
         android:padding="10dp"
         android:text="Send Events to API"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_gravity="bottom"
         android:visibility="visible"
-        app:layout_constraintTop_toTopOf="parent" />
+         />
 
     <com.oneflow.tryskysdk.customwidgets.CustomTextView
         android:id="@+id/result"

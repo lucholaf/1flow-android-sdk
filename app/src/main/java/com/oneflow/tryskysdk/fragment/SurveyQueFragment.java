@@ -17,6 +17,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -92,17 +93,12 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
 
     }
 
-
     int i = 0;
-
-
     @Override
     public void onResume() {
         super.onResume();
         Helper.v(tag, "OneFlow OnResume");
-        /*new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {*/
+
 
         View[] animateViews = new View[]{surveyTitle, surveyDescription, optionLayout};
 
@@ -244,8 +240,10 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
 
                 if (surveyScreens.getInput().getStars()) {
                     surveyScreens.getInput().setRatingsList(prepareRatingsList(surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
-                    ratingsNotLike.setVisibility(View.GONE);
-                    ratingsFullLike.setVisibility(View.GONE);
+                    if(!surveyScreens.getInput().getInput_type().contains("nps")) {
+                        ratingsNotLike.setVisibility(View.GONE);
+                        ratingsFullLike.setVisibility(View.GONE);
+                    }
                 } else if (surveyScreens.getInput().getEmoji()) {
                     surveyScreens.getInput().setRatingsList(prepareRatingsList(surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
                     ratingsNotLike.setVisibility(View.GONE);
@@ -268,7 +266,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
         } else {
             if (surveyScreens.getInput().getChoices() != null) {
                 if (surveyScreens.getInput().getChoices().size() > 0) {
-                    Helper.v(tag,"OneFlow inputtype choices init");
+                    Helper.v(tag, "OneFlow inputtype choices init");
                     checkBoxSelection = new ArrayList<String>();
                 }
             }
@@ -277,7 +275,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
             mLayoutManager = new LinearLayoutManager(getActivity());
         }
 
-        dashboardAdapter = new SurveyOptionsAdapter(getActivity(), surveyScreens.getInput(), this,sa.themeColor);
+        dashboardAdapter = new SurveyOptionsAdapter(getActivity(), surveyScreens.getInput(), this, sa.themeColor);
 
         surveyOptionRecyclerView.setLayoutManager(mLayoutManager);
         surveyOptionRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -341,39 +339,46 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
                 }, 1000);
                 break;
             default:
-                Helper.v(tag, "OneFlow inputtype["+surveyScreens.getInput().getInput_type()+"]isCheckbox["+surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")+"]ratings[" + surveyScreens.getInput().getInput_type().contains("rating") + "]isStar[" + surveyScreens.getInput().getStars() + "]");
+                Helper.v(tag, "OneFlow inputtype[" + surveyScreens.getInput().getInput_type() + "]isCheckbox[" + surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox") + "]ratings[" + surveyScreens.getInput().getInput_type().contains("rating") + "]isStar[" + surveyScreens.getInput().getStars() + "]");
                 if (surveyScreens.getInput().getInput_type().contains("rating")) {
                     int position = (int) v.getTag();
+
+                    Helper.v(tag,"OneFlow inputType["+surveyScreens.getInput().getStars()+"]position["+position+"]");
                     if (surveyScreens.getInput().getStars()) {
                         setSelected(position, false);
                     } else {
-                        //surveyScreens.getInput().getRatingsList().get(position).setSelected(true);
                         setSelected(position, true);
                     }
-
-                }
-                else if (surveyScreens.getInput().getInput_type().contains("nps")) {
+                } else if (surveyScreens.getInput().getInput_type().contains("nps")) {
                     int position = (int) v.getTag();
                     setSelected(position, true);
-                }
-                else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("mcq")) {
+                } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("mcq")) {
 
+                    RadioButton rb = (RadioButton) v;
                     String position = (String) v.getTag();
-                    Helper.v(tag,"OneFlow mcq clicked Position["+position+"]");
-                    sa.addUserResponseToList(surveyScreens.get_id(), position, null);
+                    Helper.v(tag, "OneFlow mcq clicked Position[" + position + "]");
+                    /*if (rb.isChecked()) {
+                        ((View) rb.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_blue);
+                    } else {
+                        ((View) rb.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_gray);
+                    }*/
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            sa.addUserResponseToList(surveyScreens.get_id(), position, null);
+                        }},1000);
 
-                }
-                else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
-                    Helper.v(tag,"OneFlow inside checkbox");
+                } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
+                    Helper.v(tag, "OneFlow inside checkbox");
                     CheckBox cb = (CheckBox) v;
-                    Helper.v(tag,"OneFlow inside checkbox 1");
+                    Helper.v(tag, "OneFlow inside checkbox 1");
                     String viewTag = (String) cb.getTag();
-                    Helper.v(tag,"OneFlow inside checkbox tag["+viewTag+"]isChecked["+cb.isChecked()+"]");
-                    if(cb.isChecked()){
-                        ((View)cb.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_blue);
-                    }else{
-                        ((View)cb.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_gray);
-                    }
+                    Helper.v(tag, "OneFlow inside checkbox tag[" + viewTag + "]isChecked[" + cb.isChecked() + "]");
+                    /*if (cb.isChecked()) {
+                        ((View) cb.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_blue);
+                    } else {
+                        ((View) cb.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_gray);
+                    }*/
                     checkBoxSelectionStatus(viewTag, cb.isChecked());
                 }
                 break;
@@ -385,6 +390,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
 
     private void setSelected(int position, Boolean isSingle) {
         int i = 0;
+        Helper.v(tag,"OneFlow position ["+position+"]isSingle["+isSingle+"]");
         while (i < surveyScreens.getInput().getRatingsList().size()) {
             if (isSingle) {
                 surveyScreens.getInput().getRatingsList().get(i).setSelected(false);
@@ -398,7 +404,15 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
             i++;
         }
         if (isSingle) {
-            surveyScreens.getInput().getRatingsList().get(position).setSelected(true);
+            if(surveyScreens.getInput().getInput_type().equalsIgnoreCase("nps") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical")){
+            for(RatingsModel rm: surveyScreens.getInput().getRatingsList()){
+                if(rm.getId()==position){
+                    rm.setSelected(true);
+                }
+            }}else {
+                surveyScreens.getInput().getRatingsList().get(position).setSelected(true);
+            }
+
         }
         dashboardAdapter.notifyMyList(surveyScreens.getInput());
         if (submitButton.getVisibility() != View.VISIBLE) {
@@ -440,7 +454,12 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
                     cancelButton.setOnClickListener(this);
                 }
             }
+        } else {
+            //In case of selection reverted
+            submitButton.setVisibility(View.INVISIBLE);
+            cancelButton.setVisibility(View.INVISIBLE);
         }
+
 
     }
 

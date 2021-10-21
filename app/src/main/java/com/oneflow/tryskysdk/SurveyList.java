@@ -1,6 +1,5 @@
 package com.oneflow.tryskysdk;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -11,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.oneflow.tryskysdk.adapter.SurveyListAdapter;
 import com.oneflow.tryskysdk.model.survey.GetSurveyListResponse;
 import com.oneflow.tryskysdk.sdkdb.OneFlowSHP;
-import com.oneflow.tryskysdk.utils.Constants;
-import com.oneflow.tryskysdk.utils.FeedbackController;
+import com.oneflow.tryskysdk.controller.FeedbackController;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:src="@drawable/smiley3"
+        android:background="@drawable/textview_selector"
         android:padding="20dp"
         />
 

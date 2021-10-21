@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class SurveyInputs extends BaseModel {
 
     @SerializedName("min_val")
-    private Integer min_val = 0;
+    private Integer min_val = 1;
     @SerializedName("max_val")
     private String max_val = "5";
     @SerializedName("emoji")
@@ -20,7 +20,7 @@ public class SurveyInputs extends BaseModel {
     @SerializedName("star_fill_color")
     private String star_fill_color;
     @SerializedName("min_chars")
-    private Integer min_chars;
+    private Integer min_chars = 0;
     @SerializedName("max_chars")
     private Integer max_chars;
     @SerializedName("_id")

@@ -61,8 +61,9 @@ public class EventDBRepo {
             public void run() {
                 super.run();
                 SDKDB sdkdb = SDKDB.getInstance(context);
+                Helper.v("EventDBRepo","OneFlow fetching events from db 0");
                 List<RecordEventsTab> retList = sdkdb.eventDAO().getAllUnsyncedEvents();
-
+                Helper.v("EventDBRepo","OneFlow fetching events from db 1");
                 mrh.onResponseReceived(type,retList,0);
             }
         };
