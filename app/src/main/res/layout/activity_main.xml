@@ -12,6 +12,7 @@
         android:id="@+id/list_of_survey"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="200dp"
         android:layout_weight="1"
         />
     <com.oneflow.tryskysdk.customwidgets.CustomTextView

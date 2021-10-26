@@ -34,25 +34,23 @@
 
     </style>
 
-
     <style name="DialogAnimationNewTheme" parent="@style/Theme.AppCompat.Dialog">
-        <!--<item name="android:windowEnterAnimation">@anim/slide_up_dialog</item>-->
-        <!--<item name="android:windowExitAnimation">@anim/slide_down_dialog</item>-->
+        <item name="android:windowEnterAnimation">@anim/slide_up_dialog</item>
+        <!--<item name="android:windowExitAnimation">@anim/out_to_left</item>
         <item name="android:activityOpenEnterAnimation">@anim/slide_up_dialog</item>
-        <!--<item name="android:activityOpenExitAnimation">@anim/slide_down_dialog</item>-->
+        <item name="android:activityOpenExitAnimation">@anim/out_to_left</item>
         <item name="android:activityCloseEnterAnimation">@anim/slide_up_dialog</item>
-        <!--<item name="android:activityCloseExitAnimation">@anim/slide_down_dialog</item>-->
+        <item name="android:activityCloseExitAnimation">@anim/out_to_left</item>-->
     </style>
+
     <style name="AppDialog" parent="@style/Theme.AppCompat.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowIsTranslucent">true</item>
-
         <item name="android:windowActionBar">false</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:windowAnimationStyle">@style/DialogAnimationNewTheme</item>
         <item name="android:windowBackground">@null</item>
-
     </style>
 
 </resources>

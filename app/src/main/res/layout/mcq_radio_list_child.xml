@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/field_padding"
-            android:paddingLeft="10dp"
+            android:paddingLeft="8dp"
             android:paddingTop="4dp"
             android:buttonTint="@color/ratings_focused"
             android:gravity="top"

@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-
-    >
-
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="50dp"
-        android:layout_height="5dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/rounded_rectangle_small" />
+    android:id="@+id/base_popup_layout"
+    android:layout_height="wrap_content">
 
     <RelativeLayout
+        android:id="@+id/slider_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/page_margin"
+        android:padding="5dp">
+
+        <View
+            android:id="@+id/slider"
+            android:layout_width="50dp"
+            android:layout_height="5dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_rectangle_small" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/view_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/slider_layout"
         android:layout_marginTop="12dp"
-        android:layout_below="@id/divider"
         android:background="@drawable/top_rounded_rectangle"
-        >
-
-
-
+        android:padding="@dimen/page_margin">
 
 
         <RelativeLayout
+            android:id="@+id/inner_child_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
 
             <!--<com.oneflow.tryskysdk.customwidgets.CustomViewPager
@@ -39,19 +41,32 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/white" />-->
             <FrameLayout
+                android:id="@+id/fragment_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/fragment_view"
 
                 />
 
 
         </RelativeLayout>
+
         <ImageView
             android:id="@+id/close_btn_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@drawable/ic_baseline_close_24"/>
+            android:src="@drawable/ic_baseline_close_24" />
+
     </RelativeLayout>
+    <ProgressBar
+        android:id="@+id/pbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="false"
+        android:layout_marginBottom="-6dp"
+        android:background="@color/plainwhite"
+        android:layout_below="@id/view_layout"
+        android:progress="100"
+        android:scaleY="1.2" />
 </RelativeLayout>

@@ -81,12 +81,12 @@ public class SurveyQueThankyouFragment extends Fragment {
         ButterKnife.bind(this, view);
         Helper.v(tag, "OneAxis list data[" + surveyScreens + "]");
 
-        surveyTitle.setText(surveyScreens.getTitle());
-        if(surveyScreens.getMessage()!=null) {
+        //surveyTitle.setText(surveyScreens.getTitle());
+        /*if(surveyScreens.getMessage()!=null) {
             surveyDescription.setText(surveyScreens.getMessage());
         }else{
             surveyDescription.setVisibility(View.GONE);
-        }
+        }*/
 
         sa.position = sa.screens.size();
 

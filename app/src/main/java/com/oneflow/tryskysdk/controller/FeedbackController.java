@@ -31,6 +31,7 @@ import com.oneflow.tryskysdk.utils.Helper;
 import com.oneflow.tryskysdk.utils.MyResponseHandler;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class FeedbackController implements MyResponseHandler {
@@ -48,6 +49,30 @@ public class FeedbackController implements MyResponseHandler {
     public static void configure(Context mContext, String projectKey) {
         new OneFlowSHP(mContext).storeValue(Constants.APPIDSHP, projectKey);
         Helper.headerKey = projectKey;
+
+        //Fetching current app version
+        String currentVersion = Helper.getAppVersion(mContext);
+        HashMap<String,String> mapValue = new HashMap<>();
+        mapValue.put("app_version",currentVersion);
+        recordEvents(mContext,Constants.AUTOEVENT_FIRSTOPEN,mapValue,0);
+
+
+        // cheching for update, if version number has changed
+        String oldVersion = new OneFlowSHP(mContext).getStringValue(Constants.SDKVERSIONSHP);
+
+        Helper.v("FeedbackController","OneFlow current version ["+currentVersion+"]old version ["+oldVersion+"]");
+
+
+        if(oldVersion.equalsIgnoreCase("NA")) {
+            new OneFlowSHP(mContext).storeValue(Constants.SDKVERSIONSHP, currentVersion);
+        }else{
+            if(!oldVersion.equalsIgnoreCase(currentVersion)){
+                HashMap<String,String> mapUpdateValue = new HashMap<>();
+                mapUpdateValue.put("app_version_current",currentVersion);
+                mapUpdateValue.put("app_version_previous",oldVersion);
+                recordEvents(mContext,Constants.AUTOEVENT_APPUPDATE,mapUpdateValue,0);
+            }
+        }
 
         FeedbackController fc = new FeedbackController(mContext);
         SurveyController sc = SurveyController.getInstance(mContext);
@@ -90,15 +115,20 @@ public class FeedbackController implements MyResponseHandler {
     public static void recordEvents(Context mContext, String eventName, HashMap eventValues,int value) {
 
 
+        Helper.v("FeedbackController","OneFlow Event record called with["+eventName+"]");
+
+
         // storage, api call and check survey if available.
         EventController.getInstance(mContext).storeEventsInDB(eventName, eventValues,value);
 
         //Checking if any survey available under coming event.
         GetSurveyListResponse surveyItem = new FeedbackController(mContext).checkSurveyTitleAndScreens(eventName);
+        Helper.v("FeedbackController","OneFlow surveyItem["+surveyItem+"]");
         if (surveyItem != null) {
-            //
-            boolean submitted = new OneFlowSHP(mContext).getBooleanValue(surveyItem.get_id());
-            if (!submitted) {
+
+           /* Long submitTime = new OneFlowSHP(mContext).getLongValue(surveyItem.get_id());
+            Helper.v("FeedbackController","OneFlow surveyItem submitted["+submitTime+"]");
+            if (submitTime>0) {*/
                 if (surveyItem.getScreens() != null) {
                     if (surveyItem.getScreens().size() > 0) {
                         Intent intent = new Intent(mContext, SurveyActivity.class);
@@ -108,9 +138,55 @@ public class FeedbackController implements MyResponseHandler {
                 } else {
                     Helper.makeText(mContext, "Click on Configure Project", 1);
                 }
-            }else{
+            /*}else{
                 Helper.makeText(mContext, "Already submitted", 1);
+            }*/
+        }
+
+    }
+
+    /**
+     * This method will check all aspects of re-survey
+     * @return
+     */
+    private GetSurveyListResponse shouldReturnSurvey(GetSurveyListResponse gslr){
+
+        Long submitTime = new OneFlowSHP(mContext).getLongValue(gslr.get_id());
+        if(submitTime>0){
+            if(gslr.getSurveySettings().getResurvey_option()){
+                    Long totalInterval = 0l;
+                Long diff = Calendar.getInstance().getTimeInMillis()-submitTime;
+                int diffDuration = 0;
+                switch (gslr.getSurveySettings().getRetake_survey().getRetake_select_value()) {
+                    case "minutes":
+                        totalInterval = gslr.getSurveySettings().getRetake_survey().getRetake_input_value() * 60;
+                        diffDuration = (int)(diff/1000)/60;
+                        break;
+                    case "hours":
+                        totalInterval = gslr.getSurveySettings().getRetake_survey().getRetake_input_value() * 60 * 60;
+                        diffDuration = (int)((diff/1000)/60)/60;
+                        break;
+                    case "days":
+                        totalInterval = gslr.getSurveySettings().getRetake_survey().getRetake_input_value() * 60 * 60 * 24;
+                        diffDuration = (int)(((diff/1000)/60)/60)/60;
+                        break;
+                    default:
+                        Helper.v("FeedbackController","OneFlow retake_select_value is neither of minutes, hours or days");
+                }
+
+                if(diffDuration>totalInterval){
+                    return gslr;
+                }else{
+                    return null;
+                }
+
             }
+            else{
+                Helper.v("FeedbackController","OneFlow ResurveyOption[false]");
+                return null;
+            }
+        }else{
+            return gslr;
         }
 
     }
@@ -125,20 +201,21 @@ public class FeedbackController implements MyResponseHandler {
         ArrayList<GetSurveyListResponse> slr = new OneFlowSHP(mContext).getSurveyList();
         GetSurveyListResponse gslr = null;
         //ArrayList<SurveyScreens> surveyScreens = null;
+
         int counter = 0;
         String tag = this.getClass().getName();
-        if(slr!=null) {
-            Helper.v(tag, "OneFlow list size[" + slr.size() + "]type[" + type + "]");
-            for (GetSurveyListResponse item : slr) {
-                Helper.v(tag, "OneFlow list size 0 [" + item.getTrigger_event_name() + "]type[" + type + "]");
-                if (item.getTrigger_event_name().equalsIgnoreCase(type)) {
 
-                    gslr = item;
+            if (slr != null) {
+                Helper.v(tag, "OneFlow list size[" + slr.size() + "]type[" + type + "]");
+                for (GetSurveyListResponse item : slr) {
+                    Helper.v(tag, "OneFlow list size 0 [" + item.getTrigger_event_name() + "]type[" + type + "]");
+                    if (item.getTrigger_event_name().equalsIgnoreCase(type)) {
+                        gslr = item;
                 /*surveyScreens = item.getScreens();
                 selectedSurveyId = item.get_id();
                 themeColor = item.getThemeColor();*/
-                    // Helper.v(tag,"OneFlow survey found at ["+(counter++)+"]triggerName["+item.getTrigger_event_name()+"]queSize["+item.getScreens().size()+"]");
-                    // Helper.v(tag,"OneFlow survey queSize["+new Gson().toJson(item.getScreens())+"]");
+                        // Helper.v(tag,"OneFlow survey found at ["+(counter++)+"]triggerName["+item.getTrigger_event_name()+"]queSize["+item.getScreens().size()+"]");
+                        // Helper.v(tag,"OneFlow survey queSize["+new Gson().toJson(item.getScreens())+"]");
                 /*int i=0;
                 while(i<item.getScreens().size()) {
                     try {
@@ -152,12 +229,19 @@ public class FeedbackController implements MyResponseHandler {
                     }
                 i++;
                 }*/
-                    break;
+                        break;
+                    }
                 }
+            } else {
+                Helper.makeText(mContext, "Configure project first", 1);
             }
-        }else{
-            Helper.makeText(mContext,"Configure project first",1);
+
+
+            //Resurvey login
+        if(gslr !=null) {
+            gslr = shouldReturnSurvey(gslr);
         }
+
         return gslr;
     }
 
@@ -275,6 +359,9 @@ public class FeedbackController implements MyResponseHandler {
                 csr.setLibrary_version(String.valueOf(1));
                 csr.setApi_endpoint("session");
                 csr.setApi_version("2021-06-15");
+
+                
+                recordEvents(mContext,Constants.AUTOEVENT_SESSIONSTART,null,0);
 
                 createSession(csr);
                 break;

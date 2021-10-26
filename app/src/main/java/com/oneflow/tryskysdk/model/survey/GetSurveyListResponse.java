@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class GetSurveyListResponse extends BaseModel {
+    @SerializedName("_id")
+    private String _id;
     @SerializedName("name")
     private String name;
     @SerializedName("description")
@@ -25,12 +27,12 @@ public class GetSurveyListResponse extends BaseModel {
     private String deleted_on;
     @SerializedName("schema_version")
     private Integer schema_version;
-    @SerializedName("_id")
-    private String _id;
     @SerializedName("project_id")
     private String project_id;
     @SerializedName("style")
     private SurveyStyle style;
+    @SerializedName("survey_settings")
+    private SurveySettings surveySettings;
     @SerializedName("screens")
     private ArrayList<SurveyScreens> screens;
     @SerializedName("trigger_event_name")
@@ -45,6 +47,15 @@ public class GetSurveyListResponse extends BaseModel {
     private Long updated_on;
     @SerializedName("__v")
     private Integer __v;
+
+
+    public SurveySettings getSurveySettings() {
+        return surveySettings;
+    }
+
+    public void setSurveySettings(SurveySettings surveySettings) {
+        this.surveySettings = surveySettings;
+    }
 
     public String getThemeColor() {
         if(themeColor.startsWith("#")){

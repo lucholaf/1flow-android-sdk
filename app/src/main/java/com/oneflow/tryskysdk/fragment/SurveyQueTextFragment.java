@@ -45,8 +45,8 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
     CustomTextView surveyDescription;
     @BindView(R.id.submit_btn)
     CustomTextViewBold submitButton;
-    @BindView(R.id.cancel_btn)
-    CustomTextViewBold cancelButton;
+   /* @BindView(R.id.cancel_btn)
+    CustomTextViewBold cancelButton;*/
 
 
     String tag = this.getClass().getName();
@@ -105,7 +105,7 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
             Helper.makeText(getActivity(), "Visibility Gone", 1);
         }
     }
-
+    Animation animationIn;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -114,7 +114,7 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
         ButterKnife.bind(this, view);
 
         Helper.v(tag, "OneAxis list data[" + surveyScreens + "]");
-
+        animationIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
         surveyTitle.setText(surveyScreens.getTitle());
         if (surveyScreens.getMessage() != null) {
             surveyDescription.setText(surveyScreens.getMessage());
@@ -137,24 +137,27 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
 
 
                 if (userInput.getText().toString().length() >= surveyScreens.getInput().getMin_chars()) {
-                    if (surveyScreens.getButtons().size() == 1) {
+                   // if (surveyScreens.getButtons().size() == 1) {
+                    if(submitButton.getVisibility() != View.VISIBLE) {
                         submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
                         submitButton.setVisibility(View.VISIBLE);
-
-                    } else if (surveyScreens.getButtons().size() == 2) {
-                        submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
-                        submitButton.setVisibility(View.VISIBLE);
-                        cancelButton.setText(surveyScreens.getButtons().get(1).getTitle());
-                        cancelButton.setVisibility(View.VISIBLE);
-
+                        submitButton.startAnimation(animationIn);
                     }
+                   /* } else if (surveyScreens.getButtons().size() == 2) {
+                        submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
+                        submitButton.setVisibility(View.VISIBLE);
+                        submitButton.startAnimation(animationIn);
+                        *//*cancelButton.setText(surveyScreens.getButtons().get(1).getTitle());
+                        cancelButton.setVisibility(View.VISIBLE);*//*
+
+                    }*/
                 }else{
                     if (surveyScreens.getButtons().size() == 1) {
-                        submitButton.setVisibility(View.GONE);
+                        submitButton.setVisibility(View.INVISIBLE);
 
                     } else if (surveyScreens.getButtons().size() == 2) {
-                        submitButton.setVisibility(View.GONE);
-                        cancelButton.setVisibility(View.GONE);
+                        submitButton.setVisibility(View.INVISIBLE);
+                        //cancelButton.setVisibility(View.GONE);
                     }
                 }
                 if (userInput.getText().toString().length() > surveyScreens.getInput().getMax_chars()) {
@@ -174,7 +177,7 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
 
 
         submitButton.setOnClickListener(this);
-        cancelButton.setOnClickListener(this);
+        //cancelButton.setOnClickListener(this);
 
 
         return view;

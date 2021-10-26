@@ -21,6 +21,7 @@ import com.oneflow.tryskysdk.utils.Constants;
 import com.oneflow.tryskysdk.utils.Helper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -114,7 +115,7 @@ public class Survey {
                     if (response.isSuccessful()) {
                         Helper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
                         Helper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
-                        new OneFlowSHP(context).storeValue(sur.getSurvey_id(),true);
+                        new OneFlowSHP(context).storeValue(sur.getSurvey_id(), Calendar.getInstance().getTimeInMillis());
                         /*AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {

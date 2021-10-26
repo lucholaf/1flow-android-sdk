@@ -66,8 +66,8 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
 
     @BindView(R.id.submit_btn)
     CustomTextViewBold submitButton;
-    @BindView(R.id.cancel_btn)
-    CustomTextViewBold cancelButton;
+    /*@BindView(R.id.cancel_btn)
+    CustomTextViewBold cancelButton;*/
     @BindView(R.id.option_layout)
     RelativeLayout optionLayout;
 
@@ -75,7 +75,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
     String tag = this.getClass().getName();
     SurveyScreens surveyScreens;
     SurveyOptionsAdapter dashboardAdapter;
-    Animation animation1, animation2, animation3, animation4;
+    Animation animation1, animation2, animation3, animation4, animationIn;//animationOut;
 
     public static SurveyQueFragment newInstance(SurveyScreens ahdList) {
         SurveyQueFragment myFragment = new SurveyQueFragment();
@@ -225,6 +225,8 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
         animation2 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
         animation3 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
         animation4 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+        animationIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+        //animationOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
 
         surveyTitle.setText(surveyScreens.getTitle());
 
@@ -404,7 +406,10 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
             i++;
         }
         if (isSingle) {
-            if(surveyScreens.getInput().getInput_type().equalsIgnoreCase("nps") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical")){
+            if(surveyScreens.getInput().getInput_type().equalsIgnoreCase("nps") ||
+                    surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical") ||
+                    surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")
+            ){
             for(RatingsModel rm: surveyScreens.getInput().getRatingsList()){
                 if(rm.getId()==position){
                     rm.setSelected(true);
@@ -412,7 +417,6 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
             }}else {
                 surveyScreens.getInput().getRatingsList().get(position).setSelected(true);
             }
-
         }
         dashboardAdapter.notifyMyList(surveyScreens.getInput());
         if (submitButton.getVisibility() != View.VISIBLE) {
@@ -442,22 +446,32 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
         if (checkBoxSelection.size() > 0) {
             if (surveyScreens.getButtons() != null) {
                 if (surveyScreens.getButtons().size() == 1) {
-                    submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
-                    submitButton.setVisibility(View.VISIBLE);
-                    submitButton.setOnClickListener(this);
+                    if(submitButton.getVisibility() != View.VISIBLE) {
+                        submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
+                        submitButton.setVisibility(View.VISIBLE);
+                        submitButton.startAnimation(animationIn);
+                        submitButton.setOnClickListener(this);
+                    }
                 } else if (surveyScreens.getButtons().size() == 2) {
-                    submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
-                    submitButton.setVisibility(View.VISIBLE);
-                    submitButton.setOnClickListener(this);
-                    cancelButton.setText(surveyScreens.getButtons().get(1).getTitle());
+                    if(submitButton.getVisibility() != View.VISIBLE) {
+                        submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
+                        submitButton.setVisibility(View.VISIBLE);
+                        submitButton.startAnimation(animationIn);
+                        submitButton.setOnClickListener(this);
+                    }
+                    /*cancelButton.setText(surveyScreens.getButtons().get(1).getTitle());
                     cancelButton.setVisibility(View.VISIBLE);
-                    cancelButton.setOnClickListener(this);
+                    cancelButton.setOnClickListener(this);*/
                 }
             }
         } else {
             //In case of selection reverted
+
             submitButton.setVisibility(View.INVISIBLE);
-            cancelButton.setVisibility(View.INVISIBLE);
+            //submitButton.startAnimation(animationOut);
+
+           /* cancelButton.setVisibility(View.INVISIBLE);
+            cancelButton.startAnimation(animationOut);*/
         }
 
 

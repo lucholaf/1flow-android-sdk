@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingTop="40dp"
+    android:paddingBottom="40dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,21 +22,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/thankyou_img"
-            android:layout_margin="@dimen/field_padding"
             android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/field_padding"
+            android:text="Thank you for your input!"
             android:textColor="@color/txtblack"
-            android:textSize="@dimen/page_header_size" />
+            android:textSize="@dimen/page_sub_header_1" />
 
-        <com.oneflow.tryskysdk.customwidgets.CustomTextView
-            android:id="@+id/survey_description"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/survey_title"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="@dimen/field_padding"
-            android:textColor="@color/txtgray"
-            android:textSize="@dimen/page_sub_header_2" />
+            android:layout_centerHorizontal="true">
 
+            <com.oneflow.tryskysdk.customwidgets.CustomTextView
+                android:id="@+id/survey_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
+                android:layout_marginTop="@dimen/field_padding"
+                android:text="Real-time feedback powered by "
+                android:textColor="@color/txtgray"
+                android:textSize="@dimen/page_sub_header_4" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/survey_description"
+                android:src="@drawable/watermark" />
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>
