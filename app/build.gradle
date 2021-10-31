@@ -8,7 +8,7 @@ plugins {
 
 /*apply plugins:'com.android.library'
 apply plugins:'com.github.dcendent.android-maven'*/
-group = 'com.github.1Flow-Inc'
+//group = 'com.github.1Flow-Inc'
 
 
 android {
