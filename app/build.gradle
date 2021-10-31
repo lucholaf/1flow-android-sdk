@@ -1,6 +1,9 @@
-plugins {
-    id 'com.android.application'
-}
+//apply plugins:'com.android.application'
+apply plugins:'com.android.library'
+apply plugins:'com.github.dcendent.android-maven'
+group = "com.github.1flow-android-sdk"
+
+
 
 android {
     compileSdkVersion 30

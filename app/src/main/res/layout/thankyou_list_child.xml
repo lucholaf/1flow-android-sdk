@@ -5,7 +5,7 @@
 
     >
 
-    <com.oneflow.tryskysdk.customwidgets.CustomTextView
+    <com.circo.oneflow.customwidgets.CustomTextView
         android:id="@+id/child_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     >
 
-    <com.oneflow.tryskysdk.customwidgets.CustomEditText
+    <com.circo.oneflow.customwidgets.CustomEditText
         android:id="@+id/child_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

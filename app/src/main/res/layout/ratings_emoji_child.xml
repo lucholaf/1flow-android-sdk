@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.oneflow.tryskysdk.customwidgets.DynamicSquareLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.circo.oneflow.customwidgets.DynamicSquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/gray_rectangle"
-    android:padding="@dimen/field_padding"
-    >
+    android:padding="@dimen/field_padding">
 
-    <ImageView
-        android:id="@+id/ratings_list_child_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/smiley3"
-        android:background="@drawable/textview_selector"
-        android:padding="20dp"
-        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
 
+        <ImageView
+            android:id="@+id/ratings_list_child_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-</com.oneflow.tryskysdk.customwidgets.DynamicSquareLayout>
+            android:background="@drawable/textview_selector"
+            android:padding="20dp"
+            android:src="@drawable/smiley3" />
+
+    </RelativeLayout>
+</com.circo.oneflow.customwidgets.DynamicSquareLayout>
