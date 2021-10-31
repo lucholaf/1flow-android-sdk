@@ -1,10 +1,10 @@
-/*apply plugin:'com.android.library'
-apply plugin:'com.github.dcendents.android-maven'*/
-
+apply plugin:'com.android.library'
+/*apply plugin:'com.github.dcendents.android-maven'*/
+/*
 plugins {
     id 'com.android.library'
     //id 'maven-publish'
-}
+}*/
 
 /*apply plugins:'com.android.library'
 apply plugins:'com.github.dcendent.android-maven'*/
