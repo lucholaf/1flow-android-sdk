@@ -15,7 +15,7 @@
         android:layout_marginTop="20dp"
         android:layout_weight="1"
         />
-    <com.circo.oneflow.customwidgets.CustomTextView
+    <TextView
         android:id="@+id/configure_project"
         style="@style/comman_positive_button_style"
         android:layout_width="match_parent"

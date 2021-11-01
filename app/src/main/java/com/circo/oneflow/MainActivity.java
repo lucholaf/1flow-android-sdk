@@ -33,7 +33,6 @@ public class MainActivity extends SDKBaseActivity implements MyResponseHandler {
     String tag = this.getClass().getName();
     CustomTextView result, sendLogsToAPI;
 
-    @BindView(R.id.list_of_survey)
     RecyclerView listOfSurvey;
 
     ArrayList<GetSurveyListResponse> slr;
@@ -45,6 +44,8 @@ public class MainActivity extends SDKBaseActivity implements MyResponseHandler {
         setContentView(R.layout.activity_main);
         result = (CustomTextView) findViewById(R.id.result);
         sendLogsToAPI = (CustomTextView) findViewById(R.id.send_log_to_api);
+        listOfSurvey = (RecyclerView) findViewById(R.id.list_of_survey);
+
         ButterKnife.bind(this);
 
 
@@ -104,45 +105,41 @@ public class MainActivity extends SDKBaseActivity implements MyResponseHandler {
 
     public void clickHandler(View v) {
 
-        switch (v.getId()) {
-
-            case R.id.get_location:
-                Helper.makeText(MainActivity.this, "Clicked on button 3", 1);
-                //new FeedbackController(this).getLocation();
-                break;
-            case R.id.fetch_survey_list:
+        if(v.getId()==R.id.get_location) {
+            Helper.makeText(MainActivity.this, "Clicked on button 3", 1);
+            //new FeedbackController(this).getLocation();
+        }
+        else if(v.getId()==R.id.fetch_survey_list){
                 Helper.makeText(MainActivity.this, "Clicked on button 4", 1);
                 //FeedbackController.getSurvey(this);
-                break;
-            case R.id.project_details:
+        }
+        else if(v.getId()==R.id.project_details){
                 Helper.makeText(MainActivity.this, "Clicked on button 0", 1);
                 //new FeedbackController(this).getProjectDetails();
-                break;
-            case R.id.send_log_to_api:
-                Helper.makeText(MainActivity.this, "Clicked on button 0", 1);
-                OneFlow.sendEventsToApi(this);
-
-                break;
-            case R.id.record_log:
+        }
+        else if(v.getId()==R.id.send_log_to_api) {
+            Helper.makeText(MainActivity.this, "Clicked on button 0", 1);
+            OneFlow.sendEventsToApi(this);
+        }
+        else if(v.getId()==R.id.record_log){
                 Helper.makeText(MainActivity.this, "Clicked on button 5", 1);
                 HashMap<String, String> mapvalues = new HashMap<String, String>();
                 mapvalues.put("testKey1", "testValue1");
                 mapvalues.put("testKey2", "testValue2");
                 mapvalues.put("testKey3", "testValue3");
                 OneFlow.recordEvents(this, "empty18", mapvalues, 50);
-                break;
-
-            case R.id.configure_project:
+        }
+        else if(v.getId()==R.id.configure_project){
                 Helper.makeText(MainActivity.this, "Clicked on button conf", 1);
                 OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");
-                break;
-            case R.id.log_user:
+        }
+        else if(v.getId()==R.id.log_user){
                 HashMap<String,String> mapValue = new HashMap<>();
                 mapValue.put("firstName","RamLal");
                 mapValue.put("lastName","Goswami");
                 mapValue.put("number","1234");
                 OneFlow.logUser("ThisIsUniqueIdForUser",mapValue);
-                break;
+
         }
     }
 

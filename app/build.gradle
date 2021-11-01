@@ -1,10 +1,10 @@
-apply plugin:'com.android.library'
+//apply plugin:'com.android.application'
 /*apply plugin:'com.github.dcendents.android-maven'*/
-/*
 plugins {
     id 'com.android.library'
+    //id 'com.android.application'
     //id 'maven-publish'
-}*/
+}
 
 /*apply plugins:'com.android.library'
 apply plugins:'com.github.dcendent.android-maven'*/
@@ -16,7 +16,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        //applicationId "com.circo.oneflow"
+       // applicationId "com.circo.oneflow"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -47,6 +47,7 @@ def room_version = "2.3.0"
 def butterKnife = "10.2.0"
 
 dependencies {
+
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
@@ -94,6 +95,5 @@ dependencies {
 
     // optional - Paging 3 Integration
     implementation "androidx.room:room-paging:2.4.0-alpha04"
-
 
 }

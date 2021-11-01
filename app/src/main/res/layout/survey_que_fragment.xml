@@ -6,7 +6,7 @@
     >
 
     <com.circo.oneflow.customwidgets.CustomTextViewBold
-        android:id="@+id/survey_title"
+        android:id="@+id/survey_title_que"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/field_padding"
@@ -18,10 +18,10 @@
         android:textSize="@dimen/page_header_size" />
 
     <com.circo.oneflow.customwidgets.CustomTextView
-        android:id="@+id/survey_description"
+        android:id="@+id/survey_description_que"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/survey_title"
+        android:layout_below="@id/survey_title_que"
         android:layout_marginLeft="@dimen/field_padding"
         android:layout_marginRight="@dimen/field_padding"
         android:layout_marginBottom="10dp"
@@ -34,7 +34,7 @@
         android:id="@+id/option_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/survey_description"
+        android:layout_below="@id/survey_description_que"
         android:layout_margin="@dimen/field_padding"
         android:visibility="invisible"
         android:gravity="center_horizontal">

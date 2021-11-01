@@ -25,8 +25,6 @@
             </intent-filter>
         </activity>
         <activity android:name="com.circo.oneflow.SurveyActivity" android:theme="@style/AppDialog" ></activity>
-        <activity android:name="com.circo.oneflow.SurveyList"></activity>
-
         <!--<receiver
             android:name=".utils.NetworkChangeReceiver"
             android:label="NetworkChangeReceiver" >
