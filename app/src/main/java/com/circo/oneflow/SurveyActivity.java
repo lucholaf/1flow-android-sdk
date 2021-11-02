@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-//https://stackoverflow.com/questions/27246981/android-floating-activity-with-dismiss-on-swipe
+
 public class SurveyActivity extends AppCompatActivity {
 
    /* @BindView(R.id.survey_viewpager)
@@ -385,9 +385,26 @@ public class SurveyActivity extends AppCompatActivity {
     }
     private void setProgressBarPosition(){
 
-        int progressValue = ((Integer)100/screens.size())*(position+1);
-        Helper.v(tag,"OneAxis progressValue["+progressValue+"]position["+position+"]");
-        pagePositionPBar.setProgress(progressValue);
+        int progressValueTo = ((Integer)100/screens.size())*(position+1);
+        int progressValueFrom = ((Integer)100/screens.size())*(position);
+        Helper.v(tag,"OneAxis progressValue["+progressValueTo+"]position["+position+"]");
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for(int i=progressValueFrom;i<progressValueTo;i++){
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    pagePositionPBar.setProgress(i);
+                }
+            }
+        });
+
+
+       // pagePositionPBar.setProgress(progressValue);
 
     }
     private void loadFragments(SurveyScreens screen) {
