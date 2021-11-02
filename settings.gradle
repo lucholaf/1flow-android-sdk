@@ -1,0 +1,3 @@
+include ':OneFlow'
+include ':app'
+rootProject.name = "TrySkySDK"
