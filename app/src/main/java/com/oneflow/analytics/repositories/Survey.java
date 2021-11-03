@@ -36,41 +36,16 @@ public class Survey {
                 @Override
                 public void onResponse(Call<GenericResponse<ArrayList<GetSurveyListResponse>>> call, Response<GenericResponse<ArrayList<GetSurveyListResponse>>> response) {
 
-
-                    Helper.v(tag, "OneFlow survey reached success[" + response.isSuccessful() + "]");
-                    Helper.v(tag, "OneFlow survey reached success raw[" + response.raw() + "]");
-                    Helper.v(tag, "OneFlow survey reached success errorBody[" + response.errorBody() + "]");
-                    Helper.v(tag, "OneFlow survey reached success message[" + response.message() + "]");
-
-
                     if (response.isSuccessful()) {
-                        Helper.v(tag, "OneFlow survey response[" + response.body().toString() + "]");
-                        Helper.v(tag, "OneFlow survey response[" + response.body().getSuccess() + "]");
-                        Helper.v(tag, "OneFlow survey response message[" + response.body().getMessage() + "]");
-                        Helper.v(tag, "OneFlow survey response size[" + response.body().getResult().size() + "]");
-                        Helper.v(tag, "OneFlow survey response trigger name[" + response.body().getResult().get(0).getTrigger_event_name() + "]");
-                        Helper.v(tag, "OneFlow survey response event name[" + response.body().getResult().get(0).getName() + "]");
 
-                        int counter = 0;
-                        for (GetSurveyListResponse gsl : response.body().getResult()) {
-                            if (gsl.getTrigger_event_name() == null || gsl.getTrigger_event_name().equalsIgnoreCase("")) {
-                                gsl.setTrigger_event_name("empty" + counter++);
-                            }
-                        }
 
-                        Helper.v(tag,"OneFlow counter reached at["+counter+"]");
+
+                        //Helper.v(tag,"OneFlow counter reached at["+counter+"]");
                         new OneFlowSHP(context).setSurveyList(response.body().getResult());
-                        //Intent intent = new Intent(context, SurveyList.class);
-                        //intent.putExtra("SurveyType", "tap_skip_subs");//"move_file_in_folder");//""empty0");//
-                        //context.startActivity(intent);
+
                         Intent intent = new Intent("survey_list_fetched");
                         context.sendBroadcast(intent);
 
-                    } else {
-                        //mrh.onResponseReceived(response.body(), type);
-                        Helper.v(tag, "OneFlow response 0[" + response.body() + "]");
-                        Helper.v(tag, "OneFlow response 1[" + response.body().getMessage() + "]");
-                        Helper.v(tag, "OneFlow response 2[" + response.body().getSuccess() + "]");
                     }
 
                 }
