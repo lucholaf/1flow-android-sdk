@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.circo.oneflow.customwidgets.DynamicSquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.oneflow.analytics.customwidgets.DynamicSquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/gray_rectangle"
@@ -20,4 +20,4 @@
             android:src="@drawable/smiley3" />
 
     </RelativeLayout>
-</com.circo.oneflow.customwidgets.DynamicSquareLayout>
+</com.oneflow.analytics.customwidgets.DynamicSquareLayout>

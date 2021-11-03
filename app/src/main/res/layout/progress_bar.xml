@@ -10,13 +10,13 @@
         android:layout_centerInParent="true"
         android:layout_margin="10dp">
 
-        <com.circo.oneflow.customwidgets.CustomProgressBar
+        <com.oneflow.analytics.customwidgets.CustomProgressBar
             android:id="@+id/pbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true" />
 
-        <com.circo.oneflow.customwidgets.CustomTextView
+        <com.oneflow.analytics.customwidgets.CustomTextView
             android:id="@+id/loading_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

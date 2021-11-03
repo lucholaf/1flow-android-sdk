@@ -5,7 +5,7 @@
 
     >
 
-    <com.circo.oneflow.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.CustomTextView
         android:id="@+id/child_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

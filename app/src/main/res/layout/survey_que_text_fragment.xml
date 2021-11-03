@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.circo.oneflow.customwidgets.CustomTextViewBold
+    <com.oneflow.analytics.customwidgets.CustomTextViewBold
         android:id="@+id/survey_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,7 +14,7 @@
         android:textColor="@color/txtblack"
         android:textSize="@dimen/page_header_size" />
 
-    <com.circo.oneflow.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.CustomTextView
         android:id="@+id/survey_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
         android:minHeight="100dp"
         android:layout_height="wrap_content">
 
-        <com.circo.oneflow.customwidgets.CustomEditText
+        <com.oneflow.analytics.customwidgets.CustomEditText
             android:id="@+id/child_user_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             android:isScrollContainer="false"
             android:textColor="@color/txtblack"
             />
-        <com.circo.oneflow.customwidgets.CustomTextView
+        <com.oneflow.analytics.customwidgets.CustomTextView
             android:id="@+id/text_limit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
