@@ -23,9 +23,9 @@ public class MyReceiver extends BroadcastReceiver {
     }
 
     private void sendEventsToAPI(){
-        Helper.makeText(context,"sending event called from BR",0);
+        //Helper.makeText(context,"sending event called from BR",0);
     }
     private void sendServeyToAPI(){
-        Helper.makeText(context,"sending survey called from BR",0);
+        //Helper.makeText(context,"sending survey called from BR",0);
     }
 }

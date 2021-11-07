@@ -45,10 +45,6 @@ import butterknife.ButterKnife;
 
 public class SurveyActivity extends AppCompatActivity {
 
-   /* @BindView(R.id.survey_viewpager)
-   public CustomViewPager surveyQueViewPager;*/
-
-
     ProgressBar pagePositionPBar;
     ImageView closeBtn;
     View slider;
@@ -90,6 +86,8 @@ public class SurveyActivity extends AppCompatActivity {
         GetSurveyListResponse surveyItem = (GetSurveyListResponse) this.getIntent().getSerializableExtra("SurveyType");
 
         screens = surveyItem.getScreens();//checkSurveyTitleAndScreens(surveyType);
+
+
         selectedSurveyId = surveyItem.get_id();
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,21 +102,24 @@ public class SurveyActivity extends AppCompatActivity {
         pagePositionPBar.setIndeterminateTintList(ColorStateList.valueOf(getResources().getColor(R.color.whitetxt)));*/
         Helper.v(tag,"OneFlow color["+surveyItem.getStyle().getPrimary_color()+"]");
 
-        String styleColor = "#"+Integer.toHexString(ContextCompat.getColor(this,R.color.colorPrimaryDark));
-        Helper.v(tag,"OneFlow color 1["+styleColor+"]");
+
+
+        themeColor = "#"+Integer.toHexString(ContextCompat.getColor(this,R.color.colorPrimaryDark));
+        Helper.v(tag,"OneFlow color 1["+themeColor+"]");
         try {
 
             if(!surveyItem.getStyle().getPrimary_color().startsWith("#")){
-                styleColor="#"+surveyItem.getStyle().getPrimary_color();
+                themeColor="#"+surveyItem.getStyle().getPrimary_color();
             }else{
-                styleColor= surveyItem.getStyle().getPrimary_color();
+                themeColor= surveyItem.getStyle().getPrimary_color();
             }
         }catch(Exception ex){
             //styleColor=""+getResources().getColor(R.color.colorPrimaryDark);
         }
         //styleColor=String.valueOf(getResources().getColor(R.color.colorPrimaryDark));
-        Helper.v(tag,"OneFlow color after["+styleColor+"]");
-        pagePositionPBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(styleColor)));
+        Helper.v(tag,"OneFlow color after["+themeColor+"]");
+
+        pagePositionPBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(themeColor)));
         //pagePositionPBar.getProgressDrawable().setColorFilter(Color.parseColor(styleColor.toString()), PorterDuff.Mode.DARKEN);
 
         surveyResponseChildren = new ArrayList<>();
@@ -390,9 +391,12 @@ public class SurveyActivity extends AppCompatActivity {
     }
     private void setProgressBarPosition(){
 
-        int progressValueTo = ((Integer)100/screens.size())*(position+1);
-        int progressValueFrom = ((Integer)100/screens.size())*(position);
-        Helper.v(tag,"OneFlow progressValue from["+progressValueFrom+"]to["+progressValueTo+"]position["+position+"]");
+        int v = (int)(Math.ceil(100/screens.size()))*(position+1);
+
+        Integer temp = (int)(Math.ceil(100f/screens.size()))*(position+1);//((Integer)(Math.ceil(100/screens.size()))*(position+1);
+        final Integer progressValueTo = temp>105?105:temp;//((Integer)(Math.ceil(100/screens.size()))*(position+1);
+        int progressValueFrom = (int)(Math.ceil(100f/screens.size()))*(position);
+        Helper.v(tag,"OneFlow progressValue before ["+Math.ceil(100f/screens.size())+"] ceil["+(100f/screens.size())+"]from["+progressValueFrom+"]to["+progressValueTo+"]screenSize["+screens.size()+"]position["+position+"]");
 
         new Thread(new Runnable() {
             @Override
@@ -400,6 +404,7 @@ public class SurveyActivity extends AppCompatActivity {
 
                 int sleepDuration = (int)500/(progressValueTo-progressValueFrom);
                 Helper.v(tag,"OneFlow sleepDuration["+sleepDuration+"]");
+
                 for(int i=progressValueFrom;i<progressValueTo;i++){
                     try {
                         Thread.sleep(sleepDuration);

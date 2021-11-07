@@ -72,10 +72,11 @@ public class Helper {
 
     /**
      * This method will return current app version
+     *
      * @param context
      * @return
      */
-    public static String getAppVersion(Context context){
+    public static String getAppVersion(Context context) {
         String version = "";
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
@@ -96,7 +97,6 @@ public class Helper {
     }
 
 
-
     public static <T> ArrayList<T> fromJsonToArrayList(String rawData, Class<T> model) {
         Gson gson = new GsonBuilder().create();
         T gfromat = null;
@@ -110,7 +110,7 @@ public class Helper {
                 i++;
             }
         } catch (Exception ex) {
-            v("JsonError", "OneFlow Error:"+ex.getMessage());
+            v("JsonError", "OneFlow Error:" + ex.getMessage());
         }
         return localArrayList;
     }
@@ -163,49 +163,52 @@ public class Helper {
     public static void setGpsProviderInfo(String gpsProviderInfo) {
         gpsProviderInfo = gpsProviderInfo;
     }
-static int printCharLimit = 4000;
+
+    static int printCharLimit = 4000;
+    static boolean printLogs = false;
+
     //Log methods
     public static void v(String tag, String msg) {
-        if (BuildConfig.DEBUG) {
+        if (printLogs) {
 
             //Log.v(tag,"OneFlow msg Length"+msg.length());
-            if(msg.length()>printCharLimit){
-                Log.v(tag,msg.substring(0,printCharLimit));
-                Log.v("continue",msg.substring(printCharLimit,msg.length()));
-            }else {
+            if (msg.length() > printCharLimit) {
+                Log.v(tag, msg.substring(0, printCharLimit));
+                Log.v("continue", msg.substring(printCharLimit, msg.length()));
+            } else {
                 Log.v(tag, msg);
             }
         }
     }
 
     public static void d(String tag, String msg) {
-        if (BuildConfig.DEBUG) {
-            if(msg.length()>4075){
-                Log.d(tag,msg.substring(0,4075));
-                Log.d("continue",msg.substring(4076,msg.length()));
-            }else {
+        if (printLogs) {
+            if (msg.length() > 4075) {
+                Log.d(tag, msg.substring(0, 4075));
+                Log.d("continue", msg.substring(4076, msg.length()));
+            } else {
                 Log.d(tag, msg);
             }
         }
     }
 
     public static void i(String tag, String msg) {
-        if (BuildConfig.DEBUG) {
-            if(msg.length()>4075){
-                Log.i(tag,msg.substring(0,4075));
-                Log.i("continue",msg.substring(4076,msg.length()));
-            }else {
+        if (printLogs) {
+            if (msg.length() > 4075) {
+                Log.i(tag, msg.substring(0, 4075));
+                Log.i("continue", msg.substring(4076, msg.length()));
+            } else {
                 Log.i(tag, msg);
             }
         }
     }
 
     public static void e(String tag, String msg) {
-        if (BuildConfig.DEBUG) {
-            if(msg.length()>4075){
-                Log.e(tag,msg.substring(0,4075));
-                Log.e("continue",msg.substring(4076,msg.length()));
-            }else {
+        if (printLogs) {
+            if (msg.length() > 4075) {
+                Log.e(tag, msg.substring(0, 4075));
+                Log.e("continue", msg.substring(4076, msg.length()));
+            } else {
                 Log.e(tag, msg);
             }
         }
@@ -424,7 +427,6 @@ static int printCharLimit = 4000;
         dialog.show();
     }
 
-    
 
     public static void showAlertWithCancelListener(final Context context, String titleStr, String message, final boolean shouldClose, DialogInterface.OnCancelListener cancelListener) {//, View.OnClickListener listenter) {
         final Dialog dialog = new Dialog(context);
@@ -508,7 +510,7 @@ static int printCharLimit = 4000;
         return matcher.matches();
     }
 
-   
+
     public static String validateStringeReturnEmpty(String str) {
         if (str == null) {
             return "";
@@ -538,8 +540,6 @@ static int printCharLimit = 4000;
         return outputString;
     }
 
-
-   
 
     /**
      * Function to convert string to title case
@@ -734,8 +734,9 @@ static int printCharLimit = 4000;
         }
         return body;
     }
+
     private String SD_CARD_PATH = "/sdcard/OneFlow/";
 
-   
+
 }
 

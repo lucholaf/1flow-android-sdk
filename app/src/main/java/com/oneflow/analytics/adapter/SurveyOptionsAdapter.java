@@ -2,6 +2,8 @@ package com.oneflow.analytics.adapter;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.ColorUtils;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +31,7 @@ public class SurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.View
     private Context mContext;
     View.OnClickListener onClickListener;
     private int listSize = 0;
+    private int strokeWidth = 4;
     private int viewType = -1;
     private SurveyInputs surveyInputs;
     String tag = this.getClass().getName();
@@ -104,7 +110,7 @@ public class SurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.onClickListener = onClickListener;
         this.surveyInputs = surveyInputs;
         this.themeColor = themeColor;
-        Helper.v(tag, "OneFlow input type [" + surveyInputs.getInput_type() + "]childSize[" + new Gson().toJson(surveyInputs.getRatingsList()) + "]");
+        Helper.v(tag, "OneFlow theme color ["+themeColor+"]input type [" + surveyInputs.getInput_type() + "]childSize[" + new Gson().toJson(surveyInputs.getRatingsList()) + "]");
         if (surveyInputs.getInput_type().contains("rating")) {
             if (surveyInputs.getEmoji()) {
                 viewType = 4;
@@ -168,36 +174,65 @@ public class SurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         Helper.v(tag, "OneFlow viewtype [" + viewType + "]");
+        int colorAlpha = ColorUtils.setAlphaComponent(Color.parseColor(themeColor), 125);
+        int statesRadio[][] = {{android.R.attr.state_checked}, {}};
+        int colorsRadio[] = {Color.parseColor(themeColor),mContext.getResources().getColor(R.color.ratings_focused)};
         switch (viewType) {
             case 0:
                 Helper.v(tag, "OneFlow position[" + position + "]value [" + surveyInputs.getRatingsList().get(position).getId() + "]isSelected[" + surveyInputs.getRatingsList().get(position).getSelected() + "]");
                 ((RatingsViewHolder) holder).title.setText(surveyInputs.getRatingsList().get(position).getId() + "");
                 ((RatingsViewHolder) holder).title.setTag(surveyInputs.getRatingsList().get(position).getId());
+
                 if (position == 0) {
-                    if (surveyInputs.getRatingsList().get(position).getSelected()) {
-                        ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.left_ratings_pressed_selector));
-                        ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtwhite));
-                    } else {
+
                         ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.left_gray_rectangle));
                         ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtblack));
-                    }
+
                 } else if (position == surveyInputs.getRatingsList().size() - 1) {
-                    if (surveyInputs.getRatingsList().get(position).getSelected()) {
-                        ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.right_ratings_pressed_selector));
-                        ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtwhite));
-                    } else {
+
                         ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.right_gray_rectangle));
                         ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtblack));
-                    }
+
                 } else {
-                    if (surveyInputs.getRatingsList().get(position).getSelected()) {
-                        ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.ratings_pressed_selector));
-                        ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtwhite));
-                    } else {
-                        ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.ratings_selected));
+
+                        ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.gray_rectangle));
                         ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtblack));
-                    }
+
                 }
+                GradientDrawable gd = (GradientDrawable) ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).getBackground();
+
+                ((RatingsViewHolder) holder).title.setOnTouchListener(new View.OnTouchListener() {
+
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+
+                        switch (event.getAction()) {
+
+                            case MotionEvent.ACTION_DOWN:
+                                gd.setColor(colorAlpha);
+                                break;
+
+                            case MotionEvent.ACTION_MOVE:
+                                // touch move code
+                                //Helper.makeText(mContext,"Moved",1);
+                                break;
+
+                            case MotionEvent.ACTION_UP:
+
+                                    gd.setColor(Color.parseColor(themeColor));
+                                    ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtwhite));
+
+                                break;
+                        }
+                        return false;
+                    }
+                });
+                if (surveyInputs.getRatingsList().get(position).getSelected()) {
+                    gd.setColor(Color.parseColor(themeColor));
+                }else{
+                    gd.setColor(mContext.getResources().getColor(R.color.white));
+                }
+
                 ((RatingsViewHolder) holder).title.setOnClickListener(onClickListener);
                 break;
             case 1:
@@ -206,11 +241,9 @@ public class SurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 ((MCQRadioViewHolder) holder).title.setText(surveyInputs.getChoices().get(position).getTitle());
                 ((MCQRadioViewHolder) holder).title.setTag(surveyInputs.getChoices().get(position).getId() == null ? String.valueOf(position) : surveyInputs.getChoices().get(position).getId());
                 ((MCQRadioViewHolder) holder).title.setOnClickListener(onClickListener);
-                /*int statesRadio[][] = {{android.R.attr.state_checked}, {}};
-                // int colors[] = {Color.parseColor(themeColor), R.color.txtlightgray};
-                int colorsRadio[] = {R.color.selector_color, R.color.colorPrimaryDark};
-                CompoundButtonCompat.setButtonTintList(((MCQRadioViewHolder) holder).title, new ColorStateList(statesRadio, colorsRadio));*/
 
+                GradientDrawable gdRadio = (GradientDrawable) ((RelativeLayout) (((MCQRadioViewHolder) holder).title).getParent()).getBackground();
+                gdRadio.setStroke(strokeWidth,mContext.getResources().getColor(R.color.ratings_focused));
 
                 ((MCQRadioViewHolder) holder).title.setOnTouchListener(new View.OnTouchListener() {
 
@@ -220,11 +253,10 @@ public class SurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.View
                         switch (event.getAction()) {
 
                             case MotionEvent.ACTION_DOWN:
-                                // touch down code
-                               // Helper.makeText(mContext, "Pressed", 1);
-                                ((View) v.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_selector);
 
-                                CompoundButtonCompat.setButtonTintList(((MCQRadioViewHolder) holder).title, ColorStateList.valueOf(mContext.getResources().getColor(R.color.selector_color)));
+                                int colorsRadioAlpha[] = {Color.parseColor(themeColor),colorAlpha};
+                                CompoundButtonCompat.setButtonTintList(((MCQRadioViewHolder) holder).title,  new ColorStateList(statesRadio, colorsRadioAlpha));
+                                gdRadio.setStroke(strokeWidth,colorAlpha);
                                 break;
 
                             case MotionEvent.ACTION_MOVE:
@@ -234,18 +266,13 @@ public class SurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                             case MotionEvent.ACTION_UP:
                                 // touch up code
-                                //Helper.makeText(mContext, "Released", 1);
+                               CompoundButtonCompat.setButtonTintList(((MCQRadioViewHolder) holder).title,  new ColorStateList(statesRadio, colorsRadio));//ColorStateList.valueOf(Color.parseColor(themeColor)));
                                 if (!rb.isChecked()) {
 
-                                    CompoundButtonCompat.setButtonTintList(((MCQRadioViewHolder) holder).title, ColorStateList.valueOf(mContext.getResources().getColor(R.color.ratings_selected)));
-
-                                    ((View) rb.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_blue);
-
+                                   gdRadio.setStroke(strokeWidth,Color.parseColor(themeColor));
                                 } else {
 
-                                    CompoundButtonCompat.setButtonTintList(((MCQRadioViewHolder) holder).title, ColorStateList.valueOf(mContext.getResources().getColor(R.color.ratings_focused)));
-
-                                    ((View) rb.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_gray);
+                                    gdRadio.setStroke(strokeWidth,mContext.getResources().getColor(R.color.ratings_focused));
                                 }
                                 break;
                         }
@@ -261,12 +288,9 @@ public class SurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 ((MCQCheckBoxViewHolder) holder).title.setText(surveyInputs.getChoices().get(position).getTitle());
                 ((MCQCheckBoxViewHolder) holder).title.setTag(surveyInputs.getChoices().get(position).getId() == null ? String.valueOf(position) : surveyInputs.getChoices().get(position).getId());
                 ((MCQCheckBoxViewHolder) holder).title.setOnClickListener(onClickListener);
-
-                /*int states[][] = {{android.R.attr.state_checked}, {}};
-                // int colors[] = {Color.parseColor(themeColor), R.color.txtlightgray};
-                int colors[] = {R.color.selector_color, R.color.colorPrimaryDark};
-                CompoundButtonCompat.setButtonTintList(((MCQCheckBoxViewHolder) holder).title, new ColorStateList(states, colors));*/
-                ((MCQCheckBoxViewHolder) holder).title.setOnTouchListener(new View.OnTouchListener() {
+                GradientDrawable gdCheckbox = (GradientDrawable) ((RelativeLayout) (((MCQCheckBoxViewHolder) holder).title).getParent()).getBackground();
+                gdCheckbox.setStroke(strokeWidth,mContext.getResources().getColor(R.color.ratings_focused));
+               ((MCQCheckBoxViewHolder) holder).title.setOnTouchListener(new View.OnTouchListener() {
 
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -274,11 +298,10 @@ public class SurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.View
                         switch (event.getAction()) {
                             case MotionEvent.ACTION_DOWN:
                                 // touch down code
-                                //Helper.makeText(mContext, "Pressed", 1);
-                                ((View) v.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_selector);
 
-                                CompoundButtonCompat.setButtonTintList(((MCQCheckBoxViewHolder) holder).title, ColorStateList.valueOf(mContext.getResources().getColor(R.color.selector_color)));
-
+                                int colorsRadioAlpha[] = {Color.parseColor(themeColor),colorAlpha};
+                                CompoundButtonCompat.setButtonTintList(((MCQCheckBoxViewHolder) holder).title,  new ColorStateList(statesRadio, colorsRadioAlpha));
+                                gdCheckbox.setStroke(strokeWidth,colorAlpha);
                                 break;
 
                             case MotionEvent.ACTION_MOVE:
@@ -289,17 +312,12 @@ public class SurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.View
                             case MotionEvent.ACTION_UP:
                                 // touch up code
                                 //Helper.makeText(mContext, "Released", 1);
+                                CompoundButtonCompat.setButtonTintList(((MCQCheckBoxViewHolder) holder).title,  new ColorStateList(statesRadio, colorsRadio));//ColorStateList.valueOf(Color.parseColor(themeColor)));
                                 if (!cb.isChecked()) {
-
-                                    CompoundButtonCompat.setButtonTintList(((MCQCheckBoxViewHolder) holder).title, ColorStateList.valueOf(mContext.getResources().getColor(R.color.ratings_selected)));
-
-                                    ((View) cb.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_blue);
-
+                                        gdCheckbox.setStroke(strokeWidth,Color.parseColor(themeColor));
                                 } else {
 
-                                    CompoundButtonCompat.setButtonTintList(((MCQCheckBoxViewHolder) holder).title, ColorStateList.valueOf(mContext.getResources().getColor(R.color.ratings_focused)));
-
-                                    ((View) cb.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_gray);
+                                    gdCheckbox.setStroke(strokeWidth,mContext.getResources().getColor(R.color.ratings_focused));
                                 }
                                 break;
                         }
@@ -310,34 +328,64 @@ public class SurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.View
             case 4:
                 ((RatingsEmojis) holder).emojis.setImageDrawable(mContext.getResources().getDrawable(emojis[position]));
                 if (position == 0) {
-                    if (surveyInputs.getRatingsList().get(position).getSelected()) {
-                        ((DynamicSquareLayout) ((((RatingsEmojis) holder).emojis).getParent()).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.left_ratings_pressed_selector));
-                    } else {
+
                         ((DynamicSquareLayout) ((((RatingsEmojis) holder).emojis).getParent()).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.left_gray_rectangle));
-                    }
+
                 } else if (position == surveyInputs.getRatingsList().size() - 1) {
-                    if (surveyInputs.getRatingsList().get(position).getSelected()) {
-                        ((DynamicSquareLayout) ((((RatingsEmojis) holder).emojis).getParent()).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.right_ratings_pressed_selector));
-                    } else {
+
                         ((DynamicSquareLayout) ((((RatingsEmojis) holder).emojis).getParent()).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.right_gray_rectangle));
-                    }
+
                 } else {
-                    if (surveyInputs.getRatingsList().get(position).getSelected()) {
-                        ((DynamicSquareLayout) ((((RatingsEmojis) holder).emojis).getParent()).getParent()).setBackgroundResource(R.drawable.ratings_pressed_selector);
-                    } else {
+
                         ((DynamicSquareLayout) ((((RatingsEmojis) holder).emojis).getParent()).getParent()).setBackgroundResource(R.drawable.gray_rectangle);
+
+                }
+                GradientDrawable gdEmojis = (GradientDrawable) ((DynamicSquareLayout) ((((RatingsEmojis) holder).emojis).getParent()).getParent()).getBackground();
+
+
+                ((RatingsEmojis) holder).emojis.setOnTouchListener(new View.OnTouchListener() {
+
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                //Helper.makeText(mContext,"Down called",0);
+                                gdEmojis.setColor(colorAlpha);
+                                break;
+
+                            case MotionEvent.ACTION_MOVE:
+                                // touch move code
+                                //Helper.makeText(mContext,"Moved",1);
+                                break;
+
+                            case MotionEvent.ACTION_UP:
+                                gdEmojis.setColor(Color.parseColor(themeColor));
+                                break;
+                        }
+                        return false;
                     }
+                });
+
+                if (surveyInputs.getRatingsList().get(position).getSelected()) {
+                    gdEmojis.setColor(Color.parseColor(themeColor));
+                }else{
+                    gdEmojis.setColor(mContext.getResources().getColor(R.color.white));
                 }
                 ((RatingsEmojis) holder).emojis.setTag(position);
                 ((RatingsEmojis) holder).emojis.setOnClickListener(onClickListener);
                 break;
             case 5:
                 Helper.v(tag, "OneFlow binding views");
+
                 if (surveyInputs.getRatingsList().get(position).getSelected()) {
-                    ((RatingsStar) holder).stars.setImageDrawable(mContext.getResources().getDrawable(R.drawable.selected_star));
+                    ((RatingsStar) holder).stars.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_baseline_star_92));
+                    DrawableCompat.setTint(((RatingsStar) holder).stars.getDrawable(), Color.parseColor(themeColor));
                 } else {
-                    ((RatingsStar) holder).stars.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ratings_star));
+                    ((RatingsStar) holder).stars.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_baseline_star_outline_92));
+                    DrawableCompat.setTint(((RatingsStar) holder).stars.getDrawable(), Color.parseColor(themeColor));
                 }
+
                 ((RatingsStar) holder).stars.setTag(position);
                 ((RatingsStar) holder).stars.setOnClickListener(onClickListener);
                 break;

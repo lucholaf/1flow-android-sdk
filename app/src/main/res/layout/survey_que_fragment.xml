@@ -15,7 +15,7 @@
         android:layout_marginTop="20dp"
         android:textColor="@color/txtblack"
         android:visibility="invisible"
-        android:textSize="@dimen/page_header_size" />
+        android:textSize="@dimen/page_sub_header_1" />
 
     <com.oneflow.analytics.customwidgets.CustomTextView
         android:id="@+id/survey_description_que"
@@ -28,7 +28,7 @@
         android:layout_marginTop="5dp"
         android:textColor="@color/txtgray"
         android:visibility="invisible"
-        android:textSize="@dimen/page_sub_header_2" />
+        android:textSize="@dimen/page_sub_header_3" />
 
     <RelativeLayout
         android:id="@+id/option_layout"
@@ -44,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
             android:padding="0.5dp"
             android:layout_centerHorizontal="true" />
 

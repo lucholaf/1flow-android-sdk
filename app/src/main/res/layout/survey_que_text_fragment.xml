@@ -12,7 +12,7 @@
         android:layout_marginBottom="@dimen/field_padding"
         android:layout_marginTop="20dp"
         android:textColor="@color/txtblack"
-        android:textSize="@dimen/page_header_size" />
+        android:textSize="@dimen/page_sub_header_1" />
 
     <com.oneflow.analytics.customwidgets.CustomTextView
         android:id="@+id/survey_description"
@@ -24,7 +24,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp"
         android:textColor="@color/txtgray"
-        android:textSize="@dimen/page_sub_header_2" />
+        android:textSize="@dimen/page_sub_header_3" />
 
     <RelativeLayout
         android:id="@+id/option_layout"
@@ -44,7 +44,7 @@
             android:layout_margin="1dp"
             android:gravity="top|left"
             android:inputType="textMultiLine"
-            android:textSize="@dimen/page_header_size"
+            android:textSize="@dimen/page_sub_header_2"
             android:background="#ffffff"
             android:isScrollContainer="false"
             android:textColor="@color/txtblack"

@@ -41,14 +41,14 @@ public class mapln extends Application implements LifecycleObserver {
     CountDownTimer cdt = new CountDownTimer(duration,interval) {
         @Override
         public void onTick(long millisUntilFinished) {
-            Helper.makeText(getApplicationContext(),"interval called",1);
+            //Helper.makeText(getApplicationContext(),"interval called",1);
             OneFlow.sendEventsToApi(getApplicationContext());
 
         }
 
         @Override
         public void onFinish() {
-            Helper.makeText(getApplicationContext(),"finish called",1);
+            //Helper.makeText(getApplicationContext(),"finish called",1);
         }
 
     };

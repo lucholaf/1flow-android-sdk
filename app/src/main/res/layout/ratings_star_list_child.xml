@@ -11,12 +11,10 @@
 
         <ImageView
             android:id="@+id/ratings_list_child_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
 
-            android:padding="10dp"
-
-            android:src="@drawable/ratings_star" />
+            android:src="@drawable/ic_baseline_star_outline_92" />
 
     </RelativeLayout>
 </com.oneflow.analytics.customwidgets.DynamicSquareLayout>

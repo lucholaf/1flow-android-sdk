@@ -1,18 +1,24 @@
 package com.oneflow.analytics.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 
 import com.oneflow.analytics.R;
@@ -29,7 +35,7 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
 
 
     CustomTextViewBold surveyTitle, submitButton;
-
+    RelativeLayout optionLayout;
     CustomEditText userInput;
 
 
@@ -93,7 +99,7 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
             });
             animateViews[i++].startAnimation(animation);
         } else {
-            Helper.makeText(getActivity(), "Visibility Gone", 1);
+           // Helper.makeText(getActivity(), "Visibility Gone", 1);
         }
     }
 
@@ -112,8 +118,9 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
         surveyDescription = (CustomTextView) view.findViewById(R.id.survey_description);
         userInput = (CustomEditText) view.findViewById(R.id.child_user_input);
         surveyInputLimit = (CustomTextView) view.findViewById(R.id.text_limit);
+        optionLayout = (RelativeLayout) view.findViewById(R.id.option_layout);
 
-
+        submitButtonBeautification();
         Helper.v(tag, "OneAxis list data[" + surveyScreens + "]");
         animationIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
         surveyTitle.setText(surveyScreens.getTitle());
@@ -184,7 +191,34 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
         return view;
 
     }
+    private void submitButtonBeautification(){
+        GradientDrawable gdSubmit = (GradientDrawable) (submitButton).getBackground();
+        GradientDrawable gdOption = (GradientDrawable) optionLayout.getBackground();
 
+        gdOption.setColor(sa.getResources().getColor(R.color.white));
+        gdSubmit.setColor(Color.parseColor(sa.themeColor));
+        int colorAlpha = ColorUtils.setAlphaComponent(Color.parseColor(sa.themeColor), 125);
+        submitButton.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        gdSubmit.setColor(colorAlpha);
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+
+                        gdSubmit.setColor(Color.parseColor(sa.themeColor));
+                        break;
+                }
+                return false;
+            }
+        });
+    }
     private void setMaxLength(int maxLength) {
 
         InputFilter[] fArray = new InputFilter[1];
@@ -209,7 +243,7 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
         if (v.getId() == R.id.submit_btn) {
             sa.addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString());
         } else if (v.getId() == R.id.cancel_btn) {
-            Helper.makeText(getActivity(), "Clicked on cancel button", 1);
+          //  Helper.makeText(getActivity(), "Clicked on cancel button", 1);
         }
 
     }

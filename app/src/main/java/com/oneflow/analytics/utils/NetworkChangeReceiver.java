@@ -19,10 +19,10 @@ public class NetworkChangeReceiver extends BroadcastReceiver implements MyRespon
 
         this.context = context;
        // int status = NetworkUtil.getConnectivityStatusString(context);
-        Helper.makeText(context,"OneFlow Receiver called ["+intent.getAction()+"]",1);
+        //Helper.makeText(context,"OneFlow Receiver called ["+intent.getAction()+"]",1);
         if ("android.net.conn.CONNECTIVITY_CHANGE".equals(intent.getAction())) {
             if (Helper.isConnected(context)) {
-                Helper.makeText(context,"Network available",1);
+               // Helper.makeText(context,"Network available",1);
                 LocationResponse lr = new OneFlowSHP(context).getUserLocationDetails();
                 if(lr!=null) {
                     checkOffLineSurvey();
@@ -32,7 +32,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver implements MyRespon
                    // CurrentLocation.getCurrentLocation(context,this,Constants.ApiHitType.fetchLocation);
                 }
             } else {
-                Helper.makeText(context,"Network gone",1);
+               // Helper.makeText(context,"Network gone",1);
             }
         }
     }

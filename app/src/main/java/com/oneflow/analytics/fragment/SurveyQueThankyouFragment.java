@@ -143,7 +143,7 @@ public class SurveyQueThankyouFragment extends Fragment {
             });
             surveyTitle.startAnimation(animation);
         } else {
-            Helper.makeText(getActivity(), "Visibility Gone", 1);
+            //Helper.makeText(getActivity(), "Visibility Gone", 1);
         }
     }
 

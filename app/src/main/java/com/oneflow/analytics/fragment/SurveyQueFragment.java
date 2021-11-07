@@ -1,9 +1,13 @@
 package com.oneflow.analytics.fragment;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -14,6 +18,8 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.ColorUtils;
+import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -186,7 +192,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
         optionLayout = (RelativeLayout) view.findViewById(R.id.option_layout);
 
         submitButton.setOnClickListener(this);
-
+        submitButtonBeautification();
         Helper.v(tag, "OneAxis list data[" + surveyScreens + "]");
         Helper.v(tag, "OneAxis list title[" + surveyScreens.getTitle() + "]");
         Helper.v(tag, "OneAxis list desc[" + surveyScreens.getMessage() + "]");
@@ -290,6 +296,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
             mLayoutManager = new LinearLayoutManager(getActivity());
         }
 
+        Helper.v(tag,"OneFlow theme color ["+sa.themeColor+"]");
         dashboardAdapter = new SurveyOptionsAdapter(getActivity(), surveyScreens.getInput(), this, sa.themeColor);
 
         surveyOptionRecyclerView.setLayoutManager(mLayoutManager);
@@ -306,6 +313,35 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
         }
         return view;
 
+    }
+
+    private void submitButtonBeautification(){
+        GradientDrawable gdSubmit = (GradientDrawable) (submitButton).getBackground();
+        gdSubmit.setColor(Color.parseColor(sa.themeColor));
+        int colorAlpha = ColorUtils.setAlphaComponent(Color.parseColor(sa.themeColor), 125);
+        submitButton.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        gdSubmit.setColor(colorAlpha);
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        // touch move code
+                        //Helper.makeText(mContext,"Moved",1);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        // touch up code
+                        //Helper.makeText(mContext, "Released", 1);
+                        gdSubmit.setColor(Color.parseColor(sa.themeColor));
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     private ArrayList<RatingsModel> prepareRatingsList(int min, int max) {

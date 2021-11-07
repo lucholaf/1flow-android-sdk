@@ -59,7 +59,7 @@ public class FirstActivity extends SDKBaseActivity implements MyResponseHandler 
 
         registerReceiver(listFetched, inf);
 
-        OneFlow.configure(this, "1XdRfcEB8jVN05hkDk/+ltke3BHrQ3R9W35JBylCWzg=");//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");
+        OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//"1XdRfcEB8jVN05hkDk/+ltke3BHrQ3R9W35JBylCWzg=");//
     }
 
     BroadcastReceiver listFetched = new BroadcastReceiver() {
@@ -104,23 +104,23 @@ public class FirstActivity extends SDKBaseActivity implements MyResponseHandler 
     public void clickHandler(View v) {
 
         if(v.getId()==R.id.get_location) {
-            Helper.makeText(FirstActivity.this, "Clicked on button 3", 1);
+           // Helper.makeText(FirstActivity.this, "Clicked on button 3", 1);
             //new FeedbackController(this).getLocation();
         }
         else if(v.getId()==R.id.fetch_survey_list){
-                Helper.makeText(FirstActivity.this, "Clicked on button 4", 1);
+              //  Helper.makeText(FirstActivity.this, "Clicked on button 4", 1);
                 //FeedbackController.getSurvey(this);
         }
         else if(v.getId()==R.id.project_details){
-                Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
+               // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
                 //new FeedbackController(this).getProjectDetails();
         }
         else if(v.getId()==R.id.send_log_to_api) {
-            Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
+           // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
             OneFlow.sendEventsToApi(this);
         }
         else if(v.getId()==R.id.record_log){
-                Helper.makeText(FirstActivity.this, "Clicked on button 5", 1);
+             //   Helper.makeText(FirstActivity.this, "Clicked on button 5", 1);
                 HashMap<String, String> mapvalues = new HashMap<String, String>();
                 mapvalues.put("testKey1", "testValue1");
                 mapvalues.put("testKey2", "testValue2");
@@ -128,7 +128,7 @@ public class FirstActivity extends SDKBaseActivity implements MyResponseHandler 
                 OneFlow.recordEvents( "empty18", mapvalues);
         }
         else if(v.getId()==R.id.configure_project){
-                Helper.makeText(FirstActivity.this, "Clicked on button conf", 1);
+              //  Helper.makeText(FirstActivity.this, "Clicked on button conf", 1);
                 OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");
         }
         else if(v.getId()==R.id.log_user){
@@ -136,7 +136,8 @@ public class FirstActivity extends SDKBaseActivity implements MyResponseHandler 
                 mapValue.put("firstName","RamLal");
                 mapValue.put("lastName","Goswami");
                 mapValue.put("number","1234");
-                OneFlow.logUser("ThisIsUniqueIdForUser",mapValue);
+                //OneFlow.logUser("ThisIsUniqueIdForUser",mapValue);
+            OneFlow.recordEvents("TestingEvent",mapValue);
 
         }
     }

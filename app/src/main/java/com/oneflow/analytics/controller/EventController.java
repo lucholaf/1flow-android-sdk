@@ -18,17 +18,7 @@ public class EventController implements MyResponseHandler {
     String tag = this.getClass().getName();
 
     static EventController ec;
-    CountDownTimer cdt = new CountDownTimer(30000,1000) {
-        @Override
-        public void onTick(long millisUntilFinished) {
 
-        }
-
-        @Override
-        public void onFinish() {
-
-        }
-    };
     public static EventController getInstance(Context mContext){
         if(ec==null){
             ec = new EventController(mContext);
@@ -38,7 +28,7 @@ public class EventController implements MyResponseHandler {
     private EventController(Context mContext){
         this.mContext = mContext;
         sdkdb = SDKDB.getInstance(mContext);
-        cdt.start();
+
     }
 
     public void storeEventsInDB(String eventName, HashMap<String, String> eventValue,int value){
