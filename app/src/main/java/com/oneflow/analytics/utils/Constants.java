@@ -16,6 +16,7 @@ public interface Constants {
     String AUTOEVENT_FIRSTOPEN = "first_open";
     String AUTOEVENT_APPUPDATE = "one_flow_submit_surveys";
     String AUTOEVENT_SESSIONSTART = "session_starts";
+    String SHP_SURVEYSTART = "survey_starts";
 
 
     String os = "android";

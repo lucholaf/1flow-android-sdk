@@ -83,9 +83,6 @@ public class OneFlow implements MyResponseHandler {
             }
         }
 
-
-
-
         //fc.registerUser(fc.createRequest());
     }
 
@@ -149,12 +146,27 @@ public class OneFlow implements MyResponseHandler {
            /* Long submitTime = new OneFlowSHP(mContext).getLongValue(surveyItem.get_id());
             Helper.v("FeedbackController","OneFlow surveyItem submitted["+submitTime+"]");
             if (submitTime>0) {*/
+
+            OneFlowSHP ofs = new OneFlowSHP(mContext);
+
             if (surveyItem.getScreens() != null) {
-                if (surveyItem.getScreens().size() > 0) {
-                    Intent intent = new Intent(mContext, SurveyActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
-                    mContext.startActivity(intent);
+                Long lastHit = ofs.getLongValue(Constants.SHP_SURVEYSTART);
+                Long diff = 100l; // set default value 100 for first time
+                Long currentTime = Calendar.getInstance().getTimeInMillis();
+                if(lastHit>0) {
+                    diff = (currentTime - lastHit) / 1000;
+                }
+                Helper.v("OneFlow","OneFlow diff ["+diff+"]currentTime["+currentTime+"]lastHit["+lastHit+"]");
+                if(diff>3) {
+                    if (surveyItem.getScreens().size() > 0) {
+                        new OneFlowSHP(mContext).storeValue(Constants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
+                        Intent intent = new Intent(mContext, SurveyActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
+                        mContext.startActivity(intent);
+                    }
+                }else{
+                    //Helper.makeText(mContext,"Already running",1);
                 }
             } else {
                 //Helper.makeText(mContext, "Click on Configure Project", 1);

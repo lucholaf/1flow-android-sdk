@@ -14,7 +14,7 @@
         android:layout_centerInParent="true"
         android:text="X"
         android:padding="8dp"
-
+        android:maxLines="1"
         android:textColor="@color/txtblack"
         android:gravity="center"
 

@@ -229,8 +229,10 @@ public class SurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 });
                 if (surveyInputs.getRatingsList().get(position).getSelected()) {
                     gd.setColor(Color.parseColor(themeColor));
+                    ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtwhite));
                 }else{
                     gd.setColor(mContext.getResources().getColor(R.color.white));
+                    ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtblack));
                 }
 
                 ((RatingsViewHolder) holder).title.setOnClickListener(onClickListener);
