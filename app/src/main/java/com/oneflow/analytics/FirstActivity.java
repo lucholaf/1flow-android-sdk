@@ -59,7 +59,7 @@ public class FirstActivity extends SDKBaseActivity implements MyResponseHandler 
 
         registerReceiver(listFetched, inf);
 
-        OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//"1XdRfcEB8jVN05hkDk/+ltke3BHrQ3R9W35JBylCWzg=");//
+        OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//u6NKK1Vx5xbx3TeOt3ASTGRABmN1gIhhnef53wwwGKo=");//""7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//"1XdRfcEB8jVN05hkDk/+ltke3BHrQ3R9W35JBylCWzg=");//
     }
 
     BroadcastReceiver listFetched = new BroadcastReceiver() {

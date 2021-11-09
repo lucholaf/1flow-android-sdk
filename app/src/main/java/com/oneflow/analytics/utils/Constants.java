@@ -17,6 +17,7 @@ public interface Constants {
     String AUTOEVENT_APPUPDATE = "one_flow_submit_surveys";
     String AUTOEVENT_SESSIONSTART = "session_starts";
     String SHP_SURVEYSTART = "survey_starts";
+    String SHP_ONEFLOW_CONFTIMING = "conf_timing";
 
 
     String os = "android";
@@ -25,7 +26,8 @@ public interface Constants {
 
     enum ApiHitType{
         Config,CreateUser, CreateSession, RecordLogs, fetchEventsFromDB, sendEventsToAPI, insertEventsInDB,
-        deleteEventsFromDB, logUser, insertSurveyInDB, fetchSurveysFromDB, deleteSurveyFromDB, fetchLocation
+        deleteEventsFromDB, logUser, insertSurveyInDB, fetchSurveysFromDB, deleteSurveyFromDB, fetchLocation,
+        fetchSurveysFromAPI,fetchEventsBeforSurveyFetched
     }
     enum BRActionType{
         submitEvents,submitSurveys

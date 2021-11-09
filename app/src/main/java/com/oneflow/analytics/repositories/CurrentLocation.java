@@ -31,8 +31,8 @@ public class CurrentLocation {
                 public void onResponse(Call<LocationResponse> call, Response<LocationResponse> response) {
 
                     if (response.isSuccessful()) {
-                        Helper.v(tag,"OneFlow response["+response.body()+"]");
-                        Helper.v(tag,"OneFlow response["+response.body().toString()+"]");
+                        Helper.v(tag,"OneFlow location response["+response.body()+"]");
+                        Helper.v(tag,"OneFlow location response["+response.body().toString()+"]");
                         /*Helper.v(tag,"OneFlow response["+response.body().getSuccess()+"]");*/
 
                         new OneFlowSHP(context).setUserLocationDetails(response.body());

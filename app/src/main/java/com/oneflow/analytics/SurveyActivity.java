@@ -100,7 +100,7 @@ public class SurveyActivity extends AppCompatActivity {
 
         /*pagePositionPBar.setProgressTintList(ColorStateList.valueOf(getResources().getColor(surveyItem.get)));
         pagePositionPBar.setIndeterminateTintList(ColorStateList.valueOf(getResources().getColor(R.color.whitetxt)));*/
-        Helper.v(tag,"OneFlow color["+surveyItem.getStyle().getPrimary_color()+"]");
+//        Helper.v(tag,"OneFlow color["+surveyItem.getStyle().getPrimary_color()+"]");
 
 
 

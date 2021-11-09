@@ -15,6 +15,9 @@ public interface RecordEventDAO {
     @Query("Select * from recordEvents")
     RecordEventsTab getAllRecordedEvents();
 
+    @Query("Select name from recordEvents where created_on<:surveyTime")
+    String[] getEventBeforeSurvey(Long surveyTime);
+
     @Query("Select * from recordEvents where synced = 0")
     List<RecordEventsTab> getAllUnsyncedEvents();
 

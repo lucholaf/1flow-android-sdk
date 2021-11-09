@@ -8,6 +8,7 @@ import com.oneflow.analytics.utils.Constants;
 import com.oneflow.analytics.utils.Helper;
 import com.oneflow.analytics.utils.MyResponseHandler;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,7 @@ public class EventDBRepo {
                 ret.setValue(String.valueOf(value));
                 ret.setTime(Calendar.getInstance().getTimeInMillis()/1000);
                 ret.setSynced(0);
+                ret.setCreatedOn(Calendar.getInstance().getTimeInMillis());
                 sdkdb.eventDAO().insertAll(ret);
                 mrh.onResponseReceived(type,1,0);
             }};
@@ -61,6 +63,23 @@ public class EventDBRepo {
                 List<RecordEventsTab> retList = sdkdb.eventDAO().getAllUnsyncedEvents();
                 Helper.v("EventDBRepo","OneFlow fetching events from db 1");
                 mrh.onResponseReceived(type,retList,0);
+            }
+        };
+        thread.start();
+
+    }
+    public static void fetchEventsBeforeSurvey(Context context, MyResponseHandler mrh, Constants.ApiHitType type){
+        Helper.v("EventDBRepo.fetchEventsBeforeSurvey","OneFlow reached at fetchEventsBeforeSurvey method");
+        //String[] beforeSurveyEvent = new String[1];
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                SDKDB sdkdb = SDKDB.getInstance(context);
+                Helper.v("EventDBRepo","OneFlow fetching events from db 0");
+                String []beforeSurveyEvent = sdkdb.eventDAO().getEventBeforeSurvey(Calendar.getInstance().getTimeInMillis());
+                Helper.v("EventDBRepo","OneFlow fetching events from db ["+ Arrays.asList(beforeSurveyEvent)+"]length["+beforeSurveyEvent.length+"]");
+                mrh.onResponseReceived(type,beforeSurveyEvent,0);
             }
         };
         thread.start();

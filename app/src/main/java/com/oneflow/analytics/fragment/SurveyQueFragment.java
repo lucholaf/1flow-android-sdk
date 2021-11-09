@@ -238,7 +238,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
         } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating")) {
             if (surveyScreens.getInput() != null) {
 
-                surveyScreens.getInput().setRatingsList(prepareRatingsList(surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
+                surveyScreens.getInput().setRatingsList(prepareRatingsList(1,5));//surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
                 ratingsNotLike.setVisibility(View.GONE);
                 ratingsFullLike.setVisibility(View.GONE);
             }
@@ -259,7 +259,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
         }*/ else if (surveyScreens.getInput().getInput_type().contains("rating-emojis")) {
             if (surveyScreens.getInput() != null) {
 
-                surveyScreens.getInput().setRatingsList(prepareRatingsList(surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
+                surveyScreens.getInput().setRatingsList(prepareRatingsList(1,5));//surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
                 ratingsNotLike.setVisibility(View.GONE);
                 ratingsFullLike.setVisibility(View.GONE);
             }

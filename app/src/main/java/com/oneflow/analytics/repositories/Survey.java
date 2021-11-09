@@ -24,8 +24,8 @@ public class Survey {
 
     static String tag = "Survey";
 
-    public static void getSurvey(Context context) {
-        Helper.v(tag, "OneFlow survey reached getSurvey");
+    public static void getSurvey(Context context, MyResponseHandler mrh, Constants.ApiHitType type) {
+        Helper.v(tag, "OneFlow survey reached getSurvey called");
         ApiInterface connectAPI = RetroBaseService.getClient().create(ApiInterface.class);
         try {
             Call<GenericResponse<ArrayList<GetSurveyListResponse>>> responseCall = null;
@@ -38,13 +38,13 @@ public class Survey {
 
                     if (response.isSuccessful()) {
 
-
-
                         //Helper.v(tag,"OneFlow counter reached at["+counter+"]");
                         new OneFlowSHP(context).setSurveyList(response.body().getResult());
 
                         Intent intent = new Intent("survey_list_fetched");
                         context.sendBroadcast(intent);
+
+                        mrh.onResponseReceived(type,null,0);
 
                     }
 

@@ -38,6 +38,18 @@ public class RecordEventsTab {
     @SerializedName("synced")
     private Integer synced = 0;
 
+    @ColumnInfo(name = "created_on")
+    @SerializedName("created_on")
+    private Long createdOn;
+
+    public Long getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Long createdOn) {
+        this.createdOn = createdOn;
+    }
+
     public Long getTime() {
         return time;
     }

@@ -19,7 +19,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver implements MyRespon
 
         this.context = context;
        // int status = NetworkUtil.getConnectivityStatusString(context);
-        //Helper.makeText(context,"OneFlow Receiver called ["+intent.getAction()+"]",1);
+        Helper.makeText(context,"OneFlow Receiver called ["+intent.getAction()+"]",1);
         if ("android.net.conn.CONNECTIVITY_CHANGE".equals(intent.getAction())) {
             if (Helper.isConnected(context)) {
                // Helper.makeText(context,"Network available",1);
