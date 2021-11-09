@@ -42,7 +42,9 @@ public class mapln extends Application implements LifecycleObserver {
         @Override
         public void onTick(long millisUntilFinished) {
             //Helper.makeText(getApplicationContext(),"interval called",1);
-            OneFlow.sendEventsToApi(getApplicationContext());
+            if(Helper.isConnected(mapln.this)) {
+                OneFlow.sendEventsToApi(getApplicationContext());
+            }
 
         }
 
