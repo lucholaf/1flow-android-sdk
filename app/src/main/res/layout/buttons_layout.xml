@@ -12,7 +12,7 @@
         android:layout_margin="@dimen/field_padding"
         android:background="@drawable/btn_rounded_rectangle_normal"
         android:text="Submit"
-        android:visibility="visible" />
+        android:visibility="invisible" />
 
     <com.oneflow.analytics.customwidgets.CustomTextViewBold
         android:id="@+id/cancel_btn"
