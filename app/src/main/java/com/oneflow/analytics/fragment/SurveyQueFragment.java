@@ -214,10 +214,10 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
         }
 
 
-        if(surveyScreens.getInput().getRating_min_text()!=null) {
+        if (surveyScreens.getInput().getRating_min_text() != null) {
             ratingsNotLike.setText(surveyScreens.getInput().getRating_min_text());
         }
-        if(surveyScreens.getInput().getRating_max_text()!=null) {
+        if (surveyScreens.getInput().getRating_max_text() != null) {
             ratingsFullLike.setText(surveyScreens.getInput().getRating_max_text());
         }
 
@@ -238,7 +238,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
         } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating")) {
             if (surveyScreens.getInput() != null) {
 
-                surveyScreens.getInput().setRatingsList(prepareRatingsList(1,5));//surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
+                surveyScreens.getInput().setRatingsList(prepareRatingsList(1, 5));//surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
                 ratingsNotLike.setVisibility(View.GONE);
                 ratingsFullLike.setVisibility(View.GONE);
             }
@@ -259,7 +259,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
         }*/ else if (surveyScreens.getInput().getInput_type().contains("rating-emojis")) {
             if (surveyScreens.getInput() != null) {
 
-                surveyScreens.getInput().setRatingsList(prepareRatingsList(1,5));//surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
+                surveyScreens.getInput().setRatingsList(prepareRatingsList(1, 5));//surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
                 ratingsNotLike.setVisibility(View.GONE);
                 ratingsFullLike.setVisibility(View.GONE);
             }
@@ -296,7 +296,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
             mLayoutManager = new LinearLayoutManager(getActivity());
         }
 
-        Helper.v(tag,"OneFlow theme color ["+sa.themeColor+"]");
+        Helper.v(tag, "OneFlow theme color [" + sa.themeColor + "]");
         dashboardAdapter = new SurveyOptionsAdapter(getActivity(), surveyScreens.getInput(), this, sa.themeColor);
 
         surveyOptionRecyclerView.setLayoutManager(mLayoutManager);
@@ -315,7 +315,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
 
     }
 
-    private void submitButtonBeautification(){
+    private void submitButtonBeautification() {
         GradientDrawable gdSubmit = (GradientDrawable) (submitButton).getBackground();
         gdSubmit.setColor(Color.parseColor(sa.themeColor));
         int colorAlpha = ColorUtils.setAlphaComponent(Color.parseColor(sa.themeColor), 125);
@@ -376,12 +376,16 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (checkBoxSelection.size() > 0) {
-                        String allSelections = checkBoxSelection.toString().replace("[", "");
-                        allSelections = allSelections.replace("]", "");
-                        allSelections = allSelections.replace(" ", "");
-                        Helper.v(tag, "OneFlow allselection[" + allSelections + "]");
-                        sa.addUserResponseToList(surveyScreens.get_id(), null, allSelections);
+                    if (checkBoxSelection != null) {
+                        if (checkBoxSelection.size() > 0) {
+                            String allSelections = checkBoxSelection.toString().replace("[", "");
+                            allSelections = allSelections.replace("]", "");
+                            allSelections = allSelections.replace(" ", "");
+                            Helper.v(tag, "OneFlow allselection[" + allSelections + "]");
+                            sa.addUserResponseToList(surveyScreens.get_id(), null, allSelections);
+                        }else{
+                            sa.initFragment();
+                        }
                     } else {
                         sa.initFragment();
                     }
