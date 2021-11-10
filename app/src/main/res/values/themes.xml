@@ -22,7 +22,6 @@
 
     <style name="comman_positive_button_style" parent="@android:style/Theme.Holo.Light">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/btn_rounded_rectangle_normal</item>
         <item name="android:paddingTop">@dimen/btn_top_bottom_padding</item>
         <item name="android:paddingBottom">@dimen/btn_top_bottom_padding</item>
         <item name="android:paddingRight">@dimen/btn_left_right_padding</item>

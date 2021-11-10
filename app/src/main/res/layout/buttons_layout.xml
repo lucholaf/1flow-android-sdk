@@ -2,18 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    >
+    android:animateLayoutChanges="true">
 
     <com.oneflow.analytics.customwidgets.CustomTextViewBold
         android:id="@+id/submit_btn"
         style="@style/comman_positive_button_style"
         android:layout_width="wrap_content"
-        android:layout_margin="@dimen/field_padding"
-        android:text="Submit"
-        android:visibility="invisible"
         android:layout_alignParentRight="true"
-        />
+        android:layout_margin="@dimen/field_padding"
+        android:background="@drawable/btn_rounded_rectangle_normal"
+        android:text="Submit"
+        android:visibility="visible" />
 
     <com.oneflow.analytics.customwidgets.CustomTextViewBold
         android:id="@+id/cancel_btn"
@@ -21,9 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_margin="@dimen/field_padding"
         android:layout_toLeftOf="@id/submit_btn"
+        android:background="@drawable/btn_rounded_rectangle_normal"
         android:text="Cancel"
         android:visibility="invisible" />
-
 
 
 </RelativeLayout>
