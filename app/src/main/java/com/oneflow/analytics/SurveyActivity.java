@@ -394,7 +394,7 @@ public class SurveyActivity extends AppCompatActivity {
         int v = (int)(Math.ceil(100/screens.size()))*(position+1);
 
         Integer temp = (int)(Math.ceil(100f/screens.size()))*(position+1);//((Integer)(Math.ceil(100/screens.size()))*(position+1);
-        final Integer progressValueTo = temp>105?105:temp;//((Integer)(Math.ceil(100/screens.size()))*(position+1);
+        final Integer progressValueTo = temp>110?110:temp;//((Integer)(Math.ceil(100/screens.size()))*(position+1);
         int progressValueFrom = (int)(Math.ceil(100f/screens.size()))*(position);
         Helper.v(tag,"OneFlow progressValue before ["+Math.ceil(100f/screens.size())+"] ceil["+(100f/screens.size())+"]from["+progressValueFrom+"]to["+progressValueTo+"]screenSize["+screens.size()+"]position["+position+"]");
 
