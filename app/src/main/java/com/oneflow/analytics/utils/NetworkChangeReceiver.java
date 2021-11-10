@@ -21,9 +21,11 @@ public class NetworkChangeReceiver extends BroadcastReceiver implements MyRespon
        // int status = NetworkUtil.getConnectivityStatusString(context);
         Helper.makeText(context,"OneFlow Receiver called ["+intent.getAction()+"]",1);
         if ("android.net.conn.CONNECTIVITY_CHANGE".equals(intent.getAction())) {
+
             if (Helper.isConnected(context)) {
                // Helper.makeText(context,"Network available",1);
                 LocationResponse lr = new OneFlowSHP(context).getUserLocationDetails();
+
                 if(lr!=null) {
                     checkOffLineSurvey();
                 }else{
@@ -34,6 +36,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver implements MyRespon
             } else {
                // Helper.makeText(context,"Network gone",1);
             }
+
         }
     }
 

@@ -3,9 +3,11 @@ package com.oneflow.analytics.repositories;
 import android.content.Context;
 import android.content.Intent;
 
+import com.google.gson.Gson;
 import com.oneflow.analytics.model.ApiInterface;
 import com.oneflow.analytics.model.GenericResponse;
 import com.oneflow.analytics.model.RetroBaseService;
+import com.oneflow.analytics.model.TempResponseModel;
 import com.oneflow.analytics.model.survey.GetSurveyListResponse;
 import com.oneflow.analytics.model.survey.SurveyUserInput;
 import com.oneflow.analytics.sdkdb.OneFlowSHP;
@@ -36,6 +38,9 @@ public class Survey {
                 @Override
                 public void onResponse(Call<GenericResponse<ArrayList<GetSurveyListResponse>>> call, Response<GenericResponse<ArrayList<GetSurveyListResponse>>> response) {
 
+
+                    /*Helper.v(tag,"OneFlow survey list response["+response.isSuccessful()+"]");
+                    Helper.v(tag,"OneFlow survey list response["+response.body().getSuccess()+"]");*/
                     if (response.isSuccessful()) {
 
                         //Helper.v(tag,"OneFlow counter reached at["+counter+"]");
@@ -46,6 +51,9 @@ public class Survey {
 
                         mrh.onResponseReceived(type,null,0);
 
+                    }else{
+                        Helper.v(tag,"OneFlow survey list not fetched isSuccessfull false");
+                        //TempResponseModel trm = new Gson().fromJson(response.body())
                     }
 
                 }

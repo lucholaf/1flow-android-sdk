@@ -1,20 +1,20 @@
 package com.oneflow.analytics.model;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class GenericResponse<T>{// extends BaseResponse{
 
+
     @SerializedName("result")
-    @Expose
     private T result ;
 
     @SerializedName("success")
-    @Expose
     private int success;
 
     @SerializedName("message")
-    @Expose
     private String message;
 
 
