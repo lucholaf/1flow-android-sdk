@@ -24,7 +24,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
         </activity>
-        <activity android:name="com.oneflow.analytics.SurveyActivity" android:theme="@style/AppDialog" ></activity>
+        <!--<action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>-->
+        <activity android:name="com.oneflow.analytics.SurveyActivity" android:theme="@style/AppDialog" >
+            <!--<intent-filter>
+
+                <data android:mimeType="text/plain"/>
+                &lt;!&ndash;<data android:scheme="survey" android:host="begin"/>
+                <data android:mimeType="survey-page"/>&ndash;&gt;
+            </intent-filter>-->
+        </activity>
 
     </application>
 

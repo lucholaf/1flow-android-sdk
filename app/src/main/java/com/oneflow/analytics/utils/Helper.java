@@ -165,7 +165,7 @@ public class Helper {
     }
 
     static int printCharLimit = 4000;
-    static boolean printLogs = true;
+    static boolean printLogs = false;
 
     //Log methods
     public static void v(String tag, String msg) {
