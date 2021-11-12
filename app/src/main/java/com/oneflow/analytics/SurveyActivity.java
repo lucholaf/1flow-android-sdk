@@ -87,7 +87,7 @@ public class SurveyActivity extends AppCompatActivity {
 
         screens = surveyItem.getScreens();//checkSurveyTitleAndScreens(surveyType);
 
-        Helper.makeText(getApplicationContext(),"Size ["+screens.size()+"]",1);
+       // Helper.makeText(getApplicationContext(),"Size ["+screens.size()+"]",1);
 
         selectedSurveyId = surveyItem.get_id();
         closeBtn.setOnClickListener(new View.OnClickListener() {
@@ -372,7 +372,7 @@ public class SurveyActivity extends AppCompatActivity {
         }else{
             //TODO Store data in db
             LogUserDBRepo.insertUserInputs(this,sur,null, Constants.ApiHitType.insertSurveyInDB);
-            Helper.makeText(this,getString(R.string.no_network),1);
+            //Helper.makeText(this,getString(R.string.no_network),1);
         }
     }
 
@@ -425,7 +425,7 @@ public class SurveyActivity extends AppCompatActivity {
     private void loadFragments(SurveyScreens screen) {
         setProgressBarPosition();
 
-        Helper.makeText(getApplicationContext(),"Screen input ["+screen.getInput().getInput_type()+"]",1);
+        //Helper.makeText(getApplicationContext(),"Screen input ["+screen.getInput().getInput_type()+"]",1);
         //Helper.showAlert(getApplicationContext(),"","Screen input type["+screen.getInput().getInput_type()+"]");
         if(screen!=null) {
             Fragment frag = null;
@@ -438,7 +438,7 @@ public class SurveyActivity extends AppCompatActivity {
                     frag = SurveyQueFragment.newInstance(screen);
                 }
             } catch (Exception ex) {
-                Helper.makeText(getApplicationContext(), "OneFlow ERROR [" + ex.getMessage() + "]", 1);
+                Helper.e(tag, "OneFlow ERROR [" + ex.getMessage() + "]");
                 //frag = SurveyQueThankyouFragment.newInstance(screen);
             }
 
@@ -451,7 +451,7 @@ public class SurveyActivity extends AppCompatActivity {
                     ft.replace(R.id.fragment_view, frag).commit();
                 }
             } else {
-                Helper.makeText(getApplicationContext(), "frag null", 1);
+                //Helper.makeText(getApplicationContext(), "frag null", 1);
             }
         }else{
 
