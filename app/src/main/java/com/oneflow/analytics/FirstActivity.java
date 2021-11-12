@@ -56,10 +56,9 @@ public class FirstActivity extends SDKBaseActivity implements MyResponseHandler 
         IntentFilter inf = new IntentFilter();
         inf.addAction("survey_list_fetched");
         inf.addAction("events_submitted");
-
         registerReceiver(listFetched, inf);
 
-        OneFlow.configure(this, "u6NKK1Vx5xbx3TeOt3ASTGRABmN1gIhhnef53wwwGKo=");//""7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//"1XdRfcEB8jVN05hkDk/+ltke3BHrQ3R9W35JBylCWzg=");//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//
+        OneFlow.configure(this, "BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//u6NKK1Vx5xbx3TeOt3ASTGRABmN1gIhhnef53wwwGKo=");//""7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//"1XdRfcEB8jVN05hkDk/+ltke3BHrQ3R9W35JBylCWzg=");//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//
     }
 
     BroadcastReceiver listFetched = new BroadcastReceiver() {
@@ -118,6 +117,15 @@ public class FirstActivity extends SDKBaseActivity implements MyResponseHandler 
         else if(v.getId()==R.id.send_log_to_api) {
            // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
             OneFlow.sendEventsToApi(this);
+        }else if(v.getId()==R.id.connect_vpn) {
+           // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
+
+            HashMap<String, String> mapvalues = new HashMap<String, String>();
+            mapvalues.put("testKey1", "testValue1");
+            mapvalues.put("testKey2", "testValue2");
+            mapvalues.put("testKey3", "testValue3");
+            OneFlow.recordEvents("connect_vpn", mapvalues);
+
         }
         else if(v.getId()==R.id.record_log){
              //   Helper.makeText(FirstActivity.this, "Clicked on button 5", 1);

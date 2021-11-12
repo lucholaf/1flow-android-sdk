@@ -18,16 +18,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TrySkySDK">
         <activity android:name="com.oneflow.analytics.FirstActivity">
-            <!--<intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
         </activity>
         <!--<action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>-->
-        <activity android:name="com.oneflow.analytics.SurveyActivity" android:theme="@style/AppDialog" >
+        <activity
+            android:name="com.oneflow.analytics.SurveyActivity"
+            android:theme="@style/AppDialog">
             <!--<intent-filter>
 
                 <data android:mimeType="text/plain"/>
@@ -35,7 +36,6 @@
                 <data android:mimeType="survey-page"/>&ndash;&gt;
             </intent-filter>-->
         </activity>
-
     </application>
 
 </manifest>

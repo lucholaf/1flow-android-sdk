@@ -87,6 +87,7 @@ public class SurveyActivity extends AppCompatActivity {
 
         screens = surveyItem.getScreens();//checkSurveyTitleAndScreens(surveyType);
 
+        Helper.makeText(getApplicationContext(),"Size ["+screens.size()+"]",1);
 
         selectedSurveyId = surveyItem.get_id();
         closeBtn.setOnClickListener(new View.OnClickListener() {
@@ -423,26 +424,37 @@ public class SurveyActivity extends AppCompatActivity {
     }
     private void loadFragments(SurveyScreens screen) {
         setProgressBarPosition();
-        Fragment frag;
-        try {
-            if (screen.getInput().getInput_type().equalsIgnoreCase("thank_you")) {
-                frag = SurveyQueThankyouFragment.newInstance(screen);
-            } else if (screen.getInput().getInput_type().equalsIgnoreCase("text")) {
-                frag = SurveyQueTextFragment.newInstance(screen);
-            } else {
-                frag = SurveyQueFragment.newInstance(screen);
+
+        Helper.makeText(getApplicationContext(),"Screen input ["+screen.getInput().getInput_type()+"]",1);
+        //Helper.showAlert(getApplicationContext(),"","Screen input type["+screen.getInput().getInput_type()+"]");
+        if(screen!=null) {
+            Fragment frag = null;
+            try {
+                if (screen.getInput().getInput_type().equalsIgnoreCase("thank_you")) {
+                    frag = SurveyQueThankyouFragment.newInstance(screen);
+                } else if (screen.getInput().getInput_type().equalsIgnoreCase("text")) {
+                    frag = SurveyQueTextFragment.newInstance(screen);
+                } else {
+                    frag = SurveyQueFragment.newInstance(screen);
+                }
+            } catch (Exception ex) {
+                Helper.makeText(getApplicationContext(), "OneFlow ERROR [" + ex.getMessage() + "]", 1);
+                //frag = SurveyQueThankyouFragment.newInstance(screen);
             }
-        } catch (Exception ex) {
-            Helper.e(tag, "OneFlow ERROR [" + ex.getMessage() + "]");
-            frag = SurveyQueThankyouFragment.newInstance(screen);
-        }
 
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if (position == 0) {
-            ft.add(R.id.fragment_view, frag).commit();
-        } else {
-            ft.replace(R.id.fragment_view, frag).commit();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            if (frag != null) {
+                if (position == 0) {
+                    ft.add(R.id.fragment_view, frag).commit();
+                } else {
+                    ft.replace(R.id.fragment_view, frag).commit();
+                }
+            } else {
+                Helper.makeText(getApplicationContext(), "frag null", 1);
+            }
+        }else{
+
         }
     }
 
