@@ -305,7 +305,22 @@ public class Helper {
         return cm.getActiveNetworkInfo();
     }
 
-    public static boolean isConnected(Context context) {
+    public static boolean isConnected(Context context){
+        ConnectivityManager mgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = mgr.getActiveNetworkInfo();
+
+        if (netInfo != null) {
+            if (netInfo.isConnected()) {
+                return true;
+            }else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+   /* public static boolean isConnected(Context context) {
         boolean connected = false;
         try {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -329,7 +344,7 @@ public class Helper {
             e("Helper", "OneFlow Error[" + e.getMessage() + "]");
         }
         return connected;
-    }
+    }*/
 
     public static void showAlert1(Context context, String titleStr, String message) {//, View.OnClickListener listenter) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
