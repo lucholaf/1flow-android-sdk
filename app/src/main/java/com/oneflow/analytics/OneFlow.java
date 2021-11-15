@@ -222,23 +222,8 @@ public class OneFlow implements MyResponseHandler {
             } else {
                 //Helper.makeText(mContext, "Click on Configure Project", 1);
             }
-            /*}else{
-                Helper.makeText(mContext, "Already submitted", 1);
-            }*/
-        }/*else{
-            Long lastHit = new OneFlowSHP(mContext).getLongValue(Constants.SHP_ONEFLOW_CONFTIMING);
-            Long diff = 10l; // set default value 100 for first time
-            Long currentTime = Calendar.getInstance().getTimeInMillis();
-            diff = (currentTime - lastHit) / 1000;
 
-            Helper.v("OneFlow", "OneFlow conf recordEvents diff [" + diff + "]currentTime[" + currentTime + "]lastHit[" + lastHit + "]");
-            if (lastHit == 0 || diff > 60) {
-                Helper.makeText(mContext.getApplicationContext(), "SurveyList not available", 1);
-                if (Helper.isConnected(mContext)) {
-                    SurveyController.getInstance(mContext);
-                }
-            }
-        }*/
+        }
 
     }
 
@@ -264,6 +249,8 @@ public class OneFlow implements MyResponseHandler {
         Long submitTime = new OneFlowSHP(mContext).getLongValue(gslr.get_id());
         Helper.v("OneFlow", "OneFlow resurvey check[" + submitTime + "]");
         if (submitTime > 0) {
+            //Checking offline storage of survey
+
             try {
                 Helper.v("OneFlow", "OneFlow resurvey check option[" + gslr.getSurveySettings().getResurvey_option() + "]current[" + Calendar.getInstance().getTimeInMillis() + "]");
                 if (gslr.getSurveySettings().getResurvey_option()) {

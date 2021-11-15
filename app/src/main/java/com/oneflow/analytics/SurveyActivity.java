@@ -39,6 +39,7 @@ import com.oneflow.analytics.utils.Constants;
 import com.oneflow.analytics.utils.Helper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.ButterKnife;
 
@@ -372,6 +373,8 @@ public class SurveyActivity extends AppCompatActivity {
         }else{
             //TODO Store data in db
             LogUserDBRepo.insertUserInputs(this,sur,null, Constants.ApiHitType.insertSurveyInDB);
+            //storing id for avoiding repeatation of offline surveys
+            new OneFlowSHP(this).storeValue(sur.getSurvey_id(), Calendar.getInstance().getTimeInMillis());
             //Helper.makeText(this,getString(R.string.no_network),1);
         }
     }

@@ -58,6 +58,7 @@ public class OneFlowSHP {
     }
 
     public void storeValue(String key, Object value) {
+        Helper.v(this.getClass().getName(), "OneFlow key["+key+"]value[" + (value) + "]");
         SharedPreferences.Editor editor = pref.edit();
         if (value instanceof Boolean) {
             editor.putBoolean(key, (boolean) value);
@@ -65,7 +66,7 @@ public class OneFlowSHP {
             editor.putInt(key, (int) value);
         } else if (value instanceof String) {
             // editor.putString(key, (String) value != null && ((String)value).length() > 0 ? encryptString((String)value) : (String)value);
-            Helper.v(this.getClass().getName(), "OneFlow key["+key+"]value[" + (value) + "]");
+
             editor.putString(key, (String) value);
         } else if (value instanceof Float) {
             editor.putFloat(key, (Float) value);

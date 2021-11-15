@@ -67,7 +67,7 @@ public class Survey {
                 }
             });
         } catch (Exception ex) {
-
+                ex.printStackTrace();
         }
     }
     public static void submitUserResponse(Context context, SurveyUserInput sur) {
@@ -84,9 +84,6 @@ public class Survey {
 
                     Helper.v(tag, "OneFlow reached success[" + response.isSuccessful() + "]");
                     Helper.v(tag, "OneFlow reached success raw[" + response.raw() + "]");
-                    Helper.v(tag, "OneFlow reached success errorBody[" + response.errorBody() + "]");
-                    Helper.v(tag, "OneFlow reached success message[" + response.message() + "]");
-
 
                     if (response.isSuccessful()) {
                         Helper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
@@ -124,6 +121,7 @@ public class Survey {
 
         }
     }
+
     public static void submitUserResponseOffline(Context context, SurveyUserInput sur, MyResponseHandler mrh, Constants.ApiHitType type) {
         ApiInterface connectAPI = RetroBaseService.getClient().create(ApiInterface.class);
         try {
