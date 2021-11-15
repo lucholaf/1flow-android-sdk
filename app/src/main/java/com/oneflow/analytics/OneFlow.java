@@ -209,12 +209,16 @@ public class OneFlow implements MyResponseHandler {
                 Helper.v("OneFlow", "OneFlow recordEvents diff [" + diff + "]currentTime[" + currentTime + "]lastHit[" + lastHit + "]");
                 if (diff > 3) {
                     if (surveyItem.getScreens().size() > 0) {
-                        new OneFlowSHP(mContext).storeValue(Constants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
-                        Intent intent = new Intent(mContext.getApplicationContext(), SurveyActivity.class);
-                        //intent.setType("plain/text");
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
-                        mContext.getApplicationContext().startActivity(intent);
+
+                        if(!ofs.getBooleanValue(Constants.SHP_SURVEY_RUNNING)) {
+                            ofs.storeValue(Constants.SHP_SURVEY_RUNNING,true);
+                            ofs.storeValue(Constants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
+                            Intent intent = new Intent(mContext.getApplicationContext(), SurveyActivity.class);
+                            //intent.setType("plain/text");
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
+                            mContext.getApplicationContext().startActivity(intent);
+                        }
                     }
                 } else {
                     //Helper.makeText(mContext,"Already running",1);

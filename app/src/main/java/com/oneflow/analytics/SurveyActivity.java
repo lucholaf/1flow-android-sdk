@@ -314,6 +314,7 @@ public class SurveyActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        new OneFlowSHP(this).storeValue(Constants.SHP_SURVEY_RUNNING,false);
         //on close of this page considering survey is over, so submit the respones to api
         if(surveyResponseChildren.size()>0) {
             Helper.v(tag,"OneFlow input found submitting");
@@ -359,7 +360,10 @@ public class SurveyActivity extends AppCompatActivity {
 
 
     public void prepareAndSubmitUserResposne() {
+
+
         OneFlowSHP ofs = new OneFlowSHP(this);
+        ofs.storeValue(Constants.SHP_SURVEY_RUNNING,false);
         SurveyUserInput sur = new SurveyUserInput();
         sur.setAnswers(surveyResponseChildren);
         sur.setOs(Constants.os);

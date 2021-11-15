@@ -18,6 +18,7 @@ public interface Constants {
     String AUTOEVENT_SESSIONSTART = "session_starts";
     String SHP_SURVEYSTART = "survey_starts";
     String SHP_ONEFLOW_CONFTIMING = "conf_timing";
+    String SHP_SURVEY_RUNNING = "survey_running";
 
 
     String os = "android";
