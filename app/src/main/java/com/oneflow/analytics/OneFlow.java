@@ -224,6 +224,19 @@ public class OneFlow implements MyResponseHandler {
             /*}else{
                 Helper.makeText(mContext, "Already submitted", 1);
             }*/
+        }else{
+            Long lastHit = new OneFlowSHP(mContext).getLongValue(Constants.SHP_ONEFLOW_CONFTIMING);
+            Long diff = 10l; // set default value 100 for first time
+            Long currentTime = Calendar.getInstance().getTimeInMillis();
+            diff = (currentTime - lastHit) / 1000;
+
+            Helper.v("OneFlow", "OneFlow conf recordEvents diff [" + diff + "]currentTime[" + currentTime + "]lastHit[" + lastHit + "]");
+            if (lastHit == 0 || diff > 60) {
+                Helper.makeText(mContext.getApplicationContext(), "SurveyList not available", 1);
+                if (Helper.isConnected(mContext)) {
+                    SurveyController.getInstance(mContext);
+                }
+            }
         }
 
     }
@@ -388,12 +401,13 @@ public class OneFlow implements MyResponseHandler {
                 }
 
 
-                EventAPIRequest ear = new EventAPIRequest();
-                ear.setSessionId(new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP));
-                ear.setEvents(retListToAPI);
-                Helper.v("FeedbackController", "OneFlow fetchEventsFromDB request prepared");
-                EventAPIRepo.sendLogsToApi(mContext, ear, fc, Constants.ApiHitType.sendEventsToAPI, ids);
-
+                if(!new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP).equalsIgnoreCase("NA")) {
+                    EventAPIRequest ear = new EventAPIRequest();
+                    ear.setSessionId(new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP));
+                    ear.setEvents(retListToAPI);
+                    Helper.v("FeedbackController", "OneFlow fetchEventsFromDB request prepared");
+                    EventAPIRepo.sendLogsToApi(mContext, ear, fc, Constants.ApiHitType.sendEventsToAPI, ids);
+                }
                 break;
             case sendEventsToAPI:
                 //Events has been sent to api not deleting local records
