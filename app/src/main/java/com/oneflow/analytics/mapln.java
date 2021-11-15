@@ -59,8 +59,6 @@ public class mapln extends Application implements LifecycleObserver {
     public void onCreate() {
         super.onCreate();
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
-        NetworkChangeReceiver ncr = new NetworkChangeReceiver();
-        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(ncr,intentFilter);
+
     }
 }

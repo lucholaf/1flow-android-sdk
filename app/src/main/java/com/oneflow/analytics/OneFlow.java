@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
@@ -36,6 +37,7 @@ import com.oneflow.analytics.sdkdb.OneFlowSHP;
 import com.oneflow.analytics.utils.Constants;
 import com.oneflow.analytics.utils.Helper;
 import com.oneflow.analytics.utils.MyResponseHandler;
+import com.oneflow.analytics.utils.NetworkChangeReceiver;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,6 +62,10 @@ public class OneFlow implements MyResponseHandler {
             public void run() {
                 super.run();
 
+
+                NetworkChangeReceiver ncr = new NetworkChangeReceiver();
+                IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+                mContext.registerReceiver(ncr,intentFilter);
 
                 Helper.v("OneFlow", "OneFlow configure called");
                 ofs.storeValue(Constants.APPIDSHP, projectKey);
