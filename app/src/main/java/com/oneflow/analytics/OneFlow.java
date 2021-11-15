@@ -61,7 +61,7 @@ public class OneFlow implements MyResponseHandler {
                 super.run();
 
 
-                Helper.v("OneFlow","OneFlow configure called");
+                Helper.v("OneFlow", "OneFlow configure called");
                 ofs.storeValue(Constants.APPIDSHP, projectKey);
 
 
@@ -103,11 +103,11 @@ public class OneFlow implements MyResponseHandler {
                 }
             }
         };
-        Helper.v("OneFlow","OneFlow confThread isAlive["+confThread.isAlive()+"]");
+        Helper.v("OneFlow", "OneFlow confThread isAlive[" + confThread.isAlive() + "]");
 
 
         // this logic is required because config was also being called from network change initially
-        if(!confThread.isAlive()) {
+        if (!confThread.isAlive()) {
             Long lastHit = ofs.getLongValue(Constants.SHP_ONEFLOW_CONFTIMING);
             Long diff = 10l; // set default value 100 for first time
             Long currentTime = Calendar.getInstance().getTimeInMillis();
@@ -121,6 +121,7 @@ public class OneFlow implements MyResponseHandler {
         }
         //fc.registerUser(fc.createRequest());
     }
+
     /*BroadcastReceiver listFetched = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -224,7 +225,7 @@ public class OneFlow implements MyResponseHandler {
             /*}else{
                 Helper.makeText(mContext, "Already submitted", 1);
             }*/
-        }else{
+        }/*else{
             Long lastHit = new OneFlowSHP(mContext).getLongValue(Constants.SHP_ONEFLOW_CONFTIMING);
             Long diff = 10l; // set default value 100 for first time
             Long currentTime = Calendar.getInstance().getTimeInMillis();
@@ -237,7 +238,7 @@ public class OneFlow implements MyResponseHandler {
                     SurveyController.getInstance(mContext);
                 }
             }
-        }
+        }*/
 
     }
 
@@ -261,29 +262,31 @@ public class OneFlow implements MyResponseHandler {
     private GetSurveyListResponse shouldReturnSurvey(GetSurveyListResponse gslr) {
 
         Long submitTime = new OneFlowSHP(mContext).getLongValue(gslr.get_id());
+        Helper.v("OneFlow", "OneFlow resurvey check[" + submitTime + "]");
         if (submitTime > 0) {
             try {
+                Helper.v("OneFlow", "OneFlow resurvey check option[" + gslr.getSurveySettings().getResurvey_option() + "]current[" + Calendar.getInstance().getTimeInMillis() + "]");
                 if (gslr.getSurveySettings().getResurvey_option()) {
                     Long totalInterval = 0l;
                     Long diff = Calendar.getInstance().getTimeInMillis() - submitTime;
                     int diffDuration = 0;
+                    Helper.v("OneFlow", "OneFlow resurvey check diff["+diff+"]retakeInputValue[" + gslr.getSurveySettings().getRetake_survey().getRetake_input_value() + "]");
+                    Helper.v("OneFlow", "OneFlow resurvey check retakeSelectValue[" + gslr.getSurveySettings().getRetake_survey().getRetake_select_value() + "]");
+                    diffDuration = (int) (diff / 1000) ;
                     switch (gslr.getSurveySettings().getRetake_survey().getRetake_select_value()) {
                         case "minutes":
                             totalInterval = gslr.getSurveySettings().getRetake_survey().getRetake_input_value() * 60;
-                            diffDuration = (int) (diff / 1000) / 60;
                             break;
                         case "hours":
                             totalInterval = gslr.getSurveySettings().getRetake_survey().getRetake_input_value() * 60 * 60;
-                            diffDuration = (int) ((diff / 1000) / 60) / 60;
                             break;
                         case "days":
-                            totalInterval = gslr.getSurveySettings().getRetake_survey().getRetake_input_value() * 60 * 60 * 24;
-                            diffDuration = (int) (((diff / 1000) / 60) / 60) / 60;
+                            totalInterval = gslr.getSurveySettings().getRetake_survey().getRetake_input_value() * 24 * 60 * 60;
                             break;
                         default:
                             Helper.v("FeedbackController", "OneFlow retake_select_value is neither of minutes, hours or days");
                     }
-
+                    Helper.v("OneFlow", "OneFlow resurvey check diffDuration[" + diffDuration + "]totalInterval[" + totalInterval + "]");
                     if (diffDuration > totalInterval) {
                         return gslr;
                     } else {
@@ -323,19 +326,19 @@ public class OneFlow implements MyResponseHandler {
             Helper.v(tag, "OneFlow list size[" + slr.size() + "]type[" + type + "]");
             for (GetSurveyListResponse item : slr) {
                 Helper.v(tag, "OneFlow list size 0 [" + item.getTrigger_event_name() + "]type[" + type + "]");
-                String []eventName = item.getTrigger_event_name().split(",");
+                String[] eventName = item.getTrigger_event_name().split(",");
                 boolean recordFound = false;
-                for(String name : eventName){
-                    if(name.contains(type)){
+                for (String name : eventName) {
+                    if (name.contains(type)) {
                         gslr = item;
-                        Helper.v(tag, "OneFlow survey found on event name["+type+"]");
+                        Helper.v(tag, "OneFlow survey found on event name[" + type + "]");
                         recordFound = true;
                         break;
                     }
                 }
 
                 if (recordFound) {
-                   break;
+                    break;
                 }
             }
         } /*else {
@@ -368,7 +371,7 @@ public class OneFlow implements MyResponseHandler {
 
     @Override
     public void onResponseReceived(Constants.ApiHitType hitType, Object obj, int reserve) {
-        Helper.v("OneFlow","OneFlow onReceived type["+hitType+"]");
+        Helper.v("OneFlow", "OneFlow onReceived type[" + hitType + "]");
         switch (hitType) {
             case fetchLocation:
 
@@ -401,7 +404,7 @@ public class OneFlow implements MyResponseHandler {
                 }
 
 
-                if(!new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP).equalsIgnoreCase("NA")) {
+                if (!new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP).equalsIgnoreCase("NA")) {
                     EventAPIRequest ear = new EventAPIRequest();
                     ear.setSessionId(new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP));
                     ear.setEvents(retListToAPI);
@@ -443,8 +446,6 @@ public class OneFlow implements MyResponseHandler {
                 con.setWifi(false);
 
 
-
-
                 LocationResponse lr = new OneFlowSHP(mContext).getUserLocationDetails();
                 LocationDetails ld = new LocationDetails();
                 ld.setCity(lr.getCity());
@@ -483,7 +484,7 @@ public class OneFlow implements MyResponseHandler {
                 String version = "0.1";
                 try {
                     PackageInfo pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
-                     version = pInfo.versionName;
+                    version = pInfo.versionName;
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
