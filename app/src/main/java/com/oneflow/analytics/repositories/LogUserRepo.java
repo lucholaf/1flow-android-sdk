@@ -52,7 +52,7 @@ public class LogUserRepo {
                         aurr.setAnalytic_user_id(response.body().getResult().getAnalytic_user_id());
                         ofs.setUserDetails(aurr);
 
-                        ofs.storeValue(Constants.SESSIONDETAIL_IDSHP,response.body().getResult().getSession().get_id());
+                        ofs.storeValue(Constants.SESSIONDETAIL_IDSHP,response.body().getResult().getSessionId());
 
                        // mrh.onResponseReceived(hitType,null,0);
                         Helper.v(tag,"OneFlow record inserted...");

@@ -21,8 +21,8 @@ public class LogUserResponse extends BaseModel {
     private ArrayList<LogResponseLocation> locations;
     @SerializedName("parameters")
     private LogParameter parameters;
-    @SerializedName("session")
-    private LogSession session;
+    @SerializedName("session_id")
+    private String sessionId;
     @SerializedName("system_id")
     private String system_id;
     @SerializedName("updated_on")
@@ -84,12 +84,20 @@ public class LogUserResponse extends BaseModel {
         this.parameters = parameters;
     }
 
-    public LogSession getSession() {
+    /*public LogSession getSession() {
         return session;
     }
 
     public void setSession(LogSession session) {
         this.session = session;
+    }*/
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
     public String getSystem_id() {

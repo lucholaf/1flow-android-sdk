@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true">
 
     <com.oneflow.analytics.customwidgets.CustomTextViewBold
         android:id="@+id/survey_title"
@@ -12,6 +13,7 @@
         android:layout_marginBottom="@dimen/field_padding"
         android:layout_marginTop="20dp"
         android:textColor="@color/txtblack"
+        android:visibility="invisible"
         android:textSize="@dimen/page_sub_header_1" />
 
     <com.oneflow.analytics.customwidgets.CustomTextView
@@ -24,6 +26,7 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp"
         android:textColor="@color/txtgray"
+        android:visibility="invisible"
         android:textSize="@dimen/page_sub_header_3" />
 
     <RelativeLayout
@@ -33,6 +36,7 @@
         android:layout_below="@id/survey_description"
         android:background="@drawable/gray_rectangle"
         android:minHeight="100dp"
+        android:visibility="invisible"
         android:layout_height="wrap_content">
 
         <com.oneflow.analytics.customwidgets.CustomEditText

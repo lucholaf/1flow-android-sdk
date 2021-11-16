@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -103,8 +104,8 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    Animation animationIn;
 
+    Animation animation1, animation2, animation3, animation4,animationIn;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -112,6 +113,10 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
         View view = inflater.inflate(R.layout.survey_que_text_fragment, container, false);
         ButterKnife.bind(this, view);
 
+        animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+        animation2 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+        animation3 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+        animation4 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
 
         surveyTitle = (CustomTextViewBold) view.findViewById(R.id.survey_title);
         submitButton = (CustomTextViewBold) view.findViewById(R.id.submit_btn);
@@ -226,6 +231,98 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
         surveyInputLimit.setFilters(fArray);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        View[] animateViews = new View[]{surveyTitle, surveyDescription, optionLayout};
+
+
+        Animation[] annim = new Animation[]{animation1, animation2, animation3};
+
+        if (i == 0) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    annim[i].setFillAfter(true);
+                    animateViews[i].startAnimation(annim[i]);
+
+                }
+            }, 500);
+
+            animation1.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    Helper.v(tag, "OneFlow animation START [" + i + "]");
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    Helper.v(tag, "OneFlow animation END[" + i + "]");
+                    //
+                    i++;
+                    if (i < animateViews.length) {
+                        animateViews[i].setVisibility(View.VISIBLE);
+                        //animateViews[i].clearAnimation();
+                        animateViews[i].startAnimation(annim[i]);
+                    }
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                    Helper.v(tag, "OneFlow animation REPEAT[" + i + "]");
+                }
+            });
+            animation2.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    Helper.v(tag, "OneFlow animation START [" + i + "]");
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    Helper.v(tag, "OneFlow animation END[" + i + "]");
+                    //
+                    i++;
+                    if (i < animateViews.length) {
+                        animateViews[i].setVisibility(View.VISIBLE);
+                        //animateViews[i].clearAnimation();
+                        animateViews[i].startAnimation(annim[i]);
+                    }
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                    Helper.v(tag, "OneFlow animation REPEAT[" + i + "]");
+                }
+            });
+            animation3.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    Helper.v(tag, "OneFlow animation START [" + i + "]");
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    Helper.v(tag, "OneFlow animation END[" + i + "]");
+
+                    i++;
+                    if (i < animateViews.length) {
+                        animateViews[i].setVisibility(View.VISIBLE);
+                        //animateViews[i].clearAnimation();
+                        animateViews[i].startAnimation(annim[i]);
+                    }
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                    Helper.v(tag, "OneFlow animation REPEAT[" + i + "]");
+                }
+            });
+        }
+    }
 
     SurveyActivity sa;
 

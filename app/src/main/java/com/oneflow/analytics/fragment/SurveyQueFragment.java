@@ -94,7 +94,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
                     animateViews[i].startAnimation(annim[i]);
 
                 }
-            }, 800);
+            }, 500);
 
             animation1.setAnimationListener(new Animation.AnimationListener() {
                 @Override

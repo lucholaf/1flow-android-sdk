@@ -244,7 +244,7 @@ public class OneFlow implements MyResponseHandler {
             lur.setSystem_id(uniqueId);
             lur.setAnonymous_user_id(new OneFlowSHP(mContext).getUserDetails().getAnalytic_user_id());
             lur.setParameters(mapValue);
-            lur.setSession_id(new OneFlowSHP(mContext).getStringValue(Constants.SDKVERSIONSHP));
+            lur.setSession_id(new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP));
             LogUserRepo.logUser(lur, mContext, null, Constants.ApiHitType.logUser);
         }
     }
