@@ -60,5 +60,6 @@ public class mapln extends Application implements LifecycleObserver {
         super.onCreate();
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
         Helper.makeText(this,"Application called",0);
+        Helper.v(tag,"OneFlow application called");
     }
 }

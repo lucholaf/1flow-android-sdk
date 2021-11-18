@@ -64,7 +64,7 @@ public class Helper {
     //static boolean debug = commanEnable;
     //static boolean error = false;
     static boolean builds = false;
-
+    static boolean printLogs = true;
     public static String headerKey = "";
 
     public static String gpsProviderInfo;
@@ -165,7 +165,7 @@ public class Helper {
     }
 
     static int printCharLimit = 4000;
-    static boolean printLogs = true;
+
 
     //Log methods
     public static void v(String tag, String msg) {
