@@ -28,7 +28,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver implements MyRespon
 
         if (Helper.isConnected(context)) {
             // Helper.makeText(context,"Network available",1);
-        //    cdt.start();
+            cdt.start();
             LocationResponse lr = new OneFlowSHP(context).getUserLocationDetails();
 
             if (lr != null) {
@@ -39,17 +39,17 @@ public class NetworkChangeReceiver extends BroadcastReceiver implements MyRespon
                 // CurrentLocation.getCurrentLocation(context,this,Constants.ApiHitType.fetchLocation);
             }
         } else {
-          //  cdt.cancel();
+            cdt.cancel();
         }
     }
 
 
-    /*Long duration = 1000 * 60 * 60 * 24L;
+    Long duration = 1000 * 60 * 60 * 24L;
     Long interval = 1000 * 100L; //100L L FOR LONG
     CountDownTimer cdt = new CountDownTimer(duration, interval) {
         @Override
         public void onTick(long millisUntilFinished) {
-            Helper.makeText(context.getApplicationContext(),"interval called",1);
+            Helper.v("NetworkChangeReceiver","OneFlow tick called interval called");
             if (Helper.isConnected(context)) {
                 OneFlow.sendEventsToApi(context.getApplicationContext());
             }
@@ -61,7 +61,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver implements MyRespon
             //Helper.makeText(getApplicationContext(),"finish called",1);
         }
 
-    };*/
+    };
 
     public void checkOffLineSurvey() {
         LogUserDBRepo.fetchSurveyInput(context, this, Constants.ApiHitType.fetchSurveysFromDB);
