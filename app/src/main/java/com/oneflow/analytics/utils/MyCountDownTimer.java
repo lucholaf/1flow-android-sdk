@@ -59,30 +59,31 @@ public class MyCountDownTimer extends CountDownTimer implements MyResponseHandle
                 ArrayList<RecordEventsTab> list = (ArrayList<RecordEventsTab>) obj;
                 Helper.v("FeedbackController", "OneFlow fetchEventsFromDB list received size[" + list.size() + "]");
                 //Preparing list to send api
+                if(list.size()>0) {
+                    Integer[] ids = new Integer[list.size()];
+                    int i = 0;
+                    ArrayList<RecordEventsTabToAPI> retListToAPI = new ArrayList<>();
+                    RecordEventsTabToAPI retMain;
+                    for (RecordEventsTab ret : list) {
+                        retMain = new RecordEventsTabToAPI();
+                        retMain.setEventName(ret.getEventName());
+                        retMain.setTime(ret.getTime());
 
-                Integer[] ids = new Integer[list.size()];
-                int i = 0;
-                ArrayList<RecordEventsTabToAPI> retListToAPI = new ArrayList<>();
-                RecordEventsTabToAPI retMain;
-                for (RecordEventsTab ret : list) {
-                    retMain = new RecordEventsTabToAPI();
-                    retMain.setEventName(ret.getEventName());
-                    retMain.setTime(ret.getTime());
+                        //retMain.setDataMap(ret.getDataMap());
+                        retListToAPI.add(retMain);
 
-                    //retMain.setDataMap(ret.getDataMap());
-                    retListToAPI.add(retMain);
-
-                    ids[i++] = ret.getId();
-                }
+                        ids[i++] = ret.getId();
+                    }
 
 
-                if (!new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP).equalsIgnoreCase("NA")) {
-                    EventAPIRequest ear = new EventAPIRequest();
-                    ear.setSessionId(new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP));
-                    ear.setEvents(retListToAPI);
-                    ear.setMode("prod");
-                    Helper.v("FeedbackController", "OneFlow fetchEventsFromDB request prepared");
-                    EventAPIRepo.sendLogsToApi(mContext, ear, this, Constants.ApiHitType.sendEventsToAPI, ids);
+                    if (!new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP).equalsIgnoreCase("NA")) {
+                        EventAPIRequest ear = new EventAPIRequest();
+                        ear.setSessionId(new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP));
+                        ear.setEvents(retListToAPI);
+                        ear.setMode("prod");
+                        Helper.v("FeedbackController", "OneFlow fetchEventsFromDB request prepared");
+                        EventAPIRepo.sendLogsToApi(mContext, ear, this, Constants.ApiHitType.sendEventsToAPI, ids);
+                    }
                 }
                 break;
             case sendEventsToAPI:

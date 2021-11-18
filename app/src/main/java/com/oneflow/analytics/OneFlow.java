@@ -52,7 +52,7 @@ public class OneFlow implements MyResponseHandler {
 
 
     static Context mContext;
-    private static Long duration = 1000 * 60 * 60 * 24L;
+    private static Long duration = 1000 * 60 * 60 * 12L;
     private static Long interval = 1000 * 100L; //100L L FOR LONG
 
     private OneFlow(Context context) {
