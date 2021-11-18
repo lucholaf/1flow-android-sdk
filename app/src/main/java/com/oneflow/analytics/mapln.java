@@ -59,6 +59,6 @@ public class mapln extends Application implements LifecycleObserver {
     public void onCreate() {
         super.onCreate();
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
-
+        Helper.makeText(this,"Application called",0);
     }
 }

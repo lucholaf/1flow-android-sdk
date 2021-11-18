@@ -17,7 +17,7 @@ public class EventController implements MyResponseHandler {
     SDKDB sdkdb;
     String tag = this.getClass().getName();
 
-    static EventController ec;
+    private static EventController ec;
 
     public static EventController getInstance(Context mContext){
         if(ec==null){

@@ -10,6 +10,15 @@ public class EventAPIRequest implements Serializable {
     @SerializedName("events")
     ArrayList<RecordEventsTabToAPI> events;
     @SerializedName("session_id") String sessionId;
+    @SerializedName("mode") String mode;
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
 
     public ArrayList<RecordEventsTabToAPI> getEvents() {
         return events;

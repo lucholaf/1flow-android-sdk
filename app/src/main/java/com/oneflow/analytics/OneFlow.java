@@ -193,6 +193,9 @@ public class OneFlow implements MyResponseHandler {
 
         // storage, api call and check survey if available.
         EventController.getInstance(mContext).storeEventsInDB(eventName, eventValues, 0);
+        EventController ec = EventController.getInstance(mContext);
+        ec.storeEventsInDB(eventName,eventValues,0);
+
 
         //Checking if any survey available under coming event.
         GetSurveyListResponse surveyItem = new OneFlow(mContext).checkSurveyTitleAndScreens(eventName);
@@ -405,6 +408,7 @@ public class OneFlow implements MyResponseHandler {
                     EventAPIRequest ear = new EventAPIRequest();
                     ear.setSessionId(new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP));
                     ear.setEvents(retListToAPI);
+                    ear.setMode("prod");
                     Helper.v("FeedbackController", "OneFlow fetchEventsFromDB request prepared");
                     EventAPIRepo.sendLogsToApi(mContext, ear, fc, Constants.ApiHitType.sendEventsToAPI, ids);
                 }

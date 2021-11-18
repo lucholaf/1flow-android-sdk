@@ -149,6 +149,7 @@ public class SurveyActivity extends AppCompatActivity {
     private boolean isScrollingDown = false;
 
     View.OnTouchListener sliderTouchListener =  new View.OnTouchListener() {
+
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             // Get finger position on screen
