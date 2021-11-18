@@ -8,6 +8,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.os.CountDownTimer;
+import android.os.Looper;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -36,6 +38,7 @@ import com.oneflow.analytics.repositories.ProjectDetails;
 import com.oneflow.analytics.sdkdb.OneFlowSHP;
 import com.oneflow.analytics.utils.Constants;
 import com.oneflow.analytics.utils.Helper;
+import com.oneflow.analytics.utils.MyCountDownTimer;
 import com.oneflow.analytics.utils.MyResponseHandler;
 import com.oneflow.analytics.utils.NetworkChangeReceiver;
 
@@ -49,6 +52,8 @@ public class OneFlow implements MyResponseHandler {
 
 
     static Context mContext;
+    private static Long duration = 1000 * 60 * 60 * 24L;
+    private static Long interval = 1000 * 100L; //100L L FOR LONG
 
     private OneFlow(Context context) {
         this.mContext = context;
@@ -57,11 +62,13 @@ public class OneFlow implements MyResponseHandler {
 
     public static void configure(Context mContext, String projectKey) {
         final OneFlowSHP ofs = new OneFlowSHP(mContext);
+        MyCountDownTimer cmdt = new MyCountDownTimer(mContext,duration,interval);
+        cmdt.start();
         Thread confThread = new Thread() {
             @Override
             public void run() {
                 super.run();
-
+                Looper.prepare();
 
                 NetworkChangeReceiver ncr = new NetworkChangeReceiver();
                 IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -107,6 +114,7 @@ public class OneFlow implements MyResponseHandler {
                         recordEvents(Constants.AUTOEVENT_APPUPDATE, mapUpdateValue);
                     }
                 }
+                Looper.loop();
             }
         };
         Helper.v("OneFlow", "OneFlow confThread isAlive[" + confThread.isAlive() + "]");
