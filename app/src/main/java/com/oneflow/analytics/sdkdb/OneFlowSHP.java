@@ -235,8 +235,8 @@ public class OneFlowSHP {
         return pref.getFloat(key, 0f);
     }
 
-    public boolean getBooleanValue(String key) {
-        return pref.getBoolean(key, false);
+    public boolean getBooleanValue(String key,Boolean defaultValue) {
+        return pref.getBoolean(key, defaultValue);
     }
 
 

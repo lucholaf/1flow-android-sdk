@@ -56,6 +56,7 @@ public class OneFlow implements MyResponseHandler {
 
     //TODO Convert this class to singleton
     static Context mContext;
+
     private static Long duration = 1000 * 60 * 60 * 12L;
     private static Long interval = 1000 * 100L; //100L L FOR LONG
 
@@ -66,13 +67,16 @@ public class OneFlow implements MyResponseHandler {
 
     public static void shouldShowSurvey(Boolean shouldShow) {
         try {
+            Helper.v("OneFlow", "OneFlow shouldShow1["+shouldShow+"]");
             new OneFlowSHP(mContext).storeValue(Constants.SHP_SHOULD_SHOW_SURVEY, shouldShow);
         } catch (Exception ex) {
-
+            Helper.e("OneFlow", "OneFlow error showSurvey1["+ex.getMessage()+"]");
         }
     }
 
+
     public static void configure(Context mContext, String projectKey) {
+        final OneFlow fc = new OneFlow(mContext);
         final OneFlowSHP ofs = new OneFlowSHP(mContext);
         MyCountDownTimer cmdt = new MyCountDownTimer(mContext, duration, interval);
         cmdt.start();
@@ -90,7 +94,7 @@ public class OneFlow implements MyResponseHandler {
                 ofs.storeValue(Constants.APPIDSHP, projectKey);
 
 
-                OneFlow fc = new OneFlow(mContext);
+
                 if (Helper.isConnected(mContext)) {
                     fc.getLocation();
                     SurveyController.getInstance(mContext);
@@ -234,8 +238,8 @@ public class OneFlow implements MyResponseHandler {
                         Helper.v("OneFlow", "OneFlow recordEvents diff [" + diff + "]currentTime[" + currentTime + "]lastHit[" + lastHit + "]size[" + surveyItem.getScreens().size() + "]");
                         //if (diff > 3) {
                         if (surveyItem.getScreens().size() > 0) {
-                            Helper.v("OneFlow", "OneFlow recordEvents running survey[" + (!ofs.getBooleanValue(Constants.SHP_SURVEY_RUNNING)) + "]");
-                            if (!ofs.getBooleanValue(Constants.SHP_SURVEY_RUNNING)) {
+                            Helper.v("OneFlow", "OneFlow recordEvents running survey[" + (!ofs.getBooleanValue(Constants.SHP_SURVEY_RUNNING, false)) + "]");
+                            if (!ofs.getBooleanValue(Constants.SHP_SURVEY_RUNNING, false)) {
                                 ofs.storeValue(Constants.SHP_SURVEY_RUNNING, true);
                                 ofs.storeValue(Constants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
                                 Intent intent = new Intent(mContext.getApplicationContext(), SurveyActivity.class);
@@ -335,7 +339,8 @@ public class OneFlow implements MyResponseHandler {
     //private ArrayList<SurveyScreens> checkSurveyTitleAndScreens(String type){
     private GetSurveyListResponse checkSurveyTitleAndScreens(String type) {
         OneFlowSHP ofs = new OneFlowSHP(mContext);
-        if (ofs.getBooleanValue(Constants.SHP_SHOULD_SHOW_SURVEY)) {
+        Helper.v("OneFlow", "OneFlow checkSurveyTitleAndScreens[" + ofs.getBooleanValue(Constants.SHP_SHOULD_SHOW_SURVEY, true) + "]");
+        if (ofs.getBooleanValue(Constants.SHP_SHOULD_SHOW_SURVEY, true)) {
             ArrayList<GetSurveyListResponse> slr = ofs.getSurveyList();
             GetSurveyListResponse gslr = null;
             //ArrayList<SurveyScreens> surveyScreens = null;

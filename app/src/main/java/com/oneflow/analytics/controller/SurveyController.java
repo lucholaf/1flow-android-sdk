@@ -90,7 +90,7 @@ public class SurveyController implements MyResponseHandler {
 
     private GetSurveyListResponse checkSurveyTitleAndScreens(List<String> type) {
         OneFlowSHP ofs = new OneFlowSHP(mContext);
-        if (ofs.getBooleanValue(Constants.SHP_SHOULD_SHOW_SURVEY)) {
+        if (ofs.getBooleanValue(Constants.SHP_SHOULD_SHOW_SURVEY,true)) {
             ArrayList<GetSurveyListResponse> slr = ofs.getSurveyList();
             GetSurveyListResponse gslr = null;
             //ArrayList<SurveyScreens> surveyScreens = null;
