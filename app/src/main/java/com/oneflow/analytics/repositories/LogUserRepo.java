@@ -51,7 +51,7 @@ public class LogUserRepo {
                         Helper.v(tag,"OneFlow new Analytic id["+response.body().getResult().getAnalytic_user_id()+"] old Analytic id["+aurr.getAnalytic_user_id()+"]");
                         aurr.setAnalytic_user_id(response.body().getResult().getAnalytic_user_id());
                         ofs.setUserDetails(aurr);
-
+                        Helper.v(tag,"OneFlow new Session id["+response.body().getResult().getSessionId()+"] old Session id["+ofs.getStringValue(Constants.SESSIONDETAIL_IDSHP)+"]");
                         ofs.storeValue(Constants.SESSIONDETAIL_IDSHP,response.body().getResult().getSessionId());
 
                        // mrh.onResponseReceived(hitType,null,0);

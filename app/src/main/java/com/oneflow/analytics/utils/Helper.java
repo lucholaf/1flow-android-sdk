@@ -43,6 +43,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -64,7 +66,7 @@ public class Helper {
     //static boolean debug = commanEnable;
     //static boolean error = false;
     static boolean builds = false;
-    static boolean printLogs = true;
+    static boolean printLogs = false;
     public static String headerKey = "";
 
     public static String gpsProviderInfo;
@@ -305,21 +307,51 @@ public class Helper {
         return cm.getActiveNetworkInfo();
     }
 
-    public static boolean isConnected(Context context){
-        ConnectivityManager mgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = mgr.getActiveNetworkInfo();
+    public static boolean isConnected(Context context) {
+        try {
+            ConnectivityManager mgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = mgr.getActiveNetworkInfo();
 
-        if (netInfo != null) {
-            if (netInfo.isConnected()) {
-                return true;
-            }else {
+            if (netInfo != null) {
+                if (netInfo.isConnected()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
                 return false;
             }
-        } else {
+        } catch (Exception ex) {
             return false;
         }
     }
 
+    public static boolean isInternetAvailable() {
+        v("From Helper", "OneFlow reached at isInternetAvailable");
+        InetAddress[] address = new InetAddress[1];
+        try {
+            Thread th = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        v("From Helper", "OneFlow reached at isInternetAvailable inside thread");
+                        address[0] = InetAddress.getByName("www.google.com");
+                        //return !address.equals("");
+                    } catch (UnknownHostException e) {
+                        v("From Helper", "OneFlow reached at isInternetAvailable UnknownHostException");
+                        // Log error
+                    }
+                }
+            });
+            th.start();
+            th.join();
+            v("From Helper", "OneFlow reached at isInternetAvailable result["+(!address.equals(""))+"]");
+            return !address.equals("");
+        } catch (InterruptedException ie) {
+            v("From Helper", "OneFlow reached at isInternetAvailable ieException");
+        }
+        return false;
+    }
    /* public static boolean isConnected(Context context) {
         boolean connected = false;
         try {
@@ -365,7 +397,8 @@ public class Helper {
         showAlert1(context, titleStr, message, false);
     }
 
-    public static void showAlert1(final Context context, String titleStr, String message, final boolean shouldClose) {//, View.OnClickListener listenter) {
+    public static void showAlert1(final Context context, String titleStr, String message,
+                                  final boolean shouldClose) {//, View.OnClickListener listenter) {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.custom_alert_dialog);
         CustomTextView title = (CustomTextView) dialog.findViewById(R.id.selected_title);
@@ -389,7 +422,8 @@ public class Helper {
         dialog.show();
     }
 
-    public static void showAlertWithIntent(final Context context, String titleStr, String message, final boolean shouldClose, final Intent intent) {//, View.OnClickListener listenter) {
+    public static void showAlertWithIntent(final Context context, String titleStr, String
+            message, final boolean shouldClose, final Intent intent) {//, View.OnClickListener listenter) {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.custom_alert_dialog);
         CustomTextView title = (CustomTextView) dialog.findViewById(R.id.selected_title);
@@ -414,7 +448,8 @@ public class Helper {
         dialog.show();
     }
 
-    public static void showAlertWithIntent2(final Context context, String titleStr, String message, final boolean shouldClose, final Intent intent) {//, View.OnClickListener listenter) {
+    public static void showAlertWithIntent2(final Context context, String titleStr, String
+            message, final boolean shouldClose, final Intent intent) {//, View.OnClickListener listenter) {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.custom_alert_dialog);
         CustomTextView title = (CustomTextView) dialog.findViewById(R.id.selected_title);
@@ -443,7 +478,9 @@ public class Helper {
     }
 
 
-    public static void showAlertWithCancelListener(final Context context, String titleStr, String message, final boolean shouldClose, DialogInterface.OnCancelListener cancelListener) {//, View.OnClickListener listenter) {
+    public static void showAlertWithCancelListener(final Context context, String
+            titleStr, String message, final boolean shouldClose, DialogInterface.
+                                                           OnCancelListener cancelListener) {//, View.OnClickListener listenter) {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.custom_alert_dialog);
         CustomTextView title = (CustomTextView) dialog.findViewById(R.id.selected_title);
@@ -466,7 +503,9 @@ public class Helper {
         dialog.show();
     }
 
-    public static void showAlertWithCancelListener2(final Context context, String titleStr, String message, final boolean shouldClose, DialogInterface.OnCancelListener cancelListener) {//, View.OnClickListener listenter) {
+    public static void showAlertWithCancelListener2(final Context context, String
+            titleStr, String message, final boolean shouldClose, DialogInterface.
+                                                            OnCancelListener cancelListener) {//, View.OnClickListener listenter) {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.custom_alert_dialog);
         CustomTextView title = (CustomTextView) dialog.findViewById(R.id.selected_title);
@@ -489,7 +528,8 @@ public class Helper {
         dialog.show();
     }
 
-    public static void showAlertClose(final Context context, String titleStr, String message, final boolean shouldClose) {//, View.OnClickListener listenter) {
+    public static void showAlertClose(final Context context, String titleStr, String message,
+                                      final boolean shouldClose) {//, View.OnClickListener listenter) {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.custom_alert_dialog);
         CustomTextView title = (CustomTextView) dialog.findViewById(R.id.selected_title);

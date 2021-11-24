@@ -64,7 +64,7 @@ public class SurveyActivity extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.survey_view);
 
-
+        Helper.v(tag,"OneFlow reached at surveyActivity");
         pagePositionPBar = (ProgressBar)findViewById(R.id.pbar);
         closeBtn = (ImageView) findViewById(R.id.close_btn_image_view);
         slider = (View) findViewById(R.id.slider);
@@ -120,10 +120,14 @@ public class SurveyActivity extends AppCompatActivity {
         }
         //styleColor=String.valueOf(getResources().getColor(R.color.colorPrimaryDark));
         Helper.v(tag,"OneFlow color after["+themeColor+"]");
-
-        pagePositionPBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(themeColor)));
-        //pagePositionPBar.getProgressDrawable().setColorFilter(Color.parseColor(styleColor.toString()), PorterDuff.Mode.DARKEN);
-
+        try {
+            pagePositionPBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(themeColor)));
+            //pagePositionPBar.getProgressDrawable().setColorFilter(Color.parseColor(styleColor.toString()), PorterDuff.Mode.DARKEN);
+        }catch (NumberFormatException nfe){
+            Helper.e(tag,"OneFlow color number format exception after["+nfe.getMessage()+"]");
+            themeColor = "#"+Integer.toHexString(ContextCompat.getColor(this,R.color.colorPrimaryDark));
+            pagePositionPBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(themeColor)));
+        }
         surveyResponseChildren = new ArrayList<>();
         slider.setOnTouchListener(sliderTouchListener);
         sliderLayout.setOnTouchListener(sliderTouchListener);
@@ -319,7 +323,7 @@ public class SurveyActivity extends AppCompatActivity {
         //on close of this page considering survey is over, so submit the respones to api
         if(surveyResponseChildren.size()>0) {
             Helper.v(tag,"OneFlow input found submitting");
-            prepareAndSubmitUserResposne();
+            //prepareAndSubmitUserResposne();
         }else{
             Helper.v(tag,"OneFlow no input no submit");
         }

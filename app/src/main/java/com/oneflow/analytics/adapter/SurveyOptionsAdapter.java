@@ -111,7 +111,27 @@ public class SurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.surveyInputs = surveyInputs;
         this.themeColor = themeColor;
         Helper.v(tag, "OneFlow theme color ["+themeColor+"]input type [" + surveyInputs.getInput_type() + "]childSize[" + new Gson().toJson(surveyInputs.getRatingsList()) + "]");
-        if (surveyInputs.getInput_type().contains("rating")) {
+        if (surveyInputs.getInput_type().equalsIgnoreCase("rating-emojis")) {
+            viewType = 4;
+            listSize = surveyInputs.getRatingsList().size();
+        }
+        else if (surveyInputs.getInput_type().equalsIgnoreCase("rating") || surveyInputs.getInput_type().equalsIgnoreCase("rating-5-star")) {
+            viewType = 5;
+            listSize = surveyInputs.getRatingsList().size();
+        } else if (surveyInputs.getInput_type().equalsIgnoreCase("nps") || surveyInputs.getInput_type().equalsIgnoreCase("rating-numerical")) {
+            viewType = 0;
+            listSize = surveyInputs.getRatingsList().size();
+        } else if (surveyInputs.getInput_type().equalsIgnoreCase("mcq")) {
+            listSize = surveyInputs.getChoices().size();
+            viewType = 1;
+        } else if (surveyInputs.getInput_type().equalsIgnoreCase("checkbox")) {
+            listSize = surveyInputs.getChoices().size();
+            viewType = 3;
+        } else if (surveyInputs.getInput_type().equalsIgnoreCase("text")) {
+            listSize = surveyInputs.getChoices().size();
+            viewType = 2;
+        }
+       /* if (surveyInputs.getInput_type().contains("rating")) {
             if (surveyInputs.getEmoji()) {
                 viewType = 4;
             } else if (surveyInputs.getStars()) {
@@ -132,7 +152,7 @@ public class SurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.View
         } else if (surveyInputs.getInput_type().equalsIgnoreCase("text")) {
             listSize = surveyInputs.getChoices().size();
             viewType = 2;
-        }
+        }*/
     }
 
 

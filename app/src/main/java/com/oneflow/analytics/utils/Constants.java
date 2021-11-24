@@ -19,7 +19,7 @@ public interface Constants {
     String SHP_SURVEYSTART = "survey_starts";
     String SHP_ONEFLOW_CONFTIMING = "conf_timing";
     String SHP_SURVEY_RUNNING = "survey_running";
-
+    String SHP_SHOULD_SHOW_SURVEY = "should_show_survey";
 
     String os = "android";
 

@@ -89,38 +89,43 @@ public class SurveyController implements MyResponseHandler {
     }
 
     private GetSurveyListResponse checkSurveyTitleAndScreens(List<String> type) {
-        ArrayList<GetSurveyListResponse> slr = new OneFlowSHP(mContext).getSurveyList();
-        GetSurveyListResponse gslr = null;
-        //ArrayList<SurveyScreens> surveyScreens = null;
+        OneFlowSHP ofs = new OneFlowSHP(mContext);
+        if (ofs.getBooleanValue(Constants.SHP_SHOULD_SHOW_SURVEY)) {
+            ArrayList<GetSurveyListResponse> slr = ofs.getSurveyList();
+            GetSurveyListResponse gslr = null;
+            //ArrayList<SurveyScreens> surveyScreens = null;
 
-        int counter = 0;
-        String tag = this.getClass().getName();
+            int counter = 0;
+            String tag = this.getClass().getName();
 
-        if (slr != null) {
-            Helper.v(tag, "OneFlow list size[" + slr.size() + "]type[" + type + "]");
-            for (GetSurveyListResponse item : slr) {
-                Helper.v(tag, "OneFlow list size 0 [" + item.getTrigger_event_name() + "]type[" + type + "]");
+            if (slr != null) {
+                Helper.v(tag, "OneFlow list size[" + slr.size() + "]type[" + type + "]");
+                for (GetSurveyListResponse item : slr) {
+                    Helper.v(tag, "OneFlow list size 0 [" + item.getTrigger_event_name() + "]type[" + type + "]");
 
-                boolean recordFound = false;
-                for( String name : type) {
+                    boolean recordFound = false;
+                    for (String name : type) {
 
-                    if (item.getTrigger_event_name().contains(name)) {
-                        gslr = item;
-                        recordFound = true;
-                        Helper.v("SurveyController","OneFlow survey from against["+name+"]");
+                        if (item.getTrigger_event_name().contains(name)) {
+                            gslr = item;
+                            recordFound = true;
+                            Helper.v("SurveyController", "OneFlow survey from against[" + name + "]");
 
-                        break;
+                            break;
+                        }
                     }
+                    if (recordFound) break;
                 }
-                if(recordFound)break;
-            }
-        } /*else {
+            } /*else {
             Helper.makeText(mContext, "Configure project first", 1);
         }*/
 
 
-        //retake survey check not required
+            //retake survey check not required
 
-        return gslr;
+            return gslr;
+        }else{
+            return null;
+        }
     }
 }

@@ -272,7 +272,6 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
                 surveyScreens.getInput().setMax_val("10");
             }
 
-
             surveyScreens.getInput().setRatingsList(prepareRatingsList(surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
         } else {
             ratingsNotLike.setVisibility(View.GONE);
@@ -281,9 +280,11 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
         Helper.v(tag, "OneFlow input type min after[" + surveyScreens.getInput().getMin_val() + "][" + surveyScreens.getInput().getMax_val() + "]");
 
         RecyclerView.LayoutManager mLayoutManager = null;
-        if (surveyScreens.getInput().getInput_type().contains("rating") || surveyScreens.getInput().getInput_type().contains("nps")) {
+        if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("nps")) {
             Helper.v(tag, "OneFlow gridLayout set");
             mLayoutManager = new GridLayoutManager(getActivity(), (surveyScreens.getInput().getMax_val() + 1) - surveyScreens.getInput().getMin_val());
+        } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")) {
+            mLayoutManager = new GridLayoutManager(getActivity(), 5);
         } else {
             if (surveyScreens.getInput().getChoices() != null) {
                 if (surveyScreens.getInput().getChoices().size() > 0) {
@@ -383,7 +384,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
                             allSelections = allSelections.replace(" ", "");
                             Helper.v(tag, "OneFlow allselection[" + allSelections + "]");
                             sa.addUserResponseToList(surveyScreens.get_id(), null, allSelections);
-                        }else{
+                        } else {
                             sa.initFragment();
                         }
                     } else {
@@ -394,16 +395,17 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
         } else {
 
             Helper.v(tag, "OneFlow inputtype[" + surveyScreens.getInput().getInput_type() + "]isCheckbox[" + surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox") + "]ratings[" + surveyScreens.getInput().getInput_type().contains("rating") + "]isStar[" + surveyScreens.getInput().getStars() + "]");
-            if (surveyScreens.getInput().getInput_type().contains("rating")) {
+            if (surveyScreens.getInput().getInput_type().contains("rating-emojis")) {
                 int position = (int) v.getTag();
-
                 Helper.v(tag, "OneFlow inputType[" + surveyScreens.getInput().getStars() + "]position[" + position + "]");
-                if (surveyScreens.getInput().getStars()) {
-                    setSelected(position, false);
-                } else {
-                    setSelected(position, true);
-                }
-            } else if (surveyScreens.getInput().getInput_type().contains("nps")) {
+                setSelected(position, true);
+
+            } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")) {
+                int position = (int) v.getTag();
+                Helper.v(tag, "OneFlow inputType[" + surveyScreens.getInput().getStars() + "]position[" + position + "]");
+                setSelected(position, false);
+
+            } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("nps") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical")) {
                 int position = (int) v.getTag();
                 setSelected(position, true);
             } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("mcq")) {
@@ -411,11 +413,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
                 RadioButton rb = (RadioButton) v;
                 String position = (String) v.getTag();
                 Helper.v(tag, "OneFlow mcq clicked Position[" + position + "]");
-                    /*if (rb.isChecked()) {
-                        ((View) rb.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_blue);
-                    } else {
-                        ((View) rb.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_gray);
-                    }*/
+
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
