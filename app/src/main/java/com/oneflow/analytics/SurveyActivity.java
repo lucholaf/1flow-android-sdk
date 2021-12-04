@@ -334,7 +334,7 @@ public class SurveyActivity extends AppCompatActivity {
         //on close of this page considering survey is over, so submit the respones to api
         if(surveyResponseChildren.size()>0) {
             Helper.v(tag,"OneFlow input found submitting");
-            //prepareAndSubmitUserResposne();
+            prepareAndSubmitUserResposne();
         }else{
             Helper.v(tag,"OneFlow no input no submit");
         }
