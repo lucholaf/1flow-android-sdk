@@ -27,8 +27,8 @@ public class AddUserRepo {
             Call<GenericResponse<AddUserResultResponse>> responseCall = null;
 
 
-
-            responseCall = connectAPI.addUserComman(new OneFlowSHP(context).getStringValue(Constants.APPIDSHP),aur);
+            String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/project-analytics-user/incoming_webhook/add-user";
+            responseCall = connectAPI.addUserComman(new OneFlowSHP(context).getStringValue(Constants.APPIDSHP),aur,url);
 
             responseCall.enqueue(new Callback<GenericResponse<AddUserResultResponse>>() {
                 @Override

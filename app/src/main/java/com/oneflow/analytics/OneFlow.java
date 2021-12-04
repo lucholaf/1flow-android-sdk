@@ -463,7 +463,6 @@ public class OneFlow implements MyResponseHandler {
                 TelephonyManager telephonyManager = ((TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE));
                 String operatorName = telephonyManager.getNetworkOperatorName().isEmpty() ? "Jio" : telephonyManager.getNetworkOperatorName();
 
-
                 WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
                 Display display = wm.getDefaultDisplay();
                 DisplayMetrics metrics = new DisplayMetrics();
@@ -520,7 +519,7 @@ public class OneFlow implements MyResponseHandler {
                 csr.setLibrary_version(String.valueOf(1));
                 csr.setApi_endpoint("session");
                 csr.setApi_version("2021-06-15");
-
+                csr.setApp_version(Helper.getAppVersion(mContext));
 
                 recordEvents(Constants.AUTOEVENT_SESSIONSTART, null);
 

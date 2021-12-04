@@ -2,10 +2,12 @@ package com.oneflow.analytics;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.DragEvent;
 import android.view.Gravity;
@@ -54,7 +56,7 @@ public class SurveyActivity extends AppCompatActivity {
     FrameLayout fragmentView;
 
     String tag = this.getClass().getName();
-
+    String triggerEventName = "";
     public ArrayList<SurveyUserResponseChild> surveyResponseChildren;
     public ArrayList<SurveyScreens> screens;
 
@@ -73,9 +75,18 @@ public class SurveyActivity extends AppCompatActivity {
         fragmentView = (FrameLayout) findViewById(R.id.fragment_view);
 
         Window window = this.getWindow();
+
         WindowManager.LayoutParams wlp = window.getAttributes();
+        Helper.v(tag,"OneFlow Window size width["+window.getAttributes().width+"]height["+window.getAttributes().height+"]");
+
+        double[] data = Helper.getScreenSize(this);
+
         wlp.gravity = Gravity.BOTTOM;
-        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        if(data[0]>3){
+            wlp.width = 1000;
+        }else {
+            wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        }
         wlp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         wlp.flags &= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
 
@@ -87,7 +98,7 @@ public class SurveyActivity extends AppCompatActivity {
         GetSurveyListResponse surveyItem = (GetSurveyListResponse) this.getIntent().getSerializableExtra("SurveyType");
 
         screens = surveyItem.getScreens();//checkSurveyTitleAndScreens(surveyType);
-
+        triggerEventName = surveyItem.getTrigger_event_name();
        // Helper.makeText(getApplicationContext(),"Size ["+screens.size()+"]",1);
 
         selectedSurveyId = surveyItem.get_id();
@@ -323,7 +334,7 @@ public class SurveyActivity extends AppCompatActivity {
         //on close of this page considering survey is over, so submit the respones to api
         if(surveyResponseChildren.size()>0) {
             Helper.v(tag,"OneFlow input found submitting");
-            prepareAndSubmitUserResposne();
+            //prepareAndSubmitUserResposne();
         }else{
             Helper.v(tag,"OneFlow no input no submit");
         }
@@ -370,6 +381,8 @@ public class SurveyActivity extends AppCompatActivity {
         OneFlowSHP ofs = new OneFlowSHP(this);
         ofs.storeValue(Constants.SHP_SURVEY_RUNNING,false);
         SurveyUserInput sur = new SurveyUserInput();
+        sur.setMode("prod");
+        sur.setTrigger_event(triggerEventName);
         sur.setAnswers(surveyResponseChildren);
         sur.setOs(Constants.os);
         sur.setAnalytic_user_id(ofs.getUserDetails().getAnalytic_user_id());

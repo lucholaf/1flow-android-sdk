@@ -35,10 +35,35 @@ public class SurveyUserInput {
     @SerializedName("os")
     private String os;
 
+    @ColumnInfo(name = "mode")
+    @SerializedName("mode")
+    private String mode;
+
+    @ColumnInfo(name = "trigger_event")
+    @SerializedName("trigger_event")
+    private String trigger_event;
+
     @TypeConverters(SurveyUserResponseChildConverter.class)
     @ColumnInfo(name = "answers")
     @SerializedName("answers")
     private ArrayList<SurveyUserResponseChild> answers;
+
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+
+    public String getTrigger_event() {
+        return trigger_event;
+    }
+
+    public void setTrigger_event(String trigger_event) {
+        this.trigger_event = trigger_event;
+    }
 
     public Integer get_id() {
         return _id;

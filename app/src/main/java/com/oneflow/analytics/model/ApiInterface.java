@@ -25,20 +25,20 @@ import retrofit2.http.Url;
 
 public interface ApiInterface {
 
-    @POST("v1/2021-06-15/project_users")
-    Call<GenericResponse<AddUserResultResponse>> addUserComman(@Header("one_flow_key") String headerKey,@Body AddUserRequest aur);
+    @POST//("v1/2021-06-15/project_users")
+    Call<GenericResponse<AddUserResultResponse>> addUserComman(@Header("one_flow_key") String headerKey,@Body AddUserRequest aur, @Url String url);
 
-    @POST("v1/2021-06-15/sessions")
-    Call<GenericResponse<CreateSessionResponse>> createSession(@Header("one_flow_key") String headerKey,@Body CreateSessionRequest aur);
+    @POST//("v1/2021-06-15/sessions")
+    Call<GenericResponse<CreateSessionResponse>> createSession(@Header("one_flow_key") String headerKey,@Body CreateSessionRequest aur, @Url String url);
 
-    @GET("v1/2021-06-15/survey")
-    Call<GenericResponse<ArrayList<GetSurveyListResponse>>> getSurvey(@Header("one_flow_key") String headerKey,@Query("platform") String platform);
+    @GET//("v1/2021-06-15/survey")
+    Call<GenericResponse<ArrayList<GetSurveyListResponse>>> getSurvey(@Header("one_flow_key") String headerKey,@Url String url, @Query("platform") String platform, @Query("mode") String mode);
 
     @GET("v1/2021-06-15/location")
     Call<LocationResponse> getLocation(@Header("one_flow_key") String headerKey);
 
-    @POST("v1/2021-06-15/survey-response")
-    Call<GenericResponse<String>> submitSurveyUserResponse(@Header("one_flow_key") String headerKey,@Body SurveyUserInput aur);
+    @POST//("v1/2021-06-15/survey-response")
+    Call<GenericResponse<String>> submitSurveyUserResponse(@Header("one_flow_key") String headerKey,@Body SurveyUserInput aur, @Url String url);
 
     ///@POST("v1/2021-06-15/events/bulk")
     @POST  //("https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/events-bulk/incoming_webhook/insert-events")
@@ -47,8 +47,8 @@ public interface ApiInterface {
     @GET("v1/2021-06-15/keys/{project_id}")
     Call<String> fetchProjectDetails(@Header("one_flow_key") String headerKey,@Path("project_id") String projectKey);
 
-    @POST("v1/2021-06-15/project_users/log_user")
-    Call<GenericResponse<LogUserResponse>> logUser(@Header("one_flow_key") String headerKey, @Body LogUserRequest request);
+    @POST//("v1/2021-06-15/project_users/log_user")
+    Call<GenericResponse<LogUserResponse>> logUser(@Header("one_flow_key") String headerKey, @Body LogUserRequest request, @Url String url);
 
 
 

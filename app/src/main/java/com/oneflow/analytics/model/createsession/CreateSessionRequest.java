@@ -1,13 +1,14 @@
 package com.oneflow.analytics.model.createsession;
 
 import com.google.gson.annotations.SerializedName;
+import com.oneflow.analytics.model.BaseModel;
 import com.oneflow.analytics.model.Connectivity;
 import com.oneflow.analytics.model.adduser.DeviceDetails;
 import com.oneflow.analytics.model.adduser.LocationDetails;
 
 import java.io.Serializable;
 
-public class CreateSessionRequest implements Serializable {
+public class CreateSessionRequest extends BaseModel {
 
     @SerializedName("analytic_user_id")
     private String analytic_user_id;

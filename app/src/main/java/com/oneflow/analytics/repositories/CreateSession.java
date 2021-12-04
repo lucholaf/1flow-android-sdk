@@ -23,8 +23,8 @@ public class CreateSession {
         ApiInterface connectAPI = RetroBaseService.getClient().create(ApiInterface.class);
         try {
             Call<GenericResponse<CreateSessionResponse>> responseCall = null;
-
-            responseCall = connectAPI.createSession(new OneFlowSHP(context).getStringValue(Constants.APPIDSHP),csr);
+            String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/sessions/incoming_webhook/add_sessions";
+            responseCall = connectAPI.createSession(new OneFlowSHP(context).getStringValue(Constants.APPIDSHP),csr,url);
 
             responseCall.enqueue(new Callback<GenericResponse<CreateSessionResponse>>() {
                 @Override

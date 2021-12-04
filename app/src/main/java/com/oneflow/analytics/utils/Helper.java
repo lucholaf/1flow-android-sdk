@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -66,7 +67,7 @@ public class Helper {
     //static boolean debug = commanEnable;
     //static boolean error = false;
     static boolean builds = false;
-    static boolean printLogs = false;
+    static boolean printLogs = true;
     public static String headerKey = "";
 
     public static String gpsProviderInfo;
@@ -791,7 +792,25 @@ public class Helper {
     }
 
     private String SD_CARD_PATH = "/sdcard/OneFlow/";
+    public static double[] getScreenSize(Activity context){
 
+        double []data = new double[3];
+        DisplayMetrics dm = new DisplayMetrics();
 
+        context.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width=dm.widthPixels;
+        int height=dm.heightPixels;
+        double wi=(double)width/(double)dm.xdpi;
+        double hi=(double)height/(double)dm.ydpi;
+        double x = Math.pow(wi,2);
+        double y = Math.pow(hi,2);
+        double screenInches = Math.sqrt(x+y);
+
+        data[0] = wi;
+        data[1] = hi;
+        data[2] = screenInches;
+        v("dummy","OneFlow Window screenSize["+Math.round(screenInches)+"]width["+wi+"]height["+hi+"]");
+        return data;
+    }
 }
 

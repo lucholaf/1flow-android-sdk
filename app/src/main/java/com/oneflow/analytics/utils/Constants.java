@@ -2,6 +2,7 @@ package com.oneflow.analytics.utils;
 
 public interface Constants {
 
+
     String DBNAME = "one_flow_db";
     String APPKEYSHP = "one_flow_config_key";
     String APPIDSHP = "one_flow_app_id_key";

@@ -31,8 +31,8 @@ public class Survey {
         ApiInterface connectAPI = RetroBaseService.getClient().create(ApiInterface.class);
         try {
             Call<GenericResponse<ArrayList<GetSurveyListResponse>>> responseCall = null;
-
-            responseCall = connectAPI.getSurvey(new OneFlowSHP(context).getStringValue(Constants.APPIDSHP),"android");
+            String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys";
+            responseCall = connectAPI.getSurvey(new OneFlowSHP(context).getStringValue(Constants.APPIDSHP), url,"android", "prod");
 
             responseCall.enqueue(new Callback<GenericResponse<ArrayList<GetSurveyListResponse>>>() {
                 @Override
@@ -49,10 +49,10 @@ public class Survey {
                         Intent intent = new Intent("survey_list_fetched");
                         context.sendBroadcast(intent);
 
-                        mrh.onResponseReceived(type,null,0);
+                        mrh.onResponseReceived(type, null, 0);
 
-                    }else{
-                        Helper.v(tag,"OneFlow survey list not fetched isSuccessfull false");
+                    } else {
+                        Helper.v(tag, "OneFlow survey list not fetched isSuccessfull false");
                         //TempResponseModel trm = new Gson().fromJson(response.body())
                     }
 
@@ -67,15 +67,16 @@ public class Survey {
                 }
             });
         } catch (Exception ex) {
-                ex.printStackTrace();
+            ex.printStackTrace();
         }
     }
+
     public static void submitUserResponse(Context context, SurveyUserInput sur) {
         ApiInterface connectAPI = RetroBaseService.getClient().create(ApiInterface.class);
         try {
             Call<GenericResponse<String>> responseCall = null;
-
-            responseCall = connectAPI.submitSurveyUserResponse(new OneFlowSHP(context).getStringValue(Constants.APPIDSHP),sur);
+            String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/add_survey_response";
+            responseCall = connectAPI.submitSurveyUserResponse(new OneFlowSHP(context).getStringValue(Constants.APPIDSHP), sur,url);
 
             responseCall.enqueue(new Callback<GenericResponse<String>>() {
                 @Override
@@ -126,8 +127,8 @@ public class Survey {
         ApiInterface connectAPI = RetroBaseService.getClient().create(ApiInterface.class);
         try {
             Call<GenericResponse<String>> responseCall = null;
-
-            responseCall = connectAPI.submitSurveyUserResponse(new OneFlowSHP(context).getStringValue(Constants.APPIDSHP),sur);
+            String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/add_survey_response";
+            responseCall = connectAPI.submitSurveyUserResponse(new OneFlowSHP(context).getStringValue(Constants.APPIDSHP), sur,url);
 
             responseCall.enqueue(new Callback<GenericResponse<String>>() {
                 @Override
@@ -143,7 +144,7 @@ public class Survey {
                     if (response.isSuccessful()) {
                         Helper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
                         Helper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
-                        mrh.onResponseReceived(type,sur,0);
+                        mrh.onResponseReceived(type, sur, 0);
                         /*AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {
