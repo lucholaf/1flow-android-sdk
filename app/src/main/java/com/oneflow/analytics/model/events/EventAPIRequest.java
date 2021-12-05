@@ -1,24 +1,17 @@
 package com.oneflow.analytics.model.events;
 
 import com.google.gson.annotations.SerializedName;
+import com.oneflow.analytics.model.BaseModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class EventAPIRequest implements Serializable {
+public class EventAPIRequest extends BaseModel {
 
     @SerializedName("events")
     ArrayList<RecordEventsTabToAPI> events;
     @SerializedName("session_id") String sessionId;
-    @SerializedName("mode") String mode;
 
-    public String getMode() {
-        return mode;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
 
     public ArrayList<RecordEventsTabToAPI> getEvents() {
         return events;
