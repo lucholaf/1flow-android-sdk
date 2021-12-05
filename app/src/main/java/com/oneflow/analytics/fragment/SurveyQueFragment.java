@@ -94,7 +94,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
                     animateViews[i].startAnimation(annim[i]);
 
                 }
-            }, 500);
+            }, 100);
 
             animation1.setAnimationListener(new Animation.AnimationListener() {
                 @Override
@@ -242,21 +242,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
                 ratingsNotLike.setVisibility(View.GONE);
                 ratingsFullLike.setVisibility(View.GONE);
             }
-        }/*else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("mcq")) {
-            if (surveyScreens.getInput() != null) {
-
-                surveyScreens.getInput().setRatingsList(prepareRatingsList(surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
-                ratingsNotLike.setVisibility(View.GONE);
-                ratingsFullLike.setVisibility(View.GONE);
-            }
-        }else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
-            if (surveyScreens.getInput() != null) {
-
-                surveyScreens.getInput().setRatingsList(prepareRatingsList(surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
-                ratingsNotLike.setVisibility(View.GONE);
-                ratingsFullLike.setVisibility(View.GONE);
-            }
-        }*/ else if (surveyScreens.getInput().getInput_type().contains("rating-emojis")) {
+        }else if (surveyScreens.getInput().getInput_type().contains("rating-emojis")) {
             if (surveyScreens.getInput() != null) {
 
                 surveyScreens.getInput().setRatingsList(prepareRatingsList(1, 5));//surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
