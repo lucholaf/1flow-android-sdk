@@ -2,12 +2,10 @@ package com.oneflow.analytics;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.DragEvent;
 import android.view.Gravity;
@@ -339,7 +337,7 @@ public class SurveyActivity extends AppCompatActivity {
             Helper.v(tag,"OneFlow no input no submit");
         }
         Helper.v(tag,"OneFlow onPause called");
-        overridePendingTransition(0,R.anim.slide_down_dialog);
+        overridePendingTransition(0,R.anim.slide_down_dialog_sdk);
         super.onPause();
     }
 

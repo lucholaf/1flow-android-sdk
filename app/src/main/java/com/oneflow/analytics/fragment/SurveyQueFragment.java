@@ -1,7 +1,6 @@
 package com.oneflow.analytics.fragment;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.ColorUtils;
-import androidx.core.widget.CompoundButtonCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -94,7 +92,7 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
                     animateViews[i].startAnimation(annim[i]);
 
                 }
-            }, 100);
+            }, 1000);
 
             animation1.setAnimationListener(new Animation.AnimationListener() {
                 @Override
@@ -198,11 +196,11 @@ public class SurveyQueFragment extends Fragment implements View.OnClickListener 
         Helper.v(tag, "OneAxis list desc[" + surveyScreens.getMessage() + "]");
 
 
-        animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
-        animation2 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
-        animation3 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
-        animation4 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
-        animationIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+        animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
+        animation2 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
+        animation3 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
+        animation4 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
+        animationIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
         //animationOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
 
         surveyTitle.setText(surveyScreens.getTitle());

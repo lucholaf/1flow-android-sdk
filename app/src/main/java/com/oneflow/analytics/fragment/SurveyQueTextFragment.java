@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -77,7 +76,7 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
             View[] animateViews = new View[]{surveyTitle, surveyDescription};
 
 
-            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
 
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
@@ -113,10 +112,10 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
         View view = inflater.inflate(R.layout.survey_que_text_fragment, container, false);
         ButterKnife.bind(this, view);
 
-        animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
-        animation2 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
-        animation3 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
-        animation4 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+        animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
+        animation2 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
+        animation3 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
+        animation4 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
 
         surveyTitle = (CustomTextViewBold) view.findViewById(R.id.survey_title);
         submitButton = (CustomTextViewBold) view.findViewById(R.id.submit_btn);
@@ -127,7 +126,7 @@ public class SurveyQueTextFragment extends Fragment implements View.OnClickListe
 
         submitButtonBeautification();
         Helper.v(tag, "OneAxis list data[" + surveyScreens + "]");
-        animationIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+        animationIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
         surveyTitle.setText(surveyScreens.getTitle());
         if (surveyScreens.getMessage() != null) {
             surveyDescription.setText(surveyScreens.getMessage());

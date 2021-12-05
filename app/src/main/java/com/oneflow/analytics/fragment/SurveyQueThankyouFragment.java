@@ -124,7 +124,7 @@ public class SurveyQueThankyouFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in);
+            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
