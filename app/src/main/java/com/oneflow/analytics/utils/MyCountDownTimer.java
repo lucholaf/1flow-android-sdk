@@ -76,18 +76,15 @@ public class MyCountDownTimer extends CountDownTimer implements MyResponseHandle
                     }
 
 
-                    if(retListToAPI.size()>0) {
+
                         if (!new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP).equalsIgnoreCase("NA")) {
                             EventAPIRequest ear = new EventAPIRequest();
                             ear.setSessionId(new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP));
                             ear.setEvents(retListToAPI);
-                            ear.setMode("prod");
                             Helper.v("FeedbackController", "OneFlow fetchEventsFromDB request prepared");
                             EventAPIRepo.sendLogsToApi(mContext, ear, this, Constants.ApiHitType.sendEventsToAPI, ids);
                         }
-                    }else{
-                        Helper.e("OneFlow","OneFlow no event available");
-                    }
+
                 }
                 break;
             case sendEventsToAPI:

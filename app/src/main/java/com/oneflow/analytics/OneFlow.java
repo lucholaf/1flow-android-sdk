@@ -67,10 +67,10 @@ public class OneFlow implements MyResponseHandler {
 
     public static void shouldShowSurvey(Boolean shouldShow) {
         try {
-            Helper.v("OneFlow", "OneFlow shouldShow1["+shouldShow+"]");
+            Helper.v("OneFlow", "OneFlow shouldShow1[" + shouldShow + "]");
             new OneFlowSHP(mContext).storeValue(Constants.SHP_SHOULD_SHOW_SURVEY, shouldShow);
         } catch (Exception ex) {
-            Helper.e("OneFlow", "OneFlow error showSurvey1["+ex.getMessage()+"]");
+            Helper.e("OneFlow", "OneFlow error showSurvey1[" + ex.getMessage() + "]");
         }
     }
 
@@ -92,7 +92,6 @@ public class OneFlow implements MyResponseHandler {
 
                 Helper.v("OneFlow", "OneFlow configure called");
                 ofs.storeValue(Constants.APPIDSHP, projectKey);
-
 
 
                 if (Helper.isConnected(mContext)) {
@@ -416,24 +415,22 @@ public class OneFlow implements MyResponseHandler {
                 ArrayList<RecordEventsTab> list = (ArrayList<RecordEventsTab>) obj;
                 Helper.v("FeedbackController", "OneFlow fetchEventsFromDB list received size[" + list.size() + "]");
                 //Preparing list to send api
+                if (list.size() > 0) {
+                    Integer[] ids = new Integer[list.size()];
+                    int i = 0;
+                    ArrayList<RecordEventsTabToAPI> retListToAPI = new ArrayList<>();
+                    RecordEventsTabToAPI retMain;
+                    for (RecordEventsTab ret : list) {
+                        retMain = new RecordEventsTabToAPI();
+                        retMain.setEventName(ret.getEventName());
+                        retMain.setTime(ret.getTime());
 
-                Integer[] ids = new Integer[list.size()];
-                int i = 0;
-                ArrayList<RecordEventsTabToAPI> retListToAPI = new ArrayList<>();
-                RecordEventsTabToAPI retMain;
-                for (RecordEventsTab ret : list) {
-                    retMain = new RecordEventsTabToAPI();
-                    retMain.setEventName(ret.getEventName());
-                    retMain.setTime(ret.getTime());
+                        //retMain.setDataMap(ret.getDataMap());
+                        retListToAPI.add(retMain);
 
-                    //retMain.setDataMap(ret.getDataMap());
-                    retListToAPI.add(retMain);
+                        ids[i++] = ret.getId();
+                    }
 
-                    ids[i++] = ret.getId();
-                }
-
-
-                if(retListToAPI.size()>0) {
                     if (!new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP).equalsIgnoreCase("NA")) {
                         EventAPIRequest ear = new EventAPIRequest();
                         ear.setSessionId(new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP));
@@ -441,8 +438,8 @@ public class OneFlow implements MyResponseHandler {
                         Helper.v("FeedbackController", "OneFlow fetchEventsFromDB request prepared");
                         EventAPIRepo.sendLogsToApi(mContext, ear, fc, Constants.ApiHitType.sendEventsToAPI, ids);
                     }
-                }else{
-                    Helper.e("OneFlow","OneFlow No event available");
+                } else {
+                    Helper.e("OneFlow", "OneFlow No event available");
                 }
                 break;
             case sendEventsToAPI:
