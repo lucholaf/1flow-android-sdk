@@ -30,11 +30,13 @@ import com.oneflow.analytics.model.events.RecordEventsTabToAPI;
 import com.oneflow.analytics.model.location.LocationResponse;
 import com.oneflow.analytics.model.loguser.LogUserRequest;
 import com.oneflow.analytics.model.survey.GetSurveyListResponse;
+import com.oneflow.analytics.model.survey.SurveyUserInput;
 import com.oneflow.analytics.repositories.AddUserRepo;
 import com.oneflow.analytics.repositories.CreateSession;
 import com.oneflow.analytics.repositories.CurrentLocation;
 import com.oneflow.analytics.repositories.EventAPIRepo;
 import com.oneflow.analytics.repositories.EventDBRepo;
+import com.oneflow.analytics.repositories.LogUserDBRepo;
 import com.oneflow.analytics.repositories.LogUserRepo;
 import com.oneflow.analytics.repositories.ProjectDetails;
 import com.oneflow.analytics.sdkdb.OneFlowSHP;
@@ -221,36 +223,8 @@ public class OneFlow implements MyResponseHandler {
 
 
                 //Checking if any survey available under coming event.
-                GetSurveyListResponse surveyItem = new OneFlow(mContext).checkSurveyTitleAndScreens(eventName);
-                Helper.v("FeedbackController", "OneFlow recordEvents surveyItem[" + surveyItem + "]");
-                if (surveyItem != null) {
+                new OneFlow(mContext).checkSurveyTitleAndScreensInBackground(Constants.ApiHitType.checkResurveyNSubmission, eventName);
 
-                    OneFlowSHP ofs = new OneFlowSHP(mContext);
-
-                    if (surveyItem.getScreens() != null) {
-                        Long lastHit = ofs.getLongValue(Constants.SHP_SURVEYSTART);
-                        Long diff = 100l; // set default value 100 for first time
-                        Long currentTime = Calendar.getInstance().getTimeInMillis();
-                        if (lastHit > 0) {
-                            diff = (currentTime - lastHit) / 1000;
-                        }
-                        Helper.v("OneFlow", "OneFlow recordEvents diff [" + diff + "]currentTime[" + currentTime + "]lastHit[" + lastHit + "]size[" + surveyItem.getScreens().size() + "]");
-                        //if (diff > 3) {
-                        if (surveyItem.getScreens().size() > 0) {
-                            Helper.v("OneFlow", "OneFlow recordEvents running survey[" + (!ofs.getBooleanValue(Constants.SHP_SURVEY_RUNNING, false)) + "]");
-                            if (!ofs.getBooleanValue(Constants.SHP_SURVEY_RUNNING, false)) {
-                                ofs.storeValue(Constants.SHP_SURVEY_RUNNING, true);
-                                ofs.storeValue(Constants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
-                                Intent intent = new Intent(mContext.getApplicationContext(), SurveyActivity.class);
-                                //intent.setType("plain/text");
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
-                                mContext.getApplicationContext().startActivity(intent);
-                            }
-                        }
-                        //}
-                    }
-                }
             } else {
                 Helper.v("OneFlow", "OneFlow null context for event");
             }
@@ -261,16 +235,19 @@ public class OneFlow implements MyResponseHandler {
 
     public static void logUser(String uniqueId, HashMap<String, String> mapValue) {
         if (Helper.isConnected(mContext)) {
-            Helper.v("OneFlow", "OneFlow logUser called");
+
             AddUserResultResponse aurr = new OneFlowSHP(mContext).getUserDetails();
             if (aurr != null) {
+                Helper.v("OneFlow", "OneFlow logUser data stored");
                 LogUserRequest lur = new LogUserRequest();
                 lur.setSystem_id(uniqueId);
                 lur.setAnonymous_user_id(new OneFlowSHP(mContext).getUserDetails().getAnalytic_user_id());
                 lur.setParameters(mapValue);
                 lur.setSession_id(new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP));
-                LogUserRepo.logUser(lur, mContext, null, Constants.ApiHitType.logUser);
+                new OneFlowSHP(mContext).setLogUserRequest(lur);
+                //
             }
+            sendEventsToApi(mContext);
         }
     }
 
@@ -329,6 +306,11 @@ public class OneFlow implements MyResponseHandler {
 
     }
 
+    private void shouldReturnSurveyCheckingFromDB(Constants.ApiHitType apiHitType, GetSurveyListResponse gslr) {
+
+
+    }
+
     /**
      * This method will check if trigger name is available in the list or not
      *
@@ -382,6 +364,59 @@ public class OneFlow implements MyResponseHandler {
         }
     }
 
+    /**
+     * This method will check if trigger name is available in the list or not
+     *
+     * @param type
+     * @return
+     */
+    //private ArrayList<SurveyScreens> checkSurveyTitleAndScreens(String type){
+    private void checkSurveyTitleAndScreensInBackground(Constants.ApiHitType hitType, String type) {
+        OneFlowSHP ofs = new OneFlowSHP(mContext);
+        Helper.v("OneFlow", "OneFlow checkSurveyTitleAndScreens[" + ofs.getBooleanValue(Constants.SHP_SHOULD_SHOW_SURVEY, true) + "]");
+        if (ofs.getBooleanValue(Constants.SHP_SHOULD_SHOW_SURVEY, true)) {
+            ArrayList<GetSurveyListResponse> slr = ofs.getSurveyList();
+            GetSurveyListResponse gslr = null;
+            //ArrayList<SurveyScreens> surveyScreens = null;
+
+            int counter = 0;
+            String tag = this.getClass().getName();
+
+            if (slr != null) {
+                Helper.v(tag, "OneFlow list size[" + slr.size() + "]type[" + type + "]");
+                for (GetSurveyListResponse item : slr) {
+                    Helper.v(tag, "OneFlow list size 0 [" + item.getTrigger_event_name() + "]type[" + type + "]");
+                    String[] eventName = item.getTrigger_event_name().split(",");
+                    boolean recordFound = false;
+                    for (String name : eventName) {
+                        if (name.contains(type)) {
+                            gslr = item;
+                            Helper.v(tag, "OneFlow survey found on event name[" + type + "]");
+                            recordFound = true;
+                            break;
+                        }
+                    }
+
+                    if (recordFound) {
+                        break;
+                    }
+                }
+            } /*else {
+            Helper.makeText(mContext, "Configure project first", 1);
+        }*/
+
+
+            //Resurvey login
+            if (gslr == null) {
+                onResponseReceived(hitType, null, 0l);
+            } else {
+                LogUserDBRepo.findSurveyForID(mContext, this, Constants.ApiHitType.fetchSubmittedSurvey,gslr, gslr.get_id(),new OneFlowSHP(mContext).getStringValue(Constants.USERUNIQUEIDSHP));
+            }
+
+
+        }
+    }
+
 
     public void getProjectDetails() {
         ProjectDetails.getProject(mContext);
@@ -398,7 +433,7 @@ public class OneFlow implements MyResponseHandler {
 
 
     @Override
-    public void onResponseReceived(Constants.ApiHitType hitType, Object obj, int reserve) {
+    public void onResponseReceived(Constants.ApiHitType hitType, Object obj, Long reserve) {
         Helper.v("OneFlow", "OneFlow onReceived type[" + hitType + "]");
         switch (hitType) {
             case fetchLocation:
@@ -409,11 +444,11 @@ public class OneFlow implements MyResponseHandler {
                 break;
             case fetchEventsFromDB:
 
-                Helper.v("FeedbackController", "OneFlow fetchEventsFromDB came back");
+                Helper.v("FeedbackController", "OneFlow checking before log fetchEventsFromDB came back");
                 OneFlow fc = new OneFlow(mContext);
-
+                OneFlowSHP ofshp = new OneFlowSHP(mContext);
                 ArrayList<RecordEventsTab> list = (ArrayList<RecordEventsTab>) obj;
-                Helper.v("FeedbackController", "OneFlow fetchEventsFromDB list received size[" + list.size() + "]");
+                Helper.v("FeedbackController", "OneFlow checking before log fetchEventsFromDB list received size[" + list.size() + "]");
                 //Preparing list to send api
                 if (list.size() > 0) {
                     Integer[] ids = new Integer[list.size()];
@@ -431,15 +466,19 @@ public class OneFlow implements MyResponseHandler {
                         ids[i++] = ret.getId();
                     }
 
-                    if (!new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP).equalsIgnoreCase("NA")) {
+                    if (!ofshp.getStringValue(Constants.SESSIONDETAIL_IDSHP).equalsIgnoreCase("NA")) {
                         EventAPIRequest ear = new EventAPIRequest();
-                        ear.setSessionId(new OneFlowSHP(mContext).getStringValue(Constants.SESSIONDETAIL_IDSHP));
+                        ear.setSessionId(ofshp.getStringValue(Constants.SESSIONDETAIL_IDSHP));
                         ear.setEvents(retListToAPI);
-                        Helper.v("FeedbackController", "OneFlow fetchEventsFromDB request prepared");
+                        Helper.v("FeedbackController", "OneFlow checking before log fetchEventsFromDB request prepared");
                         EventAPIRepo.sendLogsToApi(mContext, ear, fc, Constants.ApiHitType.sendEventsToAPI, ids);
                     }
                 } else {
-                    Helper.e("OneFlow", "OneFlow No event available");
+                    Helper.e("OneFlow", "OneFlow checking No event available hitting log");
+                    LogUserRequest lur = ofshp.getLogUserRequest();
+                    if (lur != null) {
+                        LogUserRepo.logUser(lur, mContext, null, Constants.ApiHitType.logUser);
+                    }
                 }
                 break;
             case sendEventsToAPI:
@@ -449,11 +488,14 @@ public class OneFlow implements MyResponseHandler {
 
                 break;
             case deleteEventsFromDB:
-                Helper.v("FeedbackControler", "OneFlow events delete count[" + ((Integer) obj) + "]");
+                Helper.v("FeedbackControler", "OneFlow checking events submitted hitting logs delete count[" + ((Integer) obj) + "]");
                 Intent intent = new Intent("events_submitted");
                 intent.putExtra("size", String.valueOf((Integer) obj));
                 mContext.sendBroadcast(intent);
-
+                LogUserRequest lur = new OneFlowSHP(mContext).getLogUserRequest();
+                if (lur != null) {
+                    LogUserRepo.logUser(lur, mContext, null, Constants.ApiHitType.logUser);
+                }
             case CreateSession:
                 //TODO Call paralle with create user
                 // getSurvey();
@@ -524,6 +566,74 @@ public class OneFlow implements MyResponseHandler {
                 recordEvents(Constants.AUTOEVENT_SESSIONSTART, null);
 
                 createSession(csr);
+                break;
+            case fetchSubmittedSurvey:
+                if(obj!=null) {
+                    GetSurveyListResponse gslr = (GetSurveyListResponse) obj;
+
+                    if (reserve > 0) {
+                        //Checking offline storage of survey
+
+                        try {
+                            Helper.v("OneFlow", "OneFlow resurvey check option[" + gslr.getSurveySettings().getResurvey_option() + "]current[" + Calendar.getInstance().getTimeInMillis() + "]");
+                            if (gslr.getSurveySettings().getResurvey_option()) {
+                                Long totalInterval = 0l;
+                                Long diff = Calendar.getInstance().getTimeInMillis() - reserve;
+                                int diffDuration = 0;
+                                Helper.v("OneFlow", "OneFlow resurvey check diff[" + diff + "]retakeInputValue[" + gslr.getSurveySettings().getRetake_survey().getRetake_input_value() + "]");
+                                Helper.v("OneFlow", "OneFlow resurvey check retakeSelectValue[" + gslr.getSurveySettings().getRetake_survey().getRetake_select_value() + "]");
+                                diffDuration = (int) (diff / 1000);
+                                switch (gslr.getSurveySettings().getRetake_survey().getRetake_select_value()) {
+                                    case "minutes":
+                                        totalInterval = gslr.getSurveySettings().getRetake_survey().getRetake_input_value() * 60;
+                                        break;
+                                    case "hours":
+                                        totalInterval = gslr.getSurveySettings().getRetake_survey().getRetake_input_value() * 60 * 60;
+                                        break;
+                                    case "days":
+                                        totalInterval = gslr.getSurveySettings().getRetake_survey().getRetake_input_value() * 24 * 60 * 60;
+                                        break;
+                                    default:
+                                        Helper.v("FeedbackController", "OneFlow retake_select_value is neither of minutes, hours or days");
+                                }
+                                Helper.v("OneFlow", "OneFlow resurvey check diffDuration[" + diffDuration + "]totalInterval[" + totalInterval + "]");
+                                if (diffDuration > totalInterval) {
+                                    onResponseReceived(Constants.ApiHitType.checkResurveyNSubmission,gslr,0l);
+                                }
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+
+                        }
+                    } else{
+                        Helper.v("OneFlow","OneFlow no survey found show directly");
+                        onResponseReceived(Constants.ApiHitType.checkResurveyNSubmission,gslr,0l);
+                    }
+                }
+                break;
+            case checkResurveyNSubmission:
+                GetSurveyListResponse gslr = (GetSurveyListResponse) obj;
+                if (gslr != null) {
+                    Helper.v("FeedbackController", "OneFlow resurvey checked survey found surveyItem[" + gslr + "]");
+
+                    OneFlowSHP ofs = new OneFlowSHP(mContext);
+
+                    if (gslr.getScreens() != null) {
+
+                        if (gslr.getScreens().size() > 0) {
+                            Helper.v("OneFlow", "OneFlow resurvey checked running survey[" + (!ofs.getBooleanValue(Constants.SHP_SURVEY_RUNNING, false)) + "]");
+                            if (!ofs.getBooleanValue(Constants.SHP_SURVEY_RUNNING, false)) {
+                                ofs.storeValue(Constants.SHP_SURVEY_RUNNING, true);
+                                ofs.storeValue(Constants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
+                                Intent surveyIntent = new Intent(mContext.getApplicationContext(), SurveyActivity.class);
+                                //surveyIntent.setType("plain/text");
+                                surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                surveyIntent.putExtra("SurveyType", gslr);//"move_file_in_folder");//""empty0");//
+                                mContext.getApplicationContext().startActivity(surveyIntent);
+                            }
+                        }
+                    }
+                }
                 break;
         }
     }

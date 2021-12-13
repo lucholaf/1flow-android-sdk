@@ -45,7 +45,7 @@ public class AddUserRepo {
                         Helper.v(tag,"OneFlow response["+response.body().getResult().getAnalytic_user_id()+"]");
 
                         new OneFlowSHP(context).setUserDetails(response.body().getResult());
-                        mrh.onResponseReceived(hitType,null,0);
+                        mrh.onResponseReceived(hitType,null,0l);
 
                        /* AsyncTask.execute(new Runnable() {
                             @Override

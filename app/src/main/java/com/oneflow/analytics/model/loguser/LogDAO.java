@@ -15,6 +15,15 @@ public interface LogDAO {
     @Query("select * from SurveyUserInput LIMIT 1")
     SurveyUserInput getOfflineUserInput();
 
+    @Query("select * from SurveyUserInput where survey_id = :surveyId and user_id = :userId")
+    SurveyUserInput getSurveyForID(String surveyId,String userId);
+
+    @Query("update SurveyUserInput set synced = :syncNew where _id = :id")
+    int updateUserInput(Boolean syncNew,Integer id);
+
+    @Query("update SurveyUserInput set user_id = (:userId) where user_id = 'NA'")
+    int updateUserID(String userId);
+
     /*@Query("select * from SurveyUserInput")
     ArrayList<SurveyUserInput> getOfflineUserInputList();*/
 

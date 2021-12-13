@@ -47,7 +47,7 @@ public class MyCountDownTimer extends CountDownTimer implements MyResponseHandle
     }
 
     @Override
-    public void onResponseReceived(Constants.ApiHitType hitType, Object obj, int reserve) {
+    public void onResponseReceived(Constants.ApiHitType hitType, Object obj, Long reserve) {
         Helper.v("OneFlow", "OneFlow onReceived type[" + hitType + "]");
         switch (hitType) {
 

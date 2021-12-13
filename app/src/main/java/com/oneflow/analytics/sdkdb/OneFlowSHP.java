@@ -8,6 +8,7 @@ import com.oneflow.analytics.model.location.LocationResponse;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.oneflow.analytics.model.adduser.AddUserResultResponse;
+import com.oneflow.analytics.model.loguser.LogUserRequest;
 import com.oneflow.analytics.model.survey.GetSurveyListResponse;
 import com.oneflow.analytics.utils.Constants;
 import com.oneflow.analytics.utils.Helper;
@@ -58,7 +59,7 @@ public class OneFlowSHP {
     }
 
     public void storeValue(String key, Object value) {
-        Helper.v(this.getClass().getName(), "OneFlow key["+key+"]value[" + (value) + "]");
+        Helper.v(this.getClass().getName(), "OneFlow key[" + key + "]value[" + (value) + "]");
         SharedPreferences.Editor editor = pref.edit();
         if (value instanceof Boolean) {
             editor.putBoolean(key, (boolean) value);
@@ -99,14 +100,13 @@ public class OneFlowSHP {
 		}*/
 
 
-
-
     public LocationResponse getUserLocationDetails() {
         String json = pref.getString(Constants.USERLOCATIONDETAILSHP, null);
         Helper.v("json", "[" + json + "]");
         LocationResponse obj = gson.fromJson(json, LocationResponse.class);
         return obj;
     }
+
     public void setUserLocationDetails(LocationResponse arr) {
         SharedPreferences.Editor prefsEditor = pref.edit();
         String json = gson.toJson(arr);
@@ -122,6 +122,7 @@ public class OneFlowSHP {
                 gson.fromJson(json, AddUserResultResponse.class);
         return obj;
     }
+
     public void setUserDetails(AddUserResultResponse arr) {
         SharedPreferences.Editor prefsEditor = pref.edit();
         String json = gson.toJson(arr);
@@ -129,6 +130,32 @@ public class OneFlowSHP {
         prefsEditor.putString(Constants.USERDETAILSHP, json);
         prefsEditor.apply();
     }
+
+    public LogUserRequest getLogUserRequest() {
+        String json = pref.getString(Constants.LOGUSERREQUESTSHP, null);
+        Helper.v("json", "[" + json + "]");
+        LogUserRequest obj;
+        if(json!=null) {
+            obj = gson.fromJson(json, LogUserRequest.class);
+        }else{
+            return null;
+        }
+        return obj;
+    }
+
+    public void setLogUserRequest(LogUserRequest arr) {
+        SharedPreferences.Editor prefsEditor = pref.edit();
+        String json = gson.toJson(arr);
+        Helper.v("json", "[" + json + "]");
+        prefsEditor.putString(Constants.LOGUSERREQUESTSHP, json);
+        prefsEditor.apply();
+    }
+    public void clearLogUserRequest(){
+        SharedPreferences.Editor prefsEditor = pref.edit();
+        prefsEditor.remove(Constants.LOGUSERREQUESTSHP).commit();
+    }
+
+
     public void setSurveyList(ArrayList<GetSurveyListResponse> list) {
         SharedPreferences.Editor editor = pref.edit();
         String json = gson.toJson(list);
@@ -160,8 +187,6 @@ public class OneFlowSHP {
         }.getType();
         return gson.fromJson(json, type);
     }*/
-
-
     private static byte[] encrypt(byte[] plainText, byte[] key, byte[] initialVector) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
         Cipher cipher = Cipher.getInstance(cipherTransformation);
         SecretKeySpec secretKeySpec = new SecretKeySpec(key, aesEncryptionAlgorithm);
@@ -235,10 +260,9 @@ public class OneFlowSHP {
         return pref.getFloat(key, 0f);
     }
 
-    public boolean getBooleanValue(String key,Boolean defaultValue) {
+    public boolean getBooleanValue(String key, Boolean defaultValue) {
         return pref.getBoolean(key, defaultValue);
     }
-
 
 
 }

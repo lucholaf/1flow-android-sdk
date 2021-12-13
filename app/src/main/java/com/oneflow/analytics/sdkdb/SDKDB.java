@@ -21,7 +21,7 @@ import com.oneflow.analytics.sdkdb.survey.SubmittedSurveyDAO;
 import com.oneflow.analytics.sdkdb.survey.SubmittedSurveysTab;
 import com.oneflow.analytics.utils.Constants;
 
-@Database(entities = {RecordEventsTab.class, AddUserResultResponse.class, SubmittedSurveysTab.class, SurveyUserInput.class},version = 2)
+@Database(entities = {RecordEventsTab.class, AddUserResultResponse.class, SubmittedSurveysTab.class, SurveyUserInput.class},version = 3)
 @TypeConverters({MapConverter.class, DataConverterLocation.class, DataConverterDevice.class, SurveyUserResponseChildConverter.class})
 public abstract class SDKDB extends RoomDatabase {
 
@@ -34,7 +34,7 @@ public abstract class SDKDB extends RoomDatabase {
 
     private static SDKDB initialize(final Context context) {
 
-        return Room.databaseBuilder(context, SDKDB.class, Constants.DBNAME).build();
+        return Room.databaseBuilder(context, SDKDB.class, Constants.DBNAME).fallbackToDestructiveMigration().build();
     }
 
     public static synchronized SDKDB getInstance(Context context) {

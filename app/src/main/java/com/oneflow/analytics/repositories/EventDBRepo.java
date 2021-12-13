@@ -46,7 +46,7 @@ public class EventDBRepo {
             @Override
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
-                mrh.onResponseReceived(type,1,0);
+                mrh.onResponseReceived(type,1,0l);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
@@ -65,13 +65,13 @@ public class EventDBRepo {
             @Override
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
-                mrh.onResponseReceived(type,integer,0);
+                mrh.onResponseReceived(type,integer,0l);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
     public static void fetchEvents(Context context, MyResponseHandler mrh, Constants.ApiHitType type){
-        Helper.v("EventDBRepo.DeleteEvents","OneFlow reached at fetchEvents method");
+        Helper.v("EventDBRepo.fetchEvents","OneFlow reached at fetchEvents method");
 
 
         new AsyncTask<String,Integer,List<RecordEventsTab>>(){
@@ -86,7 +86,7 @@ public class EventDBRepo {
             @Override
             protected void onPostExecute(List<RecordEventsTab> recordEventsTabs) {
                 super.onPostExecute(recordEventsTabs);
-                mrh.onResponseReceived(type,recordEventsTabs,0);
+                mrh.onResponseReceived(type,recordEventsTabs,0l);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
@@ -111,7 +111,7 @@ public class EventDBRepo {
             @Override
             protected void onPostExecute(String[] strings) {
                 super.onPostExecute(strings);
-                mrh.onResponseReceived(type,strings,0);
+                mrh.onResponseReceived(type,strings,0l);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 

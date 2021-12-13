@@ -39,7 +39,7 @@ public class EventController implements MyResponseHandler {
     }
 
     @Override
-    public void onResponseReceived(Constants.ApiHitType hitType, Object obj, int reserve) {
+    public void onResponseReceived(Constants.ApiHitType hitType, Object obj, Long reserve) {
 
         switch(hitType){
             case insertEventsInDB:

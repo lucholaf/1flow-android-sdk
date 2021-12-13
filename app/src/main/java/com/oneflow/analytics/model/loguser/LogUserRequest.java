@@ -13,8 +13,18 @@ public class LogUserRequest extends BaseModel {
     private String anonymous_user_id;
     @SerializedName("system_id")
     private String system_id;
+    @SerializedName("log_user")
+    private Boolean log_user = true;
     @SerializedName("session_id")
     private String session_id;
+
+    public Boolean getLog_user() {
+        return log_user;
+    }
+
+    public void setLog_user(Boolean log_user) {
+        this.log_user = log_user;
+    }
 
     public HashMap<String,String> getParameters() {
         return parameters;

@@ -7,6 +7,8 @@ public interface Constants {
     String APPKEYSHP = "one_flow_config_key";
     String APPIDSHP = "one_flow_app_id_key";
     String USERDETAILSHP = "one_flow_user_detail_key";
+    String USERUNIQUEIDSHP = "one_flow_user_unique_id_key";
+    String LOGUSERREQUESTSHP = "one_flow_log_user_detail_key";
     String USERLOCATIONDETAILSHP = "one_flow_user_location_detail_key";
     String SESSIONDETAIL_IDSHP = "one_flow_session_detail_id_key";
     String SESSIONDETAIL_SYSTEM_IDSHP = "one_flow_session_detail_system_key";
@@ -29,7 +31,7 @@ public interface Constants {
     enum ApiHitType{
         Config,CreateUser, CreateSession, RecordLogs, fetchEventsFromDB, sendEventsToAPI, insertEventsInDB,
         deleteEventsFromDB, logUser, insertSurveyInDB, fetchSurveysFromDB, deleteSurveyFromDB, fetchLocation,
-        fetchSurveysFromAPI,fetchEventsBeforSurveyFetched
+        fetchSurveysFromAPI,fetchEventsBeforSurveyFetched,fetchSubmittedSurvey,checkResurveyNSubmission
     }
     enum BRActionType{
         submitEvents,submitSurveys

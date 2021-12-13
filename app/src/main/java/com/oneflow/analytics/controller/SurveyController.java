@@ -51,7 +51,7 @@ public class SurveyController implements MyResponseHandler {
     }
 
     @Override
-    public void onResponseReceived(Constants.ApiHitType hitType, Object obj, int reserve) {
+    public void onResponseReceived(Constants.ApiHitType hitType, Object obj, Long reserve) {
 
         Helper.v("SurveyController","OneFlow onReceived called type["+hitType+"]");
         switch (hitType) {

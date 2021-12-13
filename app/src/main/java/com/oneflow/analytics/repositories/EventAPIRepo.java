@@ -41,7 +41,7 @@ public class EventAPIRepo {
                     if (response.isSuccessful()) {
                         Helper.v(tag,"OneFlow response["+response.body().toString()+"]");
                         Helper.v(tag,"OneFlow response["+response.body().getSuccess()+"]");
-                        mrh.onResponseReceived(type,ids,0);
+                        mrh.onResponseReceived(type,ids,0l);
                     } else {
                         Helper.v(tag,"OneFlow response 0["+response.body()+"]");
                     }

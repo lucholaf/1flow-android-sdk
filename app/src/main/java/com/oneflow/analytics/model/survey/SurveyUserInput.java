@@ -23,6 +23,10 @@ public class SurveyUserInput {
     @SerializedName("analytic_user_id")
     private String analytic_user_id;
 
+    @ColumnInfo(name = "user_id")
+    @SerializedName("user_id")
+    private String user_id;
+
     @ColumnInfo(name = "session_id")
     @SerializedName("session_id")
     private String session_id;
@@ -48,6 +52,37 @@ public class SurveyUserInput {
     @SerializedName("answers")
     private ArrayList<SurveyUserResponseChild> answers;
 
+    @ColumnInfo(name = "synced")
+    @SerializedName("synced")
+    private Boolean synced = false;
+
+    @ColumnInfo(name = "created_on")
+    @SerializedName("created_on")
+    private Long createdOn;
+
+    public Long getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Long createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public Boolean getSynced() {
+        return synced;
+    }
+
+    public void setSynced(Boolean synced) {
+        this.synced = synced;
+    }
 
     public String getMode() {
         return mode;

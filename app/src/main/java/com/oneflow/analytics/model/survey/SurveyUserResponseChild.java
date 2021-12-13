@@ -2,7 +2,7 @@ package com.oneflow.analytics.model.survey;
 
 import com.google.gson.annotations.SerializedName;
 
-public class SurveyUserResponseChild {
+public class SurveyUserResponseChild  {
     @SerializedName("screen_id")
     private String screen_id;
     @SerializedName("answer_index")

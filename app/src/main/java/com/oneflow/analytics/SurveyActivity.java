@@ -37,6 +37,7 @@ import com.oneflow.analytics.repositories.Survey;
 import com.oneflow.analytics.sdkdb.OneFlowSHP;
 import com.oneflow.analytics.utils.Constants;
 import com.oneflow.analytics.utils.Helper;
+import com.oneflow.analytics.utils.MyResponseHandler;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,7 +45,7 @@ import java.util.Calendar;
 import butterknife.ButterKnife;
 
 
-public class SurveyActivity extends AppCompatActivity {
+public class SurveyActivity extends AppCompatActivity implements MyResponseHandler {
 
     ProgressBar pagePositionPBar;
     ImageView closeBtn;
@@ -332,7 +333,7 @@ public class SurveyActivity extends AppCompatActivity {
         //on close of this page considering survey is over, so submit the respones to api
         if(surveyResponseChildren.size()>0) {
             Helper.v(tag,"OneFlow input found submitting");
-            prepareAndSubmitUserResposne();
+            prepareAndSubmitUserResposneNew();
         }else{
             Helper.v(tag,"OneFlow no input no submit");
         }
@@ -375,7 +376,6 @@ public class SurveyActivity extends AppCompatActivity {
 
     public void prepareAndSubmitUserResposne() {
 
-
         OneFlowSHP ofs = new OneFlowSHP(this);
         ofs.storeValue(Constants.SHP_SURVEY_RUNNING,false);
         SurveyUserInput sur = new SurveyUserInput();
@@ -391,12 +391,35 @@ public class SurveyActivity extends AppCompatActivity {
             Helper.v(tag,"OneFlow calling submit user Resposne");
             Survey.submitUserResponse(this, sur);
         }else{
+
+            sur.setUser_id(ofs.getStringValue(Constants.USERUNIQUEIDSHP));
+
             //TODO Store data in db
             LogUserDBRepo.insertUserInputs(this,sur,null, Constants.ApiHitType.insertSurveyInDB);
             //storing id for avoiding repeatation of offline surveys
             new OneFlowSHP(this).storeValue(sur.getSurvey_id(), Calendar.getInstance().getTimeInMillis());
             //Helper.makeText(this,getString(R.string.no_network),1);
         }
+    }
+
+    public void prepareAndSubmitUserResposneNew() {
+
+
+
+        OneFlowSHP ofs = new OneFlowSHP(this);
+        ofs.storeValue(Constants.SHP_SURVEY_RUNNING,false);
+        SurveyUserInput sur = new SurveyUserInput();
+        sur.setMode("prod");
+        sur.setTrigger_event(triggerEventName);
+        sur.setAnswers(surveyResponseChildren);
+        sur.setOs(Constants.os);
+        sur.setAnalytic_user_id(ofs.getUserDetails().getAnalytic_user_id());
+        sur.setSurvey_id(selectedSurveyId);
+        sur.setSession_id(ofs.getStringValue(Constants.SESSIONDETAIL_IDSHP));
+        sur.setUser_id(ofs.getStringValue(Constants.USERUNIQUEIDSHP));
+        sur.setCreatedOn(System.currentTimeMillis());
+        LogUserDBRepo.insertUserInputs(this,sur,this, Constants.ApiHitType.insertSurveyInDB);
+
     }
 
     public int position = 0;
@@ -482,4 +505,22 @@ public class SurveyActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onResponseReceived(Constants.ApiHitType hitType, Object obj, Long reserve) {
+        Helper.v(tag,"OneFlow submitting survey["+hitType+"]");
+        switch (hitType){
+            case insertSurveyInDB:
+                //if internet available then send to api else store locally
+                if(Helper.isConnected(this)) {
+                    SurveyUserInput sur = (SurveyUserInput)obj;
+                    Helper.v(tag,"OneFlow calling submit user Resposne");
+                    Survey.submitUserResponse(this, sur);
+                }else{
+
+                   Helper.v(tag,"OneFlow no data connectivity available submit survey later");
+                }
+                break;
+
+        }
+    }
 }

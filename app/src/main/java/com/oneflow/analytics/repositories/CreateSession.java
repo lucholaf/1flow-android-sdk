@@ -43,7 +43,7 @@ public class CreateSession {
                         Helper.v(tag,"OneFlow response["+response.body().getResult().getSystem_id()+"]");
                         new OneFlowSHP(context).storeValue(Constants.SESSIONDETAIL_IDSHP,response.body().getResult().get_id());
                         new OneFlowSHP(context).storeValue(Constants.SESSIONDETAIL_SYSTEM_IDSHP,response.body().getResult().getSystem_id());
-                        mrh.onResponseReceived(hitType,null,0);
+                        mrh.onResponseReceived(hitType,null,0l);
 
                     } else {
                         //mrh.onResponseReceived(response.body(), type);

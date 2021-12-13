@@ -69,7 +69,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver implements MyRespon
     }
 
     @Override
-    public void onResponseReceived(Constants.ApiHitType hitType, Object obj, int reserve) {
+    public void onResponseReceived(Constants.ApiHitType hitType, Object obj,Long reserve) {
 
         switch (hitType) {
 

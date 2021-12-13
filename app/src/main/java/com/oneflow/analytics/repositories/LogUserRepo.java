@@ -32,20 +32,13 @@ public class LogUserRepo {
             responseCall.enqueue(new Callback<GenericResponse<LogUserResponse>>() {
                 @Override
                 public void onResponse(Call<GenericResponse<LogUserResponse>> call, Response<GenericResponse<LogUserResponse>> response) {
-                    Helper.v(tag, "OneFlow reached success["+response.isSuccessful()+"]");
-                    Helper.v(tag, "OneFlow reached success raw["+response.raw()+"]");
-                    Helper.v(tag, "OneFlow reached success errorBody["+response.errorBody()+"]");
-                    Helper.v(tag, "OneFlow reached success message["+response.message()+"]");
+
 
                     if (response.isSuccessful()) {
-                        Helper.v(tag,"OneFlow response["+response.body().toString()+"]");
-                        Helper.v(tag,"OneFlow response["+response.body().getSuccess()+"]");
-                        Helper.v(tag,"OneFlow response["+response.body().getMessage()+"]");
-                        Helper.v(tag,"OneFlow response["+response.body().getResult().getAnalytic_user_id()+"]");
 
                         // replacing current session id and user analytical id
-                        //TODO ask rohan about this
                         OneFlowSHP ofs = new OneFlowSHP(context);
+                        ofs.clearLogUserRequest();
                         AddUserResultResponse aurr = ofs.getUserDetails();
                         //setting up new user analytical id
                         Helper.v(tag,"OneFlow new Analytic id["+response.body().getResult().getAnalytic_user_id()+"] old Analytic id["+aurr.getAnalytic_user_id()+"]");
@@ -54,8 +47,15 @@ public class LogUserRepo {
                         Helper.v(tag,"OneFlow new Session id["+response.body().getResult().getSessionId()+"] old Session id["+ofs.getStringValue(Constants.SESSIONDETAIL_IDSHP)+"]");
                         ofs.storeValue(Constants.SESSIONDETAIL_IDSHP,response.body().getResult().getSessionId());
 
+                        //storing this to support multi user survey
+                        ofs.storeValue(Constants.USERUNIQUEIDSHP,lur.getSystem_id());
+
                        // mrh.onResponseReceived(hitType,null,0);
                         Helper.v(tag,"OneFlow record inserted...");
+
+                        //Update old survey's user id
+                        LogUserDBRepo.updateSurveyUserId(context,lur.getSystem_id());
+
                     } else {
                         Helper.v(tag,"OneFlow response 0["+response.body()+"]");
                        /* Helper.v(tag,"OneFlow response 1["+response.body().getMessage()+"]");

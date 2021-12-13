@@ -49,7 +49,7 @@ public class Survey {
                         Intent intent = new Intent("survey_list_fetched");
                         context.sendBroadcast(intent);
 
-                        mrh.onResponseReceived(type, null, 0);
+                        mrh.onResponseReceived(type, null, 0l);
 
                     } else {
                         Helper.v(tag, "OneFlow survey list not fetched isSuccessfull false");
@@ -89,6 +89,10 @@ public class Survey {
                     if (response.isSuccessful()) {
                         Helper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
                         Helper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
+
+                        //Updating survey once data is sent to server, Sending type null as return is not required
+                        LogUserDBRepo.updateSurveyInput(context,null,null,true,sur.get_id());
+
                         new OneFlowSHP(context).storeValue(sur.getSurvey_id(), Calendar.getInstance().getTimeInMillis());
                         /*AsyncTask.execute(new Runnable() {
                             @Override
@@ -144,7 +148,7 @@ public class Survey {
                     if (response.isSuccessful()) {
                         Helper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
                         Helper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
-                        mrh.onResponseReceived(type, sur, 0);
+                        mrh.onResponseReceived(type, sur, 0l);
                         /*AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {
