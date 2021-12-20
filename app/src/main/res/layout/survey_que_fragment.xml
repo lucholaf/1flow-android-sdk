@@ -5,7 +5,7 @@
     android:animateLayoutChanges="true"
     >
 
-    <com.oneflow.analytics.customwidgets.CustomTextViewBold
+    <com.oneflow.analytics.customwidgets.OFCustomTextViewBold
         android:id="@+id/survey_title_que"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:visibility="invisible"
         android:textSize="@dimen/page_sub_header_1" />
 
-    <com.oneflow.analytics.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/survey_description_que"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             android:padding="0.5dp"
             android:layout_centerHorizontal="true" />
 
-        <com.oneflow.analytics.customwidgets.CustomTextView
+        <com.oneflow.analytics.customwidgets.OFCustomTextView
             android:id="@+id/ratings_not_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:textColor="@color/txtgray"
             android:textSize="@dimen/page_sub_header_4" />
 
-        <com.oneflow.analytics.customwidgets.CustomTextView
+        <com.oneflow.analytics.customwidgets.OFCustomTextView
             android:id="@+id/ratings_full_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

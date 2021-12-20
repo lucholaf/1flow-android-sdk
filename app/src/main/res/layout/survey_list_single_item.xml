@@ -7,7 +7,7 @@
 
 
 
-    <com.oneflow.analytics.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/survey_trigger_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:textColor="@color/txtblack"
         android:textSize="@dimen/page_sub_header_1" />
 
-    <com.oneflow.analytics.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/survey_trigger_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -12,15 +12,15 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name="com.oneflow.analytics.mapln"
+
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrySkySDK">
-        <activity android:name="com.oneflow.analytics.FirstActivity">
-           <!-- <intent-filter>
+        <activity android:name="com.oneflow.analytics.OFFirstActivity">
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
@@ -29,7 +29,7 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>-->
         <activity
-            android:name="com.oneflow.analytics.SurveyActivity"
+            android:name="com.oneflow.analytics.OFSurveyActivity"
             android:theme="@style/AppDialog">
             <!--<intent-filter>
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.oneflow.analytics.customwidgets.DynamicSquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.oneflow.analytics.customwidgets.OFDynamicSquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="@dimen/field_padding">
@@ -17,4 +17,4 @@
             android:src="@drawable/ic_baseline_star_outline_92" />
 
     </RelativeLayout>
-</com.oneflow.analytics.customwidgets.DynamicSquareLayout>
+</com.oneflow.analytics.customwidgets.OFDynamicSquareLayout>

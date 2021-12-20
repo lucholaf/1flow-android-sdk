@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".FirstActivity">
+    tools:context=".OFFirstActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_of_survey"
@@ -30,7 +30,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.oneflow.analytics.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/project_details"
         style="@style/comman_positive_button_style"
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.oneflow.analytics.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/create_user"
         style="@style/comman_positive_button_style"
         android:layout_width="match_parent"
@@ -62,7 +62,7 @@
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.oneflow.analytics.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/create_session"
         style="@style/comman_positive_button_style"
         android:layout_width="match_parent"
@@ -78,7 +78,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.oneflow.analytics.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/fetch_survey_list"
         style="@style/comman_positive_button_style"
         android:layout_width="match_parent"
@@ -94,7 +94,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.oneflow.analytics.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/record_log"
         style="@style/comman_positive_button_style"
         android:layout_width="match_parent"
@@ -112,7 +112,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.oneflow.analytics.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/connect_vpn"
         style="@style/comman_positive_button_style"
         android:layout_width="match_parent"
@@ -126,7 +126,7 @@
         android:text="Connect VPN"
         android:visibility="visible"
          />
-    <com.oneflow.analytics.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/disconnect_vpn"
         style="@style/comman_positive_button_style"
         android:layout_width="match_parent"
@@ -143,7 +143,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <com.oneflow.analytics.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/get_location"
         style="@style/comman_positive_button_style"
         android:layout_width="match_parent"
@@ -159,7 +159,7 @@
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.oneflow.analytics.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/log_user"
         style="@style/comman_positive_button_style"
         android:background="@drawable/btn_rounded_rectangle_normal"
@@ -173,7 +173,7 @@
         android:visibility="visible"
          />
 
-    <com.oneflow.analytics.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/send_log_to_api"
         android:background="@drawable/btn_rounded_rectangle_normal"
         style="@style/comman_positive_button_style"
@@ -187,7 +187,7 @@
         android:visibility="visible"
          />
 
-    <com.oneflow.analytics.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/result"
         android:background="@drawable/btn_rounded_rectangle_normal"
         style="@style/comman_positive_button_style"

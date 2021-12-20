@@ -17,7 +17,7 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/thank_you" />
 
-        <com.oneflow.analytics.customwidgets.CustomTextViewBold
+        <com.oneflow.analytics.customwidgets.OFCustomTextViewBold
             android:id="@+id/survey_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
             android:layout_below="@id/survey_title"
             android:layout_centerHorizontal="true">
 
-            <com.oneflow.analytics.customwidgets.CustomTextView
+            <com.oneflow.analytics.customwidgets.OFCustomTextView
                 android:id="@+id/survey_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

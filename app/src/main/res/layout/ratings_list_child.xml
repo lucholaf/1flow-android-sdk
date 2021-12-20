@@ -6,7 +6,7 @@
     >
     <!--android:background="@drawable/textview_selector"-->
 
-    <com.oneflow.analytics.customwidgets.CustomTextView
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/ratings_list_child_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
