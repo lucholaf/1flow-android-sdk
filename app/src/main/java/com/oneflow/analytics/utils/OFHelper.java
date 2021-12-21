@@ -65,7 +65,7 @@ public class OFHelper {
     //static boolean debug = commanEnable;
     //static boolean error = false;
     static boolean builds = false;
-    static boolean printLogs = false;
+    static boolean printLogs = true;
     public static String headerKey = "";
 
     public static String gpsProviderInfo;
