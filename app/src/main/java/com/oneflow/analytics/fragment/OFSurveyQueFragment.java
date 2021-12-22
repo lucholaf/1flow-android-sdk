@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -204,11 +205,23 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
         animationIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
         //animationOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
 
-        surveyTitle.setTypeface(OneFlow.titleFace);
+        if(OneFlow.titleFace!=null) {
+            if(OneFlow.titleFace.getTypeface()!=null) {
+                surveyTitle.setTypeface(OneFlow.titleFace.getTypeface());
+            }
+            if(OneFlow.titleFace.getFontSize()!=null) {
+                surveyTitle.setTextSize(OneFlow.titleFace.getFontSize());
+            }
+        }
         surveyTitle.setText(surveyScreens.getTitle());
 
         if (surveyScreens.getMessage() != null) {
-            surveyDescription.setTypeface(OneFlow.subTitleFace);
+            if(OneFlow.subTitleFace!=null) {
+                surveyDescription.setTypeface(OneFlow.subTitleFace.getTypeface());
+            }
+            if(OneFlow.subTitleFace.getFontSize()!=null){
+                surveyDescription.setTextSize(OneFlow.subTitleFace.getFontSize());
+            }
             surveyDescription.setText(surveyScreens.getMessage());
         } else {
             surveyDescription.setVisibility(View.GONE);

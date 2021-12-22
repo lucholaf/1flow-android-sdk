@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import com.oneflow.analytics.controller.OFEventController;
 import com.oneflow.analytics.controller.OFSurveyController;
 import com.oneflow.analytics.model.OFConnectivity;
+import com.oneflow.analytics.model.OFFontSetup;
 import com.oneflow.analytics.model.adduser.OFAddUserRequest;
 import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
 import com.oneflow.analytics.model.adduser.OFDeviceDetails;
@@ -60,18 +61,7 @@ public class OneFlow implements OFMyResponseHandler {
     private OneFlow(Context context) {
         this.mContext = context;
     }
-    public static Typeface titleFace,subTitleFace,optionsFace;
-
-    private OneFlow(Context context,Typeface titleface,Typeface subTitleface) {
-        this.mContext = context;
-
-    }
-    private OneFlow(Context context,Typeface titleface,Typeface subTitleface,Typeface optionface) {
-        this.mContext = context;
-        this.titleFace = titleface;
-        this.subTitleFace = subTitleface;
-        this.optionsFace = optionface;
-    }
+    public static OFFontSetup titleFace,subTitleFace,optionsFace;
 
     public static void shouldShowSurvey(Boolean shouldShow) {
         try {
@@ -82,22 +72,21 @@ public class OneFlow implements OFMyResponseHandler {
         }
     }
 
-    public static void configure(Context mContext, String projectKey,Typeface titleFont){
+    public static void configure(Context mContext, String projectKey,OFFontSetup titleFont){
         configureLocal(mContext,projectKey);
         titleFace = titleFont;
     }
-    public static void configure(Context mContext, String projectKey,Typeface titleFont,Typeface subTitleFont){
+    public static void configure(Context mContext, String projectKey,OFFontSetup titleFont,OFFontSetup descriptionFont){
         configureLocal(mContext,projectKey);
         titleFace = titleFont;
-        subTitleFace = subTitleFont;
+        subTitleFace = descriptionFont;
+    }public static void configure(Context mContext, String projectKey,OFFontSetup titleFont,OFFontSetup descriptionFont,OFFontSetup optionsFont){
+        configureLocal(mContext,projectKey);
+        titleFace = titleFont;
+        subTitleFace = descriptionFont;
+        optionsFace = optionsFont;
+    }
 
-    }
-    public static void configure(Context mContext, String projectKey,Typeface titleFont,Typeface subTitleFont,Typeface optionFont){
-        configureLocal(mContext,projectKey);
-        titleFace = titleFont;
-        subTitleFace = subTitleFont;
-        optionsFace = optionFont;
-    }
     public static void configure(Context mContext, String projectKey){
         configureLocal(mContext,projectKey);
     }

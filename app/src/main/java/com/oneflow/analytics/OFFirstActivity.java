@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.oneflow.analytics.adapter.OFSurveyListAdapter;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
+import com.oneflow.analytics.model.OFFontSetup;
 import com.oneflow.analytics.model.events.OFRecordEventsTab;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.repositories.OFEventDBRepo;
@@ -64,13 +65,26 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
         inf.addAction("events_submitted");
         registerReceiver(listFetched, inf);
 
-        Typeface face = Typeface.createFromAsset(getAssets(),"fonts/Lato-Bold.ttf");
+        Typeface faceBold = Typeface.createFromAsset(getAssets(),"fonts/Lato-Bold.ttf");
+        Typeface faceReg = Typeface.createFromAsset(getAssets(),"fonts/Lato-Regular.ttf");
         //OneFlow.configure(this, "BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"1XdRfcEB8jVN05hkDk/+ltke3BHrQ3R9W35JBylCWzg=");//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//"u6NKK1Vx5xbx3TeOt3ASTGRABmN1gIhhnef53wwwGKo=");//"BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//
         //OneFlow.configure(getApplicationContext(), "uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==");//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");
         //OneFlow.configure(getApplicationContext(), "uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==");//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");
         String projectKey = "uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");
 
-        OneFlow.configure(getApplicationContext(), projectKey,face);
+        OFFontSetup titleSetup = new OFFontSetup();
+        titleSetup.setTypeface(faceReg);
+        titleSetup.setFontSize(10f);
+
+        OFFontSetup descriptionFont = new OFFontSetup();
+        descriptionFont.setTypeface(null);
+        descriptionFont.setFontSize(15f);
+
+        OFFontSetup optionsFont = new OFFontSetup();
+        optionsFont.setTypeface(faceBold);
+        optionsFont.setFontSize(null);
+
+        OneFlow.configure(getApplicationContext(), projectKey,titleSetup,descriptionFont,optionsFont);
         OneFlow.shouldShowSurvey(true);
 
     }

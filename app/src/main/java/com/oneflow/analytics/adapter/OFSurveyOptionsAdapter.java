@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +20,7 @@ import androidx.core.widget.CompoundButtonCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.customwidgets.OFDynamicSquareLayout;
@@ -259,6 +261,15 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             case 1:
                 OFHelper.v(tag, "OneFlow title [" + surveyInputs.getChoices().get(position).getTitle() + "]tag[" + surveyInputs.getChoices().get(position).getId() + "]");
 
+                if(OneFlow.optionsFace!=null) {
+                    if(OneFlow.optionsFace.getTypeface()!=null) {
+                        ((MCQRadioViewHolder) holder).title.setTypeface(OneFlow.optionsFace.getTypeface());
+                    }
+                    if(OneFlow.optionsFace.getFontSize()!=null) {
+                        OFHelper.v(tag,"OneFlow changing font size");
+                        ((MCQRadioViewHolder) holder).title.setTextSize(OneFlow.optionsFace.getFontSize());
+                    }
+                }
                 ((MCQRadioViewHolder) holder).title.setText(surveyInputs.getChoices().get(position).getTitle());
                 ((MCQRadioViewHolder) holder).title.setTag(surveyInputs.getChoices().get(position).getId() == null ? String.valueOf(position) : surveyInputs.getChoices().get(position).getId());
                 ((MCQRadioViewHolder) holder).title.setOnClickListener(onClickListener);
@@ -306,6 +317,14 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 break;
             case 3:
                 OFHelper.v(tag, "OneFlow title [" + surveyInputs.getChoices().get(position).getTitle() + "]tag[" + surveyInputs.getChoices().get(position).getId() + "]");
+                if(OneFlow.optionsFace!=null) {
+                    if(OneFlow.optionsFace.getTypeface()!=null) {
+                        ((MCQCheckBoxViewHolder) holder).title.setTypeface(OneFlow.optionsFace.getTypeface());
+                    }
+                    if(OneFlow.optionsFace.getFontSize()!=null) {
+                        ((MCQCheckBoxViewHolder) holder).title.setTextSize(OneFlow.optionsFace.getFontSize());
+                    }
+                }
                 ((MCQCheckBoxViewHolder) holder).title.setText(surveyInputs.getChoices().get(position).getTitle());
                 ((MCQCheckBoxViewHolder) holder).title.setTag(surveyInputs.getChoices().get(position).getId() == null ? String.valueOf(position) : surveyInputs.getChoices().get(position).getId());
                 ((MCQCheckBoxViewHolder) holder).title.setOnClickListener(onClickListener);

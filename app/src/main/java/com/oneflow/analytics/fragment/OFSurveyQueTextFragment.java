@@ -129,10 +129,22 @@ public class OFSurveyQueTextFragment extends Fragment implements View.OnClickLis
         OFHelper.v(tag, "OneAxis list data[" + surveyScreens + "]");
         animationIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
 
-        surveyTitle.setTypeface(OneFlow.titleFace);
+        if(OneFlow.titleFace!=null) {
+            if(OneFlow.titleFace.getTypeface()!=null) {
+                surveyTitle.setTypeface(OneFlow.titleFace.getTypeface());
+            }
+            if(OneFlow.titleFace.getFontSize()!=null) {
+                surveyTitle.setTextSize(OneFlow.titleFace.getFontSize());
+            }
+        }
         surveyTitle.setText(surveyScreens.getTitle());
         if (surveyScreens.getMessage() != null) {
-            surveyDescription.setTypeface(OneFlow.subTitleFace);
+            if(OneFlow.subTitleFace!=null) {
+                surveyDescription.setTypeface(OneFlow.subTitleFace.getTypeface());
+            }
+            if(OneFlow.subTitleFace.getFontSize()!=null){
+                surveyDescription.setTextSize(OneFlow.subTitleFace.getFontSize());
+            }
             surveyDescription.setText(surveyScreens.getMessage());
         } else {
             surveyDescription.setVisibility(View.GONE);
