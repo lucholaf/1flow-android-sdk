@@ -72,17 +72,12 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
         //OneFlow.configure(getApplicationContext(), "uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==");//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");
         String projectKey = "uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");
 
-        OFFontSetup titleSetup = new OFFontSetup();
-        titleSetup.setTypeface(faceReg);
-        titleSetup.setFontSize(10f);
+        OFFontSetup titleSetup = new OFFontSetup(faceReg,20F);
 
-        OFFontSetup descriptionFont = new OFFontSetup();
-        descriptionFont.setTypeface(null);
-        descriptionFont.setFontSize(15f);
+        OFFontSetup descriptionFont = new OFFontSetup(null,10f);
 
-        OFFontSetup optionsFont = new OFFontSetup();
-        optionsFont.setTypeface(faceBold);
-        optionsFont.setFontSize(null);
+        OFFontSetup optionsFont = new OFFontSetup(faceBold,8f);
+
 
         OneFlow.configure(getApplicationContext(), projectKey,titleSetup,descriptionFont,optionsFont);
         OneFlow.shouldShowSurvey(true);
