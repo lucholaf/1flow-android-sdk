@@ -123,7 +123,8 @@ public class OFSurveyQueTextFragment extends Fragment implements View.OnClickLis
     }
 
 
-    Animation animation1, animation2, animation3, animation4,animationIn;
+    Animation animation1, animation2, animation3, animation4, animationIn;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -147,21 +148,25 @@ public class OFSurveyQueTextFragment extends Fragment implements View.OnClickLis
         OFHelper.v(tag, "OneAxis list data[" + surveyScreens + "]");
         animationIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
 
-        if(OneFlow.titleFace!=null) {
-            if(OneFlow.titleFace.getTypeface()!=null) {
+        if (OneFlow.titleFace != null) {
+            if (OneFlow.titleFace.getTypeface() != null) {
                 surveyTitle.setTypeface(OneFlow.titleFace.getTypeface());
             }
-            if(OneFlow.titleFace.getFontSize()!=null) {
+            if (OneFlow.titleFace.getFontSize() != null) {
                 surveyTitle.setTextSize(OneFlow.titleFace.getFontSize());
             }
         }
         surveyTitle.setText(surveyScreens.getTitle());
         if (surveyScreens.getMessage() != null) {
-            if(OneFlow.subTitleFace!=null) {
-                surveyDescription.setTypeface(OneFlow.subTitleFace.getTypeface());
-            }
-            if(OneFlow.subTitleFace.getFontSize()!=null){
-                surveyDescription.setTextSize(OneFlow.subTitleFace.getFontSize());
+
+            if (OneFlow.subTitleFace != null) {
+                if (OneFlow.subTitleFace.getTypeface() != null) {
+                    surveyDescription.setTypeface(OneFlow.subTitleFace.getTypeface());
+                }
+
+                if (OneFlow.subTitleFace.getFontSize() != null) {
+                    surveyDescription.setTextSize(OneFlow.subTitleFace.getFontSize());
+                }
             }
             surveyDescription.setText(surveyScreens.getMessage());
         } else {
@@ -185,7 +190,7 @@ public class OFSurveyQueTextFragment extends Fragment implements View.OnClickLis
                 if (userInput.getText().toString().length() >= surveyScreens.getInput().getMin_chars()) {
                     // if (surveyScreens.getButtons().size() == 1) {
                     if (submitButton.getVisibility() != View.VISIBLE) {
-                        if(!OFHelper.validateString(surveyScreens.getButtons().get(0).getTitle()).equalsIgnoreCase("NA")) {
+                        if (!OFHelper.validateString(surveyScreens.getButtons().get(0).getTitle()).equalsIgnoreCase("NA")) {
                             submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
                         }
                         submitButton.setVisibility(View.VISIBLE);
@@ -230,7 +235,8 @@ public class OFSurveyQueTextFragment extends Fragment implements View.OnClickLis
         return view;
 
     }
-    private void submitButtonBeautification(){
+
+    private void submitButtonBeautification() {
         GradientDrawable gdSubmit = (GradientDrawable) (submitButton).getBackground();
         GradientDrawable gdOption = (GradientDrawable) optionLayout.getBackground();
 
@@ -258,6 +264,7 @@ public class OFSurveyQueTextFragment extends Fragment implements View.OnClickLis
             }
         });
     }
+
     private void setMaxLength(int maxLength) {
 
         InputFilter[] fArray = new InputFilter[1];
@@ -268,10 +275,10 @@ public class OFSurveyQueTextFragment extends Fragment implements View.OnClickLis
     @Override
     public void onResume() {
         super.onResume();
-        View[] animateViews = new View[]{surveyTitle, surveyDescription, optionLayout,submitButton};
+        View[] animateViews = new View[]{surveyTitle, surveyDescription, optionLayout, submitButton};
 
 
-        Animation[] annim = new Animation[]{animation1, animation2, animation3,animation4};
+        Animation[] annim = new Animation[]{animation1, animation2, animation3, animation4};
 
         if (i == 0) {
             new Handler().postDelayed(new Runnable() {
@@ -343,11 +350,10 @@ public class OFSurveyQueTextFragment extends Fragment implements View.OnClickLis
 
                     i++;
                     if (i < animateViews.length) {
-                        if (surveyScreens.getInput().getMin_chars()<=0) {
+                        if (surveyScreens.getInput().getMin_chars() <= 0) {
 
-                            OFHelper.v(tag,"OneFlow min char reached ["+surveyScreens.getButtons().get(0).getTitle()+"]");
-                            if(!OFHelper.validateString(surveyScreens.getButtons().get(0).getTitle()).equalsIgnoreCase("NA"))
-                            {
+                            OFHelper.v(tag, "OneFlow min char reached [" + surveyScreens.getButtons().get(0).getTitle() + "]");
+                            if (!OFHelper.validateString(surveyScreens.getButtons().get(0).getTitle()).equalsIgnoreCase("NA")) {
                                 ((OFCustomTextViewBold) animateViews[i]).setText(surveyScreens.getButtons().get(0).getTitle());
                             }
                             animateViews[i].setVisibility(View.VISIBLE);
@@ -374,9 +380,8 @@ public class OFSurveyQueTextFragment extends Fragment implements View.OnClickLis
 
 
                     i++;
-                    OFHelper.v(tag, "OneFlow animation4 END[" + i + "]len["+animateViews.length+"]["+surveyScreens.getInput().getMin_chars()+"]");
+                    OFHelper.v(tag, "OneFlow animation4 END[" + i + "]len[" + animateViews.length + "][" + surveyScreens.getInput().getMin_chars() + "]");
                     if (i < animateViews.length) {
-
 
 
                     }

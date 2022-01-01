@@ -235,10 +235,12 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
 
         if (surveyScreens.getMessage() != null) {
             if(OneFlow.subTitleFace!=null) {
-                surveyDescription.setTypeface(OneFlow.subTitleFace.getTypeface());
-            }
-            if(OneFlow.subTitleFace.getFontSize()!=null){
-                surveyDescription.setTextSize(OneFlow.subTitleFace.getFontSize());
+                if (OneFlow.subTitleFace != null) {
+                    surveyDescription.setTypeface(OneFlow.subTitleFace.getTypeface());
+                }
+                if (OneFlow.subTitleFace.getFontSize() != null) {
+                    surveyDescription.setTextSize(OneFlow.subTitleFace.getFontSize());
+                }
             }
             surveyDescription.setText(surveyScreens.getMessage());
         } else {
