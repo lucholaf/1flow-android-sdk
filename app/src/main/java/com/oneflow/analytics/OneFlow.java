@@ -30,9 +30,16 @@ import android.os.Build;
 import android.os.Looper;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.oneflow.analytics.controller.OFEventController;
 import com.oneflow.analytics.controller.OFSurveyController;
 import com.oneflow.analytics.model.OFConnectivity;
@@ -66,8 +73,9 @@ import com.oneflow.analytics.utils.OFNetworkChangeReceiver;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
-public class OneFlow implements OFMyResponseHandler {
+public class OneFlow implements OFMyResponseHandler, PurchasesUpdatedListener {
 
     //TODO Convert this class to singleton
     static Context mContext;
@@ -75,6 +83,8 @@ public class OneFlow implements OFMyResponseHandler {
     private static Long duration = 1000 * 60 * 60 * 12L;
     private static Long interval = 1000 * 100L; //100L L FOR LONG
 
+
+    BillingClient billingClient;
 
     private OneFlow(Context context) {
         this.mContext = context;
@@ -109,8 +119,11 @@ public class OneFlow implements OFMyResponseHandler {
         configureLocal(mContext,projectKey);
     }
 
+
     public static void configureLocal(Context mContext, String projectKey) {
         final OneFlow fc = new OneFlow(mContext);
+
+
         final OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
         OFMyCountDownTimer cmdt = new OFMyCountDownTimer(mContext, duration, interval);
         cmdt.start();
@@ -699,5 +712,11 @@ public class OneFlow implements OFMyResponseHandler {
 
         }
         return connectivity;
+    }
+
+    @Override
+    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
+        OFHelper.v("OneFlow purchase listener","OneFlow purchase update["+billingResult.getResponseCode()+"]");
+        OFHelper.makeText(mContext,"OneFlow purchase init["+billingResult.getResponseCode()+"]",1);
     }
 }
