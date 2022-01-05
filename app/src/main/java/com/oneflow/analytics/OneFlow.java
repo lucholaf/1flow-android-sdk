@@ -37,6 +37,7 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
@@ -84,7 +85,8 @@ public class OneFlow implements OFMyResponseHandler, PurchasesUpdatedListener {
     private static Long interval = 1000 * 100L; //100L L FOR LONG
 
 
-    BillingClient billingClient;
+
+    static BillingClient bcFake;
 
     private OneFlow(Context context) {
         this.mContext = context;
@@ -122,6 +124,21 @@ public class OneFlow implements OFMyResponseHandler, PurchasesUpdatedListener {
 
     public static void configureLocal(Context mContext, String projectKey) {
         final OneFlow fc = new OneFlow(mContext);
+
+        bcFake = BillingClient.newBuilder(mContext)
+                .setListener(new PurchasesUpdatedListener() {
+                    @Override
+                    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
+                        OFHelper.v("InAppPurchase","OneFlow InAppPurchase Called");
+                        OFHelper.makeText(mContext,"in app purchase called",1);
+                        recordEvents(OFConstants.AUTOEVENT_INAPP_PURCHASE, null);
+                    }
+                })
+                .enablePendingPurchases()
+                .build();
+
+        Log.v("FakeBillingClass", "Amit constructor called");
+        fc.connectBillingClient();
 
 
         final OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
@@ -197,7 +214,25 @@ public class OneFlow implements OFMyResponseHandler, PurchasesUpdatedListener {
         }
         //fc.registerUser(fc.createRequest());
     }
+    public void connectBillingClient() {
+        bcFake.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
+                Log.v("FakeBillingClass", "Amit payment billing setUp finished");
+                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                    // The BillingClient is ready. You can query purchases here.
 
+                }
+
+            }
+
+            @Override
+            public void onBillingServiceDisconnected() {
+
+                Log.v("FakeBillingClass", "Amit payment billing disconnected");
+            }
+        });
+    }
     /*BroadcastReceiver listFetched = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
