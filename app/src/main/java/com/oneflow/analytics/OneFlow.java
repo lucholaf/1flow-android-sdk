@@ -76,7 +76,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class OneFlow implements OFMyResponseHandler, PurchasesUpdatedListener {
+public class OneFlow implements OFMyResponseHandler{
 
     //TODO Convert this class to singleton
     static Context mContext;
@@ -768,9 +768,5 @@ public class OneFlow implements OFMyResponseHandler, PurchasesUpdatedListener {
         return connectivity;
     }
 
-    @Override
-    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
-        OFHelper.v("OneFlow purchase listener","OneFlow purchase update["+billingResult.getResponseCode()+"]");
-        OFHelper.makeText(mContext,"OneFlow purchase init["+billingResult.getResponseCode()+"]",1);
-    }
+
 }
