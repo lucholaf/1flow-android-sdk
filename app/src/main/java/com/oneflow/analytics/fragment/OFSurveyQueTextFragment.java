@@ -186,8 +186,8 @@ public class OFSurveyQueTextFragment extends Fragment implements View.OnClickLis
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-
-                if (userInput.getText().toString().length() >= surveyScreens.getInput().getMin_chars()) {
+                OFHelper.v(tag,"OneFlow text["+userInput.getText().toString().trim()+"]len["+userInput.getText().toString().trim().length()+"]");
+                if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
                     // if (surveyScreens.getButtons().size() == 1) {
                     if (submitButton.getVisibility() != View.VISIBLE) {
                         if (!OFHelper.validateString(surveyScreens.getButtons().get(0).getTitle()).equalsIgnoreCase("NA")) {
@@ -410,7 +410,8 @@ public class OFSurveyQueTextFragment extends Fragment implements View.OnClickLis
     public void onClick(View v) {
 
         if (v.getId() == R.id.submit_btn) {
-            sa.addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString());
+
+            sa.addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString().trim().length()>0?userInput.getText().toString().trim():null);
         } else if (v.getId() == R.id.cancel_btn) {
             //  Helper.makeText(getActivity(), "Clicked on cancel button", 1);
         }

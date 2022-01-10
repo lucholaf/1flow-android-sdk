@@ -110,7 +110,8 @@ public class OneFlow implements OFMyResponseHandler, PurchasesUpdatedListener {
         configureLocal(mContext,projectKey);
         titleFace = titleFont;
         subTitleFace = descriptionFont;
-    }public static void configure(Context mContext, String projectKey,OFFontSetup titleFont,OFFontSetup descriptionFont,OFFontSetup optionsFont){
+    }
+    public static void configure(Context mContext, String projectKey,OFFontSetup titleFont,OFFontSetup descriptionFont,OFFontSetup optionsFont){
         configureLocal(mContext,projectKey);
         titleFace = titleFont;
         subTitleFace = descriptionFont;
@@ -128,16 +129,34 @@ public class OneFlow implements OFMyResponseHandler, PurchasesUpdatedListener {
         bcFake = BillingClient.newBuilder(mContext)
                 .setListener(new PurchasesUpdatedListener() {
                     @Override
-                    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
+                    public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
                         OFHelper.v("InAppPurchase","OneFlow InAppPurchase Called");
                         OFHelper.makeText(mContext,"in app purchase called",1);
-                        recordEvents(OFConstants.AUTOEVENT_INAPP_PURCHASE, null);
+
+
+
+
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
+                                && purchases != null) {
+                            HashMap<String,String> eventValues = new HashMap<>();
+
+                            eventValues.put("productID",purchases.get(0).getOrderId());
+                            eventValues.put("quantity",String.valueOf(purchases.get(0).getQuantity()));
+                            eventValues.put("price","NA");
+                            eventValues.put("subscriptionPeriod","NA");
+                            eventValues.put("subscriptionUnit","NA");
+                            eventValues.put("localCurrencyPrice","NA");
+                            eventValues.put("transactionIdentifier",purchases.get(0).getSignature());
+                            eventValues.put("transactionDate",OFHelper.formatedDate(purchases.get(0).getPurchaseTime(),"MM/dd/YYYY"));
+                            recordEvents(OFConstants.AUTOEVENT_INAPP_PURCHASE, eventValues);
+                        }
+
                     }
                 })
                 .enablePendingPurchases()
                 .build();
 
-        Log.v("FakeBillingClass", "Amit constructor called");
+        Log.v("FakeBillingClass", "OneFlow constructor called");
         fc.connectBillingClient();
 
 
@@ -154,9 +173,8 @@ public class OneFlow implements OFMyResponseHandler, PurchasesUpdatedListener {
                 IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
                 mContext.registerReceiver(ncr, intentFilter);
 
-                OFHelper.v("OneFlow", "OneFlow configure called");
+                OFHelper.v("OneFlow", "OneFlow configure called isConnected["+OFHelper.isConnected(mContext)+"]");
                 ofs.storeValue(OFConstants.APPIDSHP, projectKey);
-
 
                 if (OFHelper.isConnected(mContext)) {
                     fc.getLocation();
@@ -232,6 +250,7 @@ public class OneFlow implements OFMyResponseHandler, PurchasesUpdatedListener {
                 Log.v("FakeBillingClass", "Amit payment billing disconnected");
             }
         });
+
     }
     /*BroadcastReceiver listFetched = new BroadcastReceiver() {
         @Override

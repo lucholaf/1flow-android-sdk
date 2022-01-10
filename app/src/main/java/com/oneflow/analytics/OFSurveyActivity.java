@@ -375,15 +375,20 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
      * @param answerValue
      */
     public void addUserResponseToList(String screenID, String answerIndex, String answerValue) {
-        OFSurveyUserResponseChild asrc = new OFSurveyUserResponseChild();
-        asrc.setScreen_id(screenID);
-        if (answerValue != null) {
-            asrc.setAnswer_value(answerValue);
-        } else {
-            asrc.setAnswer_index(answerIndex);
-        }
 
-        surveyResponseChildren.add(asrc);
+        OFHelper.v(tag,"OneFlow answerindex ["+answerIndex+"]answervalue["+answerValue+"]");
+        //this condition for skipping question
+        if(answerIndex !=null || answerValue!=null) {
+            OFSurveyUserResponseChild asrc = new OFSurveyUserResponseChild();
+            asrc.setScreen_id(screenID);
+            if (answerValue != null) {
+                asrc.setAnswer_value(answerValue);
+            } else {
+                asrc.setAnswer_index(answerIndex);
+            }
+
+            surveyResponseChildren.add(asrc);
+        }
         initFragment();
     }
 
@@ -422,8 +427,6 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
 
     public void prepareAndSubmitUserResposneNew() {
 
-
-
         OFOneFlowSHP ofs = new OFOneFlowSHP(this);
         ofs.storeValue(OFConstants.SHP_SURVEY_RUNNING,false);
         OFSurveyUserInput sur = new OFSurveyUserInput();
@@ -431,7 +434,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         sur.setTrigger_event(triggerEventName);
         sur.setAnswers(surveyResponseChildren);
         sur.setOs(OFConstants.os);
-        sur.setAnalytic_user_id(ofs.getUserDetails().getAnalytic_user_id());
+        sur.setAnalytic_user_id(OFHelper.validateString(ofs.getUserDetails().getAnalytic_user_id()));
         sur.setSurvey_id(selectedSurveyId);
         sur.setSession_id(ofs.getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
         sur.setUser_id(ofs.getStringValue(OFConstants.USERUNIQUEIDSHP));
@@ -443,7 +446,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
     public int position = 0;
 
     public void initFragment() {
-        OFHelper.v(tag, "OneFlow position ["+position+"]screensize["+screens.size()+"]selected answers[" + new Gson().toJson(surveyResponseChildren) + "]");
+        OFHelper.v(tag, "OneFlow answer position ["+position+"]screensize["+screens.size()+"]selected answers[" + new Gson().toJson(surveyResponseChildren) + "]");
         if (position >= screens.size()) {
 
             OFSurveyActivity.this.finish();
