@@ -131,7 +131,7 @@ public class OneFlow implements OFMyResponseHandler{
                     @Override
                     public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> purchases) {
                         OFHelper.v("InAppPurchase","OneFlow InAppPurchase Called");
-                        OFHelper.makeText(mContext,"in app purchase called",1);
+                        //OFHelper.makeText(mContext,"in app purchase called",1);
 
 
 
@@ -757,7 +757,6 @@ public class OneFlow implements OFMyResponseHandler{
                 connectivity.setWifi(false);
                 connectivity.setRadio("true");
                 connectivity.setCarrier(operatorName);
-
             }
         } else {
             // not connected to the internet
