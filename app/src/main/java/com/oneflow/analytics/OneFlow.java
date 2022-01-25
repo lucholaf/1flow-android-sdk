@@ -639,8 +639,12 @@ public class OneFlow implements OFMyResponseHandler{
                 ddc.setOs_ver(Build.VERSION.SDK);
                 ddc.setScreen_width(metrics.widthPixels);
                 ddc.setScreen_height(metrics.heightPixels);
-
-                csr.setAnalytic_user_id(new OFOneFlowSHP(mContext).getUserDetails().getAnalytic_user_id());
+                String userId = "NA";
+                OFAddUserResultResponse ofarr = new OFOneFlowSHP(mContext).getUserDetails();
+                if(ofarr!=null){
+                    userId = ofarr.getAnalytic_user_id();
+                }
+                csr.setAnalytic_user_id(userId);
                 csr.setSystem_id(OFHelper.getDeviceId(mContext));
                 csr.setDevice(ddc);
                 csr.setLocation_check(false);

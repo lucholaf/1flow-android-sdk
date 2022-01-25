@@ -34,6 +34,16 @@ public class OFSurveyScreens extends OFBaseModel {
     private OFSurveyInputs input;
     @SerializedName("buttons")
     private ArrayList<OFSurveyButtons> buttons;
+    @SerializedName("rules")
+    private OFRules rules;
+
+    public OFRules getRules() {
+        return rules;
+    }
+
+    public void setRules(OFRules rules) {
+        this.rules = rules;
+    }
 
     public String getTitle() {
         return title;

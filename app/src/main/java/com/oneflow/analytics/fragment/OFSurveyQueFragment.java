@@ -101,7 +101,6 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
 
         View[] animateViews = new View[]{surveyTitle, surveyDescription, optionLayout};
 
-
         Animation[] annim = new Animation[]{animation1, animation2, animation3};
 
         if (i == 0) {
@@ -117,12 +116,12 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
             animation1.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation START [" + i + "]");
+                    //OFHelper.v(tag, "OneFlow animation START [" + i + "]");
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation END[" + i + "]");
+                    //OFHelper.v(tag, "OneFlow animation END[" + i + "]");
                     //
                     i++;
                     if (i < animateViews.length) {
@@ -135,18 +134,18 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
 
                 @Override
                 public void onAnimationRepeat(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation REPEAT[" + i + "]");
+                    //OFHelper.v(tag, "OneFlow animation REPEAT[" + i + "]");
                 }
             });
             animation2.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation START [" + i + "]");
+                    //OFHelper.v(tag, "OneFlow animation START [" + i + "]");
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation END[" + i + "]");
+                    //OFHelper.v(tag, "OneFlow animation END[" + i + "]");
                     //
                     i++;
                     if (i < animateViews.length) {
@@ -165,12 +164,12 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
             animation3.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation START [" + i + "]");
+                    //OFHelper.v(tag, "OneFlow animation START [" + i + "]");
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation END[" + i + "]");
+                   // OFHelper.v(tag, "OneFlow animation END[" + i + "]");
 
                     i++;
                     if (i < animateViews.length) {
@@ -187,7 +186,7 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
                 }
             });
         }
-
+        OFHelper.v(tag,"OneFlow onResume finished pos["+sa.position+"]");
            /* }
         },1100);*/
     }
@@ -211,7 +210,7 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
 
         submitButton.setOnClickListener(this);
         submitButtonBeautification();
-        OFHelper.v(tag, "OneAxis list data[" + surveyScreens + "]");
+        OFHelper.v(tag, "OneAxis list position onCreateView["+sa.position+"]data[" + surveyScreens + "]");
         OFHelper.v(tag, "OneAxis list title[" + surveyScreens.getTitle() + "]");
         OFHelper.v(tag, "OneAxis list desc[" + surveyScreens.getMessage() + "]");
 
@@ -303,7 +302,9 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
         if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("nps")) {
             OFHelper.v(tag, "OneFlow gridLayout set");
             mLayoutManager = new GridLayoutManager(getActivity(), (surveyScreens.getInput().getMax_val() + 1) - surveyScreens.getInput().getMin_val());
-        } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")) {
+        } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-emojis")) {
+            mLayoutManager = new GridLayoutManager(getActivity(), 5);
+        }else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")) {
             mLayoutManager = new GridLayoutManager(getActivity(), 5);
         } else {
             if (surveyScreens.getInput().getChoices() != null) {
@@ -324,14 +325,14 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
         surveyOptionRecyclerView.setItemAnimator(new DefaultItemAnimator());
         surveyOptionRecyclerView.setAdapter(dashboardAdapter);
 
-        if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
+        /*if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
             if (surveyScreens.getButtons() != null) {
                 if (surveyScreens.getButtons().size() > 0) {
 
                 }
 
             }
-        }
+        }*/
         return view;
 
     }
@@ -382,7 +383,7 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        OFHelper.v(tag, "OneFlow onAttach called");
+
         sa = (OFSurveyActivity) context;
         sa.position++;
 
@@ -493,7 +494,14 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    sa.addUserResponseToList(surveyScreens.get_id(), String.valueOf(position), null);
+                    if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical") ||
+                            surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")
+                    ) {
+                        sa.addUserResponseToList(surveyScreens.get_id(), String.valueOf(position + 1), null);
+
+                    }else{
+                        sa.addUserResponseToList(surveyScreens.get_id(), String.valueOf(position), null);
+                    }
                 }
             }, 1000);
         }
