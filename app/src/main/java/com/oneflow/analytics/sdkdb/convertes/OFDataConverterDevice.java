@@ -45,6 +45,29 @@ public class OFDataConverterDevice implements Serializable {
     }
 
     @TypeConverter
+    public String toStringFromList(OFDeviceDetails myList){
+
+        if (myList == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<OFDeviceDetails>() {
+        }.getType();
+        String json = gson.toJson(myList, type);
+        return json;
+    }
+
+    @TypeConverter
+    public OFDeviceDetails toListFromString(String listStr){
+        if (listStr == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<OFDeviceDetails>() {}.getType();
+        OFDeviceDetails productCategoriesList = gson.fromJson(listStr, type);
+        return productCategoriesList;
+    }
+    /*@TypeConverter
     public ArrayList<OFDeviceDetails> toListFromString(String listStr){
         if (listStr == null) {
             return (null);
@@ -53,5 +76,5 @@ public class OFDataConverterDevice implements Serializable {
         Type type = new TypeToken<ArrayList<OFDeviceDetails>>() {}.getType();
         ArrayList<OFDeviceDetails> productCategoriesList = gson.fromJson(listStr, type);
         return productCategoriesList;
-    }
+    }*/
 }

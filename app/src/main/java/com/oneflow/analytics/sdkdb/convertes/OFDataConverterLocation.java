@@ -44,8 +44,20 @@ public class OFDataConverterLocation implements Serializable {
         String json = gson.toJson(myList, type);
         return json;
     }
-
     @TypeConverter
+    public String toStringFromList(OFLocationDetails myList){
+
+        if (myList == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<OFLocationDetails>() {
+        }.getType();
+        String json = gson.toJson(myList, type);
+        return json;
+    }
+
+    /*@TypeConverter
     public ArrayList<OFLocationDetails> toListFromString(String listStr){
         if (listStr == null) {
             return (null);
@@ -53,6 +65,17 @@ public class OFDataConverterLocation implements Serializable {
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<OFLocationDetails>>() {}.getType();
         ArrayList<OFLocationDetails> productCategoriesList = gson.fromJson(listStr, type);
+        return productCategoriesList;
+    }*/
+
+    @TypeConverter
+    public OFLocationDetails toListFromString(String listStr){
+        if (listStr == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<OFLocationDetails>() {}.getType();
+        OFLocationDetails productCategoriesList = gson.fromJson(listStr, type);
         return productCategoriesList;
     }
 }

@@ -541,6 +541,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(action));
                     startActivity(browserIntent);
                 } else if (type.equalsIgnoreCase("rating")) {
+                    OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
                     reviewThisApp(OFSurveyActivity.this);
                 } else {
                     findNextQuestionPosition(action);
@@ -552,12 +553,13 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
     }
     // initFragment();
 
-    public static void reviewThisApp(Context context) {
+    public void reviewThisApp(Context context) {
 
         ReviewManager manager = ReviewManagerFactory.create(context);
         Task<ReviewInfo> request = manager.requestReviewFlow();
         request.addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                OFHelper.v(tag,"OneFlow review success called");
                 ReviewInfo reviewInfo = task.getResult();
                 Task<Void> flow = manager.launchReviewFlow((Activity) context, reviewInfo);
                 flow.addOnCompleteListener(task2 -> {
@@ -749,7 +751,6 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
                     OFHelper.v(tag, "OneFlow calling submit user Resposne");
                     OFSurvey.submitUserResponse(this, sur);
                 } else {
-
                     OFHelper.v(tag, "OneFlow no data connectivity available submit survey later");
                 }
                 break;

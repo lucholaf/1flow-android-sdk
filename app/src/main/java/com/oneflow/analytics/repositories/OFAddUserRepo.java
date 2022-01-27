@@ -36,7 +36,7 @@ import retrofit2.Response;
 
 public class OFAddUserRepo {
 
-    static String tag = "AddUserRepo";
+    static String tag = "OFAddUserRepo";
     OFMyResponseHandler myResponseHandler;
     public static void addUser(OFAddUserRequest aur, Context context, OFMyResponseHandler mrh, OFConstants.ApiHitType hitType){
 

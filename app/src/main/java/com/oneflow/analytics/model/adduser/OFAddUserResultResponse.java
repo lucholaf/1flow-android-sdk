@@ -51,15 +51,17 @@ public class OFAddUserResultResponse {
     private String system_id;
 
 
-    @TypeConverters(OFDataConverterDevice.class)
+    //@TypeConverters(OFDataConverterDevice.class)
     @ColumnInfo(name = "devices")
     @SerializedName("devices")
-    private ArrayList<OFDeviceDetails> devices;
+    private OFDeviceDetails devices;
+    //private ArrayList<OFDeviceDetails> devices;
 
-    @TypeConverters(OFDataConverterLocation.class)
+    //@TypeConverters(OFDataConverterLocation.class)
     @ColumnInfo(name = "locations")
     @SerializedName("locations")
-    private ArrayList<OFLocationDetails> locations;
+    private OFLocationDetails locations;
+    //private ArrayList<OFLocationDetails> locations;
 
     @ColumnInfo(name = "created_on")
     @SerializedName("created_on")
@@ -138,7 +140,7 @@ public class OFAddUserResultResponse {
         this.locations = locations;
     }*/
 
-    public ArrayList<OFDeviceDetails> getDevices() {
+    /*public ArrayList<OFDeviceDetails> getDevices() {
         return devices;
     }
 
@@ -151,6 +153,21 @@ public class OFAddUserResultResponse {
     }
 
     public void setLocations(ArrayList<OFLocationDetails> locations) {
+        this.locations = locations;
+    }*/
+    public OFDeviceDetails getDevices() {
+        return devices;
+    }
+
+    public void setDevices(OFDeviceDetails devices) {
+        this.devices = devices;
+    }
+
+    public OFLocationDetails getLocations() {
+        return locations;
+    }
+
+    public void setLocations(OFLocationDetails locations) {
         this.locations = locations;
     }
 
