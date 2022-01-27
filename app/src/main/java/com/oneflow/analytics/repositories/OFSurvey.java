@@ -49,7 +49,7 @@ public class OFSurvey {
         try {
             Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> responseCall = null;
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys";
-            responseCall = connectAPI.getSurvey(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP), url,"android", "prod");
+            responseCall = connectAPI.getSurvey(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP), url,"android", OFConstants.MODE);
 
             responseCall.enqueue(new Callback<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>>() {
                 @Override

@@ -57,6 +57,7 @@ import com.google.gson.Gson;
 import com.oneflow.analytics.fragment.OFSurveyQueFragment;
 import com.oneflow.analytics.fragment.OFSurveyQueTextFragment;
 import com.oneflow.analytics.fragment.OFSurveyQueThankyouFragment;
+import com.oneflow.analytics.model.OFBaseModel;
 import com.oneflow.analytics.model.survey.OFDataLogic;
 import com.oneflow.analytics.model.survey.OFRules;
 import com.oneflow.analytics.model.survey.OFSurveyUserInput;
@@ -611,7 +612,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         OFOneFlowSHP ofs = new OFOneFlowSHP(this);
         ofs.storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
         OFSurveyUserInput sur = new OFSurveyUserInput();
-        sur.setMode("prod");
+        sur.setMode(OFConstants.MODE);
         sur.setTrigger_event(triggerEventName);
         sur.setAnswers(surveyResponseChildren);
         sur.setOs(OFConstants.os);
@@ -639,7 +640,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         OFOneFlowSHP ofs = new OFOneFlowSHP(this);
         ofs.storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
         OFSurveyUserInput sur = new OFSurveyUserInput();
-        sur.setMode("prod");
+        sur.setMode(OFConstants.MODE);
         sur.setTrigger_event(triggerEventName);
         sur.setAnswers(surveyResponseChildren);
         sur.setOs(OFConstants.os);

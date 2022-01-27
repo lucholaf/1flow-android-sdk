@@ -19,11 +19,12 @@
 package com.oneflow.analytics.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.oneflow.analytics.utils.OFConstants;
 
 import java.io.Serializable;
 
 public class OFBaseModel implements Serializable {
-    @SerializedName("mode") String mode = "prod" ;
+    @SerializedName("mode") String mode = OFConstants.MODE;//"dev";//""prod" ;
 
     public String getMode() {
         return mode;
