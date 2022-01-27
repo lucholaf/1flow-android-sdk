@@ -236,7 +236,7 @@ public class OneFlow implements OFMyResponseHandler{
         bcFake.startConnection(new BillingClientStateListener() {
             @Override
             public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                Log.v("FakeBillingClass", "Amit payment billing setUp finished");
+                Log.v("FakeBillingClass", "OneFlow payment billing setUp finished");
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     // The BillingClient is ready. You can query purchases here.
 

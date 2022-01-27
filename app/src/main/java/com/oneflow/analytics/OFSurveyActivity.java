@@ -362,7 +362,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         //on close of this page considering survey is over, so submit the respones to api
         if (surveyResponseChildren.size() > 0) {
             OFHelper.v(tag, "OneFlow input found submitting");
-            //prepareAndSubmitUserResposneNew();
+            prepareAndSubmitUserResposneNew();
         } else {
             OFHelper.v(tag, "OneFlow no input no submit");
         }
@@ -522,10 +522,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
                 found = true;
                 break;
             }
-
-
         }
-
 
         OFHelper.v(tag, "OneFlow found [" + found + "]action[" + action + "]type["+type+"]");
         // rating and open url is pending
@@ -536,12 +533,16 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
             } else {
                 if (type.equalsIgnoreCase("open-url")) {
                     //todo need to close properly
+
                     position = screens.size();
                     initFragment();
+
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(action));
                     startActivity(browserIntent);
                 } else if (type.equalsIgnoreCase("rating")) {
-                    OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
+                   // OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
+                    position = screens.size();
+                    initFragment();
                     reviewThisApp(OFSurveyActivity.this);
                 } else {
                     findNextQuestionPosition(action);
