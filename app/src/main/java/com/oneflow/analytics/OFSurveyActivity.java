@@ -527,7 +527,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         }
 
 
-        OFHelper.v(tag, "OneFlow found [" + found + "]action[" + action + "]");
+        OFHelper.v(tag, "OneFlow found [" + found + "]action[" + action + "]type["+type+"]");
         // rating and open url is pending
         if (found) {
             if (OFHelper.validateString(action).equalsIgnoreCase("the-end")) {
