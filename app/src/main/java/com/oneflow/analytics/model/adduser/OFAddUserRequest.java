@@ -24,12 +24,22 @@ import com.oneflow.analytics.model.OFBaseModel;
 public class OFAddUserRequest extends OFBaseModel {
     @SerializedName("system_id")
     private String system_id;
+    @SerializedName("language")
+    private String language;
     @SerializedName("device")
     private OFDeviceDetails OFDeviceDetails;
     @SerializedName("location_check")
     private Boolean locationCheck;
     @SerializedName("location")
     private OFLocationDetails OFLocationDetails;
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
     public Boolean getLocationCheck() {
         return locationCheck;

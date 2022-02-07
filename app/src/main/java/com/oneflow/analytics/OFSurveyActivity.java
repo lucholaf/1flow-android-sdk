@@ -91,13 +91,14 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
     String triggerEventName = "";
     public ArrayList<OFSurveyUserResponseChild> surveyResponseChildren;
     public ArrayList<OFSurveyScreens> screens;
-
+    private Long inTime = 0l;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.survey_view);
 
+        inTime = System.currentTimeMillis();
         OFHelper.v(tag, "OneFlow reached at surveyActivity");
         pagePositionPBar = (ProgressBar) findViewById(R.id.pbar);
         closeBtn = (ImageView) findViewById(R.id.close_btn_image_view);
@@ -643,6 +644,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         OFOneFlowSHP ofs = new OFOneFlowSHP(this);
         ofs.storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
         OFSurveyUserInput sur = new OFSurveyUserInput();
+        sur.setTotDuration(totalTimeSpentInSec());
         sur.setMode(OFConstants.MODE);
         sur.setTrigger_event(triggerEventName);
         sur.setAnswers(surveyResponseChildren);
@@ -656,6 +658,12 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
 
     }
 
+    private Integer totalTimeSpentInSec(){
+
+        Long l = (System.currentTimeMillis()-inTime)/1000;
+        OFHelper.v(tag, "OneFlow inTime ["+inTime+"]["+System.currentTimeMillis()+"]["+l+"]");
+        return l.intValue();
+    }
     public int position = 0;
 
     public void initFragment() {

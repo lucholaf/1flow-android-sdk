@@ -78,6 +78,18 @@ public class OFSurveyUserInput {
     @SerializedName("created_on")
     private Long createdOn;
 
+    @ColumnInfo(name = "tot_duration")
+    @SerializedName("tot_duration")
+    private Integer totDuration;
+
+    public Integer getTotDuration() {
+        return totDuration;
+    }
+
+    public void setTotDuration(Integer totDuration) {
+        this.totDuration = totDuration;
+    }
+
     public Long getCreatedOn() {
         return createdOn;
     }

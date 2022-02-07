@@ -75,6 +75,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class OneFlow implements OFMyResponseHandler{
 
@@ -293,6 +294,7 @@ public class OneFlow implements OFMyResponseHandler{
 
         OFAddUserRequest aur = new OFAddUserRequest();
         aur.setSystem_id(OFHelper.getDeviceId(mContext));
+        aur.setLanguage(new Locale(Locale.getDefault().getLanguage()).getDisplayName(Locale.US));
         aur.setOFDeviceDetails(dd);
         aur.setOFLocationDetails(ld);
         aur.setLocationCheck(false);
