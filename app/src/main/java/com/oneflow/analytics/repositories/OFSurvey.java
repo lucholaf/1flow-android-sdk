@@ -103,7 +103,7 @@ public class OFSurvey {
                     OFHelper.v(tag, "OneFlow reached success[" + response.isSuccessful() + "]");
                     OFHelper.v(tag, "OneFlow reached success raw[" + response.raw() + "]");
 
-                    OFHelper.makeText(context.getApplicationContext(),"Survey submit status["+response.isSuccessful()+"]",1);
+                    //OFHelper.makeText(context.getApplicationContext(),"Survey submit status["+response.isSuccessful()+"]",1);
 
                     if (response.isSuccessful()) {
                         OFHelper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
