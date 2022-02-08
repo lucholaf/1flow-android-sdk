@@ -21,7 +21,7 @@ package com.oneflow.analytics.utils;
 public interface OFConstants {
 
 
-    String MODE = "prod";
+    String MODE = "dev";
     String DBNAME = "one_flow_db";
     String APPKEYSHP = "one_flow_config_key";
     String APPIDSHP = "one_flow_app_id_key";
