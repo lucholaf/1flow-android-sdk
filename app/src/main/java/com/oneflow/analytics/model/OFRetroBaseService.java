@@ -43,11 +43,12 @@ public class OFRetroBaseService {
 
     public static Retrofit getClient() {
 
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        /*HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);*/
+        //.addInterceptor(interceptor)
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS)
-                .addInterceptor(interceptor).build();
+                .build();
 
         OFHelper.v("APIClient","BaseUrl ["+BASE_URL+"]");
         retrofit = new Retrofit.Builder()
