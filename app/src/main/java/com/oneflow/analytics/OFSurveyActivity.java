@@ -388,14 +388,15 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
      */
     public void addUserResponseToList(String screenID, String answerIndex, String answerValue) {
 
-        OFHelper.v(tag, "OneFlow answerindex position[" + position + "][" + answerIndex + "]answervalue[" + answerValue + "]");
+        OFHelper.v(tag, "OneFlow answerindex position 0 [" + position + "][" + answerIndex + "]answervalue[" + answerValue + "]");
         //this condition for skipping question
         if (answerIndex != null || answerValue != null) {
             OFSurveyUserResponseChild asrc = new OFSurveyUserResponseChild();
             asrc.setScreen_id(screenID);
             if (answerValue != null) {
                 asrc.setAnswer_value(answerValue);
-            } else {
+            }
+            if(answerIndex!=null){
                 asrc.setAnswer_index(answerIndex);
             }
             surveyResponseChildren.add(asrc);

@@ -18,6 +18,7 @@
 
 package com.oneflow.analytics.model;
 
+import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 
 import java.util.concurrent.TimeUnit;
@@ -43,19 +44,24 @@ public class OFRetroBaseService {
 
     public static Retrofit getClient() {
 
-        /*HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);*/
-        //.addInterceptor(interceptor)
-        OkHttpClient client = new OkHttpClient.Builder()
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        //
+        OkHttpClient clientDev = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(interceptor)
+                .build();
+
+        OkHttpClient clientProd = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .build();
 
         OFHelper.v("APIClient","BaseUrl ["+BASE_URL+"]");
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
+                .client(OFConstants.MODE.equalsIgnoreCase("dev")?clientDev:clientProd)
                 .build();
 
 

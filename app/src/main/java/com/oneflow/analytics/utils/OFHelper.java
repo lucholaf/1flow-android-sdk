@@ -83,7 +83,7 @@ public class OFHelper {
     //static boolean debug = commanEnable;
     //static boolean error = false;
     static boolean builds = false;
-    static boolean printLogs = false;
+
     public static String headerKey = "";
 
     public static String gpsProviderInfo;
@@ -188,7 +188,7 @@ public class OFHelper {
 
     //Log methods
     public static void v(String tag, String msg) {
-        if (printLogs) {
+        if (OFConstants.MODE.equalsIgnoreCase("dev")) {
 
             //Log.v(tag,"OneFlow msg Length"+msg.length());
             if (msg.length() > printCharLimit) {
@@ -201,7 +201,7 @@ public class OFHelper {
     }
 
     public static void d(String tag, String msg) {
-        if (printLogs) {
+        if (OFConstants.MODE.equalsIgnoreCase("dev")) {
             if (msg.length() > 4075) {
                 Log.d(tag, msg.substring(0, 4075));
                 Log.d("continue", msg.substring(4076, msg.length()));
@@ -212,7 +212,7 @@ public class OFHelper {
     }
 
     public static void i(String tag, String msg) {
-        if (printLogs) {
+        if (OFConstants.MODE.equalsIgnoreCase("dev")) {
             if (msg.length() > 4075) {
                 Log.i(tag, msg.substring(0, 4075));
                 Log.i("continue", msg.substring(4076, msg.length()));
@@ -223,7 +223,7 @@ public class OFHelper {
     }
 
     public static void e(String tag, String msg) {
-        if (printLogs) {
+        if (OFConstants.MODE.equalsIgnoreCase("dev")) {
             if (msg.length() > 4075) {
                 Log.e(tag, msg.substring(0, 4075));
                 Log.e("continue", msg.substring(4076, msg.length()));

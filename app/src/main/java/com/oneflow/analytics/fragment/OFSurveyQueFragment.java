@@ -51,13 +51,14 @@ import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
 import com.oneflow.analytics.model.survey.OFRatingsModel;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
+import com.oneflow.analytics.utils.OFGenericClickHandler;
 import com.oneflow.analytics.utils.OFHelper;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
-public class OFSurveyQueFragment extends Fragment implements View.OnClickListener {
+public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandler {//View.OnClickListener {
 
 
     OFCustomTextViewBold surveyTitle, submitButton;
@@ -208,7 +209,13 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
         surveyOptionRecyclerView = (RecyclerView) view.findViewById(R.id.survey_options_list);
         optionLayout = (RelativeLayout) view.findViewById(R.id.option_layout);
 
-        submitButton.setOnClickListener(this);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OFHelper.v(tag, "OneFlow button size found 0 ");
+                itemClicked(v,null,"");
+            }
+        });
         submitButtonBeautification();
         OFHelper.v(tag, "OneAxis list position onCreateView["+sa.position+"]data[" + surveyScreens + "]");
         OFHelper.v(tag, "OneAxis list title[" + surveyScreens.getTitle() + "]");
@@ -333,6 +340,7 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
 
             }
         }*/
+       // OFHelper.makeText(getActivity(),"Other option id["+surveyScreens.getInput().getOtherOption()+"]",1);
         return view;
 
     }
@@ -389,8 +397,89 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
 
     }
 
-
     @Override
+    public void itemClicked(View v, Object obj, String reserve) {
+        OFHelper.v(tag,"OneFlow othervalue ["+obj+"]reserve["+reserve+"]");
+        if (v.getId() == R.id.submit_btn) {
+            OFHelper.v(tag,"OneFlow othervalue submit btn");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (checkBoxSelection != null) {
+                        if (checkBoxSelection.size() > 0) {
+                            String allSelections = checkBoxSelection.toString().replace("[", "");
+                            allSelections = allSelections.replace("]", "");
+                            allSelections = allSelections.replace(" ", "");
+                            OFHelper.v(tag, "OneFlow allselection[" + allSelections + "] str["+reserve+"]");
+                            sa.addUserResponseToList(surveyScreens.get_id(),  allSelections, reserve);
+                        } else {
+                            sa.initFragment();
+                        }
+                    } else {
+                        sa.initFragment();
+                    }
+                }
+            }, 1000);
+        } else {
+
+            OFHelper.v(tag, "OneFlow inputtype[" + surveyScreens.getInput().getInput_type() + "]isCheckbox[" + surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox") + "]ratings[" + surveyScreens.getInput().getInput_type().contains("rating") + "]isStar[" + surveyScreens.getInput().getStars() + "]");
+            if (surveyScreens.getInput().getInput_type().contains("rating-emojis")) {
+                int position = (int) v.getTag();
+                OFHelper.v(tag, "OneFlow inputType[" + surveyScreens.getInput().getStars() + "]position[" + position + "]");
+                setSelected(position, true);
+
+            } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")) {
+                int position = (int) v.getTag();
+                OFHelper.v(tag, "OneFlow inputType[" + surveyScreens.getInput().getStars() + "]position[" + position + "]");
+                setSelected(position, false);
+
+            } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("nps") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical")) {
+                int position = (int) v.getTag();
+                setSelected(position, true);
+            } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("mcq")) {
+                String position = (String) v.getTag();
+                if(v instanceof RadioButton){ // added for handling other click
+
+                    OFHelper.v(tag, "OneFlow mcq clicked Position[" + position + "]");
+                    OFHelper.v(tag, "OneFlow mcq clicked choices radio id[]other id["+surveyScreens.getInput().getOtherOption()+"]");
+                   // if(!surveyScreens.getInput().getOtherOption().equalsIgnoreCase(position)) {
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                sa.addUserResponseToList(surveyScreens.get_id(), position, null);
+                            }
+                        }, 1000);
+                   // }
+                }else{
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            sa.addUserResponseToList(surveyScreens.get_id(), position, (String)obj);
+                        }
+                    }, 1000);
+                }
+
+            } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
+                OFHelper.v(tag, "OneFlow inside checkbox reserve["+reserve+"]");
+                if(v instanceof CheckBox) {
+                    CheckBox cb = (CheckBox) v;
+                    OFHelper.v(tag, "OneFlow inside checkbox 1");
+                    String viewTag = (String) cb.getTag();
+                    OFHelper.v(tag, "OneFlow inside checkbox tag[" + viewTag + "]isChecked[" + cb.isChecked() + "]");
+
+
+                    checkBoxSelectionStatus(viewTag, cb.isChecked(), (String)obj);
+                }else{
+                    String viewTag = (String)v.getTag();
+                    checkBoxSelectionStatus(viewTag, (boolean)obj, reserve);
+                }
+            }
+        }
+    }
+
+    /*@Override
     public void onClick(View v) {
         // Helper.makeText(getActivity(), "Clicked on [" + v.getTag() + "]", 1);
 
@@ -430,17 +519,28 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
                 int position = (int) v.getTag();
                 setSelected(position, true);
             } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("mcq")) {
-
-                RadioButton rb = (RadioButton) v;
                 String position = (String) v.getTag();
-                OFHelper.v(tag, "OneFlow mcq clicked Position[" + position + "]");
+                if(v instanceof RadioButton){ // added for handling other click
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        sa.addUserResponseToList(surveyScreens.get_id(), position, null);
+                    OFHelper.v(tag, "OneFlow mcq clicked Position[" + position + "]");
+                    OFHelper.v(tag, "OneFlow mcq clicked choices radio id[]other id["+surveyScreens.getInput().getOtherOption()+"]");
+                    if(!surveyScreens.getInput().getOtherOption().equalsIgnoreCase(position)) {
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                sa.addUserResponseToList(surveyScreens.get_id(), position, null);
+                            }
+                        }, 1000);
                     }
-                }, 1000);
+                }else{
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            sa.addUserResponseToList(surveyScreens.get_id(), position, null);
+                        }
+                    }, 1000);
+                }
 
             } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
                 OFHelper.v(tag, "OneFlow inside checkbox");
@@ -448,15 +548,15 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
                 OFHelper.v(tag, "OneFlow inside checkbox 1");
                 String viewTag = (String) cb.getTag();
                 OFHelper.v(tag, "OneFlow inside checkbox tag[" + viewTag + "]isChecked[" + cb.isChecked() + "]");
-                    /*if (cb.isChecked()) {
+                    *//*if (cb.isChecked()) {
                         ((View) cb.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_blue);
                     } else {
                         ((View) cb.getParent()).setBackgroundResource(R.drawable.rounded_rectangle_with_border_gray);
-                    }*/
+                    }*//*
                 checkBoxSelectionStatus(viewTag, cb.isChecked());
             }
         }
-    }
+    }*/
 
 
     private void setSelected(int position, Boolean isSingle) {
@@ -480,6 +580,7 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
                     surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")
             ) {
                 for (OFRatingsModel rm : surveyScreens.getInput().getRatingsList()) {
+                    OFHelper.v(tag,"OneFlow "+surveyScreens.getInput().getInput_type()+" rm.getId()["+rm.getId()+"]position["+position+"]");
                     if (rm.getId() == position) {
                         rm.setSelected(true);
                     }
@@ -494,13 +595,10 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical") ||
-                            surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")
-                    ) {
-                        sa.addUserResponseToList(surveyScreens.get_id(), String.valueOf(position + 1), null);
-
+                    if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")) {
+                        sa.addUserResponseToList(surveyScreens.get_id(), null,String.valueOf(position + 1));
                     }else{
-                        sa.addUserResponseToList(surveyScreens.get_id(), String.valueOf(position), null);
+                        sa.addUserResponseToList(surveyScreens.get_id(), null,String.valueOf(position));
                     }
                 }
             }, 1000);
@@ -509,9 +607,8 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
 
     ArrayList<String> checkBoxSelection;
 
-    private void checkBoxSelectionStatus(String tag, Boolean isCheck) {
-
-
+    private void checkBoxSelectionStatus(String tag, Boolean isCheck, String str) {
+        OFHelper.v(tag, "OneFlow button size tag[" + tag + "]isChecked["+isCheck+"]othervalue["+str+"]");
         if (isCheck) { // adding value in the list
             checkBoxSelection.add(tag);
         } else { // removing value from the list
@@ -519,7 +616,7 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
         }
 
 
-        OFHelper.v(tag, "OneFlow button size found[" + checkBoxSelection.size() + "]");
+        OFHelper.v(tag, "OneFlow button size found[" + checkBoxSelection.size() + "]othervalue["+str+"]");
         if (checkBoxSelection.size() > 0) {
             if (surveyScreens.getButtons() != null) {
                 if (surveyScreens.getButtons().size() == 1) {
@@ -527,14 +624,26 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
                         submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
                         submitButton.setVisibility(View.VISIBLE);
                         submitButton.startAnimation(animationIn);
-                        submitButton.setOnClickListener(this);
+                        submitButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                OFHelper.v(tag, "OneFlow button size found 1 ");
+                                itemClicked(v,str,str);
+                            }
+                        });
                     }
                 } else if (surveyScreens.getButtons().size() == 2) {
                     if (submitButton.getVisibility() != View.VISIBLE) {
                         submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
                         submitButton.setVisibility(View.VISIBLE);
                         submitButton.startAnimation(animationIn);
-                        submitButton.setOnClickListener(this);
+                        submitButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                OFHelper.v(tag, "OneFlow button size found 2 ");
+                                itemClicked(v,str,"");
+                            }
+                        });
                     }
                     /*cancelButton.setText(surveyScreens.getButtons().get(1).getTitle());
                     cancelButton.setVisibility(View.VISIBLE);
@@ -553,5 +662,6 @@ public class OFSurveyQueFragment extends Fragment implements View.OnClickListene
 
 
     }
+
 
 }

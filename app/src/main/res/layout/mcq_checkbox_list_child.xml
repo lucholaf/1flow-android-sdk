@@ -42,6 +42,41 @@
             android:textColor="@color/txtblack"
             android:textSize="@dimen/page_sub_header_2" />
 
+        <LinearLayout
+            android:id="@+id/other_child_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="55dp"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            >
+            <com.oneflow.analytics.customwidgets.OFCustomEditText
+                android:id="@+id/child_text_others"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColorHint="@color/txtgray"
+                android:textColor="@color/txtgray"
+                android:hint="Type your answer"
+                >
 
+            </com.oneflow.analytics.customwidgets.OFCustomEditText>
+            <com.oneflow.analytics.customwidgets.OFCustomTextViewBold
+                android:id="@+id/other_submit_btn"
+                style="@style/comman_positive_button_style"
+                android:layout_width="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/field_padding"
+                android:background="@drawable/btn_rounded_rectangle_normal"
+                android:drawableRight="@drawable/ic_baseline_keyboard_return_24"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Enter"
+                android:visibility="visible" />
+        </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>
