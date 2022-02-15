@@ -595,7 +595,8 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")) {
+                    if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star") ||
+                            surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-emojis")) {
                         sa.addUserResponseToList(surveyScreens.get_id(), null,String.valueOf(position + 1));
                     }else{
                         sa.addUserResponseToList(surveyScreens.get_id(), null,String.valueOf(position));

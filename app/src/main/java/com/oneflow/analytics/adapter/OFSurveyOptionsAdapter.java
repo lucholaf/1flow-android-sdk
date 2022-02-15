@@ -527,7 +527,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }else{
                     gdEmojis.setColor(mContext.getResources().getColor(R.color.white));
                 }
-                ((RatingsEmojis) holder).emojis.setTag(position+1);
+                ((RatingsEmojis) holder).emojis.setTag(position);
                 ((RatingsEmojis) holder).emojis.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
