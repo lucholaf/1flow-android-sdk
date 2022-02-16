@@ -134,9 +134,6 @@ public class OneFlow implements OFMyResponseHandler{
                         OFHelper.v("InAppPurchase","OneFlow InAppPurchase Called");
                         //OFHelper.makeText(mContext,"in app purchase called",1);
 
-
-
-
                         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
                                 && purchases != null) {
                             HashMap<String,String> eventValues = new HashMap<>();
@@ -178,7 +175,10 @@ public class OneFlow implements OFMyResponseHandler{
                 ofs.storeValue(OFConstants.APPIDSHP, projectKey);
 
                 if (OFHelper.isConnected(mContext)) {
-                    fc.getLocation();
+                    /*fc.getLocation();*/
+
+                        fc.registerUser(fc.createRequest());
+
                     OFSurveyController.getInstance(mContext);
 
                     /*IntentFilter inf = new IntentFilter();
@@ -274,8 +274,8 @@ public class OneFlow implements OFMyResponseHandler{
         dd.setOs("android");
 
 
-        OFLocationResponse lr = new OFOneFlowSHP(mContext).getUserLocationDetails();
-        OFLocationDetails ld = new OFLocationDetails();
+        //OFLocationResponse lr = new OFOneFlowSHP(mContext).getUserLocationDetails();
+       /* OFLocationDetails ld = new OFLocationDetails();
         ld.setCity(lr.getCity());
         ld.setRegion(lr.getRegion());
         ld.setCountry(lr.getCountry());
@@ -290,14 +290,14 @@ public class OneFlow implements OFMyResponseHandler{
             ld.setLongitude(Double.parseDouble(lr.getLon()));
         } catch (Exception ex) {
             ld.setLongitude(0d);
-        }
+        }*/
 
         OFAddUserRequest aur = new OFAddUserRequest();
         aur.setSystem_id(OFHelper.getDeviceId(mContext));
         aur.setLanguage(new Locale(Locale.getDefault().getLanguage()).getDisplayName(Locale.US));
         aur.setOFDeviceDetails(dd);
-        aur.setOFLocationDetails(ld);
-        aur.setLocationCheck(false);
+        aur.setOFLocationDetails(null);
+        aur.setLocationCheck(true);
 
         return aur;
     }
@@ -561,7 +561,7 @@ public class OneFlow implements OFMyResponseHandler{
                         retMain.setEventName(ret.getEventName());
                         retMain.setTime(ret.getTime());
 
-                        //retMain.setDataMap(ret.getDataMap());
+                        retMain.setDataMap(ret.getDataMap());
                         retListToAPI.add(retMain);
 
                         ids[i++] = ret.getId();
@@ -571,6 +571,7 @@ public class OneFlow implements OFMyResponseHandler{
                         OFEventAPIRequest ear = new OFEventAPIRequest();
                         ear.setSessionId(ofshp.getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
                         ear.setEvents(retListToAPI);
+
                         OFHelper.v("FeedbackController", "OneFlow checking before log fetchEventsFromDB request prepared");
                         OFEventAPIRepo.sendLogsToApi(mContext, ear, fc, OFConstants.ApiHitType.sendEventsToAPI, ids);
                     }
@@ -604,7 +605,7 @@ public class OneFlow implements OFMyResponseHandler{
             case CreateUser:
 
                 TelephonyManager telephonyManager = ((TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE));
-                String operatorName = telephonyManager.getNetworkOperatorName().isEmpty() ? "Jio" : telephonyManager.getNetworkOperatorName();
+                String operatorName = telephonyManager.getNetworkOperatorName().isEmpty() ? null : telephonyManager.getNetworkOperatorName();
 
                 WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
                 Display display = wm.getDefaultDisplay();
@@ -613,8 +614,8 @@ public class OneFlow implements OFMyResponseHandler{
 
                 OFCreateSessionRequest csr = new OFCreateSessionRequest();
 
-                OFLocationResponse lr = new OFOneFlowSHP(mContext).getUserLocationDetails();
-                OFLocationDetails ld = new OFLocationDetails();
+                //OFLocationResponse lr = new OFOneFlowSHP(mContext).getUserLocationDetails();
+               /* OFLocationDetails ld = new OFLocationDetails();
                 ld.setCity(lr.getCity());
                 ld.setRegion(lr.getRegion());
                 ld.setCountry(lr.getCountry());
@@ -629,7 +630,7 @@ public class OneFlow implements OFMyResponseHandler{
                     ld.setLongitude(Double.parseDouble(lr.getLon()));
                 } catch (Exception ex) {
                     ld.setLongitude(0d);
-                }
+                }*/
 
                 OFDeviceDetails ddc = new OFDeviceDetails();
                 ddc.setUnique_id(OFHelper.getDeviceId(mContext));
@@ -649,8 +650,8 @@ public class OneFlow implements OFMyResponseHandler{
                 csr.setAnalytic_user_id(userId);
                 csr.setSystem_id(OFHelper.getDeviceId(mContext));
                 csr.setDevice(ddc);
-                csr.setLocation_check(false);
-                csr.setLocation(ld);
+                csr.setLocation_check(true);
+                csr.setLocation(null);
                 csr.setConnectivity(getConnectivityData());
                 String version = "0.1";
                 try {
@@ -662,10 +663,10 @@ public class OneFlow implements OFMyResponseHandler{
 
                 csr.setApi_version(version);
                 csr.setApp_build_number("23451");
-                csr.setLibrary_name("oneflow-android-sdk");
+                csr.setLibrary_name("1flow-android-sdk");
                 csr.setLibrary_version(String.valueOf(1));
                 csr.setApi_endpoint("session");
-                csr.setApi_version("2021-06-15");
+                csr.setApi_version("0.6.21");
                 csr.setApp_version(OFHelper.getAppVersion(mContext));
 
                 recordEvents(OFConstants.AUTOEVENT_SESSIONSTART, null);
@@ -749,24 +750,23 @@ public class OneFlow implements OFMyResponseHandler{
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
         TelephonyManager telephonyManager = ((TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE));
-        String operatorName = telephonyManager.getNetworkOperatorName().isEmpty() ? "Jio" : telephonyManager.getNetworkOperatorName();
+        String operatorName = telephonyManager.getNetworkOperatorName().isEmpty() ? null : telephonyManager.getNetworkOperatorName();
 
         if (activeNetwork != null) { // connected to the internet
+
+
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 // connected to wifi
-                connectivity.setWifi(true);
-                connectivity.setRadio("false");
-
-
+                //connectivity.setWifi(true);
+                connectivity.setRadio("wireless");
             } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
                 // connected to the mobile provider's data plan
-                connectivity.setWifi(false);
-                connectivity.setRadio("true");
+                //connectivity.setWifi(false);
+                //connectivity.setRadio("true");
                 connectivity.setCarrier(operatorName);
             }
         } else {
             // not connected to the internet
-            connectivity.setWifi(false);
             connectivity.setRadio("false");
 
         }

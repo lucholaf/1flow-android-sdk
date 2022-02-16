@@ -23,8 +23,8 @@ import com.google.gson.annotations.SerializedName;
 public class OFConnectivity extends OFBaseModel {
     @SerializedName("carrier")
     private String carrier;
-    @SerializedName("wifi")
-    private Boolean wifi;
+    /*@SerializedName("wifi") // suggested by rohan 16/feb/22
+    private Boolean wifi;*/
     @SerializedName("radio")
     private String radio;
 
@@ -36,13 +36,13 @@ public class OFConnectivity extends OFBaseModel {
         this.carrier = carrier;
     }
 
-    public Boolean getWifi() {
+    /*public Boolean getWifi() {
         return wifi;
     }
 
     public void setWifi(Boolean wifi) {
         this.wifi = wifi;
-    }
+    }*/
 
     public String getRadio() {
         return radio;
