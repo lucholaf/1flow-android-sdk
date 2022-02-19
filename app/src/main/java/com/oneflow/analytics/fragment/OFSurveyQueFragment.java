@@ -50,6 +50,7 @@ import com.oneflow.analytics.adapter.OFSurveyOptionsAdapter;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
 import com.oneflow.analytics.model.survey.OFRatingsModel;
+import com.oneflow.analytics.model.survey.OFSurveyChoises;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.utils.OFGenericClickHandler;
 import com.oneflow.analytics.utils.OFHelper;
@@ -237,7 +238,7 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
                 surveyTitle.setTextSize(OneFlow.titleFace.getFontSize());
             }
         }
-        surveyTitle.setText(surveyScreens.getTitle());
+        surveyTitle.setText(surveyScreens.getTitle());//+"-- Pages you view in this window won't appear in the browser history and they won't leave other traces, like cookies, on the computer after you close all open Guest windows. Any files you download will be preserved, however. Pages you view in this window won't appear in the browser history and they won't leave other traces, like cookies, on the computer after you close all open Guest windows. Any files you download will be preserved, however.");
 
         if (surveyScreens.getMessage() != null) {
             if(OneFlow.subTitleFace!=null) {
@@ -256,10 +257,15 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
 
         if (surveyScreens.getInput().getRating_min_text() != null) {
             ratingsNotLike.setText(surveyScreens.getInput().getRating_min_text());
-        }
+        }/*else{
+            ratingsNotLike.setText("Not likely at all");
+        }*/
+
         if (surveyScreens.getInput().getRating_max_text() != null) {
             ratingsFullLike.setText(surveyScreens.getInput().getRating_max_text());
-        }
+        }/*else{
+            ratingsFullLike.setText("Extermely likely");
+        }*/
 
         OFHelper.v(tag, "OneFlow input type [" + surveyScreens.getInput().getInput_type() + "][" + surveyScreens.getInput().getStars() + "]min[" + surveyScreens.getInput().getMin_val() + "][" + surveyScreens.getInput().getMax_val() + "][][][]");
         if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical")) {
@@ -318,6 +324,9 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
                 if (surveyScreens.getInput().getChoices().size() > 0) {
                     OFHelper.v(tag, "OneFlow inputtype choices init");
                     checkBoxSelection = new ArrayList<String>();
+                    //OFHelper.v(tag, "OneFlow inputtype choices init ["+surveyScreens.getInput().getChoices().size()+"]");
+                   // surveyScreens.getInput().getChoices().addAll(fakeList());
+                   // OFHelper.v(tag, "OneFlow inputtype choices init after["+surveyScreens.getInput().getChoices().size()+"]");
                 }
             }
 
@@ -332,18 +341,25 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
         surveyOptionRecyclerView.setItemAnimator(new DefaultItemAnimator());
         surveyOptionRecyclerView.setAdapter(dashboardAdapter);
 
-        /*if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
-            if (surveyScreens.getButtons() != null) {
-                if (surveyScreens.getButtons().size() > 0) {
 
-                }
-
-            }
-        }*/
-       // OFHelper.makeText(getActivity(),"Other option id["+surveyScreens.getInput().getOtherOption()+"]",1);
         return view;
 
     }
+
+    public ArrayList<OFSurveyChoises> fakeList(){
+        String label[] = new String[]{"first","Second","Third","Fourth","Fifth","Sixth","Seventh","Eighth","Ninth","Tenth","Eleventh","Twelfth","Thirteen","Fourteen","Fifteen","Sixteen"};
+        ArrayList<OFSurveyChoises> flist = new ArrayList<>();
+        OFSurveyChoises sc = null;
+        for(int i=0;i<label.length;i++){
+            sc = new OFSurveyChoises();
+            sc.setId(String.valueOf(i));
+            sc.setTitle(label[i]);
+            flist.add(sc);
+        }
+        OFHelper.v(tag, "OneFlow inputtype choices init after 0["+flist.size()+"]");
+        return flist;
+    }
+
 
     private void submitButtonBeautification() {
         GradientDrawable gdSubmit = (GradientDrawable) (submitButton).getBackground();
@@ -428,12 +444,14 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
                 OFHelper.v(tag, "OneFlow inputType[" + surveyScreens.getInput().getStars() + "]position[" + position + "]");
                 setSelected(position, true);
 
-            } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")) {
+            } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating") ||
+                    surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")) {
                 int position = (int) v.getTag();
                 OFHelper.v(tag, "OneFlow inputType[" + surveyScreens.getInput().getStars() + "]position[" + position + "]");
                 setSelected(position, false);
 
-            } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("nps") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical")) {
+            } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("nps") ||
+                    surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical")) {
                 int position = (int) v.getTag();
                 setSelected(position, true);
             } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("mcq")) {
@@ -442,7 +460,7 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
 
                     OFHelper.v(tag, "OneFlow mcq clicked Position[" + position + "]");
                     OFHelper.v(tag, "OneFlow mcq clicked choices radio id[]other id["+surveyScreens.getInput().getOtherOption()+"]");
-                   // if(!surveyScreens.getInput().getOtherOption().equalsIgnoreCase(position)) {
+                    if(!surveyScreens.getInput().getOtherOption().equalsIgnoreCase(position)) {
 
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -450,7 +468,7 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
                                 sa.addUserResponseToList(surveyScreens.get_id(), position, null);
                             }
                         }, 1000);
-                   // }
+                    }
                 }else{
 
                     new Handler().postDelayed(new Runnable() {
@@ -468,8 +486,6 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
                     OFHelper.v(tag, "OneFlow inside checkbox 1");
                     String viewTag = (String) cb.getTag();
                     OFHelper.v(tag, "OneFlow inside checkbox tag[" + viewTag + "]isChecked[" + cb.isChecked() + "]");
-
-
                     checkBoxSelectionStatus(viewTag, cb.isChecked(), (String)obj);
                 }else{
                     String viewTag = (String)v.getTag();
@@ -629,7 +645,8 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
                             @Override
                             public void onClick(View v) {
                                 OFHelper.v(tag, "OneFlow button size found 1 ");
-                                itemClicked(v,str,str);
+                                String strLoc = dashboardAdapter.handleCheckboxFromOutside();
+                                itemClicked(v,str,strLoc);
                             }
                         });
                     }

@@ -43,6 +43,8 @@ public interface OFConstants {
     String SHP_ONEFLOW_CONFTIMING = "conf_timing";
     String SHP_SURVEY_RUNNING = "survey_running";
     String SHP_SHOULD_SHOW_SURVEY = "should_show_survey";
+    String SHP_DEVICE_UNIQUE_ID = "device_unique_id";
+    String SHP_SHOULD_PRINT_LOG = "should_print_log";
 
     String os = "android";
 

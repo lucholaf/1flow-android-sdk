@@ -50,7 +50,8 @@
         <RelativeLayout
             android:id="@+id/inner_child_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/close_btn_image_view">
 
 
             <!--<com.oneflow.tryskysdk.customwidgets.CustomViewPager

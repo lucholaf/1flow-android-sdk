@@ -102,6 +102,15 @@ public class OneFlow implements OFMyResponseHandler{
             OFHelper.e("OneFlow", "OneFlow error showSurvey1[" + ex.getMessage() + "]");
         }
     }
+    public static void shouldPrintLog(Boolean shouldShow) {
+        try {
+            OFHelper.v("OneFlow", "OneFlow shouldShowLog[" + shouldShow + "]");
+            new OFOneFlowSHP(mContext).storeValue(OFConstants.SHP_SHOULD_PRINT_LOG, shouldShow);
+            OFHelper.commanLogEnable = shouldShow;
+        } catch (Exception ex) {
+            OFHelper.e("OneFlow", "OneFlow error showSurvey[" + ex.getMessage() + "]");
+        }
+    }
 
     public static void configure(Context mContext, String projectKey,OFFontSetup titleFont){
         configureLocal(mContext,projectKey);
@@ -154,7 +163,7 @@ public class OneFlow implements OFMyResponseHandler{
                 .enablePendingPurchases()
                 .build();
 
-        Log.v("FakeBillingClass", "OneFlow constructor called");
+
         fc.connectBillingClient();
 
 
@@ -237,7 +246,7 @@ public class OneFlow implements OFMyResponseHandler{
         bcFake.startConnection(new BillingClientStateListener() {
             @Override
             public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                Log.v("FakeBillingClass", "OneFlow payment billing setUp finished");
+
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     // The BillingClient is ready. You can query purchases here.
 

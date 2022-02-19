@@ -28,7 +28,7 @@
         android:id="@+id/ratings_list_child_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="@dimen/page_sub_header_4"
+        android:textSize="@dimen/page_sub_header_3"
         android:layout_centerInParent="true"
         android:text="X"
         android:padding="5dp"

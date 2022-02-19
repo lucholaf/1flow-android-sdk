@@ -51,6 +51,7 @@ import com.google.gson.GsonBuilder;
 import com.oneflow.analytics.BuildConfig;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
+import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,16 +69,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 
 
 public class OFHelper {
 
-    //static boolean commanEnable = false;
+    public static boolean commanLogEnable = false;
     //static boolean verbose = commanEnable;
     //static boolean info = commanEnable;
     //static boolean debug = commanEnable;
@@ -106,14 +108,6 @@ public class OFHelper {
         return version;
     }
 
-    public static String getServiceProvider(Context context) {
-        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            return "no permission";
-        }
-
-        return telephonyManager.getNetworkOperatorName();
-    }
 
 
     public static <T> ArrayList<T> fromJsonToArrayList(String rawData, Class<T> model) {
@@ -129,7 +123,7 @@ public class OFHelper {
                 i++;
             }
         } catch (Exception ex) {
-            v("JsonError", "OneFlow Error:" + ex.getMessage());
+
         }
         return localArrayList;
     }
@@ -141,39 +135,20 @@ public class OFHelper {
             JSONObject jsonObject = new JSONObject(contents.trim());
             Iterator<String> keys = jsonObject.keys();
 
-            v("JSONConverter", "OneFlow JSON TO String keys[" + keys + "]");
+
             while (keys.hasNext()) {
                 String key = keys.next();
-                v("JSONConverter", "OneFlow JSON TO String key[" + key + "]");
-                //if (jsonObject.get(key) instanceof JSONObject) {
-                // do something with jsonObject here
-                v("JSONConverter", "OneFlow JSON TO String[" + jsonObject.getString(key) + "]");
+
                 sb.append(jsonObject.getString(key));
-                //}
+
             }
         } catch (JSONException j) {
-            e("HELPER", "Error [" + j.getMessage() + "]");
+
         }
-        v("JSONConverter", "OneFlow JSON TO " +
-                "String[" + sb.toString() + "]");
+
         return sb.toString();
     }
 
-    public static String createSignature(String secret, String message) {
-        String signature = "";
-        try {
-
-            Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
-            SecretKeySpec secret_key = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
-            sha256_HMAC.init(secret_key);
-            signature = Base64.encodeToString(sha256_HMAC.doFinal(message.getBytes()), Base64.DEFAULT);
-            signature = signature.replaceAll("\r", "").replaceAll("\n", "");
-        } catch (Exception e) {
-            signature = "ERROR";
-        }
-        v("HELPER", "OneFlow checksum signature[" + signature + "]");
-        return signature;
-    }
 
     public static String getGpsProviderInfo() {
         return gpsProviderInfo;
@@ -188,10 +163,19 @@ public class OFHelper {
 
     //Log methods
     public static void v(String tag, String msg) {
-        if (OFConstants.MODE.equalsIgnoreCase("dev")) {
+
+
+
+        if (commanLogEnable){//OFConstants.MODE.equalsIgnoreCase("dev")) {
 
             //Log.v(tag,"OneFlow msg Length"+msg.length());
+
+
             if (msg.length() > printCharLimit) {
+                for(int i=0;i<msg.length();i+=printCharLimit){
+                    Log.v(tag, "OneFlow continue printing["+i+"]");
+                }
+
                 Log.v(tag, msg.substring(0, printCharLimit));
                 Log.v("continue", msg.substring(printCharLimit, msg.length()));
             } else {
@@ -200,8 +184,8 @@ public class OFHelper {
         }
     }
 
-    public static void d(String tag, String msg) {
-        if (OFConstants.MODE.equalsIgnoreCase("dev")) {
+    public static void d(String tag, String msg, boolean shouldPrint) {
+        if (shouldPrint){//OFConstants.MODE.equalsIgnoreCase("dev")) {
             if (msg.length() > 4075) {
                 Log.d(tag, msg.substring(0, 4075));
                 Log.d("continue", msg.substring(4076, msg.length()));
@@ -211,8 +195,8 @@ public class OFHelper {
         }
     }
 
-    public static void i(String tag, String msg) {
-        if (OFConstants.MODE.equalsIgnoreCase("dev")) {
+    public static void i(String tag, String msg, boolean shouldPrint) {
+        if (shouldPrint){//OFConstants.MODE.equalsIgnoreCase("dev")) {
             if (msg.length() > 4075) {
                 Log.i(tag, msg.substring(0, 4075));
                 Log.i("continue", msg.substring(4076, msg.length()));
@@ -223,7 +207,7 @@ public class OFHelper {
     }
 
     public static void e(String tag, String msg) {
-        if (OFConstants.MODE.equalsIgnoreCase("dev")) {
+        if (commanLogEnable){//OFConstants.MODE.equalsIgnoreCase("dev")) {
             if (msg.length() > 4075) {
                 Log.e(tag, msg.substring(0, 4075));
                 Log.e("continue", msg.substring(4076, msg.length()));
@@ -280,37 +264,39 @@ public class OFHelper {
     }
 
 
-    @SuppressLint("MissingPermission")
+
+
+
     public static String getDeviceId(Context context) {
         String deviceId = "";
-        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        try {
-            if (telephonyManager != null) {
-                deviceId = telephonyManager.getDeviceId();
-                v("Helper", "OneFlow  Telephony DeviceId [" + deviceId + "]");
 
-                try {
-                    BigInteger convertedDeviceId = new BigInteger(deviceId);
-                    if (deviceId.isEmpty() || convertedDeviceId.compareTo(BigInteger.ZERO) == 0) {
-                        deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-                        v("Helper", "OneFlow AndriodId [" + deviceId + "]");
-                    }
-                } catch (Exception e) {
-                    deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-                }
-
-            } else {
+        /*try {
+            BigInteger convertedDeviceId = new BigInteger(deviceId);
+            if (deviceId.isEmpty() || convertedDeviceId.compareTo(BigInteger.ZERO) == 0) {
                 deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-            }
+                v("Helper", "OneFlow AndriodId [" + deviceId + "]");
+            } else {
 
-        } catch (Exception ex) {
-            e("Helper", "OneFlow DeviceId ex[" + ex.getMessage() + "]");
+            }
+        } catch (Exception e) {
             deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-//            deviceId = "device id not accessible";
-            v("Helper", "OneFlow AndriodId EX [" + deviceId + "]");
-            ;//"device id not accessible";
+        }*/
+        // KAI suggested to use random key 19-feb-2022
+
+        UUID.randomUUID();
+
+        OFOneFlowSHP shp = new OFOneFlowSHP(context);
+        deviceId = shp.getStringValue(OFConstants.SHP_DEVICE_UNIQUE_ID);
+
+       // v("Helper", "OneFlow DeviceId 0[" + deviceId + "]");
+        if(deviceId.equalsIgnoreCase("NA")){
+            deviceId = UUID.randomUUID().toString().replace("-","").substring(0,24);//getDeviceNewId();
+           // v("Helper", "OneFlow DeviceId 1[" + deviceId + "]");
+            shp.storeValue(OFConstants.SHP_DEVICE_UNIQUE_ID,deviceId);
         }
-        v("Helper", "OneFlow DeviceId [" + deviceId + "]");
+
+
+        //v("Helper", "OneFlow DeviceId 2[" + deviceId + "]");
         return deviceId;
     }
 
@@ -343,32 +329,7 @@ public class OFHelper {
         }
     }
 
-    public static boolean isInternetAvailable() {
-        v("From Helper", "OneFlow reached at isInternetAvailable");
-        InetAddress[] address = new InetAddress[1];
-        try {
-            Thread th = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        v("From Helper", "OneFlow reached at isInternetAvailable inside thread");
-                        address[0] = InetAddress.getByName("www.google.com");
-                        //return !address.equals("");
-                    } catch (UnknownHostException e) {
-                        v("From Helper", "OneFlow reached at isInternetAvailable UnknownHostException");
-                        // Log error
-                    }
-                }
-            });
-            th.start();
-            th.join();
-            v("From Helper", "OneFlow reached at isInternetAvailable result["+(!address.equals(""))+"]");
-            return !address.equals("");
-        } catch (InterruptedException ie) {
-            v("From Helper", "OneFlow reached at isInternetAvailable ieException");
-        }
-        return false;
-    }
+
    /* public static boolean isConnected(Context context) {
         boolean connected = false;
         try {
@@ -663,7 +624,7 @@ public class OFHelper {
         Date date = new Date();
         try {
             date = format.parse(dateInString);
-            v("OneFlow", "OneFlow Date in Helper :::: " + date.toString().trim());
+
         } catch (ParseException e) {
             if (BuildConfig.DEBUG)
                 e.printStackTrace();
@@ -696,7 +657,7 @@ public class OFHelper {
             JSONObject outerMost = new JSONObject(jsonRaw);
             JSONArray jName = outerMost.names();
 
-            v("Helper getJSONAllValues", "OneFlow error value [" + jName.get(0).toString() + "]hasNext[" + jName.length() + "]");
+
             boolean more = false;
             /*do{*/
             for (int i = 0; i < jName.length(); i++) {
@@ -719,9 +680,9 @@ public class OFHelper {
                 } else {
                     sb.append((counter++) + ". " + outerMost.getString(jName.get(i).toString()) + "\n");
                 }
-                v("Helper getJSONAllValues", "OneFlow error value [" + sb.toString() + "]");
+
             }
-            v("Helper getJSONAllValues", "OneFlow error value [" + sb.toString() + "]");
+
         } catch (JSONException je) {
             if (BuildConfig.DEBUG) {
                 je.printStackTrace();
@@ -754,19 +715,17 @@ public class OFHelper {
         File fl = null;
         try {
             String filePath = Environment.getExternalStorageDirectory() + File.separator + "OneFlowLog" + File.separator + "log.txt";
-            v("Helper", "OneFlow file[creating files]");
+
             fl = new File(filePath);
-            v("Helper", "OneFlow file[creating files]exist[" + fl.exists() + "]");
+
             if (!fl.exists()) {
                 File folderOuter = new File(Environment.getExternalStorageDirectory(), "OneFlowLog");
                 folderOuter.mkdir();
-                v("Helper", "OneFlow file folder not found [" + folderOuter.exists() + "]");
+
                 if (folderOuter.exists()) {
                     File logFile = new File(folderOuter, "log.txt");
                     logFile.createNewFile();
                     fl = logFile;
-                } else {
-                    v("Helper", "OneFlow file folder not found");
                 }
             }
         } catch (Exception ue) {
@@ -779,7 +738,7 @@ public class OFHelper {
     public static String writeLogToFile(String body) {
 
         try {
-            v("Helper", "OneFlow file [reached to file writer]");
+
             String writeText = formatedDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss:SSS") + " ===> " + body;
             if (!BuildConfig.DEBUG)
                 return "";
@@ -794,12 +753,10 @@ public class OFHelper {
                 writer.close();
 
 
-            } else {
-                v("Helper", "OneFlow file log file not found");
             }
 
         } catch (Exception e) {
-            e("Helper", "OneFlow log file not found");
+
             if (BuildConfig.DEBUG) {
                 e.printStackTrace();
             }
@@ -808,24 +765,25 @@ public class OFHelper {
     }
 
     private String SD_CARD_PATH = "/sdcard/OneFlow/";
-    public static double[] getScreenSize(Activity context){
 
-        double []data = new double[3];
+    public static double[] getScreenSize(Activity context) {
+
+        double[] data = new double[3];
         DisplayMetrics dm = new DisplayMetrics();
 
         context.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width=dm.widthPixels;
-        int height=dm.heightPixels;
-        double wi=(double)width/(double)dm.xdpi;
-        double hi=(double)height/(double)dm.ydpi;
-        double x = Math.pow(wi,2);
-        double y = Math.pow(hi,2);
-        double screenInches = Math.sqrt(x+y);
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        double wi = (double) width / (double) dm.xdpi;
+        double hi = (double) height / (double) dm.ydpi;
+        double x = Math.pow(wi, 2);
+        double y = Math.pow(hi, 2);
+        double screenInches = Math.sqrt(x + y);
 
         data[0] = wi;
         data[1] = hi;
         data[2] = screenInches;
-        v("dummy","OneFlow Window screenSize["+Math.round(screenInches)+"]width["+wi+"]height["+hi+"]");
+
         return data;
     }
 }

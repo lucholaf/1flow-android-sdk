@@ -95,6 +95,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         public OFCustomEditText othersEditText;
         public LinearLayout otherLayout;
         public OFCustomTextViewBold otherSubmit;
+
         public MCQRadioViewHolder(View view) {
             super(view);
 
@@ -111,6 +112,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         public OFCustomEditText othersEditText;
         public LinearLayout otherLayout;
         public OFCustomTextViewBold otherSubmit;
+
         public MCQCheckBoxViewHolder(View view) {
             super(view);
             title = (CheckBox) view.findViewById(R.id.child_title);
@@ -145,12 +147,11 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.gch = onClickListener;
         this.surveyInputs = surveyInputs;
         this.themeColor = themeColor;
-        OFHelper.v(tag, "OneFlow theme color ["+themeColor+"]input type [" + surveyInputs.getInput_type() + "]childSize[" + new Gson().toJson(surveyInputs.getRatingsList()) + "]");
+        OFHelper.v(tag, "OneFlow theme color [" + themeColor + "]input type [" + surveyInputs.getInput_type() + "]childSize[" + new Gson().toJson(surveyInputs.getRatingsList()) + "]");
         if (surveyInputs.getInput_type().equalsIgnoreCase("rating-emojis")) {
             viewType = 4;
             listSize = surveyInputs.getRatingsList().size();
-        }
-        else if (surveyInputs.getInput_type().equalsIgnoreCase("rating") || surveyInputs.getInput_type().equalsIgnoreCase("rating-5-star")) {
+        } else if (surveyInputs.getInput_type().equalsIgnoreCase("rating") || surveyInputs.getInput_type().equalsIgnoreCase("rating-5-star")) {
             viewType = 5;
             listSize = surveyInputs.getRatingsList().size();
         } else if (surveyInputs.getInput_type().equalsIgnoreCase("nps") || surveyInputs.getInput_type().equalsIgnoreCase("rating-numerical")) {
@@ -226,12 +227,39 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         return null;
     }
 
+    RadioButton lastChecked = null; // to maintain radio behaviour
+    LinearLayout otherLayoutGlobal = null; // as last view will not be accessable
+    CheckBox cbGlobal;
+
+    public String handleCheckboxFromOutside(){
+        OFHelper.v(tag, "OneFlow handleCheckboxFromOutside [" + otherLayoutGlobal + "]");
+        String retString = "";
+        if(otherLayoutGlobal!=null){
+            OFHelper.v(tag, "OneFlow handleCheckboxFromOutside [" + otherLayoutGlobal.getVisibility() + "]");
+            if(otherLayoutGlobal.getVisibility() == View.VISIBLE){
+                otherLayoutGlobal.setVisibility(View.GONE);
+                cbGlobal.setText(otherLayoutGlobal.getTag().toString());
+                cbGlobal.setChecked(false);
+                GradientDrawable gdCheckbox = (GradientDrawable) ((RelativeLayout) (cbGlobal).getParent()).getBackground();
+                gdCheckbox.setStroke(strokeWidth, mContext.getResources().getColor(R.color.ratings_focused));
+            }else{
+                if(cbGlobal.isChecked()){
+                    retString = cbGlobal.getText().toString();
+                }
+
+            }
+        }
+        return retString;
+    }
+
+
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         OFHelper.v(tag, "OneFlow viewtype [" + viewType + "]");
         int colorAlpha = ColorUtils.setAlphaComponent(Color.parseColor(themeColor), 125);
         int statesRadio[][] = {{android.R.attr.state_checked}, {}};
-        int colorsRadio[] = {Color.parseColor(themeColor),mContext.getResources().getColor(R.color.ratings_focused)};
+        int colorsRadio[] = {Color.parseColor(themeColor), mContext.getResources().getColor(R.color.ratings_focused)};
 
         switch (viewType) {
             case 0:
@@ -241,18 +269,18 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                 if (position == 0) {
 
-                        ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.left_gray_rectangle));
-                        ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtblack));
+                    ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.left_gray_rectangle));
+                    ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtblack));
 
                 } else if (position == surveyInputs.getRatingsList().size() - 1) {
 
-                        ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.right_gray_rectangle));
-                        ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtblack));
+                    ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.right_gray_rectangle));
+                    ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtblack));
 
                 } else {
 
-                        ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.gray_rectangle));
-                        ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtblack));
+                    ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.gray_rectangle));
+                    ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtblack));
 
                 }
                 GradientDrawable gd = (GradientDrawable) ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).getBackground();
@@ -275,8 +303,8 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                             case MotionEvent.ACTION_UP:
 
-                                    gd.setColor(Color.parseColor(themeColor));
-                                    ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtwhite));
+                                gd.setColor(Color.parseColor(themeColor));
+                                ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtwhite));
 
                                 break;
                         }
@@ -286,7 +314,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 if (surveyInputs.getRatingsList().get(position).getSelected()) {
                     gd.setColor(Color.parseColor(themeColor));
                     ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtwhite));
-                }else{
+                } else {
                     gd.setColor(mContext.getResources().getColor(R.color.white));
                     ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtblack));
                 }
@@ -294,19 +322,19 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((RatingsViewHolder) holder).title.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        gch.itemClicked(v,null,"");
+                        gch.itemClicked(v, null, "");
                     }
                 });
                 break;
             case 1:
                 OFHelper.v(tag, "OneFlow title [" + surveyInputs.getChoices().get(position).getTitle() + "]tag[" + surveyInputs.getChoices().get(position).getId() + "]");
 
-                if(OneFlow.optionsFace!=null) {
-                    if(OneFlow.optionsFace.getTypeface()!=null) {
+                if (OneFlow.optionsFace != null) {
+                    if (OneFlow.optionsFace.getTypeface() != null) {
                         ((MCQRadioViewHolder) holder).title.setTypeface(OneFlow.optionsFace.getTypeface());
                     }
-                    if(OneFlow.optionsFace.getFontSize()!=null) {
-                        OFHelper.v(tag,"OneFlow changing font size");
+                    if (OneFlow.optionsFace.getFontSize() != null) {
+                        OFHelper.v(tag, "OneFlow changing font size");
                         ((MCQRadioViewHolder) holder).title.setTextSize(OneFlow.optionsFace.getFontSize());
                     }
                 }
@@ -315,29 +343,45 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((MCQRadioViewHolder) holder).title.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        gch.itemClicked(v,null,"");
+
+
+                           /* OFHelper.v(tag,"OneFlow radio visibility["+((MCQRadioViewHolder) holder).otherLayout.getVisibility()+"]");
+
+                            if(otherLayoutGlobal!=null){
+                                if(otherLayoutGlobal.getVisibility() == View.VISIBLE) {
+                                    ((MCQRadioViewHolder) holder).otherLayout.setVisibility(View.GONE);
+                                }
+                            }
+                        }*/
+
+                        if (!surveyInputs.getOtherOption().equalsIgnoreCase(surveyInputs.getChoices().get(position).getId())) {
+
+                             gch.itemClicked(v, null, "");
+                        }
                     }
                 });
 
                 GradientDrawable gdRadio = (GradientDrawable) ((RelativeLayout) (((MCQRadioViewHolder) holder).title).getParent()).getBackground();
-                gdRadio.setStroke(strokeWidth,mContext.getResources().getColor(R.color.ratings_focused));
+                gdRadio.setStroke(strokeWidth, mContext.getResources().getColor(R.color.ratings_focused));
                 ((MCQRadioViewHolder) holder).otherSubmit.setTag(surveyInputs.getChoices().get(position).getId() == null ? String.valueOf(position) : surveyInputs.getChoices().get(position).getId());
                 ((MCQRadioViewHolder) holder).otherSubmit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        if(((MCQRadioViewHolder) holder).othersEditText.getText().toString().isEmpty()){
-                            gdRadio.setStroke(strokeWidth,mContext.getResources().getColor(R.color.ratings_focused));
+                        if (((MCQRadioViewHolder) holder).othersEditText.getText().toString().isEmpty()) {
+                            gdRadio.setStroke(strokeWidth, mContext.getResources().getColor(R.color.ratings_focused));
                             ((MCQRadioViewHolder) holder).otherLayout.setVisibility(View.GONE);
                             ((MCQRadioViewHolder) holder).title.setText(surveyInputs.getChoices().get(position).getTitle());
                             ((MCQRadioViewHolder) holder).title.setChecked(false);
-                        }else {
-                            gdRadio.setStroke(strokeWidth,Color.parseColor(themeColor));
+                        } else {
+
+                            gdRadio.setStroke(strokeWidth, Color.parseColor(themeColor));
                             ((MCQRadioViewHolder) holder).otherLayout.setVisibility(View.GONE);
                             ((MCQRadioViewHolder) holder).title.setText(((MCQRadioViewHolder) holder).othersEditText.getText());
+                            gch.itemClicked(v, ((MCQRadioViewHolder) holder).title.getText().toString(), "");
                         }
                         //onClickListener.onClick(v); // handling final submit for radio
-                        gch.itemClicked(v,((MCQRadioViewHolder) holder).title.getText().toString(),"");
+
                     }
                 });
 
@@ -351,9 +395,9 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                             case MotionEvent.ACTION_DOWN:
 
-                                int colorsRadioAlpha[] = {Color.parseColor(themeColor),colorAlpha};
-                                CompoundButtonCompat.setButtonTintList(((MCQRadioViewHolder) holder).title,  new ColorStateList(statesRadio, colorsRadioAlpha));
-                                gdRadio.setStroke(strokeWidth,colorAlpha);
+                                int colorsRadioAlpha[] = {Color.parseColor(themeColor), colorAlpha};
+                                CompoundButtonCompat.setButtonTintList(((MCQRadioViewHolder) holder).title, new ColorStateList(statesRadio, colorsRadioAlpha));
+                                gdRadio.setStroke(strokeWidth, colorAlpha);
                                 break;
 
                             case MotionEvent.ACTION_MOVE:
@@ -362,25 +406,47 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                                 break;
 
                             case MotionEvent.ACTION_UP:
+
+                                if (lastChecked == null) {
+                                    lastChecked = rb;
+                                } else {
+
+                                    OFHelper.v(tag,"OneFlow radio visibility["+otherLayoutGlobal+"]");
+                                    if (otherLayoutGlobal != null) {
+                                        OFHelper.v(tag,"OneFlow radio visibility["+otherLayoutGlobal.getVisibility()+"]");
+                                        if (otherLayoutGlobal.getVisibility() == View.VISIBLE) {
+                                            otherLayoutGlobal.setVisibility(View.GONE);
+                                            lastChecked.setText(otherLayoutGlobal.getTag().toString());
+                                            gdRadio.setStroke(strokeWidth, mContext.getResources().getColor(R.color.ratings_focused));
+                                        }
+                                    }
+                                    lastChecked.setChecked(false);
+                                    lastChecked = rb;
+
+                                }
+
                                 // touch up code
-                               CompoundButtonCompat.setButtonTintList(((MCQRadioViewHolder) holder).title,  new ColorStateList(statesRadio, colorsRadio));//ColorStateList.valueOf(Color.parseColor(themeColor)));
+                                CompoundButtonCompat.setButtonTintList(((MCQRadioViewHolder) holder).title, new ColorStateList(statesRadio, colorsRadio));//ColorStateList.valueOf(Color.parseColor(themeColor)));
                                 if (!rb.isChecked()) {
 
-                                   gdRadio.setStroke(strokeWidth,Color.parseColor(themeColor));
-                                    /*if(surveyInputs.getOtherOption().equalsIgnoreCase(surveyInputs.getChoices().get(position).getId())){
-                                        OFHelper.makeText(mContext,"Id and other same",1);
+                                    gdRadio.setStroke(strokeWidth, Color.parseColor(themeColor));
+                                    if (surveyInputs.getOtherOption().equalsIgnoreCase(surveyInputs.getChoices().get(position).getId())) {
+                                      //  OFHelper.makeText(mContext, "Id and other same", 1);
                                         rb.setText("");
+                                        otherLayoutGlobal = ((MCQRadioViewHolder) holder).otherLayout;
+                                        otherLayoutGlobal.setTag(surveyInputs.getChoices().get(position).getTitle());
                                         ((MCQRadioViewHolder) holder).otherLayout.setVisibility(View.VISIBLE);
                                         ((MCQRadioViewHolder) holder).othersEditText.requestFocus();
-                                    }*/
+                                    }
 
                                 } else {
 
-                                    gdRadio.setStroke(strokeWidth,mContext.getResources().getColor(R.color.ratings_focused));
-                                    /*if(((MCQRadioViewHolder) holder).otherLayout.getVisibility() == View.VISIBLE){
+                                    gdRadio.setStroke(strokeWidth, mContext.getResources().getColor(R.color.ratings_focused));
+                                    if (((MCQRadioViewHolder) holder).otherLayout.getVisibility() == View.VISIBLE) {
+                                        otherLayoutGlobal = null;
                                         rb.setText(surveyInputs.getChoices().get(position).getTitle());
                                         ((MCQRadioViewHolder) holder).otherLayout.setVisibility(View.GONE);
-                                    }*/
+                                    }
                                 }
                                 break;
                         }
@@ -393,11 +459,11 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 break;
             case 3:
                 OFHelper.v(tag, "OneFlow title [" + surveyInputs.getChoices().get(position).getTitle() + "]tag[" + surveyInputs.getChoices().get(position).getId() + "]");
-                if(OneFlow.optionsFace!=null) {
-                    if(OneFlow.optionsFace.getTypeface()!=null) {
+                if (OneFlow.optionsFace != null) {
+                    if (OneFlow.optionsFace.getTypeface() != null) {
                         ((MCQCheckBoxViewHolder) holder).title.setTypeface(OneFlow.optionsFace.getTypeface());
                     }
-                    if(OneFlow.optionsFace.getFontSize()!=null) {
+                    if (OneFlow.optionsFace.getFontSize() != null) {
                         ((MCQCheckBoxViewHolder) holder).title.setTextSize(OneFlow.optionsFace.getFontSize());
                     }
                 }
@@ -407,30 +473,36 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     @Override
                     public void onClick(View v) {
 
-                        gch.itemClicked(v,null,"");
+                        if (!surveyInputs.getOtherOption().equalsIgnoreCase(surveyInputs.getChoices().get(position).getId())) {
+                            gch.itemClicked(v, null, "");
+                        }
                     }
                 });
                 GradientDrawable gdCheckbox = (GradientDrawable) ((RelativeLayout) (((MCQCheckBoxViewHolder) holder).title).getParent()).getBackground();
-                gdCheckbox.setStroke(strokeWidth,mContext.getResources().getColor(R.color.ratings_focused));
+                gdCheckbox.setStroke(strokeWidth, mContext.getResources().getColor(R.color.ratings_focused));
                 ((MCQCheckBoxViewHolder) holder).otherSubmit.setTag(surveyInputs.getChoices().get(position).getId() == null ? String.valueOf(position) : surveyInputs.getChoices().get(position).getId());
                 ((MCQCheckBoxViewHolder) holder).otherSubmit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        OFHelper.hideKeyboard((Activity) mContext,((MCQCheckBoxViewHolder) holder).othersEditText);
-                        if(((MCQCheckBoxViewHolder) holder).othersEditText.getText().toString().isEmpty()){
+                        OFHelper.hideKeyboard((Activity) mContext, ((MCQCheckBoxViewHolder) holder).othersEditText);
+                        if (((MCQCheckBoxViewHolder) holder).othersEditText.getText().toString().isEmpty()) {
                             ((MCQCheckBoxViewHolder) holder).otherLayout.setVisibility(View.GONE);
                             ((MCQCheckBoxViewHolder) holder).title.setText(surveyInputs.getChoices().get(position).getTitle());
                             ((MCQCheckBoxViewHolder) holder).title.setChecked(false);
-                            gch.itemClicked(v,false,((MCQCheckBoxViewHolder) holder).othersEditText.getText().toString());
-                        }else {
+                            gch.itemClicked(v, false, ((MCQCheckBoxViewHolder) holder).othersEditText.getText().toString());
+
+                            gdCheckbox.setStroke(strokeWidth, mContext.getResources().getColor(R.color.ratings_focused));
+                        } else {
+                            gdCheckbox.setStroke(strokeWidth, Color.parseColor(themeColor));
                             ((MCQCheckBoxViewHolder) holder).otherLayout.setVisibility(View.GONE);
                             ((MCQCheckBoxViewHolder) holder).title.setText(((MCQCheckBoxViewHolder) holder).othersEditText.getText());
-                            gch.itemClicked(v,true,((MCQCheckBoxViewHolder) holder).othersEditText.getText().toString());
+                            gch.itemClicked(v, true, ((MCQCheckBoxViewHolder) holder).othersEditText.getText().toString());
+
                         }
 
                     }
                 });
-               ((MCQCheckBoxViewHolder) holder).title.setOnTouchListener(new View.OnTouchListener() {
+                ((MCQCheckBoxViewHolder) holder).title.setOnTouchListener(new View.OnTouchListener() {
 
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -439,9 +511,9 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                             case MotionEvent.ACTION_DOWN:
                                 // touch down code
 
-                                int colorsRadioAlpha[] = {Color.parseColor(themeColor),colorAlpha};
-                                CompoundButtonCompat.setButtonTintList(((MCQCheckBoxViewHolder) holder).title,  new ColorStateList(statesRadio, colorsRadioAlpha));
-                                gdCheckbox.setStroke(strokeWidth,colorAlpha);
+                                int colorsRadioAlpha[] = {Color.parseColor(themeColor), colorAlpha};
+                                CompoundButtonCompat.setButtonTintList(((MCQCheckBoxViewHolder) holder).title, new ColorStateList(statesRadio, colorsRadioAlpha));
+                                gdCheckbox.setStroke(strokeWidth, colorAlpha);
                                 break;
 
                             case MotionEvent.ACTION_MOVE:
@@ -452,26 +524,30 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                             case MotionEvent.ACTION_UP:
                                 // touch up code
                                 //Helper.makeText(mContext, "Released", 1);
-                                CompoundButtonCompat.setButtonTintList(((MCQCheckBoxViewHolder) holder).title,  new ColorStateList(statesRadio, colorsRadio));//ColorStateList.valueOf(Color.parseColor(themeColor)));
+                                CompoundButtonCompat.setButtonTintList(((MCQCheckBoxViewHolder) holder).title, new ColorStateList(statesRadio, colorsRadio));//ColorStateList.valueOf(Color.parseColor(themeColor)));
                                 if (!cb.isChecked()) {
 
-                                        gdCheckbox.setStroke(strokeWidth,Color.parseColor(themeColor));
-                                        // others logic
-                                    /*if(surveyInputs.getOtherOption().equalsIgnoreCase(surveyInputs.getChoices().get(position).getId())){
-                                        OFHelper.makeText(mContext,"Id and other same",1);
+                                    gdCheckbox.setStroke(strokeWidth, Color.parseColor(themeColor));
+                                    // others logic
+                                    if (surveyInputs.getOtherOption().equalsIgnoreCase(surveyInputs.getChoices().get(position).getId())) {
+                                       // OFHelper.makeText(mContext, "Id and other same", 1);
+                                        cbGlobal = cb;
                                         cb.setText("");
                                         ((MCQCheckBoxViewHolder) holder).otherLayout.setVisibility(View.VISIBLE);
                                         ((MCQCheckBoxViewHolder) holder).othersEditText.requestFocus();
-                                    }*/
+                                        otherLayoutGlobal = ((MCQCheckBoxViewHolder) holder).otherLayout;
+                                        otherLayoutGlobal.setTag(surveyInputs.getChoices().get(position).getTitle());
+                                    }
 
                                 } else {
 
-                                    gdCheckbox.setStroke(strokeWidth,mContext.getResources().getColor(R.color.ratings_focused));
+                                    gdCheckbox.setStroke(strokeWidth, mContext.getResources().getColor(R.color.ratings_focused));
 
-                                   /* if(((MCQCheckBoxViewHolder) holder).otherLayout.getVisibility() == View.VISIBLE){
+                                    if (((MCQCheckBoxViewHolder) holder).otherLayout.getVisibility() == View.VISIBLE) {
                                         cb.setText(surveyInputs.getChoices().get(position).getTitle());
                                         ((MCQCheckBoxViewHolder) holder).otherLayout.setVisibility(View.GONE);
-                                    }*/
+                                        otherLayoutGlobal = null;
+                                    }
 
                                 }
                                 break;
@@ -484,15 +560,15 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((RatingsEmojis) holder).emojis.setImageDrawable(mContext.getResources().getDrawable(emojis[position]));
                 if (position == 0) {
 
-                        ((OFDynamicSquareLayout) ((((RatingsEmojis) holder).emojis).getParent()).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.left_gray_rectangle));
+                    ((OFDynamicSquareLayout) ((((RatingsEmojis) holder).emojis).getParent()).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.left_gray_rectangle));
 
                 } else if (position == surveyInputs.getRatingsList().size() - 1) {
 
-                        ((OFDynamicSquareLayout) ((((RatingsEmojis) holder).emojis).getParent()).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.right_gray_rectangle));
+                    ((OFDynamicSquareLayout) ((((RatingsEmojis) holder).emojis).getParent()).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.right_gray_rectangle));
 
                 } else {
 
-                        ((OFDynamicSquareLayout) ((((RatingsEmojis) holder).emojis).getParent()).getParent()).setBackgroundResource(R.drawable.gray_rectangle);
+                    ((OFDynamicSquareLayout) ((((RatingsEmojis) holder).emojis).getParent()).getParent()).setBackgroundResource(R.drawable.gray_rectangle);
 
                 }
                 GradientDrawable gdEmojis = (GradientDrawable) ((OFDynamicSquareLayout) ((((RatingsEmojis) holder).emojis).getParent()).getParent()).getBackground();
@@ -524,14 +600,14 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                 if (surveyInputs.getRatingsList().get(position).getSelected()) {
                     gdEmojis.setColor(Color.parseColor(themeColor));
-                }else{
+                } else {
                     gdEmojis.setColor(mContext.getResources().getColor(R.color.white));
                 }
                 ((RatingsEmojis) holder).emojis.setTag(position);
                 ((RatingsEmojis) holder).emojis.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        gch.itemClicked(v,null,"");
+                        gch.itemClicked(v, null, "");
                     }
                 });
                 break;
@@ -550,7 +626,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((RatingsStar) holder).stars.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        gch.itemClicked(v,null,"");
+                        gch.itemClicked(v, null, "");
                     }
                 });
                 break;
