@@ -66,7 +66,7 @@ public class OFSurvey {
                         Intent intent = new Intent("survey_list_fetched");
                         context.sendBroadcast(intent);
 
-                        mrh.onResponseReceived(type, null, 0l);
+                        mrh.onResponseReceived(type, null, 0l,"");
 
                     } else {
                         OFHelper.v(tag, "OneFlow survey list not fetched isSuccessfull false");
@@ -167,7 +167,7 @@ public class OFSurvey {
                     if (response.isSuccessful()) {
                         OFHelper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
                         OFHelper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
-                        mrh.onResponseReceived(type, sur, 0l);
+                        mrh.onResponseReceived(type, sur, 0l,"");
                         /*AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {

@@ -186,7 +186,7 @@ public class OFSurveyQueTextFragment extends Fragment implements View.OnClickLis
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                OFHelper.v(tag,"OneFlow text["+userInput.getText().toString().trim()+"]len["+userInput.getText().toString().trim().length()+"]");
+
                 if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
                     // if (surveyScreens.getButtons().size() == 1) {
                     if (submitButton.getVisibility() != View.VISIBLE) {

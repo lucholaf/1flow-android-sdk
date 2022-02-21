@@ -57,7 +57,7 @@ public class OFAddUserRepo {
                         OFHelper.v(tag,"OneFlow add user response["+response.body().toString()+"]");
 
                         new OFOneFlowSHP(context).setUserDetails(response.body().getResult());
-                        mrh.onResponseReceived(hitType,null,0l);
+                        mrh.onResponseReceived(hitType,null,0l,"");
 
                        /* AsyncTask.execute(new Runnable() {
                             @Override

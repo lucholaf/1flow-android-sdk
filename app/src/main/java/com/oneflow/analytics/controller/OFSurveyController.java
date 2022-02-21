@@ -67,11 +67,12 @@ public class OFSurveyController implements OFMyResponseHandler {
     }
 
     @Override
-    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve) {
+    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
 
         OFHelper.v("SurveyController","OneFlow onReceived called type["+hitType+"]");
         switch (hitType) {
             case fetchSurveysFromAPI:
+                OFHelper.v("SurveyController","OneFlow survey received");
                 OFEventDBRepo.fetchEventsBeforeSurvey(mContext, this, OFConstants.ApiHitType.fetchEventsBeforSurveyFetched);
                 break;
             case fetchEventsBeforSurveyFetched:

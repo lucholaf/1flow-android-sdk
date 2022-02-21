@@ -54,7 +54,7 @@ public class OFCurrentLocation {
                         /*Helper.v(tag,"OneFlow response["+response.body().getSuccess()+"]");*/
 
                         new OFOneFlowSHP(context).setUserLocationDetails(response.body());
-                        mrh.onResponseReceived(type,null,0l);
+                        mrh.onResponseReceived(type,null,0l,"");
 
                     } else {
                         //mrh.onResponseReceived(response.body(), type);

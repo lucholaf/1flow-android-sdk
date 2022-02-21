@@ -168,10 +168,9 @@ public class OFHelper {
 
         if (commanLogEnable){//OFConstants.MODE.equalsIgnoreCase("dev")) {
 
-            //Log.v(tag,"OneFlow msg Length"+msg.length());
+            Log.v(tag,msg);
 
-
-            if (msg.length() > printCharLimit) {
+            /*if (msg.length() > printCharLimit) {
                 for(int i=0;i<msg.length();i+=printCharLimit){
                     Log.v(tag, "OneFlow continue printing["+i+"]");
                 }
@@ -180,7 +179,7 @@ public class OFHelper {
                 Log.v("continue", msg.substring(printCharLimit, msg.length()));
             } else {
                 Log.v(tag, msg);
-            }
+            }*/
         }
     }
 

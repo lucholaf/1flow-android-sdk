@@ -57,7 +57,7 @@ public class OFEventDBRepo {
             @Override
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
-                mrh.onResponseReceived(type,1,0l);
+                mrh.onResponseReceived(type,1,0l,"");
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
@@ -76,7 +76,7 @@ public class OFEventDBRepo {
             @Override
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
-                mrh.onResponseReceived(type,integer,0l);
+                mrh.onResponseReceived(type,integer,0l,"");
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
@@ -97,7 +97,7 @@ public class OFEventDBRepo {
             @Override
             protected void onPostExecute(List<OFRecordEventsTab> OFRecordEventsTabs) {
                 super.onPostExecute(OFRecordEventsTabs);
-                mrh.onResponseReceived(type, OFRecordEventsTabs,0l);
+                mrh.onResponseReceived(type, OFRecordEventsTabs,0l,"");
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
@@ -122,7 +122,7 @@ public class OFEventDBRepo {
             @Override
             protected void onPostExecute(String[] strings) {
                 super.onPostExecute(strings);
-                mrh.onResponseReceived(type,strings,0l);
+                mrh.onResponseReceived(type,strings,0l,"");
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 

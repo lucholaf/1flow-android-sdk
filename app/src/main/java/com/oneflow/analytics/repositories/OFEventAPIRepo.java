@@ -59,7 +59,7 @@ public class OFEventAPIRepo {
                     if (response.isSuccessful()) {
                         OFHelper.v(tag,"OneFlow response["+response.body().toString()+"]");
                         OFHelper.v(tag,"OneFlow response["+response.body().getSuccess()+"]");
-                        mrh.onResponseReceived(type,ids,0l);
+                        mrh.onResponseReceived(type,ids,0l,"");
                     } else {
                         OFHelper.v(tag,"OneFlow response 0["+response.body()+"]");
                     }

@@ -54,8 +54,6 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
                 OneFlow.configure(context, projectKey);
                 // CurrentLocation.getCurrentLocation(context,this,Constants.ApiHitType.fetchLocation);
             }
-        } else {
-
         }
     }
 
@@ -84,7 +82,7 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
     }
 
     @Override
-    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve) {
+    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
 
         switch (hitType) {
 

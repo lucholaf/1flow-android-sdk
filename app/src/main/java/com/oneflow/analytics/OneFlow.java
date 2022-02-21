@@ -168,8 +168,10 @@ public class OneFlow implements OFMyResponseHandler{
 
 
         final OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
-        OFMyCountDownTimer cmdt = new OFMyCountDownTimer(mContext, duration, interval);
+        OFMyCountDownTimer cmdt = OFMyCountDownTimer.getInstance(mContext, duration, interval);
         cmdt.start();
+
+
         Thread confThread = new Thread() {
             @Override
             public void run() {
@@ -518,9 +520,9 @@ public class OneFlow implements OFMyResponseHandler{
 
             //Resurvey login
             if (gslr == null) {
-                onResponseReceived(hitType, null, 0l);
+                onResponseReceived(hitType, null, 0l,"");
             } else {
-                OFLogUserDBRepo.findSurveyForID(mContext, this, OFConstants.ApiHitType.fetchSubmittedSurvey,gslr, gslr.get_id(),new OFOneFlowSHP(mContext).getStringValue(OFConstants.USERUNIQUEIDSHP));
+                OFLogUserDBRepo.findSurveyForID(mContext, this, OFConstants.ApiHitType.fetchSubmittedSurvey,gslr, gslr.get_id(),new OFOneFlowSHP(mContext).getStringValue(OFConstants.USERUNIQUEIDSHP),type);
             }
 
 
@@ -543,7 +545,7 @@ public class OneFlow implements OFMyResponseHandler{
 
 
     @Override
-    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve) {
+    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
         OFHelper.v("OneFlow", "OneFlow onReceived type[" + hitType + "]");
         switch (hitType) {
             case fetchLocation:
@@ -713,7 +715,7 @@ public class OneFlow implements OFMyResponseHandler{
                                 }
                                 OFHelper.v("OneFlow", "OneFlow resurvey check diffDuration[" + diffDuration + "]totalInterval[" + totalInterval + "]");
                                 if (diffDuration > totalInterval) {
-                                    onResponseReceived(OFConstants.ApiHitType.checkResurveyNSubmission,gslr,0l);
+                                    onResponseReceived(OFConstants.ApiHitType.checkResurveyNSubmission,gslr,0l,reserved);
                                 }
                             }
                         } catch (Exception ex) {
@@ -722,7 +724,7 @@ public class OneFlow implements OFMyResponseHandler{
                         }
                     } else{
                         OFHelper.v("OneFlow","OneFlow no survey found show directly");
-                        onResponseReceived(OFConstants.ApiHitType.checkResurveyNSubmission,gslr,0l);
+                        onResponseReceived(OFConstants.ApiHitType.checkResurveyNSubmission,gslr,0l,reserved);
                     }
                 }
                 break;
@@ -744,6 +746,7 @@ public class OneFlow implements OFMyResponseHandler{
                                 //surveyIntent.setType("plain/text");
                                 surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 surveyIntent.putExtra("SurveyType", gslr);//"move_file_in_folder");//""empty0");//
+                                surveyIntent.putExtra("eventName",reserved);
                                 mContext.getApplicationContext().startActivity(surveyIntent);
                             }
                         }

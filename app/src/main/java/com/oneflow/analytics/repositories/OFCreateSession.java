@@ -61,7 +61,7 @@ public class OFCreateSession {
                         OFHelper.v(tag,"OneFlow response["+response.body().getResult().getSystem_id()+"]");
                         new OFOneFlowSHP(context).storeValue(OFConstants.SESSIONDETAIL_IDSHP,response.body().getResult().get_id());
                         new OFOneFlowSHP(context).storeValue(OFConstants.SESSIONDETAIL_SYSTEM_IDSHP,response.body().getResult().getSystem_id());
-                        mrh.onResponseReceived(hitType,null,0l);
+                        mrh.onResponseReceived(hitType,null,0l,"");
 
                     } else {
                         //mrh.onResponseReceived(response.body(), type);

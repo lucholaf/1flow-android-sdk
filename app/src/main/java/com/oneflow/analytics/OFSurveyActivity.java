@@ -131,7 +131,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         OFGetSurveyListResponse surveyItem = (OFGetSurveyListResponse) this.getIntent().getSerializableExtra("SurveyType");
 
         screens = surveyItem.getScreens();//checkSurveyTitleAndScreens(surveyType);
-        triggerEventName = surveyItem.getTrigger_event_name();
+        triggerEventName = this.getIntent().getStringExtra("eventName");//surveyItem.getTrigger_event_name();
         // Helper.makeText(getApplicationContext(),"Size ["+screens.size()+"]",1);
 
         selectedSurveyId = surveyItem.get_id();
@@ -751,7 +751,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
 
 
     @Override
-    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve) {
+    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
         OFHelper.v(tag, "OneFlow submitting survey[" + hitType + "]");
         switch (hitType) {
             case insertSurveyInDB:

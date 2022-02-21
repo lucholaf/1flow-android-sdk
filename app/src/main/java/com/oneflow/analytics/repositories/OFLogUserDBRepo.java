@@ -47,7 +47,7 @@ public class OFLogUserDBRepo {
             @Override
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
-                mrh.onResponseReceived(type, sui, 0l);
+                mrh.onResponseReceived(type, sui, 0l,"");
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
@@ -68,7 +68,7 @@ public class OFLogUserDBRepo {
             @Override
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
-                mrh.onResponseReceived(type, integer, 0l);
+                mrh.onResponseReceived(type, integer, 0l,"");
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
@@ -107,7 +107,7 @@ public class OFLogUserDBRepo {
             @Override
             protected void onPostExecute(OFSurveyUserInput sui) {
                 super.onPostExecute(sui);
-                mrh.onResponseReceived(type, sui, 0l);
+                mrh.onResponseReceived(type, sui, 0l,"");
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
@@ -160,7 +160,7 @@ public class OFLogUserDBRepo {
 
     }
 
-    public static void findSurveyForID(Context context, OFMyResponseHandler mrh, OFConstants.ApiHitType type, final OFGetSurveyListResponse gslr, String id, String userId) {
+    public static void findSurveyForID(Context context, OFMyResponseHandler mrh, OFConstants.ApiHitType type, final OFGetSurveyListResponse gslr, String id, String userId,String eventName) {
         OFHelper.v("LogDBRepo.findSurveyForID", "OneFlow reached at updateSurveyInput method");
 
         new AsyncTask<String, Integer, Long>() {
@@ -186,7 +186,7 @@ public class OFLogUserDBRepo {
                 if(sui>0) {
                     OFHelper.v("LogDBRepo.findSurveyForID", "OneFlow returning created_On readable[" + OFHelper.formatedDate(sui, "dd-MM-yy hh:mm:ss") + "]");
                 }
-                mrh.onResponseReceived(type, gslr, sui);
+                mrh.onResponseReceived(type, gslr, sui,eventName);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 

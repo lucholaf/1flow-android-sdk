@@ -51,12 +51,13 @@ public class OFEventController implements OFMyResponseHandler {
     public void storeEventsInDB(String eventName, HashMap<String, String> eventValue,int value){
 
         //String data = new Gson().toJson(eventValue);
+        OFHelper.v(tag,"Oneflow records inserted ["+eventName+"]value["+eventValue+"]");
         OFEventDBRepo.insertEvents(mContext,eventName,eventValue,value,this, OFConstants.ApiHitType.insertEventsInDB);
 
     }
 
     @Override
-    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve) {
+    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
 
         switch(hitType){
             case insertEventsInDB:
