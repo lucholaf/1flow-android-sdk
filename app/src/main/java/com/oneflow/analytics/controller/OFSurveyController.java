@@ -73,7 +73,7 @@ public class OFSurveyController implements OFMyResponseHandler {
         switch (hitType) {
             case fetchSurveysFromAPI:
                 OFHelper.v("SurveyController","OneFlow survey received");
-                OFEventDBRepo.fetchEventsBeforeSurvey(mContext, this, OFConstants.ApiHitType.fetchEventsBeforSurveyFetched);
+                //OFEventDBRepo.fetchEventsBeforeSurvey(mContext, this, OFConstants.ApiHitType.fetchEventsBeforSurveyFetched);
                 break;
             case fetchEventsBeforSurveyFetched:
                 String[] name = (String[]) obj;
