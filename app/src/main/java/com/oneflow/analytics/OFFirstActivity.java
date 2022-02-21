@@ -88,13 +88,14 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
         //OneFlow.configure(this, "BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"1XdRfcEB8jVN05hkDk/+ltke3BHrQ3R9W35JBylCWzg=");//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//"u6NKK1Vx5xbx3TeOt3ASTGRABmN1gIhhnef53wwwGKo=");//"BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//
         //OneFlow.configure(getApplicationContext(), "uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==");//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");
         //OneFlow.configure(getApplicationContext(), "uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==");//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");
-        String projectKey = "oneflow_sandbox_2Z9e492aa1qH22E2SnoSAT5broVR80RF9EXhQ0UcOTyZNgDRCsS4Y88hG4mL+IjPURFgrvCIsuNtUinVIr/ClQ==";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
-
         OFFontSetup titleSetup = new OFFontSetup(faceReg,20F);
 
         OFFontSetup descriptionFont = new OFFontSetup(null,12f);
 
         OFFontSetup optionsFont = new OFFontSetup(faceBold,12f);
+
+        String projectKey = "oneflow_sandbox_2Z9e492aa1qH22E2SnoSAT5broVR80RF9EXhQ0UcOTyZNgDRCsS4Y88hG4mL+IjPURFgrvCIsuNtUinVIr/ClQ==";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
+
 
         OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);
         OneFlow.shouldShowSurvey(true);
@@ -181,12 +182,13 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
             OneFlow.recordEvents("disconnect_vpn", mapvalues);
 
         } else if (v.getId() == R.id.record_log) {
-            //   Helper.makeText(FirstActivity.this, "Clicked on button 5", 1);
+            OFHelper.v(tag, "OneFlow Clicked on button record log");
+            String localTag = (String) v.getTag();
             HashMap<String, String> mapvalues = new HashMap<String, String>();
-            mapvalues.put("testKey1", "testValue1");
-            mapvalues.put("testKey2", "testValue2");
-            mapvalues.put("testKey3", "testValue3");
-            OneFlow.recordEvents("empty18", mapvalues);
+            mapvalues.put("testKey1_"+localTag, "testValue1");
+            mapvalues.put("testKey2_"+localTag, "testValue2");
+            mapvalues.put("testKey3_"+localTag, "testValue3");
+            OneFlow.recordEvents(localTag, mapvalues);
         } else if (v.getId() == R.id.configure_project) {
             //  Helper.makeText(FirstActivity.this, "Clicked on button conf", 1);
             OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=",null);
@@ -231,7 +233,7 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
     }
 
     @Override
-    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve) {
+    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
         switch (hitType) {
             case fetchEventsFromDB:
                 List<OFRecordEventsTab> list = (List<OFRecordEventsTab>) obj;
