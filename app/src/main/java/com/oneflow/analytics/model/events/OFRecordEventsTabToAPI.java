@@ -28,6 +28,9 @@ public class OFRecordEventsTabToAPI {
     @SerializedName("name")
     private String eventName;
 
+    @SerializedName("plt")
+    private String platform;
+
     @SerializedName("parameters")
     private HashMap<String,String> dataMap;
 
@@ -38,6 +41,13 @@ public class OFRecordEventsTabToAPI {
     private String value;
 
 
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
 
     public Long getTime() {
         return time;

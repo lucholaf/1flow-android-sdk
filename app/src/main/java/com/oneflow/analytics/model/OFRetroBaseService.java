@@ -58,6 +58,7 @@ public class OFRetroBaseService {
                 .build();
 
         OFHelper.v("APIClient","BaseUrl ["+BASE_URL+"]");
+        //.client(OFConstants.MODE.equalsIgnoreCase("dev")?clientDev:clientProd)
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())

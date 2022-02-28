@@ -1,3 +1,4 @@
+
 /*
  *  Copyright 2021 1Flow, Inc.
  *
@@ -357,7 +358,7 @@ public class OneFlow implements OFMyResponseHandler{
                 lur.setParameters(mapValue);
                 lur.setSession_id(new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
                 new OFOneFlowSHP(mContext).setLogUserRequest(lur);
-                //
+
             }
             sendEventsToApi(mContext);
         }
@@ -571,10 +572,9 @@ public class OneFlow implements OFMyResponseHandler{
                         retMain = new OFRecordEventsTabToAPI();
                         retMain.setEventName(ret.getEventName());
                         retMain.setTime(ret.getTime());
-
+                        retMain.setPlatform("a");
                         retMain.setDataMap(ret.getDataMap());
                         retListToAPI.add(retMain);
-
                         ids[i++] = ret.getId();
                     }
 
@@ -677,7 +677,7 @@ public class OneFlow implements OFMyResponseHandler{
                 csr.setLibrary_name("1flow-android-sdk");
                 csr.setLibrary_version(String.valueOf(1));
                 csr.setApi_endpoint("session");
-                csr.setApi_version("0.6.22");
+                csr.setApi_version("0.6.27");
                 csr.setApp_version(OFHelper.getAppVersion(mContext));
 
                 recordEvents(OFConstants.AUTOEVENT_SESSIONSTART, null);
@@ -740,6 +740,12 @@ public class OneFlow implements OFMyResponseHandler{
                         if (gslr.getScreens().size() > 0) {
                             OFHelper.v("OneFlow", "OneFlow resurvey checked running survey[" + (!ofs.getBooleanValue(OFConstants.SHP_SURVEY_RUNNING, false)) + "]");
                             if (!ofs.getBooleanValue(OFConstants.SHP_SURVEY_RUNNING, false)) {
+
+                                HashMap<String, String> mapValue = new HashMap<>();
+                                mapValue.put("survey_id", gslr.get_id());
+                                OFEventController ec = OFEventController.getInstance(mContext);
+                                ec.storeEventsInDB(OFConstants.SHP_SURVEYIMPRESSION, mapValue, 0);
+
                                 ofs.storeValue(OFConstants.SHP_SURVEY_RUNNING, true);
                                 ofs.storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
                                 Intent surveyIntent = new Intent(mContext.getApplicationContext(), OFSurveyActivity.class);

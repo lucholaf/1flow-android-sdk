@@ -82,6 +82,7 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
                     OFRecordEventsTabToAPI retMain;
                     for (OFRecordEventsTab ret : list) {
                         retMain = new OFRecordEventsTabToAPI();
+                        retMain.setPlatform("a");
                         retMain.setEventName(ret.getEventName());
                         retMain.setTime(ret.getTime());
                         retMain.setDataMap(ret.getDataMap());
