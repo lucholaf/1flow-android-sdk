@@ -744,7 +744,7 @@ public class OneFlow implements OFMyResponseHandler{
                                 HashMap<String, String> mapValue = new HashMap<>();
                                 mapValue.put("survey_id", gslr.get_id());
                                 OFEventController ec = OFEventController.getInstance(mContext);
-                                ec.storeEventsInDB(OFConstants.SHP_SURVEYIMPRESSION, mapValue, 0);
+                                ec.storeEventsInDB(OFConstants.AUTOEVENT_SURVEYIMPRESSION, mapValue, 0);
 
                                 ofs.storeValue(OFConstants.SHP_SURVEY_RUNNING, true);
                                 ofs.storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());

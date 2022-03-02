@@ -57,7 +57,7 @@ public class OFEventDBRepo {
             @Override
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
-                mrh.onResponseReceived(type,1,0l,"");
+                mrh.onResponseReceived(type,1,0l,eventName);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 

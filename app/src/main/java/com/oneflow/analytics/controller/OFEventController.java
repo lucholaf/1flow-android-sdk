@@ -19,13 +19,21 @@
 package com.oneflow.analytics.controller;
 
 import android.content.Context;
+import android.content.Intent;
+import android.provider.SyncStateContract;
 
+import com.oneflow.analytics.model.events.OFEventAPIRequest;
+import com.oneflow.analytics.model.events.OFRecordEventsTab;
+import com.oneflow.analytics.model.events.OFRecordEventsTabToAPI;
+import com.oneflow.analytics.repositories.OFEventAPIRepo;
 import com.oneflow.analytics.repositories.OFEventDBRepo;
+import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.sdkdb.OFSDKDB;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class OFEventController implements OFMyResponseHandler {
@@ -62,6 +70,60 @@ public class OFEventController implements OFMyResponseHandler {
         switch(hitType){
             case insertEventsInDB:
                 OFHelper.v(tag,"Oneflow records inserted ["+((Integer)obj)+"]");
+                if(reserved.equalsIgnoreCase(OFConstants.AUTOEVENT_SURVEYIMPRESSION)){
+                    OFHelper.v(tag,"Oneflow found survey impression["+((Integer)obj)+"]");
+                        OFEventDBRepo.fetchEvents(mContext, this, OFConstants.ApiHitType.fetchEventsFromDB);
+
+                }
+                break;
+            case fetchEventsFromDB:
+
+                OFHelper.v(this.getClass().getName(), "OneFlow fetchEventsFromDB came back");
+
+
+                ArrayList<OFRecordEventsTab> list = (ArrayList<OFRecordEventsTab>) obj;
+                OFHelper.v(this.getClass().getName(), "OneFlow fetchEventsFromDB list received size[" + list.size() + "]");
+                //Preparing list to send api
+                if (list.size() > 0) {
+                    Integer[] ids = new Integer[list.size()];
+                    int i = 0;
+                    ArrayList<OFRecordEventsTabToAPI> retListToAPI = new ArrayList<>();
+                    OFRecordEventsTabToAPI retMain;
+                    for (OFRecordEventsTab ret : list) {
+                        retMain = new OFRecordEventsTabToAPI();
+                        retMain.setPlatform("a");
+                        retMain.setEventName(ret.getEventName());
+                        retMain.setTime(ret.getTime());
+                        retMain.setDataMap(ret.getDataMap());
+                        retListToAPI.add(retMain);
+
+                        ids[i++] = ret.getId();
+                    }
+
+                    if (!new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP).equalsIgnoreCase("NA")) {
+                        if(OFHelper.isConnected(mContext)) {
+                            OFEventAPIRequest ear = new OFEventAPIRequest();
+                            ear.setSessionId(new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
+                            ear.setEvents(retListToAPI);
+                            OFHelper.v(this.getClass().getName(), "OneFlow fetchEventsFromDB request prepared");
+                            OFEventAPIRepo.sendLogsToApi(mContext, ear, this, OFConstants.ApiHitType.sendEventsToAPI, ids);
+                        }
+                    }
+
+                }
+                break;
+            case sendEventsToAPI:
+                //Events has been sent to api not deleting local records
+                Integer[] ids1 = (Integer[]) obj;
+                OFEventDBRepo.deleteEvents(mContext, ids1, this, OFConstants.ApiHitType.deleteEventsFromDB);
+
+                break;
+            case deleteEventsFromDB:
+                OFHelper.v(this.getClass().getName(), "OneFlow events delete count[" + ((Integer) obj) + "]");
+                Intent intent = new Intent("events_submitted");
+                intent.putExtra("size", String.valueOf((Integer) obj));
+                mContext.sendBroadcast(intent);
+
                 break;
         }
     }
