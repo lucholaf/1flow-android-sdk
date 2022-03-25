@@ -25,21 +25,21 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
 import com.oneflow.analytics.model.events.OFRecordEventDAO;
 import com.oneflow.analytics.model.events.OFRecordEventsTab;
 import com.oneflow.analytics.model.loguser.OFLogDAO;
 import com.oneflow.analytics.model.survey.OFSurveyUserInput;
+import com.oneflow.analytics.sdkdb.adduser.OFUserDAO;
 import com.oneflow.analytics.sdkdb.convertes.OFDataConverterDevice;
 import com.oneflow.analytics.sdkdb.convertes.OFDataConverterLocation;
-import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
-import com.oneflow.analytics.sdkdb.adduser.OFUserDAO;
 import com.oneflow.analytics.sdkdb.convertes.OFMapConverter;
 import com.oneflow.analytics.sdkdb.convertes.OFSurveyUserResponseChildConverter;
 import com.oneflow.analytics.sdkdb.survey.OFSubmittedSurveyDAO;
 import com.oneflow.analytics.sdkdb.survey.OFSubmittedSurveysTab;
 import com.oneflow.analytics.utils.OFConstants;
 
-@Database(entities = {OFRecordEventsTab.class, OFAddUserResultResponse.class, OFSubmittedSurveysTab.class, OFSurveyUserInput.class},version = 7)
+@Database(entities = {OFRecordEventsTab.class, OFAddUserResultResponse.class, OFSubmittedSurveysTab.class, OFSurveyUserInput.class},version = 8)
 @TypeConverters({OFMapConverter.class, OFDataConverterLocation.class, OFDataConverterDevice.class, OFSurveyUserResponseChildConverter.class})
 public abstract class OFSDKDB extends RoomDatabase {
 

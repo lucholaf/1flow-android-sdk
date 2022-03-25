@@ -137,7 +137,7 @@ public class OFLogUserDBRepo {
     }
 
     // update user id for surveys before log
-    public static void updateSurveyUserId(Context context,String userId) {
+    public static void updateSurveyUserId(Context context,OFMyResponseHandler mrh,String userId,OFConstants.ApiHitType hitType) {
         OFHelper.v("LogDBRepo.updateSurveyUserId", "OneFlow updating empty user id");
 
         new AsyncTask<String, Integer, Integer>() {
@@ -148,13 +148,16 @@ public class OFLogUserDBRepo {
 
                 Integer inserted = sdkdb.logDAO().updateUserID(userId);
                 OFHelper.v("LogDBRepo.updateSurveyInput", "OneFlow updating empty user id 0["+inserted+"]");
+
                 return inserted;
             }
 
             @Override
             protected void onPostExecute(Integer sui) {
                 super.onPostExecute(sui);
-               // mrh.onResponseReceived(type, sui, 0l);
+                OFHelper.v("LogDBRepo.updateSurveyInput","OneFlow user Id updated");
+                //passing because need to call survey
+                mrh.onResponseReceived(hitType, sui, 0l,"");
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
@@ -168,9 +171,14 @@ public class OFLogUserDBRepo {
             @Override
             protected Long doInBackground(String... strings) {
                 OFSDKDB sdkdb = OFSDKDB.getInstance(context);
-                OFHelper.v("LogDBRepo.findSurveyForID", "OneFlow finding survey for id from db 0");
+                OFHelper.v("LogDBRepo.findSurveyForID", "OneFlow finding survey for ["+id+"] userid["+userId+"]");
 
                 OFSurveyUserInput surveyUserInput = sdkdb.logDAO().getSurveyForID(id,userId);
+               /* OFHelper.v("LogDBRepo.findSurveyForID loop","OneFlow list size["+surveyUserInput.size()+"]");
+                for(OFSurveyUserInput sui:surveyUserInput){
+                    OFHelper.v("LogDBRepo.findSurveyForID loop", "OneFlow finding survey for ["+sui.getCreatedOn()+"] date["+OFHelper.formatedDate(sui.getCreatedOn(), "dd-MM-yy hh:mm:ss")+"]");
+                }*/
+
                 if(surveyUserInput!=null){
                     return surveyUserInput.getCreatedOn();
                 }else{

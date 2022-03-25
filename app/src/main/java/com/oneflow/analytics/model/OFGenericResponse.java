@@ -18,9 +18,6 @@
 
 package com.oneflow.analytics.model;
 
-import androidx.annotation.Nullable;
-
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class OFGenericResponse<T>{// extends BaseResponse{

@@ -22,10 +22,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
 
-import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
-import com.oneflow.analytics.model.location.OFLocationResponse;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
+import com.oneflow.analytics.model.location.OFLocationResponse;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.utils.OFConstants;

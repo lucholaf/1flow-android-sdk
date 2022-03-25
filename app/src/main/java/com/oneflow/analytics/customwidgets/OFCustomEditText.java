@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.appcompat.widget.AppCompatEditText;
+
 import com.oneflow.analytics.R;
 
 /**
@@ -60,13 +61,13 @@ public class OFCustomEditText extends AppCompatEditText {
         setTypeface(typeface);
 
 
-        getSelectionStart();
+        //getSelectionStart();
 
         this.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
 
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                 // TODO Auto-generated method stub
-                menu.clear();
+               // menu.clear();
                 return false;
             }
 

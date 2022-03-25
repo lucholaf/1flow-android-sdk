@@ -28,6 +28,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Display;
 import android.view.DragEvent;
 import android.view.Gravity;
@@ -35,12 +36,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -50,20 +51,17 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
-import com.google.android.play.core.tasks.OnCompleteListener;
 import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
 import com.google.gson.Gson;
 import com.oneflow.analytics.fragment.OFSurveyQueFragment;
 import com.oneflow.analytics.fragment.OFSurveyQueTextFragment;
 import com.oneflow.analytics.fragment.OFSurveyQueThankyouFragment;
-import com.oneflow.analytics.model.OFBaseModel;
 import com.oneflow.analytics.model.survey.OFDataLogic;
-import com.oneflow.analytics.model.survey.OFRules;
-import com.oneflow.analytics.model.survey.OFSurveyUserInput;
-import com.oneflow.analytics.model.survey.OFSurveyUserResponseChild;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
+import com.oneflow.analytics.model.survey.OFSurveyUserInput;
+import com.oneflow.analytics.model.survey.OFSurveyUserResponseChild;
 import com.oneflow.analytics.repositories.OFLogUserDBRepo;
 import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
@@ -74,6 +72,7 @@ import com.oneflow.analytics.utils.OFMyResponseHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 
 import butterknife.ButterKnife;
 
@@ -92,10 +91,14 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
     public ArrayList<OFSurveyUserResponseChild> surveyResponseChildren;
     public ArrayList<OFSurveyScreens> screens;
     private Long inTime = 0l;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+
+
         setContentView(R.layout.survey_view);
 
         inTime = System.currentTimeMillis();
@@ -133,7 +136,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         screens = surveyItem.getScreens();//checkSurveyTitleAndScreens(surveyType);
         triggerEventName = this.getIntent().getStringExtra("eventName");//surveyItem.getTrigger_event_name();
         // Helper.makeText(getApplicationContext(),"Size ["+screens.size()+"]",1);
-
+        setProgressMax(surveyItem.getScreens().size());
         selectedSurveyId = surveyItem.get_id();
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,14 +152,27 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
 //      Helper.v(tag,"OneFlow color["+surveyItem.getStyle().getPrimary_color()+"]");
 
         themeColor = "#" + Integer.toHexString(ContextCompat.getColor(this, R.color.colorPrimaryDark));
-        OFHelper.v(tag, "OneFlow color 1[" + themeColor + "]");
+        OFHelper.v(tag, "OneFlow color 1[" + themeColor + "]primaryColor[" + surveyItem.getStyle().getPrimary_color() + "]");
         try {
 
-            if (!surveyItem.getStyle().getPrimary_color().startsWith("#")) {
-                themeColor = "#" + surveyItem.getStyle().getPrimary_color();
-            } else {
-                themeColor = surveyItem.getStyle().getPrimary_color();
+            String tranparancy = "";
+            if (surveyItem.getStyle().getPrimary_color().length() > 6 && !surveyItem.getStyle().getPrimary_color().startsWith("#")) {
+                tranparancy = surveyItem.getStyle().getPrimary_color().substring(6, 8);
             }
+            String tempColor;
+            if (!surveyItem.getStyle().getPrimary_color().startsWith("#")) {
+                tempColor = surveyItem.getStyle().getPrimary_color().substring(0, 6);
+            } else {
+                tempColor = surveyItem.getStyle().getPrimary_color().substring(1, 7);
+            }
+
+
+            if (!surveyItem.getStyle().getPrimary_color().startsWith("#")) {
+                themeColor = "#" + tranparancy + tempColor;//surveyItem.getStyle().getPrimary_color();
+            } else {
+                themeColor = tranparancy + tempColor;//surveyItem.getStyle().getPrimary_color();
+            }
+            OFHelper.v(tag, "OneFlow colors transparancy [" + tranparancy + "]tempColor[" + tempColor + "]themeColor[" + themeColor + "]");
         } catch (Exception ex) {
             //styleColor=""+getResources().getColor(R.color.colorPrimaryDark);
         }
@@ -188,6 +204,14 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
 
     }
 
+    /*private void setReenterTransition() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Transition transition = new Transition(R.anim.slide_up_new_theme);
+            transition.setDuration(600);
+            transition.setInterpolator(new FastOutLinearInInterpolator());
+            getWindow().setReenterTransition(transition);
+        }
+    }*/
     private int previousFingerPosition = 0;
     private int baseLayoutPosition = 0;
     private int defaultViewHeight;
@@ -368,7 +392,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
             OFHelper.v(tag, "OneFlow no input no submit");
         }
         OFHelper.v(tag, "OneFlow onPause called");
-        overridePendingTransition(0, R.anim.slide_down_dialog_sdk);
+        //overridePendingTransition(0, R.anim.slide_down_dialog_sdk);
         super.onPause();
     }
 
@@ -393,13 +417,25 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         if (answerIndex != null || answerValue != null) {
             OFSurveyUserResponseChild asrc = new OFSurveyUserResponseChild();
             asrc.setScreen_id(screenID);
+
             if (answerValue != null) {
                 asrc.setAnswer_value(answerValue);
             }
-            if(answerIndex!=null){
+            if (answerIndex != null) {
                 asrc.setAnswer_index(answerIndex);
             }
-            surveyResponseChildren.add(asrc);
+            boolean found = false;
+            // checking if list alread have same value
+            for(OFSurveyUserResponseChild src: surveyResponseChildren){
+                if(src.getScreen_id()==screenID){
+                    OFHelper.v(tag,"OneFlow Replacing value");
+                    found = true;
+                    Collections.replaceAll(surveyResponseChildren,src,asrc);
+                }
+            }
+            if(!found) {
+                surveyResponseChildren.add(asrc);
+            }
         }
         OFHelper.v(tag, "OneFlow position [" + position + "]");
         OFHelper.v(tag, "OneFlow rules [" + new Gson().toJson(screens.get(position - 1).getRules()) + "]");
@@ -526,7 +562,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
             }
         }
 
-        OFHelper.v(tag, "OneFlow found [" + found + "]action[" + action + "]type["+type+"]");
+        OFHelper.v(tag, "OneFlow found [" + found + "]action[" + action + "]type[" + type + "]");
         // rating and open url is pending
         if (found) {
             if (OFHelper.validateString(action).equalsIgnoreCase("the-end")) {
@@ -542,7 +578,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(action));
                     startActivity(browserIntent);
                 } else if (type.equalsIgnoreCase("rating")) {
-                   // OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
+                    // OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
                     position = screens.size();
                     initFragment();
                     reviewThisApp(OFSurveyActivity.this);
@@ -562,7 +598,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         Task<ReviewInfo> request = manager.requestReviewFlow();
         request.addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                OFHelper.v(tag,"OneFlow review success called");
+                OFHelper.v(tag, "OneFlow review success called");
                 ReviewInfo reviewInfo = task.getResult();
                 Task<Void> flow = manager.launchReviewFlow((Activity) context, reviewInfo);
                 flow.addOnCompleteListener(task2 -> {
@@ -574,8 +610,6 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
 
                     }
                 });
-            } else {
-
             }
         });
 
@@ -659,12 +693,13 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
 
     }
 
-    private Integer totalTimeSpentInSec(){
+    private Integer totalTimeSpentInSec() {
 
-        Long l = (System.currentTimeMillis()-inTime)/1000;
-        OFHelper.v(tag, "OneFlow inTime ["+inTime+"]["+System.currentTimeMillis()+"]["+l+"]");
+        Long l = (System.currentTimeMillis() - inTime) / 1000;
+        OFHelper.v(tag, "OneFlow inTime [" + inTime + "][" + System.currentTimeMillis() + "][" + l + "]");
         return l.intValue();
     }
+
     public int position = 0;
 
     public void initFragment() {
@@ -693,7 +728,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
             @Override
             public void run() {
 
-                int sleepDuration = (int) 500 / (progressValueTo - progressValueFrom);
+                int sleepDuration = (int) 300 / (progressValueTo - progressValueFrom);
                 OFHelper.v(tag, "OneFlow sleepDuration[" + sleepDuration + "]");
 
                 for (int i = progressValueFrom; i < progressValueTo; i++) {
@@ -713,9 +748,78 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
 
     }
 
-    private void loadFragments(OFSurveyScreens screen) {
-        setProgressBarPosition();
+    private void setProgressBarPositionAsync() {
 
+        int v = (int) (Math.ceil(100 / screens.size())) * (position + 1);
+
+        Integer temp = (int) (Math.ceil(100f / screens.size())) * (position + 1);//((Integer)(Math.ceil(100/screens.size()))*(position+1);
+        final Integer progressValueTo = temp > 110 ? 110 : temp;//((Integer)(Math.ceil(100/screens.size()))*(position+1);
+        int progressValueFrom = (int) (Math.ceil(100f / screens.size())) * (position);
+        //OFHelper.v(tag, "OneFlow progressValue before [" + Math.ceil(100f / screens.size()) + "] ceil[" + (100f / screens.size()) + "]from[" + progressValueFrom + "]to[" + progressValueTo + "]screenSize[" + screens.size() + "]position[" + position + "]");
+
+
+        setProgressAnimate();
+
+
+
+
+        /*AsyncTask progressAsync = new AsyncTask<Object,Integer,Object>() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+
+               setProgressAnimate(position);
+
+                return null;
+            }
+
+            @Override
+            protected void onProgressUpdate(Integer[] values) {
+                super.onProgressUpdate(values);
+                ObjectAnimator animation = ObjectAnimator.ofInt(pagePositionPBar, "progress", pagePositionPBar.getProgress(), values[0] * 100);
+                animation.setDuration(500);
+                animation.setAutoCancel(true);
+                animation.setInterpolator(new DecelerateInterpolator());
+                animation.start();
+            }
+        };
+
+        progressAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);*/
+
+
+    }
+
+
+    private void setProgressMax(int max) {
+        OFHelper.v(tag, "OneFlow max [" + max + "]postion[" + position + "]");
+        pagePositionPBar.setMax(max * 100);
+    }
+
+    private void setProgressAnimate() {
+        OFHelper.v(tag, "OneFlow animation started [" + position + "] max [" + pagePositionPBar.getProgress() + "]postion[" + (position * 100) + "]");
+        if (position == 0) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ObjectAnimator animation = ObjectAnimator.ofInt(pagePositionPBar, "progress", 0, 100);
+                    animation.setDuration(500);
+                    animation.setAutoCancel(true);
+                    animation.setInterpolator(new DecelerateInterpolator());
+                    animation.start();
+                }
+            }, 500);
+        } else {
+            ObjectAnimator animation = ObjectAnimator.ofInt(pagePositionPBar, "progress", pagePositionPBar.getProgress(), (position+1) * 100);
+            animation.setDuration(500);
+            animation.setAutoCancel(true);
+            animation.setInterpolator(new DecelerateInterpolator());
+            animation.start();
+        }
+    }
+
+
+    private void loadFragments(OFSurveyScreens screen) {
+        //setProgressBarPosition();
+        setProgressBarPositionAsync();
         //Helper.makeText(getApplicationContext(),"Screen input ["+screen.getInput().getInput_type()+"]",1);
         //Helper.showAlert(getApplicationContext(),"","Screen input type["+screen.getInput().getInput_type()+"]");
         if (screen != null) {

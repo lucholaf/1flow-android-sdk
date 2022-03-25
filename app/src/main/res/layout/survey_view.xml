@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /* Copyright 2021 1Flow, Inc.
   ~
   ~
@@ -18,16 +17,17 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/base_popup_layout"
-    android:layout_height="wrap_content"
-    android:layout_margin="0dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/slider_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:visibility="gone">
 
         <View
             android:id="@+id/slider"
@@ -38,55 +38,62 @@
             android:background="@drawable/rounded_rectangle_small" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/view_layout"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/slider_layout"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/top_rounded_rectangle"
-        android:padding="10dp">
-
-
+        app:cardBackgroundColor="@color/plainwhite"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="14dp"
+        app:cardUseCompatPadding="true">
+        <!--android:background="@drawable/main_rounded_rectangle_new_theme"-->
         <RelativeLayout
-            android:id="@+id/inner_child_view"
+            android:id="@+id/view_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/close_btn_image_view">
+            android:padding="10dp">
 
 
-            <!--<com.oneflow.tryskysdk.customwidgets.CustomViewPager
-                android:id="@+id/survey_viewpager"
+            <RelativeLayout
+                android:id="@+id/inner_child_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white" />-->
-            <FrameLayout
-                android:id="@+id/fragment_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="wrap_content">
 
-                />
 
+                <!--<com.oneflow.tryskysdk.customwidgets.CustomViewPager
+                    android:id="@+id/survey_viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white" />-->
+                <FrameLayout
+                    android:id="@+id/fragment_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/close_btn_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/ic_baseline_close_24" />
 
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/close_btn_image_view"
-            android:layout_width="wrap_content"
+        <ProgressBar
+            android:id="@+id/pbar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_baseline_close_24" />
-
-    </RelativeLayout>
-    <ProgressBar
-        android:id="@+id/pbar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="false"
-        android:layout_marginBottom="-6dp"
-        android:background="@color/plainwhite"
-        android:layout_below="@id/view_layout"
-        android:progress="100"
-        android:scaleY="1.2" />
+            android:layout_below="@id/view_layout"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="-6dp"
+            android:background="@color/plainwhite"
+            android:indeterminate="false"
+            android:progress="100"
+            android:scaleY="1.2" />
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

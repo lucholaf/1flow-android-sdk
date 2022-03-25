@@ -20,7 +20,6 @@ package com.oneflow.analytics.controller;
 
 import android.content.Context;
 import android.content.Intent;
-import android.provider.SyncStateContract;
 
 import com.oneflow.analytics.model.events.OFEventAPIRequest;
 import com.oneflow.analytics.model.events.OFRecordEventsTab;

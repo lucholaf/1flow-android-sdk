@@ -44,7 +44,7 @@ public class OFSurveyListAdapter extends RecyclerView.Adapter<OFSurveyListAdapte
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        OFHelper.v(this.getClass().getName(), "OneAxis adapter postion[" + position + "]");
+        OFHelper.v(this.getClass().getName(), "OneFlow adapter postion[" + position + "]");
 
         holder.txtSurveyKey.setText(itemsList.get(position).getTrigger_event_name());
         holder.txtSurveyKey.setTag(itemsList.get(position).getTrigger_event_name());
@@ -73,7 +73,7 @@ public class OFSurveyListAdapter extends RecyclerView.Adapter<OFSurveyListAdapte
         this.mContext = mContext;
         this.itemsList = arrayList;
         this.gch = gch;
-        OFHelper.v(this.getClass().getName(), "OneAxis size[" + itemsList.size() + "]");
+        OFHelper.v(this.getClass().getName(), "OneFlow size[" + itemsList.size() + "]");
     }
 
     public void notifyMyList(ArrayList<OFGetSurveyListResponse> arrayList) {

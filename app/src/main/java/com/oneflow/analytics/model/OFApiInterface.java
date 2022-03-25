@@ -27,8 +27,8 @@ import com.oneflow.analytics.model.events.OFEventSubmitResponse;
 import com.oneflow.analytics.model.location.OFLocationResponse;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
 import com.oneflow.analytics.model.loguser.OFLogUserResponse;
-import com.oneflow.analytics.model.survey.OFSurveyUserInput;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
+import com.oneflow.analytics.model.survey.OFSurveyUserInput;
 
 import java.util.ArrayList;
 
@@ -50,7 +50,13 @@ public interface OFApiInterface {
     Call<OFGenericResponse<OFCreateSessionResponse>> createSession(@Header("one_flow_key") String headerKey, @Body OFCreateSessionRequest aur, @Url String url);
 
     @GET//("v1/2021-06-15/survey")
-    Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> getSurvey(@Header("one_flow_key") String headerKey, @Url String url, @Query("platform") String platform, @Query("mode") String mode);
+    Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> getSurvey(@Header("one_flow_key") String headerKey,
+                                                                          @Url String url,
+                                                                          @Query("platform") String platform,
+                                                                          @Query("mode") String mode,
+                                                                          @Query("user_id") String userId,
+                                                                          @Query("session_id") String sessionId
+    );
 
     @GET("v1/2021-06-15/location")
     Call<OFLocationResponse> getLocation(@Header("one_flow_key") String headerKey);

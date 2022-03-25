@@ -24,7 +24,6 @@ import android.content.Intent;
 import com.oneflow.analytics.model.OFApiInterface;
 import com.oneflow.analytics.model.OFGenericResponse;
 import com.oneflow.analytics.model.OFRetroBaseService;
-
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.model.survey.OFSurveyUserInput;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
@@ -46,10 +45,12 @@ public class OFSurvey {
     public static void getSurvey(Context context, OFMyResponseHandler mrh, OFConstants.ApiHitType type) {
         OFHelper.v(tag, "OneFlow survey reached getSurvey called");
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
+        OFOneFlowSHP oshp = new OFOneFlowSHP(context);
         try {
             Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> responseCall = null;
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys";
-            responseCall = connectAPI.getSurvey(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP), url,"android", OFConstants.MODE);
+            responseCall = connectAPI.getSurvey(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP),
+                    url,"android", OFConstants.MODE,oshp.getUserDetails().getAnalytic_user_id(),oshp.getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
 
             responseCall.enqueue(new Callback<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>>() {
                 @Override

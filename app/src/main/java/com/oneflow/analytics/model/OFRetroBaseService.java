@@ -55,6 +55,7 @@ public class OFRetroBaseService {
 
         OkHttpClient clientProd = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(interceptor)
                 .build();
 
         OFHelper.v("APIClient","BaseUrl ["+BASE_URL+"]");
@@ -62,7 +63,7 @@ public class OFRetroBaseService {
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(OFConstants.MODE.equalsIgnoreCase("dev")?clientDev:clientProd)
+                .client(OFConstants.MODE.equalsIgnoreCase("prod")?clientProd:clientDev)
                 .build();
 
 

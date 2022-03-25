@@ -23,7 +23,6 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,21 +30,21 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.ColorUtils;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.oneflow.analytics.OFSurveyActivity;
 import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
-import com.oneflow.analytics.OFSurveyActivity;
 import com.oneflow.analytics.adapter.OFSurveyOptionsAdapter;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
@@ -59,23 +58,26 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
-public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandler {//View.OnClickListener {
+public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickHandler {//View.OnClickListener {
 
 
     OFCustomTextViewBold surveyTitle, submitButton;
     RecyclerView surveyOptionRecyclerView;
-    OFCustomTextView ratingsNotLike, ratingsFullLike, surveyDescription;
+    OFCustomTextView ratingsNotLike, ratingsFullLike, surveyDescription, starRatingLabel;
 
 
     /*@BindView(R.id.cancel_btn)
     CustomTextViewBold cancelButton;*/
     RelativeLayout optionLayout;
+    LinearLayout waterMarkLayout;
     //this is for testing
 
     String tag = this.getClass().getName();
     OFSurveyScreens surveyScreens;
     OFSurveyOptionsAdapter dashboardAdapter;
     Animation animation1, animation2, animation3, animation4, animationIn;//animationOut;
+
+    String ratingsLabel[] = new String[]{"Very dissatisfied", "Somewhat dissatisfied", "Not dissatisfied nor satisfied", "Somewhat satisfied", "Very satisfied"};
 
     public static OFSurveyQueFragment newInstance(OFSurveyScreens ahdList) {
         OFSurveyQueFragment myFragment = new OFSurveyQueFragment();
@@ -101,9 +103,9 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
         OFHelper.v(tag, "OneFlow OnResume");
 
 
-        View[] animateViews = new View[]{surveyTitle, surveyDescription, optionLayout};
+        View[] animateViews = new View[]{surveyTitle, surveyDescription, optionLayout, submitButton};
 
-        Animation[] annim = new Animation[]{animation1, animation2, animation3};
+        Animation[] annim = new Animation[]{animation1, animation2, animation3, animation4};
 
         if (i == 0) {
             new Handler().postDelayed(new Runnable() {
@@ -171,13 +173,15 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                   // OFHelper.v(tag, "OneFlow animation END[" + i + "]");
+                    // OFHelper.v(tag, "OneFlow animation END[" + i + "]");
 
                     i++;
-                    if (i < animateViews.length) {
-                        animateViews[i].setVisibility(View.VISIBLE);
-                        //animateViews[i].clearAnimation();
-                        animateViews[i].startAnimation(annim[i]);
+                    if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
+                        if (i < animateViews.length) {
+                            animateViews[i].setVisibility(View.VISIBLE);
+                            //animateViews[i].clearAnimation();
+                            animateViews[i].startAnimation(annim[i]);
+                        }
                     }
 
                 }
@@ -188,7 +192,7 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
                 }
             });
         }
-        OFHelper.v(tag,"OneFlow onResume finished pos["+sa.position+"]");
+        OFHelper.v(tag, "OneFlow onResume finished pos[" + sa.position + "]");
            /* }
         },1100);*/
     }
@@ -207,20 +211,22 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
         surveyDescription = (OFCustomTextView) view.findViewById(R.id.survey_description_que);
         ratingsNotLike = (OFCustomTextView) view.findViewById(R.id.ratings_not_like);
         ratingsFullLike = (OFCustomTextView) view.findViewById(R.id.ratings_full_like);
+        starRatingLabel = (OFCustomTextView) view.findViewById(R.id.star_ratings_label);
         surveyOptionRecyclerView = (RecyclerView) view.findViewById(R.id.survey_options_list);
         optionLayout = (RelativeLayout) view.findViewById(R.id.option_layout);
+        waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OFHelper.v(tag, "OneFlow button size found 0 ");
-                itemClicked(v,null,"");
+                itemClicked(v, null, "");
             }
         });
         submitButtonBeautification();
-        OFHelper.v(tag, "OneAxis list position onCreateView["+sa.position+"]data[" + surveyScreens + "]");
-        OFHelper.v(tag, "OneAxis list title[" + surveyScreens.getTitle() + "]");
-        OFHelper.v(tag, "OneAxis list desc[" + surveyScreens.getMessage() + "]");
+        OFHelper.v(tag, "OneFlow list position onCreateView[" + sa.position + "]data[" + surveyScreens + "]");
+        OFHelper.v(tag, "OneFlow list title[" + surveyScreens.getTitle() + "]");
+        OFHelper.v(tag, "OneFlow list desc[" + surveyScreens.getMessage() + "]length[" + surveyScreens.getMessage().length() + "]");
 
 
         animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
@@ -230,18 +236,18 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
         animationIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
         //animationOut = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_out);
 
-        if(OneFlow.titleFace!=null) {
-            if(OneFlow.titleFace.getTypeface()!=null) {
+        if (OneFlow.titleFace != null) {
+            if (OneFlow.titleFace.getTypeface() != null) {
                 surveyTitle.setTypeface(OneFlow.titleFace.getTypeface());
             }
-            if(OneFlow.titleFace.getFontSize()!=null) {
+            if (OneFlow.titleFace.getFontSize() != null) {
                 surveyTitle.setTextSize(OneFlow.titleFace.getFontSize());
             }
         }
         surveyTitle.setText(surveyScreens.getTitle());//+"-- Pages you view in this window won't appear in the browser history and they won't leave other traces, like cookies, on the computer after you close all open Guest windows. Any files you download will be preserved, however. Pages you view in this window won't appear in the browser history and they won't leave other traces, like cookies, on the computer after you close all open Guest windows. Any files you download will be preserved, however.");
 
-        if (surveyScreens.getMessage() != null) {
-            if(OneFlow.subTitleFace!=null) {
+        if (surveyScreens.getMessage() != null && surveyScreens.getMessage().length() > 0) {
+            if (OneFlow.subTitleFace != null) {
                 if (OneFlow.subTitleFace != null) {
                     surveyDescription.setTypeface(OneFlow.subTitleFace.getTypeface());
                 }
@@ -288,7 +294,7 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
                 ratingsNotLike.setVisibility(View.GONE);
                 ratingsFullLike.setVisibility(View.GONE);
             }
-        }else if (surveyScreens.getInput().getInput_type().contains("rating-emojis")) {
+        } else if (surveyScreens.getInput().getInput_type().contains("rating-emojis")) {
             if (surveyScreens.getInput() != null) {
 
                 surveyScreens.getInput().setRatingsList(prepareRatingsList(1, 5));//surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
@@ -317,16 +323,20 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
             mLayoutManager = new GridLayoutManager(getActivity(), (surveyScreens.getInput().getMax_val() + 1) - surveyScreens.getInput().getMin_val());
         } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-emojis")) {
             mLayoutManager = new GridLayoutManager(getActivity(), 5);
-        }else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")) {
+        } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")) {
             mLayoutManager = new GridLayoutManager(getActivity(), 5);
+            starRatingLabel.setVisibility(View.VISIBLE);
         } else {
             if (surveyScreens.getInput().getChoices() != null) {
                 if (surveyScreens.getInput().getChoices().size() > 0) {
                     OFHelper.v(tag, "OneFlow inputtype choices init");
+                    ratingsNotLike.setVisibility(View.GONE);
+                    starRatingLabel.setVisibility(View.GONE);
+                    ratingsFullLike.setVisibility(View.GONE);
                     checkBoxSelection = new ArrayList<String>();
                     //OFHelper.v(tag, "OneFlow inputtype choices init ["+surveyScreens.getInput().getChoices().size()+"]");
-                   // surveyScreens.getInput().getChoices().addAll(fakeList());
-                   // OFHelper.v(tag, "OneFlow inputtype choices init after["+surveyScreens.getInput().getChoices().size()+"]");
+                    // surveyScreens.getInput().getChoices().addAll(fakeList());
+                    // OFHelper.v(tag, "OneFlow inputtype choices init after["+surveyScreens.getInput().getChoices().size()+"]");
                 }
             }
 
@@ -346,23 +356,23 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
 
     }
 
-    public ArrayList<OFSurveyChoises> fakeList(){
-        String label[] = new String[]{"first","Second","Third","Fourth","Fifth","Sixth","Seventh","Eighth","Ninth","Tenth","Eleventh","Twelfth","Thirteen","Fourteen","Fifteen","Sixteen"};
+    public ArrayList<OFSurveyChoises> fakeList() {
+        String label[] = new String[]{"first", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Ninth", "Tenth", "Eleventh", "Twelfth", "Thirteen", "Fourteen", "Fifteen", "Sixteen"};
         ArrayList<OFSurveyChoises> flist = new ArrayList<>();
         OFSurveyChoises sc = null;
-        for(int i=0;i<label.length;i++){
+        for (int i = 0; i < label.length; i++) {
             sc = new OFSurveyChoises();
             sc.setId(String.valueOf(i));
             sc.setTitle(label[i]);
             flist.add(sc);
         }
-        OFHelper.v(tag, "OneFlow inputtype choices init after 0["+flist.size()+"]");
+        OFHelper.v(tag, "OneFlow inputtype choices init after 0[" + flist.size() + "]");
         return flist;
     }
 
 
     private void submitButtonBeautification() {
-        GradientDrawable gdSubmit = (GradientDrawable) (submitButton).getBackground();
+        gdSubmit = (GradientDrawable) (submitButton).getBackground();
         gdSubmit.setColor(Color.parseColor(sa.themeColor));
         int colorAlpha = ColorUtils.setAlphaComponent(Color.parseColor(sa.themeColor), 125);
         submitButton.setOnTouchListener(new View.OnTouchListener() {
@@ -372,22 +382,35 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
 
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        gdSubmit.setColor(colorAlpha);
+                        if (checkBoxSelection != null && checkBoxSelection.size() > 0) {
+                            gdSubmit.setColor(colorAlpha);
+                        }
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        // touch move code
+                        //touch move code
                         //Helper.makeText(mContext,"Moved",1);
                         break;
 
                     case MotionEvent.ACTION_UP:
                         // touch up code
                         //Helper.makeText(mContext, "Released", 1);
-                        gdSubmit.setColor(Color.parseColor(sa.themeColor));
+                        if (checkBoxSelection != null && checkBoxSelection.size() > 0) {
+                            gdSubmit.setColor(Color.parseColor(sa.themeColor));
+                        }
+
                         break;
                 }
                 return false;
             }
         });
+
+        if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
+            //submitButton.setVisibility(View.INVISIBLE);
+            gdSubmit.setColor(sa.getResources().getColor(R.color.ratings_focused));//Color.parseColor(sa.themeColor));
+        } else {
+            submitButton.setVisibility(View.GONE);
+        }
+
     }
 
     private ArrayList<OFRatingsModel> prepareRatingsList(int min, int max) {
@@ -402,7 +425,6 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
         return ratingsList;
     }
 
-    OFSurveyActivity sa;
 
     @Override
     public void onAttach(Context context) {
@@ -415,9 +437,9 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
 
     @Override
     public void itemClicked(View v, Object obj, String reserve) {
-        OFHelper.v(tag,"OneFlow othervalue ["+obj+"]reserve["+reserve+"]");
+        OFHelper.v(tag, "OneFlow othervalue [" + obj + "]reserve[" + reserve + "]");
         if (v.getId() == R.id.submit_btn) {
-            OFHelper.v(tag,"OneFlow othervalue submit btn");
+            OFHelper.v(tag, "OneFlow othervalue submit btn");
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -426,14 +448,14 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
                             String allSelections = checkBoxSelection.toString().replace("[", "");
                             allSelections = allSelections.replace("]", "");
                             allSelections = allSelections.replace(" ", "");
-                            OFHelper.v(tag, "OneFlow allselection[" + allSelections + "] str["+reserve+"]");
-                            sa.addUserResponseToList(surveyScreens.get_id(),  allSelections, reserve);
-                        } else {
+                            OFHelper.v(tag, "OneFlow allselection[" + allSelections + "] str[" + reserve + "]");
+                            sa.addUserResponseToList(surveyScreens.get_id(), allSelections, reserve);
+                        } /*else {
                             sa.initFragment();
-                        }
-                    } else {
+                        }*/
+                    } /*else {
                         sa.initFragment();
-                    }
+                    }*/
                 }
             }, 1000);
         } else {
@@ -449,18 +471,18 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
                 int position = (int) v.getTag();
                 OFHelper.v(tag, "OneFlow inputType[" + surveyScreens.getInput().getStars() + "]position[" + position + "]");
                 setSelected(position, false);
-
+                starRatingLabel.setText(ratingsLabel[position]);
             } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("nps") ||
                     surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical")) {
                 int position = (int) v.getTag();
                 setSelected(position, true);
             } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("mcq")) {
                 String position = (String) v.getTag();
-                if(v instanceof RadioButton){ // added for handling other click
+                if (v instanceof RadioButton) { // added for handling other click
 
                     OFHelper.v(tag, "OneFlow mcq clicked Position[" + position + "]");
-                    OFHelper.v(tag, "OneFlow mcq clicked choices radio id[]other id["+surveyScreens.getInput().getOtherOption()+"]");
-                    if(!surveyScreens.getInput().getOtherOption().equalsIgnoreCase(position)) {
+                    OFHelper.v(tag, "OneFlow mcq clicked choices radio id[]other id[" + surveyScreens.getInput().getOtherOption() + "]");
+                    if (!surveyScreens.getInput().getOtherOption().equalsIgnoreCase(position)) {
 
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -469,27 +491,27 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
                             }
                         }, 1000);
                     }
-                }else{
+                } else {
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            sa.addUserResponseToList(surveyScreens.get_id(), position, (String)obj);
+                            sa.addUserResponseToList(surveyScreens.get_id(), position, (String) obj);
                         }
                     }, 1000);
                 }
 
             } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
-                OFHelper.v(tag, "OneFlow inside checkbox reserve["+reserve+"]");
-                if(v instanceof CheckBox) {
+                OFHelper.v(tag, "OneFlow inside checkbox reserve[" + reserve + "]");
+                if (v instanceof CheckBox) {
                     CheckBox cb = (CheckBox) v;
                     OFHelper.v(tag, "OneFlow inside checkbox 1");
                     String viewTag = (String) cb.getTag();
                     OFHelper.v(tag, "OneFlow inside checkbox tag[" + viewTag + "]isChecked[" + cb.isChecked() + "]");
-                    checkBoxSelectionStatus(viewTag, cb.isChecked(), (String)obj);
-                }else{
-                    String viewTag = (String)v.getTag();
-                    checkBoxSelectionStatus(viewTag, (boolean)obj, reserve);
+                    checkBoxSelectionStatus(viewTag, cb.isChecked(), (String) obj);
+                } else {
+                    String viewTag = (String) v.getTag();
+                    checkBoxSelectionStatus(viewTag, (boolean) obj, reserve);
                 }
             }
         }
@@ -596,7 +618,7 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
                     surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")
             ) {
                 for (OFRatingsModel rm : surveyScreens.getInput().getRatingsList()) {
-                    OFHelper.v(tag,"OneFlow "+surveyScreens.getInput().getInput_type()+" rm.getId()["+rm.getId()+"]position["+position+"]");
+                    OFHelper.v(tag, "OneFlow " + surveyScreens.getInput().getInput_type() + " rm.getId()[" + rm.getId() + "]position[" + position + "]");
                     if (rm.getId() == position) {
                         rm.setSelected(true);
                     }
@@ -613,9 +635,9 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
                 public void run() {
                     if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star") ||
                             surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-emojis")) {
-                        sa.addUserResponseToList(surveyScreens.get_id(), null,String.valueOf(position + 1));
-                    }else{
-                        sa.addUserResponseToList(surveyScreens.get_id(), null,String.valueOf(position));
+                        sa.addUserResponseToList(surveyScreens.get_id(), null, String.valueOf(position + 1));
+                    } else {
+                        sa.addUserResponseToList(surveyScreens.get_id(), null, String.valueOf(position));
                     }
                 }
             }, 1000);
@@ -625,53 +647,70 @@ public class OFSurveyQueFragment extends Fragment implements OFGenericClickHandl
     ArrayList<String> checkBoxSelection;
 
     private void checkBoxSelectionStatus(String tag, Boolean isCheck, String str) {
-        OFHelper.v(tag, "OneFlow button size tag[" + tag + "]isChecked["+isCheck+"]othervalue["+str+"]");
+        OFHelper.v(tag, "OneFlow button size tag[" + tag + "]isChecked[" + isCheck + "]othervalue[" + str + "]");
         if (isCheck) { // adding value in the list
-            checkBoxSelection.add(tag);
+            if (!checkBoxSelection.contains(tag)) {
+                checkBoxSelection.add(tag);
+            }
         } else { // removing value from the list
             checkBoxSelection.remove(tag);
         }
 
 
-        OFHelper.v(tag, "OneFlow button size found[" + checkBoxSelection.size() + "]othervalue["+str+"]");
+        OFHelper.v(tag, "OneFlow button size found[" + checkBoxSelection.size() + "]othervalue[" + str + "]btn[" + surveyScreens.getButtons() + "][" + surveyScreens.getButtons().size() + "]");
         if (checkBoxSelection.size() > 0) {
             if (surveyScreens.getButtons() != null) {
                 if (surveyScreens.getButtons().size() == 1) {
-                    if (submitButton.getVisibility() != View.VISIBLE) {
-                        submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
-                        submitButton.setVisibility(View.VISIBLE);
-                        submitButton.startAnimation(animationIn);
-                        submitButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                OFHelper.v(tag, "OneFlow button size found 1 ");
-                                String strLoc = dashboardAdapter.handleCheckboxFromOutside();
-                                itemClicked(v,str,strLoc);
-                            }
-                        });
+                    //if (submitButton.getVisibility() != View.VISIBLE) {
+                    submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
+                    //submitButton.setVisibility(View.VISIBLE);
+                    OFHelper.v(tag, "OneFlow color theme[" + sa.themeColor + "]parsed color[" + Color.parseColor(sa.themeColor) + "]");
+                    //gdSubmit.setColor(Color.parseColor(sa.themeColor));
+                    if (!isActive) {
+                        transitActive();
+                        isActive = true;
                     }
+                    //submitButton.startAnimation(animationIn);
+                    submitButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            OFHelper.v(tag, "OneFlow button size found 1 ");
+                            String strLoc = dashboardAdapter.handleCheckboxFromOutside();
+                            itemClicked(v, str, strLoc);
+                        }
+                    });
+                    // }
                 } else if (surveyScreens.getButtons().size() == 2) {
-                    if (submitButton.getVisibility() != View.VISIBLE) {
-                        submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
-                        submitButton.setVisibility(View.VISIBLE);
-                        submitButton.startAnimation(animationIn);
-                        submitButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                OFHelper.v(tag, "OneFlow button size found 2 ");
-                                itemClicked(v,str,"");
-                            }
-                        });
-                    }
+                    //if (submitButton.getVisibility() != View.VISIBLE) {
+                    submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
+                    //submitButton.setVisibility(View.VISIBLE);
+                    submitButton.setBackgroundColor(Color.parseColor(sa.themeColor));
+                    gdSubmit.setColor(Color.parseColor(sa.themeColor));
+                    //submitButton.startAnimation(animationIn);
+                    submitButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            OFHelper.v(tag, "OneFlow button size found 2 ");
+                            itemClicked(v, str, "");
+                        }
+                    });
+                }
                     /*cancelButton.setText(surveyScreens.getButtons().get(1).getTitle());
                     cancelButton.setVisibility(View.VISIBLE);
                     cancelButton.setOnClickListener(this);*/
-                }
+                // }
             }
         } else {
             //In case of selection reverted
 
-            submitButton.setVisibility(View.INVISIBLE);
+            //submitButton.setVisibility(View.INVISIBLE);
+            //gdSubmit.setColor(sa.getResources().getColor(R.color.ratings_focused));//Color.parseColor(sa.themeColor));
+            if (isActive) {
+                transitInActive();
+                isActive = false;
+            }
+            // submitButton.setBackgroundColor(sa.getResources().getColor(R.color.ratings_focused));//Color.parseColor(sa.themeColor));
+
             //submitButton.startAnimation(animationOut);
 
            /* cancelButton.setVisibility(View.INVISIBLE);

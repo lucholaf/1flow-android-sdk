@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,8 +42,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.oneflow.analytics.R;
 import com.oneflow.analytics.OFSurveyActivity;
+import com.oneflow.analytics.R;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
@@ -55,6 +56,8 @@ public class OFSurveyQueThankyouFragment extends Fragment {
 
 
     ImageView thankyouImage,waterMarkImage;
+
+    LinearLayout waterMarkLayout;
 
     OFCustomTextViewBold surveyTitle;
 
@@ -87,11 +90,20 @@ public class OFSurveyQueThankyouFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.survey_que_thankyou_fragment, container, false);
         ButterKnife.bind(this, view);
-        OFHelper.v(tag, "OneAxis list data[" + surveyScreens + "]");
+        OFHelper.v(tag, "OneFlow list data[" + surveyScreens + "]");
 
 
         thankyouImage = (ImageView)view.findViewById(R.id.thankyou_img);
         waterMarkImage = (ImageView)view.findViewById(R.id.watermark_img);
+        waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
+        waterMarkLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String waterMark = "https://1flow.app/?utm_source=1flow-android-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow";//https://www.notion.so/Powered-by-1Flow-logo-should-link-to-website-c186fca5220e41d19f420dd871f9696d";
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(waterMark));
+                startActivity(browserIntent);
+            }
+        });
         surveyTitle = (OFCustomTextViewBold) view.findViewById(R.id.survey_title);
         surveyDescription = (OFCustomTextView) view.findViewById(R.id.survey_description);
         //surveyTitle.setText(surveyScreens.getTitle());
@@ -102,6 +114,7 @@ public class OFSurveyQueThankyouFragment extends Fragment {
         }*/
 
         sa.position = sa.screens.size();
+
 
         //Glide.with(this).load(R.drawable.thank_you).into(thankyouImage);
         Glide.with(this).load(R.drawable.thank_you).into(new DrawableImageViewTarget(thankyouImage) {
@@ -125,7 +138,7 @@ public class OFSurveyQueThankyouFragment extends Fragment {
 
                                     sa.initFragment();
                                 }
-                            }, 3000);
+                            }, 200);
 
                         }
                     });

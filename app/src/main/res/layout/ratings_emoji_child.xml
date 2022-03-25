@@ -29,12 +29,15 @@
         android:layout_height="match_parent"
         android:gravity="center">
 
-        <ImageView
+        <com.oneflow.analytics.customwidgets.OFCustomTextView
             android:id="@+id/ratings_list_child_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:src="@drawable/smiley3" />
+            android:textSize="30sp"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:text="@string/smileyHtml2" />
+
 
     </RelativeLayout>
 </com.oneflow.analytics.customwidgets.OFDynamicSquareLayout>

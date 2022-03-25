@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /* Copyright 2021 1Flow, Inc.
   ~
   ~
@@ -17,15 +16,16 @@
   ~
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="40dp"
-    android:paddingBottom="40dp">
+    android:orientation="vertical"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:layout_centerInParent="true">
 
         <ImageView
@@ -42,15 +42,27 @@
             android:layout_below="@id/thankyou_img"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/field_padding"
-            android:text="Thank you for your input!"
+            android:text="Thank you!"
             android:textColor="@color/txtblack"
             android:textSize="@dimen/page_sub_header_1" />
+
+        <com.oneflow.analytics.customwidgets.OFCustomTextView
+            android:id="@+id/survey_sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/survey_title"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/field_padding"
+            android:text="Your answer has been recorded."
+            android:textColor="@color/powored_by_txt_color"
+            android:textSize="@dimen/page_sub_header_3" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/survey_title"
-            android:layout_centerHorizontal="true">
+            android:layout_centerHorizontal="true"
+            android:visibility="gone">
 
             <com.oneflow.analytics.customwidgets.OFCustomTextView
                 android:id="@+id/survey_description"
@@ -66,10 +78,35 @@
                 android:id="@+id/watermark_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_marginTop="10dp"
                 android:layout_toRightOf="@id/survey_description"
                 android:src="@drawable/watermark" />
         </RelativeLayout>
+
+
+
+
     </RelativeLayout>
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/bottom_water_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/powered_by" />
+
+        <com.oneflow.analytics.customwidgets.OFCustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="@string/powered_by"
+            android:textColor="@color/powored_by_txt_color" />
+    </LinearLayout>
+</LinearLayout>

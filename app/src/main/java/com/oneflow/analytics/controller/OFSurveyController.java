@@ -23,7 +23,6 @@ import android.content.Intent;
 
 import com.oneflow.analytics.OFSurveyActivity;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
-import com.oneflow.analytics.repositories.OFEventDBRepo;
 import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
@@ -42,7 +41,7 @@ public class OFSurveyController implements OFMyResponseHandler {
 
     private OFSurveyController(Context context) {
         this.mContext = context;
-        getSurveyFromAPI();
+       // getSurveyFromAPI();
     }
 
     public static OFSurveyController getInstance(Context context) {

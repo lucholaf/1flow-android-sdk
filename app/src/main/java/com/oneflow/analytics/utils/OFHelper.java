@@ -18,8 +18,6 @@
 
 package com.oneflow.analytics.utils;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -30,9 +28,6 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
-import android.provider.Settings;
-import android.telephony.TelephonyManager;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -44,7 +39,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -60,19 +54,13 @@ import org.json.JSONObject;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.math.BigInteger;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -302,6 +290,10 @@ public class OFHelper {
     public static void hideKeyboard(Activity mActivity, EditText edt) {
         InputMethodManager inputManager = (InputMethodManager) mActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(edt.getWindowToken(), 0);
+    }
+    public static void showKeyboard(Activity mActivity, EditText edt) {
+        InputMethodManager inputManager = (InputMethodManager) mActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputManager.showSoftInput(edt, 0);
     }
 
     public static NetworkInfo getNetworkInfo(Context context) {

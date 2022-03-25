@@ -26,6 +26,7 @@
     <color name="txtblack">#000000</color>
     <color name="txtwhite">#eeeeee</color>
     <color name="txtgray">#50555c</color>
+    <color name="select_option_color">#878787</color>
     <color name="txtlightgray">#aaaaaa</color>
     <color name="selector_color">#335D5FEF</color>
     <color name="graybordercolor">#5D5FEF</color>
@@ -44,4 +45,7 @@
     <color name="ratings_selected">#5D5FEF</color>
     <color name="ratings_focused">#C4C4C4</color>
     <color name="ratings_normal">#FFFFFF</color>
+    <color name="new_theme_gray">#F3F3F3</color>
+    <color name="powored_by_txt_color">#50555C</color>
+    <color name="full_transparancy">#00000000</color>
 </resources>

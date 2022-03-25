@@ -1,4 +1,5 @@
 
+
 /*
  *  Copyright 2021 1Flow, Inc.
  *
@@ -24,7 +25,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -37,6 +37,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
@@ -49,12 +50,10 @@ import com.oneflow.analytics.model.OFFontSetup;
 import com.oneflow.analytics.model.adduser.OFAddUserRequest;
 import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
 import com.oneflow.analytics.model.adduser.OFDeviceDetails;
-import com.oneflow.analytics.model.adduser.OFLocationDetails;
 import com.oneflow.analytics.model.createsession.OFCreateSessionRequest;
 import com.oneflow.analytics.model.events.OFEventAPIRequest;
 import com.oneflow.analytics.model.events.OFRecordEventsTab;
 import com.oneflow.analytics.model.events.OFRecordEventsTabToAPI;
-import com.oneflow.analytics.model.location.OFLocationResponse;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.repositories.OFAddUserRepo;
@@ -85,7 +84,6 @@ public class OneFlow implements OFMyResponseHandler{
 
     private static Long duration = 1000 * 60 * 60 * 12L;
     private static Long interval = 1000 * 100L; //100L L FOR LONG
-
 
 
     static BillingClient bcFake;
@@ -190,8 +188,8 @@ public class OneFlow implements OFMyResponseHandler{
                     /*fc.getLocation();*/
 
                         fc.registerUser(fc.createRequest());
-
-                    OFSurveyController.getInstance(mContext);
+                // flow has been change now calling survey after add session
+              //      OFSurveyController.getInstance(mContext);
 
                     /*IntentFilter inf = new IntentFilter();
                     inf.addAction("survey_list_fetched");
@@ -303,9 +301,15 @@ public class OneFlow implements OFMyResponseHandler{
         } catch (Exception ex) {
             ld.setLongitude(0d);
         }*/
-
+        final OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
         OFAddUserRequest aur = new OFAddUserRequest();
-        aur.setSystem_id(OFHelper.getDeviceId(mContext));
+        // this flow added for recognizing user on server side to provide proper list of surveys
+        String systemId = ofs.getStringValue(OFConstants.SHP_LOG_USER_KEY);
+        if(systemId.equalsIgnoreCase("NA")) {
+            aur.setSystem_id(OFHelper.getDeviceId(mContext));
+        }else{
+            aur.setSystem_id(systemId);
+        }
         aur.setLanguage(new Locale(Locale.getDefault().getLanguage()).getDisplayName(Locale.US));
         aur.setOFDeviceDetails(dd);
         aur.setOFLocationDetails(null);
@@ -358,7 +362,7 @@ public class OneFlow implements OFMyResponseHandler{
                 lur.setParameters(mapValue);
                 lur.setSession_id(new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
                 new OFOneFlowSHP(mContext).setLogUserRequest(lur);
-
+                // this api calling shifted to send Event api response
             }
             sendEventsToApi(mContext);
         }
@@ -547,7 +551,7 @@ public class OneFlow implements OFMyResponseHandler{
 
     @Override
     public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
-        OFHelper.v("OneFlow", "OneFlow onReceived type[" + hitType + "]");
+        OFHelper.v("OneFlow", "OneFlow onReceived type[" + hitType + "]reserve["+reserve+"]");
         switch (hitType) {
             case fetchLocation:
 
@@ -590,7 +594,7 @@ public class OneFlow implements OFMyResponseHandler{
                     OFHelper.e("OneFlow", "OneFlow checking No event available hitting log");
                     OFLogUserRequest lur = ofshp.getLogUserRequest();
                     if (lur != null) {
-                        OFLogUserRepo.logUser(lur, mContext, null, OFConstants.ApiHitType.logUser);
+                        OFLogUserRepo.logUser(lur, mContext, this, OFConstants.ApiHitType.logUser);
                     }
                 }
                 break;
@@ -607,11 +611,12 @@ public class OneFlow implements OFMyResponseHandler{
                 mContext.sendBroadcast(intent);
                 OFLogUserRequest lur = new OFOneFlowSHP(mContext).getLogUserRequest();
                 if (lur != null) {
-                    OFLogUserRepo.logUser(lur, mContext, null, OFConstants.ApiHitType.logUser);
+                    OFLogUserRepo.logUser(lur, mContext, this, OFConstants.ApiHitType.logUser);
                 }
             case CreateSession:
                 //TODO Call paralle with create user
                 // getSurvey();
+                OFSurveyController.getInstance(mContext).getSurveyFromAPI();
                 break;
             case CreateUser:
 
@@ -677,7 +682,7 @@ public class OneFlow implements OFMyResponseHandler{
                 csr.setLibrary_name("1flow-android-sdk");
                 csr.setLibrary_version(String.valueOf(1));
                 csr.setApi_endpoint("session");
-                csr.setApi_version("0.6.27");
+                csr.setApi_version("0.6.28");
                 csr.setApp_version(OFHelper.getAppVersion(mContext));
 
                 recordEvents(OFConstants.AUTOEVENT_SESSIONSTART, null);
@@ -754,10 +759,14 @@ public class OneFlow implements OFMyResponseHandler{
                                 surveyIntent.putExtra("SurveyType", gslr);//"move_file_in_folder");//""empty0");//
                                 surveyIntent.putExtra("eventName",reserved);
                                 mContext.getApplicationContext().startActivity(surveyIntent);
+
                             }
                         }
                     }
                 }
+                break;
+            case logUser:
+                OFSurveyController.getInstance(mContext).getSurveyFromAPI();
                 break;
         }
     }

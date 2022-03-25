@@ -21,7 +21,7 @@ package com.oneflow.analytics.utils;
 public interface OFConstants {
 
 
-    String MODE = "prod";
+    String MODE = "dev";
     String DBNAME = "one_flow_db";
     String APPKEYSHP = "one_flow_config_key";
     String APPIDSHP = "one_flow_app_id_key";
@@ -40,12 +40,14 @@ public interface OFConstants {
     String AUTOEVENT_SESSIONSTART = "session_start";
     String AUTOEVENT_INAPP_PURCHASE = "in_app_purchase";
     String AUTOEVENT_SURVEYIMPRESSION = "survey_impression";
+
     String SHP_SURVEYSTART = "survey_starts";
     String SHP_ONEFLOW_CONFTIMING = "conf_timing";
     String SHP_SURVEY_RUNNING = "survey_running";
     String SHP_SHOULD_SHOW_SURVEY = "should_show_survey";
     String SHP_DEVICE_UNIQUE_ID = "device_unique_id";
     String SHP_SHOULD_PRINT_LOG = "should_print_log";
+    String SHP_LOG_USER_KEY = "log_user_key";
 
     String os = "android";
 

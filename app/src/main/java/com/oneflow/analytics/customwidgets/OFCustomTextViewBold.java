@@ -20,7 +20,6 @@ package com.oneflow.analytics.customwidgets;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
 

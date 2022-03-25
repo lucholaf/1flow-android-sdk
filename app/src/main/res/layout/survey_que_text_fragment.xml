@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /* Copyright 2021 1Flow, Inc.
   ~
   ~
@@ -17,78 +16,120 @@
   ~
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true">
 
-    <com.oneflow.analytics.customwidgets.OFCustomTextViewBold
-        android:id="@+id/survey_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/field_padding"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="@dimen/field_padding"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/txtblack"
-        android:visibility="invisible"
-
-        android:textSize="@dimen/page_sub_header_1" />
-
-    <com.oneflow.analytics.customwidgets.OFCustomTextView
-        android:id="@+id/survey_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/survey_title"
-        android:layout_marginLeft="@dimen/field_padding"
-        android:layout_marginRight="@dimen/field_padding"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/txtgray"
-        android:visibility="invisible"
-        android:textSize="@dimen/page_sub_header_3" />
-
     <RelativeLayout
-        android:id="@+id/option_layout"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/field_padding"
-        android:layout_below="@id/survey_description"
-        android:background="@drawable/gray_rectangle"
-        android:minHeight="100dp"
-        android:visibility="invisible"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true">
 
-        <com.oneflow.analytics.customwidgets.OFCustomEditText
-            android:id="@+id/child_user_input"
+        <com.oneflow.analytics.customwidgets.OFCustomTextViewBold
+            android:id="@+id/survey_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="100dp"
-            android:padding="@dimen/field_padding"
-            android:layout_margin="1dp"
-            android:gravity="top|left"
-            android:inputType="textMultiLine"
-            android:textSize="@dimen/page_sub_header_2"
-            android:background="#ffffff"
-            android:isScrollContainer="false"
+            android:layout_marginLeft="@dimen/field_padding"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="@dimen/field_padding"
+            android:layout_marginTop="5dp"
             android:textColor="@color/txtblack"
-            />
+            android:textSize="@dimen/page_sub_header_1"
+
+            android:visibility="invisible" />
+
         <com.oneflow.analytics.customwidgets.OFCustomTextView
-            android:id="@+id/text_limit"
+            android:id="@+id/survey_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/survey_title"
+            android:layout_marginLeft="@dimen/field_padding"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="@dimen/field_padding"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/txtgray"
+            android:textSize="@dimen/page_sub_header_3"
+            android:visibility="invisible" />
+
+        <RelativeLayout
+            android:id="@+id/option_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/survey_description"
+            android:layout_margin="@dimen/field_padding"
+            android:background="@drawable/gray_rectangle"
+            android:minHeight="100dp"
+            android:visibility="invisible">
+
+            <com.oneflow.analytics.customwidgets.OFCustomEditText
+                android:id="@+id/child_user_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:background="@color/white"
+                android:gravity="top|left"
+                android:inputType="textMultiLine"
+                android:isScrollContainer="false"
+                android:minHeight="100dp"
+                android:padding="@dimen/field_padding"
+                android:textColor="@color/txtblack"
+                android:textSize="@dimen/page_sub_header_2" />
+
+            <com.oneflow.analytics.customwidgets.OFCustomTextView
+                android:id="@+id/text_limit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/child_user_input"
+                android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/field_padding"
+                android:text="0/265"
+                android:textColor="@color/txtlightgray"
+                android:textSize="@dimen/page_sub_header_4" />
+        </RelativeLayout>
+
+
+        <include
+            android:id="@+id/btn_layout"
+            layout="@layout/buttons_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/option_layout"></include>
+
+        <com.oneflow.analytics.customwidgets.OFCustomTextView
+            android:id="@+id/skip_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/child_user_input"
+            android:layout_below="@id/btn_layout"
+            android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/field_padding"
-            android:textColor="@color/txtlightgray"
-            android:text="0/265"
-            android:textSize="@dimen/page_sub_header_4" />
+            android:text="@string/skip"
+            android:textColor="@color/powored_by_txt_color"
+            android:textSize="@dimen/page_sub_header_4"
+            android:visibility="invisible" />
+
+        <LinearLayout
+            android:id="@+id/bottom_water_mark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/skip_btn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/powered_by" />
+
+            <com.oneflow.analytics.customwidgets.OFCustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:text="@string/powered_by"
+                android:textColor="@color/powored_by_txt_color" />
+        </LinearLayout>
     </RelativeLayout>
-
-
-    <include
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/buttons_layout"
-        android:layout_below="@id/option_layout"
-        ></include>
-</RelativeLayout>
+</androidx.core.widget.NestedScrollView>

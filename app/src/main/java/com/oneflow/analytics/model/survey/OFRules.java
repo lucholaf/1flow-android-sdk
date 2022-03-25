@@ -3,7 +3,6 @@ package com.oneflow.analytics.model.survey;
 import com.google.gson.annotations.SerializedName;
 import com.oneflow.analytics.model.OFBaseModel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class OFRules extends OFBaseModel {
