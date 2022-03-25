@@ -55,7 +55,6 @@ public class OFRetroBaseService {
 
         OkHttpClient clientProd = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS)
-                .addInterceptor(interceptor)
                 .build();
 
         OFHelper.v("APIClient","BaseUrl ["+BASE_URL+"]");
