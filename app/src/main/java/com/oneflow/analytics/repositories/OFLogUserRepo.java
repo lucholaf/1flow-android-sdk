@@ -56,7 +56,7 @@ public class OFLogUserRepo {
 
                         // replacing current session id and user analytical id
                         OFOneFlowSHP ofs = new OFOneFlowSHP(context);
-                        ofs.storeValue(OFConstants.SHP_LOG_USER_KEY,ofs.getLogUserRequest().getSystem_id()); // system id stored for sending next app launch
+                        ofs.storeValue(OFConstants.SHP_LOG_USER_KEY,lur.getSystem_id());//ofs.getLogUserRequest().getSystem_id()); // system id stored for sending next app launch
                         ofs.clearLogUserRequest();
                         OFAddUserResultResponse aurr = ofs.getUserDetails();
                         //setting up new user analytical id
