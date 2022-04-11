@@ -26,7 +26,7 @@ import java.util.HashMap;
 public class OFLogUserRequest extends OFBaseModel {
 
     @SerializedName("parameters")
-    private HashMap<String,String> parameters;
+    private HashMap<String,Object> parameters;
     @SerializedName("anonymous_user_id")
     private String anonymous_user_id;
     @SerializedName("system_id")
@@ -44,11 +44,11 @@ public class OFLogUserRequest extends OFBaseModel {
         this.log_user = log_user;
     }
 
-    public HashMap<String,String> getParameters() {
+    public HashMap<String,Object> getParameters() {
         return parameters;
     }
 
-    public void setParameters(HashMap<String,String> parameters) {
+    public void setParameters(HashMap<String,Object> parameters) {
         this.parameters = parameters;
     }
 

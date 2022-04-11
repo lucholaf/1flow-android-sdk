@@ -43,7 +43,7 @@ public class OFRecordEventsTab {
     @TypeConverters(OFMapConverter.class)
     @ColumnInfo(name = "parameters")
     @SerializedName("parameters")
-    private HashMap<String,String> dataMap;
+    private HashMap<String,Object> dataMap;
 
     @ColumnInfo(name = "time")
     @SerializedName("time")
@@ -101,11 +101,11 @@ public class OFRecordEventsTab {
         this.eventName = eventName;
     }
 
-    public HashMap<String,String> getDataMap() {
+    public HashMap<String,Object> getDataMap() {
         return dataMap;
     }
 
-    public void setDataMap(HashMap<String,String> dataMap) {
+    public void setDataMap(HashMap<String,Object> dataMap) {
         this.dataMap = dataMap;
     }
 

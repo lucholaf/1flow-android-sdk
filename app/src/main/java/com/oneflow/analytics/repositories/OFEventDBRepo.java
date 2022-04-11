@@ -35,7 +35,7 @@ import java.util.List;
 public class OFEventDBRepo {
 
 
-    public static void insertEvents(Context context, String eventName, HashMap<String,String> data, int value, OFMyResponseHandler mrh, OFConstants.ApiHitType type){
+    public static void insertEvents(Context context, String eventName, HashMap<String,Object> data, int value, OFMyResponseHandler mrh, OFConstants.ApiHitType type){
         OFHelper.v("EventDBRepo.DeleteEvents","OneFlow reached at insertEvent method");
 
         new AsyncTask<String,Integer,Integer>(){

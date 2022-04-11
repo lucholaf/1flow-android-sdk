@@ -20,10 +20,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        >
 
         <com.oneflow.analytics.customwidgets.OFCustomTextViewBold
             android:id="@+id/survey_title_que"
@@ -116,6 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/btn_layout"
             android:gravity="center_vertical"
+            android:layout_gravity="center_horizontal"
             android:padding="10dp"
             android:layout_centerHorizontal="true">
 
@@ -131,6 +134,6 @@
                 android:text="@string/powered_by"
                 android:textColor="@color/powored_by_txt_color"/>
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

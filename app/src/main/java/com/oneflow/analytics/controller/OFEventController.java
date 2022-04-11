@@ -55,7 +55,7 @@ public class OFEventController implements OFMyResponseHandler {
 
     }
 
-    public void storeEventsInDB(String eventName, HashMap<String, String> eventValue,int value){
+    public void storeEventsInDB(String eventName, HashMap<String, Object> eventValue,int value){
 
         //String data = new Gson().toJson(eventValue);
         OFHelper.v(tag,"Oneflow records inserted ["+eventName+"]value["+eventValue+"]");

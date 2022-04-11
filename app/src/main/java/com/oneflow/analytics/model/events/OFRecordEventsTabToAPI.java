@@ -32,7 +32,7 @@ public class OFRecordEventsTabToAPI {
     private String platform;
 
     @SerializedName("parameters")
-    private HashMap<String,String> dataMap;
+    private HashMap<String,Object> dataMap;
 
     @SerializedName("time")
     private Long time;
@@ -73,11 +73,11 @@ public class OFRecordEventsTabToAPI {
         this.eventName = eventName;
     }
 
-    public HashMap<String,String> getDataMap() {
+    public HashMap<String,Object> getDataMap() {
         return dataMap;
     }
 
-    public void setDataMap(HashMap<String,String> dataMap) {
+    public void setDataMap(HashMap<String,Object> dataMap) {
         this.dataMap = dataMap;
     }
 

@@ -29,12 +29,12 @@ import java.util.HashMap;
 //@ProvidedTypeConverter
 public class OFMapConverter implements Serializable {
     @TypeConverter
-    public HashMap<String, String> stringToMap(String value)  {
-        return new Gson().fromJson(value,  new TypeToken<HashMap<String, String>>(){}.getType());
+    public HashMap<String, Object> stringToMap(String value)  {
+        return new Gson().fromJson(value,  new TypeToken<HashMap<String, Object>>(){}.getType());
     }
 
     @TypeConverter
-    public String mapToString(HashMap<String, String> map) {
+    public String mapToString(HashMap<String, Object> map) {
         if(map == null)
             return "";
         else

@@ -136,7 +136,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         screens = surveyItem.getScreens();//checkSurveyTitleAndScreens(surveyType);
         triggerEventName = this.getIntent().getStringExtra("eventName");//surveyItem.getTrigger_event_name();
         // Helper.makeText(getApplicationContext(),"Size ["+screens.size()+"]",1);
-        setProgressMax(surveyItem.getScreens().size());
+        setProgressMax(surveyItem.getScreens().size()-1); // -1 for excluding thankyou page from progress bar
         selectedSurveyId = surveyItem.get_id();
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -438,11 +438,15 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
             }
         }
         OFHelper.v(tag, "OneFlow position [" + position + "]");
-        OFHelper.v(tag, "OneFlow rules [" + new Gson().toJson(screens.get(position - 1).getRules()) + "]");
-        if (screens.get(position - 1).getRules() != null) {
-            preparePositionOnRule(screenID, answerIndex, answerValue);
-        } else {
-            initFragment();
+        try {
+            OFHelper.v(tag, "OneFlow rules [" + new Gson().toJson(screens.get(position - 1).getRules()) + "]");
+            if (screens.get(position - 1).getRules() != null) {
+                preparePositionOnRule(screenID, answerIndex, answerValue);
+            } else {
+                initFragment();
+            }
+        }catch(Exception ex){
+            OFHelper.e(tag,"Survey Result error["+ex.getMessage()+"]");
         }
     }
 
@@ -452,38 +456,38 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         boolean found = false;
         String action = "", type = "";
 
+        if(screens.get(position-1).getRules()!=null) {
+            for (OFDataLogic dataLogic : screens.get(position - 1).getRules().getDataLogic()) {
 
-        for (OFDataLogic dataLogic : screens.get(position - 1).getRules().getDataLogic()) {
+                OFHelper.v(tag, "OneFlow condition rule[" + new Gson().toJson(screens.get(position - 1).getRules()) + "]");
+                OFHelper.v(tag, "OneFlow condition 0[" + dataLogic.getCondition() + "]");
+                action = dataLogic.getAction();
+                type = dataLogic.getType();
+                if (dataLogic.getCondition().equalsIgnoreCase("is")) {
 
-            OFHelper.v(tag, "OneFlow condition rule[" + new Gson().toJson(screens.get(position - 1).getRules()) + "]");
-            OFHelper.v(tag, "OneFlow condition 0[" + dataLogic.getCondition() + "]");
-            action = dataLogic.getAction();
-            type = dataLogic.getType();
-            if (dataLogic.getCondition().equalsIgnoreCase("is")) {
-
-                OFHelper.v(tag, "OneFlow condition at is ");
-                if (answerIndex != null) {
-                    OFHelper.v(tag, "OneFlow condition value[" + dataLogic.getValues() + "][" + answerIndex + "]");
-                    if (dataLogic.getValues().equalsIgnoreCase(answerIndex)) {
-                        found = true;
-                        break;
-                        //action = dataLogic.getAction();
+                    OFHelper.v(tag, "OneFlow condition at is ");
+                    if (answerIndex != null) {
+                        OFHelper.v(tag, "OneFlow condition value[" + dataLogic.getValues() + "][" + answerIndex + "]");
+                        if (dataLogic.getValues().equalsIgnoreCase(answerIndex)) {
+                            found = true;
+                            break;
+                            //action = dataLogic.getAction();
                             /*if (dataLogic.getAction().equalsIgnoreCase("the-end")) {
                                 position = screens.size();
                                 initFragment();
                             } else {
                                 findNextQuestionPosition(dataLogic.getAction());
                             }*/
-                    } /*else {
+                        } /*else {
                         initFragment();
                     }*/
-                } else {
-                    if (answerValue != null) {
-                        String[] valueArray = answerValue.split(",");
-                        String[] logicValue = dataLogic.getValues().split(",");
-                        int i = 0;
-                        OFHelper.v(tag, "OneFlow condition[" + Arrays.asList(valueArray) + "][" + dataLogic.getValues() + "]");
-                        // if(logicValue.length == valueArray.length) {
+                    } else {
+                        if (answerValue != null) {
+                            String[] valueArray = answerValue.split(",");
+                            String[] logicValue = dataLogic.getValues().split(",");
+                            int i = 0;
+                            OFHelper.v(tag, "OneFlow condition[" + Arrays.asList(valueArray) + "][" + dataLogic.getValues() + "]");
+                            // if(logicValue.length == valueArray.length) {
                             /*while (i < valueArray.length) {
                                 if (dataLogic.getValues().equalsIgnoreCase(valueArray[i])) {
                                     OFHelper.v(tag, "OneFlow condition[found in array]");
@@ -493,72 +497,73 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
                                 }
                                 i++;
                             }*/
-                        if (Arrays.equals(valueArray, logicValue)) {
-                            found = true;
-                            break;
-                        }
-                        //}
+                            if (Arrays.equals(valueArray, logicValue)) {
+                                found = true;
+                                break;
+                            }
+                            //}
                         /*// breaking outer loop
                         if(found) break;*/
+                        }
                     }
-                }
-            } else if (dataLogic.getCondition().equalsIgnoreCase("is-not")) {
+                } else if (dataLogic.getCondition().equalsIgnoreCase("is-not")) {
 
-                OFHelper.v(tag, "OneFlow condition at is NOT [" + dataLogic.getValues() + "]index[" + answerIndex + "]");
-                if (!dataLogic.getValues().equalsIgnoreCase(answerIndex)) {
-                    found = true;
-                    break;
-                    //findNextQuestionPosition(dataLogic.getValues());
-                } /*else {
-                    initFragment();
-                }*/
-            } else if (dataLogic.getCondition().equalsIgnoreCase("is-one-of")) {
-
-                OFHelper.v(tag, "OneFlow condition at is one of [" + dataLogic.getValues() + "]index[" + answerIndex + "]answerValue[" + answerValue + "]");
-                String[] rulesArray = dataLogic.getValues().split(",");
-
-                if (answerIndex != null) {
-                    if (Arrays.asList(rulesArray).contains(answerIndex)) {
+                    OFHelper.v(tag, "OneFlow condition at is NOT [" + dataLogic.getValues() + "]index[" + answerIndex + "]");
+                    if (!dataLogic.getValues().equalsIgnoreCase(answerIndex)) {
                         found = true;
                         break;
-                    }
-                } else {
-                    String[] values = answerValue.split(",");
-                    for (String value : values) {
-                        OFHelper.v(tag, "OneFlow condition[" + value + "][" + Arrays.asList(values) + "][" + Arrays.asList(rulesArray).contains(value) + "]");
-                        if (Arrays.asList(rulesArray).contains(value)) {
+                        //findNextQuestionPosition(dataLogic.getValues());
+                    } /*else {
+                    initFragment();
+                }*/
+                } else if (dataLogic.getCondition().equalsIgnoreCase("is-one-of")) {
+
+                    OFHelper.v(tag, "OneFlow condition at is one of [" + dataLogic.getValues() + "]index[" + answerIndex + "]answerValue[" + answerValue + "]");
+                    String[] rulesArray = dataLogic.getValues().split(",");
+
+                    if (answerIndex != null) {
+                        if (Arrays.asList(rulesArray).contains(answerIndex)) {
                             found = true;
                             break;
                         }
-                    }
-                    // breaking outer loop
-                    if (found) break;
-                }
-            } else if (dataLogic.getCondition().equalsIgnoreCase("is-none-of")) {
-                String[] rulesArray1 = dataLogic.getValues().split(",");
-                found = true;
-                if (answerIndex != null) {
-                    if (Arrays.asList(rulesArray1).contains(answerIndex)) {
-                        found = false;
-                        break;
-
-                    }
-                } else {
-                    String[] values = answerValue.split(",");
-                    for (String value : values) {
-                        if (Arrays.asList(rulesArray1).contains(value)) {
-                            found = true;
-                            break;
+                    } else {
+                        String[] values = answerValue.split(",");
+                        for (String value : values) {
+                            OFHelper.v(tag, "OneFlow condition[" + value + "][" + Arrays.asList(values) + "][" + Arrays.asList(rulesArray).contains(value) + "]");
+                            if (Arrays.asList(rulesArray).contains(value)) {
+                                found = true;
+                                break;
+                            }
                         }
+                        // breaking outer loop
+                        if (found) break;
                     }
-                    // breaking outer loop
-                    if (found) break;
-                }
-            } else if (dataLogic.getCondition().equalsIgnoreCase("is-any")) {
+                } else if (dataLogic.getCondition().equalsIgnoreCase("is-none-of")) {
+                    String[] rulesArray1 = dataLogic.getValues().split(",");
+                    found = true;
+                    if (answerIndex != null) {
+                        if (Arrays.asList(rulesArray1).contains(answerIndex)) {
+                            found = false;
+                            break;
 
-                //findNextQuestionPosition(dataLogic.getAction());
-                found = true;
-                break;
+                        }
+                    } else {
+                        String[] values = answerValue.split(",");
+                        for (String value : values) {
+                            if (Arrays.asList(rulesArray1).contains(value)) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        // breaking outer loop
+                        if (found) break;
+                    }
+                } else if (dataLogic.getCondition().equalsIgnoreCase("is-any")) {
+
+                    //findNextQuestionPosition(dataLogic.getAction());
+                    found = true;
+                    break;
+                }
             }
         }
 
@@ -715,7 +720,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         OFHelper.v(tag, "OneFlow answer position after[" + position + "]screensize[" + screens.size() + "]selected answers[" + new Gson().toJson(surveyResponseChildren) + "]");
     }
 
-    private void setProgressBarPosition() {
+    /*private void setProgressBarPosition() {
 
         int v = (int) (Math.ceil(100 / screens.size())) * (position + 1);
 
@@ -746,15 +751,15 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
 
         // pagePositionPBar.setProgress(progressValue);
 
-    }
+    }*/
 
     private void setProgressBarPositionAsync() {
 
-        int v = (int) (Math.ceil(100 / screens.size())) * (position + 1);
+        //int v = (int) (Math.ceil(100 / screens.size())) * (position + 1);
 
-        Integer temp = (int) (Math.ceil(100f / screens.size())) * (position + 1);//((Integer)(Math.ceil(100/screens.size()))*(position+1);
-        final Integer progressValueTo = temp > 110 ? 110 : temp;//((Integer)(Math.ceil(100/screens.size()))*(position+1);
-        int progressValueFrom = (int) (Math.ceil(100f / screens.size())) * (position);
+        //Integer temp = (int) (Math.ceil(100f / screens.size())) * (position + 1);//((Integer)(Math.ceil(100/screens.size()))*(position+1);
+       // final Integer progressValueTo = temp > 110 ? 110 : temp;//((Integer)(Math.ceil(100/screens.size()))*(position+1);
+       // int progressValueFrom = (int) (Math.ceil(100f / screens.size())) * (position);
         //OFHelper.v(tag, "OneFlow progressValue before [" + Math.ceil(100f / screens.size()) + "] ceil[" + (100f / screens.size()) + "]from[" + progressValueFrom + "]to[" + progressValueTo + "]screenSize[" + screens.size() + "]position[" + position + "]");
 
 
@@ -795,7 +800,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
     }
 
     private void setProgressAnimate() {
-        OFHelper.v(tag, "OneFlow animation started [" + position + "] max [" + pagePositionPBar.getProgress() + "]postion[" + (position * 100) + "]");
+       // OFHelper.v(tag, "OneFlow animation started [" + position + "] max [" + pagePositionPBar.getProgress() + "]postion[" + (position * 100) + "]");
         if (position == 0) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -819,13 +824,15 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
 
     private void loadFragments(OFSurveyScreens screen) {
         //setProgressBarPosition();
-        setProgressBarPositionAsync();
+        //setProgressBarPositionAsync();
+        setProgressAnimate();
         //Helper.makeText(getApplicationContext(),"Screen input ["+screen.getInput().getInput_type()+"]",1);
         //Helper.showAlert(getApplicationContext(),"","Screen input type["+screen.getInput().getInput_type()+"]");
         if (screen != null) {
             Fragment frag = null;
             try {
                 if (screen.getInput().getInput_type().equalsIgnoreCase("thank_you")) {
+                    pagePositionPBar.setVisibility(View.GONE);
                     frag = OFSurveyQueThankyouFragment.newInstance(screen);
                 } else if (screen.getInput().getInput_type().equalsIgnoreCase("text")) {
                     frag = OFSurveyQueTextFragment.newInstance(screen);

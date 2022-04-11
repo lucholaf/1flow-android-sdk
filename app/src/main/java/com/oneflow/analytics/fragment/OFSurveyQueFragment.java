@@ -128,6 +128,11 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
                     //OFHelper.v(tag, "OneFlow animation END[" + i + "]");
                     //
                     i++;
+
+                    if (!(surveyScreens.getMessage() != null && surveyScreens.getMessage().length() > 0)) {
+                        i++;
+                    }
+
                     if (i < animateViews.length) {
                         animateViews[i].setVisibility(View.VISIBLE);
                         //animateViews[i].clearAnimation();
@@ -244,9 +249,10 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
                 surveyTitle.setTextSize(OneFlow.titleFace.getFontSize());
             }
         }
-        surveyTitle.setText(surveyScreens.getTitle());//+"-- Pages you view in this window won't appear in the browser history and they won't leave other traces, like cookies, on the computer after you close all open Guest windows. Any files you download will be preserved, however. Pages you view in this window won't appear in the browser history and they won't leave other traces, like cookies, on the computer after you close all open Guest windows. Any files you download will be preserved, however.");
+        surveyTitle.setText(surveyScreens.getTitle());
 
         if (surveyScreens.getMessage() != null && surveyScreens.getMessage().length() > 0) {
+            OFHelper.v(tag, "OneFlow progress bar inside if");
             if (OneFlow.subTitleFace != null) {
                 if (OneFlow.subTitleFace != null) {
                     surveyDescription.setTypeface(OneFlow.subTitleFace.getTypeface());
@@ -257,6 +263,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
             }
             surveyDescription.setText(surveyScreens.getMessage());
         } else {
+            OFHelper.v(tag, "OneFlow progress bar inside else");
             surveyDescription.setVisibility(View.GONE);
         }
 
@@ -600,47 +607,53 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
     private void setSelected(int position, Boolean isSingle) {
         int i = 0;
         OFHelper.v(tag, "OneFlow position [" + position + "]isSingle[" + isSingle + "]");
-        while (i < surveyScreens.getInput().getRatingsList().size()) {
-            if (isSingle) {
-                surveyScreens.getInput().getRatingsList().get(i).setSelected(false);
-            } else {
-                if (i <= position) {
-                    surveyScreens.getInput().getRatingsList().get(i).setSelected(true);
-                } else {
-                    surveyScreens.getInput().getRatingsList().get(i).setSelected(false);
-                }
-            }
-            i++;
-        }
-        if (isSingle) {
-            if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("nps") ||
-                    surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical") ||
-                    surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")
-            ) {
-                for (OFRatingsModel rm : surveyScreens.getInput().getRatingsList()) {
-                    OFHelper.v(tag, "OneFlow " + surveyScreens.getInput().getInput_type() + " rm.getId()[" + rm.getId() + "]position[" + position + "]");
-                    if (rm.getId() == position) {
-                        rm.setSelected(true);
-                    }
-                }
-            } else {
-                surveyScreens.getInput().getRatingsList().get(position).setSelected(true);
-            }
-        }
-        dashboardAdapter.notifyMyList(surveyScreens.getInput());
-        if (submitButton.getVisibility() != View.VISIBLE) {
+        try {
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star") ||
-                            surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-emojis")) {
-                        sa.addUserResponseToList(surveyScreens.get_id(), null, String.valueOf(position + 1));
+
+            while (i < surveyScreens.getInput().getRatingsList().size()) {
+                if (isSingle) {
+                    surveyScreens.getInput().getRatingsList().get(i).setSelected(false);
+                } else {
+                    if (i <= position) {
+                        surveyScreens.getInput().getRatingsList().get(i).setSelected(true);
                     } else {
-                        sa.addUserResponseToList(surveyScreens.get_id(), null, String.valueOf(position));
+                        surveyScreens.getInput().getRatingsList().get(i).setSelected(false);
                     }
                 }
-            }, 1000);
+                i++;
+            }
+            if (isSingle) {
+                if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("nps") ||
+                        surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical") ||
+                        surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")
+                ) {
+                    for (OFRatingsModel rm : surveyScreens.getInput().getRatingsList()) {
+                        OFHelper.v(tag, "OneFlow " + surveyScreens.getInput().getInput_type() + " rm.getId()[" + rm.getId() + "]position[" + position + "]");
+                        if (rm.getId() == position) {
+                            rm.setSelected(true);
+                        }
+                    }
+                } else {
+                    surveyScreens.getInput().getRatingsList().get(position).setSelected(true);
+                }
+            }
+            dashboardAdapter.notifyMyList(surveyScreens.getInput());
+            if (submitButton.getVisibility() != View.VISIBLE) {
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star") ||
+                                surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-emojis")) {
+                            sa.addUserResponseToList(surveyScreens.get_id(), null, String.valueOf(position + 1));
+                        } else {
+                            sa.addUserResponseToList(surveyScreens.get_id(), null, String.valueOf(position));
+                        }
+                    }
+                }, 1000);
+            }
+        } catch (Exception ex) {
+            OFHelper.e(tag, "setSelect[" + ex.getMessage() + "]");
         }
     }
 
@@ -657,7 +670,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         }
 
 
-        OFHelper.v(tag, "OneFlow button size found[" + checkBoxSelection.size() + "]othervalue[" + str + "]btn[" + surveyScreens.getButtons() + "][" + surveyScreens.getButtons().size() + "]");
+       // OFHelper.v(tag, "OneFlow button size found[" + checkBoxSelection.size() + "]othervalue[" + str + "]btn[" + surveyScreens.getButtons() + "][" + surveyScreens.getButtons().size() + "]");
         if (checkBoxSelection.size() > 0) {
             if (surveyScreens.getButtons() != null) {
                 if (surveyScreens.getButtons().size() == 1) {
@@ -699,6 +712,8 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
                     cancelButton.setVisibility(View.VISIBLE);
                     cancelButton.setOnClickListener(this);*/
                 // }
+            }else{
+                OFHelper.e(tag,"Button list not found");
             }
         } else {
             //In case of selection reverted

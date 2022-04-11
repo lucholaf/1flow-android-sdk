@@ -328,6 +328,12 @@ public class OneFlow implements OFMyResponseHandler{
         OFCreateSession.createSession(csr, mContext, this, OFConstants.ApiHitType.CreateSession);
     }
 
+    /**
+     * Record events on any user action. This method will recognize if any survey is available against this event name
+     *
+     * @param eventName : to recognize event and start survey if have any
+     * @param eventValues : will accept HashMap<String,Object>
+     */
     public static void recordEvents(String eventName, HashMap eventValues) {
 
         OFHelper.v("FeedbackController", "OneFlow recordEvents record called with[" + eventName + "]");
@@ -350,7 +356,7 @@ public class OneFlow implements OFMyResponseHandler{
         }
     }
 
-    public static void logUser(String uniqueId, HashMap<String, String> mapValue) {
+    /*public static void logUser(String uniqueId, HashMap<String, String> mapValue) {
         if (OFHelper.isConnected(mContext)) {
 
             OFAddUserResultResponse aurr = new OFOneFlowSHP(mContext).getUserDetails();
@@ -360,6 +366,29 @@ public class OneFlow implements OFMyResponseHandler{
                 lur.setSystem_id(uniqueId);
                 lur.setAnonymous_user_id(new OFOneFlowSHP(mContext).getUserDetails().getAnalytic_user_id());
                 lur.setParameters(mapValue);
+                lur.setSession_id(new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
+                new OFOneFlowSHP(mContext).setLogUserRequest(lur);
+                // this api calling shifted to send Event api response
+            }
+            sendEventsToApi(mContext);
+        }
+    }*/
+
+    /**
+     * This method will help to recognize user. Below mentioned 2 values will be required
+     * @param uniqueId : to identify user uniquely, it could be e-mail id or any thing.
+     * @param userDetail : data related to user.
+     */
+    public static void logUser(String uniqueId, HashMap<String, Object> userDetail) {
+        if (OFHelper.isConnected(mContext)) {
+
+            OFAddUserResultResponse aurr = new OFOneFlowSHP(mContext).getUserDetails();
+            if (aurr != null) {
+                OFHelper.v("OneFlow", "OneFlow logUser data stored");
+                OFLogUserRequest lur = new OFLogUserRequest();
+                lur.setSystem_id(uniqueId);
+                lur.setAnonymous_user_id(new OFOneFlowSHP(mContext).getUserDetails().getAnalytic_user_id());
+                lur.setParameters(userDetail);
                 lur.setSession_id(new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
                 new OFOneFlowSHP(mContext).setLogUserRequest(lur);
                 // this api calling shifted to send Event api response
@@ -746,7 +775,7 @@ public class OneFlow implements OFMyResponseHandler{
                             OFHelper.v("OneFlow", "OneFlow resurvey checked running survey[" + (!ofs.getBooleanValue(OFConstants.SHP_SURVEY_RUNNING, false)) + "]");
                             if (!ofs.getBooleanValue(OFConstants.SHP_SURVEY_RUNNING, false)) {
 
-                                HashMap<String, String> mapValue = new HashMap<>();
+                                HashMap<String, Object> mapValue = new HashMap<>();
                                 mapValue.put("survey_id", gslr.get_id());
                                 OFEventController ec = OFEventController.getInstance(mContext);
                                 ec.storeEventsInDB(OFConstants.AUTOEVENT_SURVEYIMPRESSION, mapValue, 0);

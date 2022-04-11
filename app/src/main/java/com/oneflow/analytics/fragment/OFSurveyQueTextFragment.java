@@ -57,7 +57,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     OFCustomEditText userInput;
 
 
-    OFCustomTextView surveyInputLimit,skipBtn;
+    OFCustomTextView surveyInputLimit, skipBtn;
 
     OFCustomTextView surveyDescription;
    /* @BindView(R.id.cancel_btn)
@@ -194,8 +194,12 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
                 if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
                     // if (surveyScreens.getButtons().size() == 1) {
                     //if (submitButton.getVisibility() != View.VISIBLE) {
-                    if (!OFHelper.validateString(surveyScreens.getButtons().get(0).getTitle()).equalsIgnoreCase("NA")) {
-                        submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
+                    try {
+                        if (!OFHelper.validateString(surveyScreens.getButtons().get(0).getTitle()).equalsIgnoreCase("NA")) {
+                            submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
+                        }
+                    } catch (Exception ex) {
+                        OFHelper.e(tag, "Button list not found");
                     }
                     //submitButton.setVisibility(View.VISIBLE);
                     //gdSubmit.setColor(Color.parseColor(sa.themeColor));
@@ -298,10 +302,10 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
-        View[] animateViews = new View[]{surveyTitle, surveyDescription, optionLayout, submitButton,skipBtn};
+        View[] animateViews = new View[]{surveyTitle, surveyDescription, optionLayout, submitButton, skipBtn};
 
 
-        Animation[] annim = new Animation[]{animation1, animation2, animation3, animation4,animation5};
+        Animation[] annim = new Animation[]{animation1, animation2, animation3, animation4, animation5};
 
         if (i == 0) {
             new Handler().postDelayed(new Runnable() {
@@ -375,15 +379,17 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
                     if (i < animateViews.length) {
                         /* if (surveyScreens.getInput().getMin_chars() <= 0) {*/
+                        try {
+                            OFHelper.v(tag, "OneFlow min char reached [" + surveyScreens.getButtons().get(0).getTitle() + "]");
+                            if (!OFHelper.validateString(surveyScreens.getButtons().get(0).getTitle()).equalsIgnoreCase("NA")) {
+                                ((OFCustomTextViewBold) animateViews[i]).setText(surveyScreens.getButtons().get(0).getTitle());
+                            }
+                            animateViews[i].setVisibility(View.VISIBLE);
+                            animateViews[i].startAnimation(annim[i]);
 
-                        OFHelper.v(tag, "OneFlow min char reached [" + surveyScreens.getButtons().get(0).getTitle() + "]");
-                        if (!OFHelper.validateString(surveyScreens.getButtons().get(0).getTitle()).equalsIgnoreCase("NA")) {
-                            ((OFCustomTextViewBold) animateViews[i]).setText(surveyScreens.getButtons().get(0).getTitle());
+                        } catch (Exception ex) {
+                            OFHelper.e(tag, "Button list not found");
                         }
-                        animateViews[i].setVisibility(View.VISIBLE);
-                        animateViews[i].startAnimation(annim[i]);
-
-
                     }
 
                 }
@@ -403,16 +409,15 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
                 public void onAnimationEnd(Animation animation) {
 
 
-
                     OFHelper.v(tag, "OneFlow animation4 END[" + i + "]len[" + animateViews.length + "][" + surveyScreens.getInput().getMin_chars() + "]");
 
 
-                        i++;
-                        if (i < animateViews.length) {
-                            animateViews[i].setVisibility(View.VISIBLE);
-                            //animateViews[i].clearAnimation();
-                            animateViews[i].startAnimation(annim[i]);
-                        }
+                    i++;
+                    if (i < animateViews.length) {
+                        animateViews[i].setVisibility(View.VISIBLE);
+                        //animateViews[i].clearAnimation();
+                        animateViews[i].startAnimation(annim[i]);
+                    }
 
 
                 }

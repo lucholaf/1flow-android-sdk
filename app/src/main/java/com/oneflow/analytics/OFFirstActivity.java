@@ -36,6 +36,7 @@ import com.oneflow.analytics.adapter.OFSurveyListAdapter;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.model.OFFontSetup;
 import com.oneflow.analytics.model.events.OFRecordEventsTab;
+import com.oneflow.analytics.model.survey.OFDataLogic;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.repositories.OFEventDBRepo;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
@@ -44,6 +45,7 @@ import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -99,10 +101,10 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
         //String projectKey =  "oneflow_sandbox_4m3Gla5J5fhddgevvKDcLdP/28sNLmCJJRHQHTNI2B1ybXD+42A7N35QK8IeZfvMbrTPdbN7qwiuXXdGYmTqSw==";//"oneflow_prod_7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
         //String projectKey =  "oneflow_sandbox_YMslXVT1uFOldcBl5kuupG33ihYmBYd4qr7yaDoab2PoE8/FTYPr7lg0EOXB9KEFd73zNfzwo5krDR6cHdZdMA==";//oneflow_sandbox_4m3Gla5J5fhddgevvKDcLdP/28sNLmCJJRHQHTNI2B1ybXD+42A7N35QK8IeZfvMbrTPdbN7qwiuXXdGYmTqSw==";//"oneflow_prod_7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
         //String projectKey =  "oneflow_sandbox_dK3WBOMMVPKzv3DDJLkTpRgnehUQvT/dGOT3JH2Km6ehVKY/h6o5Yrk46GHsiJvJHfGDbFTy8xSW2M0XN8aGsg==";//oneflow_sandbox_4m3Gla5J5fhddgevvKDcLdP/28sNLmCJJRHQHTNI2B1ybXD+42A7N35QK8IeZfvMbrTPdbN7qwiuXXdGYmTqSw==";//"oneflow_prod_7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
-        String projectKey =  "oneflow_sandbox_HUzdKy3DdFfHuvWOI/GwFyvF9ADiT+2Tz/mY7Nt6ekFR6ATGkL45DgEMJHeexC10CEvN9DDLcUmQtXeuIMCdFw==";//oneflow_sandbox_4m3Gla5J5fhddgevvKDcLdP/28sNLmCJJRHQHTNI2B1ybXD+42A7N35QK8IeZfvMbrTPdbN7qwiuXXdGYmTqSw==";//"oneflow_prod_7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
+       String projectKey =  "oneflow_sandbox_HUzdKy3DdFfHuvWOI/GwFyvF9ADiT+2Tz/mY7Nt6ekFR6ATGkL45DgEMJHeexC10CEvN9DDLcUmQtXeuIMCdFw==";//oneflow_sandbox_4m3Gla5J5fhddgevvKDcLdP/28sNLmCJJRHQHTNI2B1ybXD+42A7N35QK8IeZfvMbrTPdbN7qwiuXXdGYmTqSw==";//"oneflow_prod_7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
        // String projectKey =  "oneflow_sandbox_1XdRfcEB8jVN05hkDk/+ltSdZTIxYlSzzldyfpFWuhUInDYDaU1+FtMdY40Gxq88WaxzNDRkQqqLqgjn/WZqCg==";//oneflow_sandbox_4m3Gla5J5fhddgevvKDcLdP/28sNLmCJJRHQHTNI2B1ybXD+42A7N35QK8IeZfvMbrTPdbN7qwiuXXdGYmTqSw==";//"oneflow_prod_7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
         //String projectKey =  "oneflow_prod_ARb+23Mh/dQs4l26Uj06DDgbt6ytiBsFEBlqLv8xKy83sj2n6rzyvIeNAzx8KGOxXfZUDhXAYqfTHjiMv7ceLQ==";//oneflow_sandbox_4m3Gla5J5fhddgevvKDcLdP/28sNLmCJJRHQHTNI2B1ybXD+42A7N35QK8IeZfvMbrTPdbN7qwiuXXdGYmTqSw==";//"oneflow_prod_7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
-
+        //String projectKey = "oneflow_prod_dFkP3Ft3aiduXP1cxgslW+5PWdu32rjmIuL4CJJv2QMFiKAYK6CGmuFTL+SSEWLg+81CHok3ea2LN44I17U5uw==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
 
         OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);
         OneFlow.shouldShowSurvey(true);
@@ -136,9 +138,9 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
 
 
 
-            HashMap<String, String> mapvalues = new HashMap<String, String>();
+            HashMap<String, Object> mapvalues = new HashMap<String, Object>();
             mapvalues.put("testKey1", "testValue1");
-            mapvalues.put("testKey2", "testValue2");
+            mapvalues.put("testKey2", 25);
             mapvalues.put("testKey3", "testValue3");
             OneFlow.recordEvents(tagArray[0], mapvalues);
 
@@ -185,6 +187,7 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
             //OneFlow.recordEvents("connect_vpn", mapvalues);
             OneFlow.recordEvents("PopularOS", mapvalues);
 
+
         } else if (v.getId() == R.id.disconnect_vpn) {
             // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
 
@@ -197,10 +200,11 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
         } else if (v.getId() == R.id.record_log) {
             OFHelper.v(tag, "OneFlow Clicked on button record log");
             String localTag = (String) v.getTag();
-            HashMap<String, String> mapvalues = new HashMap<String, String>();
+            HashMap<String, Object> mapvalues = new HashMap<String, Object>();
             mapvalues.put("testKey1_"+localTag, "testValue1");
             mapvalues.put("namewa", "Bigu");
             mapvalues.put("testKey3_"+localTag, "testValue3");
+            mapvalues.put("testKey3_"+localTag, 23);
             OneFlow.recordEvents(localTag, mapvalues);
         } else if (v.getId() == R.id.configure_project) {
             //  Helper.makeText(FirstActivity.this, "Clicked on button conf", 1);
@@ -218,13 +222,30 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
             alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
+                    int a[] = new int[]{1,2,3,4};
+                    String b[] = new String[]{"One","Two","Three","Four"};
+                    OFDataLogic dl = new OFDataLogic();
+                    dl.setAction("Action");
+                    dl.setCondition("Condition");
+                    dl.setType("Type");
+                    dl.setValues("Values");
+
+                    OFDataLogic obj[] = new OFDataLogic[]{dl};
                     if (!edittext.getText().toString().isEmpty()) {
                         dialog.cancel();
-                        HashMap<String, String> mapValue = new HashMap<>();
+                        HashMap<String, Object> mapValue = new HashMap<>();
                         mapValue.put("location", "Bihar");
-                        mapValue.put("env", "dev");
+                        mapValue.put("env", null);
                         mapValue.put("name", "Amit kumar");
-                        mapValue.put("timestamp", String.valueOf(System.currentTimeMillis()/1000));
+                        mapValue.put("age", 86);
+                        mapValue.put("isActive", true);
+                        mapValue.put("desitance", 25.16);
+                        mapValue.put("timestamp", System.currentTimeMillis());
+                        mapValue.put("DateObj", new Date());
+                        mapValue.put("StringArray", b);
+                        mapValue.put("IntArray", a);
+                        mapValue.put("pojo", dl);
+                        mapValue.put("pojoArray", obj);
                         OneFlow.logUser(edittext.getText().toString(), mapValue);
                     } else {
                         OFHelper.makeText(OFFirstActivity.this, "Enter email id", 1);

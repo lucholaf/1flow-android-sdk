@@ -94,7 +94,7 @@ public class OFSurvey {
         try {
             Call<OFGenericResponse<String>> responseCall = null;
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/add_survey_response";
-            responseCall = connectAPI.submitSurveyUserResponse(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP), sur,url);
+            responseCall = connectAPI.submitSurveyUserResponse(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP), sur, url);
 
             responseCall.enqueue(new Callback<OFGenericResponse<String>>() {
                 @Override
@@ -111,7 +111,7 @@ public class OFSurvey {
                         OFHelper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
 
                         //Updating survey once data is sent to server, Sending type null as return is not required
-                        OFLogUserDBRepo.updateSurveyInput(context,null,null,true,sur.get_id());
+                        OFLogUserDBRepo.updateSurveyInput(context, null, null, true, sur.get_id());
 
                         new OFOneFlowSHP(context).storeValue(sur.getSurvey_id(), Calendar.getInstance().getTimeInMillis());
                         /*AsyncTask.execute(new Runnable() {
@@ -152,7 +152,7 @@ public class OFSurvey {
         try {
             Call<OFGenericResponse<String>> responseCall = null;
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/add_survey_response";
-            responseCall = connectAPI.submitSurveyUserResponse(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP), sur,url);
+            responseCall = connectAPI.submitSurveyUserResponse(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP), sur, url);
 
             responseCall.enqueue(new Callback<OFGenericResponse<String>>() {
                 @Override
@@ -168,7 +168,7 @@ public class OFSurvey {
                     if (response.isSuccessful()) {
                         OFHelper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
                         OFHelper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
-                        mrh.onResponseReceived(type, sur, 0l,"");
+                        mrh.onResponseReceived(type, sur, 0l, "");
                         /*AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {
