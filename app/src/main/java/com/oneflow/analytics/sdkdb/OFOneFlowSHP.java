@@ -188,6 +188,20 @@ public class OFOneFlowSHP {
         return gson.fromJson(json, type);
     }
 
+
+    public void setClosedSurveyList(ArrayList<String> list) {
+        SharedPreferences.Editor editor = pref.edit();
+        String json = gson.toJson(list);
+        editor.putString(OFConstants.SURVEYCLOSEDLISTSHP, json);
+        editor.apply();     // This line is IMPORTANT !!!
+    }
+    public ArrayList<String> getClosedSurveyList() {
+        String json = pref.getString(OFConstants.SURVEYCLOSEDLISTSHP, null);
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
     /**
      * Save and get ArrayList in SharedPreference
      */

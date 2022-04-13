@@ -32,6 +32,7 @@ public interface OFConstants {
     String SESSIONDETAIL_IDSHP = "one_flow_session_detail_id_key";
     String SESSIONDETAIL_SYSTEM_IDSHP = "one_flow_session_detail_system_key";
     String SURVEYLISTSHP = "one_flow_survey_list_key";
+    String SURVEYCLOSEDLISTSHP = "one_flow_survey_closed_list_key";
     String SDKVERSIONSHP = "sdk_version_key";
     String BRACTION_EVENTS = "one_flow_submit_events";
     String BRACTION_SURVEYS = "one_flow_submit_surveys";

@@ -141,6 +141,23 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //closed survey logic for storage.
+                OFOneFlowSHP ofs = new OFOneFlowSHP(OFSurveyActivity.this);
+                ArrayList<String> closedSurveyList = ofs.getClosedSurveyList();
+                if(closedSurveyList==null){
+                    closedSurveyList = new ArrayList<>();
+                }
+                OFHelper.v(tag,"OneFlow close button clicked ["+surveyResponseChildren+"]");
+                if (surveyResponseChildren ==null || surveyResponseChildren.size() == 0){
+
+                    if(!closedSurveyList.contains(selectedSurveyId)){
+                        closedSurveyList.add(selectedSurveyId);
+                        ofs.setClosedSurveyList(closedSurveyList);
+                    }
+
+                }
+
                 OFSurveyActivity.this.finish();
                 // overridePendingTransition(0,R.anim.slide_down_dialog);
             }
@@ -869,8 +886,12 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
                 //if internet available then send to api else store locally
                 if (OFHelper.isConnected(this)) {
                     OFSurveyUserInput sur = (OFSurveyUserInput) obj;
-                    OFHelper.v(tag, "OneFlow calling submit user Resposne");
-                    OFSurvey.submitUserResponse(this, sur);
+                    OFHelper.v(tag, "OneFlow calling submit user Resposne ["+sur.getAnswers()+"]");
+                    if(sur.getAnswers()!=null) {
+                        if(sur.getAnswers().size()>0) {
+                            OFSurvey.submitUserResponse(this, sur);
+                        }
+                    }
                 } else {
                     OFHelper.v(tag, "OneFlow no data connectivity available submit survey later");
                 }

@@ -54,7 +54,10 @@ public class OFSurveyInputs extends OFBaseModel {
     @SerializedName("rating_max_text")
     private String rating_max_text;
     @SerializedName("other_option_id")
-    private String otherOption = "";//""dfe27f6a4b9f0e10acbedf7a";//"63ded0458b225257f3b19362";
+    private String otherOption = "";
+    /*@SerializedName("rating_text")
+    private String []rating_text ;*/
+
 
     public String getOtherOption() {
         return otherOption;

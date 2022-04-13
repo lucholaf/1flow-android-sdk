@@ -27,12 +27,23 @@ public class OFSurveySettings extends OFBaseModel {
     private Boolean show_watermark;
     @SerializedName("resurvey_option")
     private Boolean resurvey_option;
+    @SerializedName("closed_as_finished")
+    private Boolean closedAsFinished = false;
     @SerializedName("_id")
     private String _id;
     @SerializedName("frequency_capping")
     private OFFrequencyCapping frequency_capping;
     @SerializedName("retake_survey")
     private OFRetakeSurvey retake_survey;
+
+
+    public Boolean getClosedAsFinished() {
+        return closedAsFinished;
+    }
+
+    public void setClosedAsFinished(Boolean closedAsFinished) {
+        this.closedAsFinished = closedAsFinished;
+    }
 
     public Boolean getShow_watermark() {
         return show_watermark;
