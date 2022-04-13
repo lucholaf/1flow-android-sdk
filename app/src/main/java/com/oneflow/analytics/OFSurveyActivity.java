@@ -54,6 +54,7 @@ import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
 import com.google.gson.Gson;
+import com.oneflow.analytics.controller.OFEventController;
 import com.oneflow.analytics.fragment.OFSurveyQueFragment;
 import com.oneflow.analytics.fragment.OFSurveyQueTextFragment;
 import com.oneflow.analytics.fragment.OFSurveyQueThankyouFragment;
@@ -73,6 +74,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 
 import butterknife.ButterKnife;
 
@@ -154,6 +156,10 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
                     if(!closedSurveyList.contains(selectedSurveyId)){
                         closedSurveyList.add(selectedSurveyId);
                         ofs.setClosedSurveyList(closedSurveyList);
+                        OFEventController ec = OFEventController.getInstance(OFSurveyActivity.this);
+                        HashMap<String, Object> mapValue = new HashMap<>();
+                        mapValue.put("survey_id", selectedSurveyId);
+                        ec.storeEventsInDB(OFConstants.AUTOEVENT_CLOSED_SURVEY, mapValue, 0);
                     }
 
                 }

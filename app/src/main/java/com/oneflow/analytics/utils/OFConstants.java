@@ -41,6 +41,7 @@ public interface OFConstants {
     String AUTOEVENT_SESSIONSTART = "session_start";
     String AUTOEVENT_INAPP_PURCHASE = "in_app_purchase";
     String AUTOEVENT_SURVEYIMPRESSION = "survey_impression";
+    String AUTOEVENT_CLOSED_SURVEY = "$flow_closed";
 
     String SHP_SURVEYSTART = "survey_starts";
     String SHP_ONEFLOW_CONFTIMING = "conf_timing";
