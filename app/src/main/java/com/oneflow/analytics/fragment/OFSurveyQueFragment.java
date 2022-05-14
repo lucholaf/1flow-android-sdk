@@ -56,7 +56,6 @@ import com.oneflow.analytics.utils.OFHelper;
 
 import java.util.ArrayList;
 
-import butterknife.ButterKnife;
 
 public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickHandler {//View.OnClickListener {
 
@@ -208,8 +207,6 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.survey_que_fragment, container, false);
-        ButterKnife.bind(this, view);
-
 
         surveyTitle = (OFCustomTextViewBold) view.findViewById(R.id.survey_title_que);
         submitButton = (OFCustomTextViewBold) view.findViewById(R.id.submit_btn);

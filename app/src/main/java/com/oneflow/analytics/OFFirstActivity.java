@@ -49,8 +49,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.ButterKnife;
-
 public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHandler {
 
     String tag = this.getClass().getName();
@@ -70,7 +68,11 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
         sendLogsToAPI = (OFCustomTextView) findViewById(R.id.send_log_to_api);
         listOfSurvey = (RecyclerView) findViewById(R.id.list_of_survey);
 
-        ButterKnife.bind(this);
+        OFOneFlowSHP ofs = new OFOneFlowSHP(this);
+
+        Long lastHit = ofs.getLongValue(OFConstants.SHP_ONEFLOW_CONFTIMING);
+
+        OFHelper.v(tag,"OneAxis lastHit["+lastHit+"]");
 
 
         slr = new ArrayList<>();
@@ -83,28 +85,21 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
         IntentFilter inf = new IntentFilter();
         inf.addAction("survey_list_fetched");
         inf.addAction("events_submitted");
+        inf.addAction("survey_finished");
         registerReceiver(listFetched, inf);
 
-        Typeface faceBold = Typeface.createFromAsset(getAssets(),"fonts/Lato-Bold.ttf");
-        Typeface faceReg = Typeface.createFromAsset(getAssets(),"fonts/Lato-Regular.ttf");
+        Typeface faceBold = Typeface.createFromAsset(getAssets(), "fonts/Lato-Bold.ttf");
+        Typeface faceReg = Typeface.createFromAsset(getAssets(), "fonts/Lato-Regular.ttf");
         //OneFlow.configure(this, "BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"1XdRfcEB8jVN05hkDk/+ltke3BHrQ3R9W35JBylCWzg=");//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//"u6NKK1Vx5xbx3TeOt3ASTGRABmN1gIhhnef53wwwGKo=");//"BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//
         //OneFlow.configure(getApplicationContext(), "uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==");//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");
         //OneFlow.configure(getApplicationContext(), "uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==");//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");
-        OFFontSetup titleSetup = new OFFontSetup(faceReg,20F);
+        OFFontSetup titleSetup = new OFFontSetup(faceReg, 20F);
 
-        OFFontSetup descriptionFont = new OFFontSetup(null,12f);
+        OFFontSetup descriptionFont = new OFFontSetup(null, 12f);
 
-        OFFontSetup optionsFont = new OFFontSetup(faceBold,12f);
+        OFFontSetup optionsFont = new OFFontSetup(faceBold, 12f);
 
-        //String projectKey = this.getIntent().getStringExtra("project_id");//"oneflow_sandbox_2Z9e492aa1qH22E2SnoSAT5broVR80RF9EXhQ0UcOTyZNgDRCsS4Y88hG4mL+IjPURFgrvCIsuNtUinVIr/ClQ==";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
-        //String projectKey =  "oneflow_sandbox_2Z9e492aa1qH22E2SnoSAT5broVR80RF9EXhQ0UcOTyZNgDRCsS4Y88hG4mL+IjPURFgrvCIsuNtUinVIr/ClQ==";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
-        //String projectKey =  "oneflow_sandbox_4m3Gla5J5fhddgevvKDcLdP/28sNLmCJJRHQHTNI2B1ybXD+42A7N35QK8IeZfvMbrTPdbN7qwiuXXdGYmTqSw==";//"oneflow_prod_7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
-        //String projectKey =  "oneflow_sandbox_YMslXVT1uFOldcBl5kuupG33ihYmBYd4qr7yaDoab2PoE8/FTYPr7lg0EOXB9KEFd73zNfzwo5krDR6cHdZdMA==";//oneflow_sandbox_4m3Gla5J5fhddgevvKDcLdP/28sNLmCJJRHQHTNI2B1ybXD+42A7N35QK8IeZfvMbrTPdbN7qwiuXXdGYmTqSw==";//"oneflow_prod_7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
-        //String projectKey =  "oneflow_sandbox_dK3WBOMMVPKzv3DDJLkTpRgnehUQvT/dGOT3JH2Km6ehVKY/h6o5Yrk46GHsiJvJHfGDbFTy8xSW2M0XN8aGsg==";//oneflow_sandbox_4m3Gla5J5fhddgevvKDcLdP/28sNLmCJJRHQHTNI2B1ybXD+42A7N35QK8IeZfvMbrTPdbN7qwiuXXdGYmTqSw==";//"oneflow_prod_7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
-       String projectKey =  "oneflow_sandbox_HUzdKy3DdFfHuvWOI/GwFyvF9ADiT+2Tz/mY7Nt6ekFR6ATGkL45DgEMJHeexC10CEvN9DDLcUmQtXeuIMCdFw==";//oneflow_sandbox_4m3Gla5J5fhddgevvKDcLdP/28sNLmCJJRHQHTNI2B1ybXD+42A7N35QK8IeZfvMbrTPdbN7qwiuXXdGYmTqSw==";//"oneflow_prod_7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
-       // String projectKey =  "oneflow_sandbox_1XdRfcEB8jVN05hkDk/+ltSdZTIxYlSzzldyfpFWuhUInDYDaU1+FtMdY40Gxq88WaxzNDRkQqqLqgjn/WZqCg==";//oneflow_sandbox_4m3Gla5J5fhddgevvKDcLdP/28sNLmCJJRHQHTNI2B1ybXD+42A7N35QK8IeZfvMbrTPdbN7qwiuXXdGYmTqSw==";//"oneflow_prod_7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
-        //String projectKey =  "oneflow_prod_ARb+23Mh/dQs4l26Uj06DDgbt6ytiBsFEBlqLv8xKy83sj2n6rzyvIeNAzx8KGOxXfZUDhXAYqfTHjiMv7ceLQ==";//oneflow_sandbox_4m3Gla5J5fhddgevvKDcLdP/28sNLmCJJRHQHTNI2B1ybXD+42A7N35QK8IeZfvMbrTPdbN7qwiuXXdGYmTqSw==";//"oneflow_prod_7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"2Z9e492aa1qH22E2SnoSATz/9CfN4l/Gkz5Anc99bUQ=";//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=";//"uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==";//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"gMZTvChPL5nOf8sHweZpYQOXOuURnUYbfjvFqSbKo7u85xv2u7B6L94fdOGni4BnshOxwleSsgfNQGZz1hs6Rg==";//"";//
-        //String projectKey = "oneflow_prod_dFkP3Ft3aiduXP1cxgslW+5PWdu32rjmIuL4CJJv2QMFiKAYK6CGmuFTL+SSEWLg+81CHok3ea2LN44I17U5uw==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
+        String projectKey = "oneflow_sandbox_VvvTNsBijDSs94gxlYlmLBEwrskiNg1rGTqHFdLtMU0UvPoiyO+0XF0fEqxpzfsG22mEAnPCIjV2YPWJPmmqQg==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
 
         OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);
         OneFlow.shouldShowSurvey(true);
@@ -118,14 +113,17 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
             OFHelper.v(tag, "OneFlow reached receiver");
             if (intent.getAction().equalsIgnoreCase("survey_list_fetched")) {
                 slr = new OFOneFlowSHP(OFFirstActivity.this).getSurveyList();
-                if(slr.size()>0) {
+                if (slr.size() > 0) {
                     addb.notifyMyList(slr);
-                }else{
-                    OFHelper.makeText(OFFirstActivity.this,"No survey received",1);
+                } else {
+                    OFHelper.makeText(OFFirstActivity.this, "No survey received", 1);
                 }
             } else if (intent.getAction().equalsIgnoreCase("events_submitted")) {
                 OFEventDBRepo.fetchEvents(OFFirstActivity.this, OFFirstActivity.this, OFConstants.ApiHitType.fetchEventsFromDB);
 
+            }else if(intent.getAction().equalsIgnoreCase("survey_finished")){
+                String triggerName = intent.getStringExtra("data");
+                OFHelper.v(tag,"OneFlow Submitted survey data["+triggerName+"]");
             }
         }
     };
@@ -135,7 +133,6 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
             String tag = (String) v.getTag();
             String tagArray[] = tag.split(",");
             //GetSurveyListResponse surveyItem = checkSurveyTitleAndScreens(tag);
-
 
 
             HashMap<String, Object> mapvalues = new HashMap<String, Object>();
@@ -156,7 +153,7 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
         //Helper.makeText(this,"isConnected["+Helper.isInternetAvailable()+"]",1);
 
         slr = new OFOneFlowSHP(OFFirstActivity.this).getSurveyList();
-        if(slr!=null) {
+        if (slr != null) {
             addb.notifyMyList(slr);
         }
 
@@ -201,14 +198,14 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
             OFHelper.v(tag, "OneFlow Clicked on button record log");
             String localTag = (String) v.getTag();
             HashMap<String, Object> mapvalues = new HashMap<String, Object>();
-            mapvalues.put("testKey1_"+localTag, "testValue1");
+            mapvalues.put("testKey1_" + localTag, "testValue1");
             mapvalues.put("namewa", "Bigu");
-            mapvalues.put("testKey3_"+localTag, "testValue3");
-            mapvalues.put("testKey3_"+localTag, 23);
+            mapvalues.put("testKey3_" + localTag, "testValue3");
+            mapvalues.put("testKey3_" + localTag, 23);
             OneFlow.recordEvents(localTag, mapvalues);
         } else if (v.getId() == R.id.configure_project) {
             //  Helper.makeText(FirstActivity.this, "Clicked on button conf", 1);
-            OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=",null);
+            OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=", null);
         } else if (v.getId() == R.id.log_user) {
 
             String emailId = "";
@@ -222,8 +219,8 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
             alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
-                    int a[] = new int[]{1,2,3,4};
-                    String b[] = new String[]{"One","Two","Three","Four"};
+                    int a[] = new int[]{1, 2, 3, 4};
+                    String b[] = new String[]{"One", "Two", "Three", "Four"};
                     OFDataLogic dl = new OFDataLogic();
                     dl.setAction("Action");
                     dl.setCondition("Condition");

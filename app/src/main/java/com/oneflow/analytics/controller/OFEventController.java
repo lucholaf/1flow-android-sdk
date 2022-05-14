@@ -105,7 +105,7 @@ public class OFEventController implements OFMyResponseHandler {
                             ear.setSessionId(new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
                             ear.setEvents(retListToAPI);
                             OFHelper.v(this.getClass().getName(), "OneFlow fetchEventsFromDB request prepared");
-                            OFEventAPIRepo.sendLogsToApi(mContext, ear, this, OFConstants.ApiHitType.sendEventsToAPI, ids);
+                            OFEventAPIRepo.sendLogsToApi(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), ear, this, OFConstants.ApiHitType.sendEventsToAPI, ids);
                         }
                     }
 

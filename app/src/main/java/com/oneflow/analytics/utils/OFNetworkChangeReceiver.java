@@ -58,24 +58,7 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
     }
 
 
-    /*Long duration = 1000 * 60 * 60 * 24L;
-    Long interval = 1000 * 100L; //100L L FOR LONG
-    CountDownTimer cdt = new CountDownTimer(duration, interval) {
-        @Override
-        public void onTick(long millisUntilFinished) {
-            Helper.v("NetworkChangeReceiver","OneFlow tick called interval called");
-            if (Helper.isConnected(context)) {
-                OneFlow.sendEventsToApi(context.getApplicationContext());
-            }
 
-        }
-
-        @Override
-        public void onFinish() {
-            //Helper.makeText(getApplicationContext(),"finish called",1);
-        }
-
-    };*/
 
     public void checkOffLineSurvey() {
         OFLogUserDBRepo.fetchSurveyInput(context, this, OFConstants.ApiHitType.fetchSurveysFromDB);

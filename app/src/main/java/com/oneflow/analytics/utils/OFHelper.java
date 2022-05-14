@@ -59,6 +59,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -257,20 +258,8 @@ public class OFHelper {
     public static String getDeviceId(Context context) {
         String deviceId = "";
 
-        /*try {
-            BigInteger convertedDeviceId = new BigInteger(deviceId);
-            if (deviceId.isEmpty() || convertedDeviceId.compareTo(BigInteger.ZERO) == 0) {
-                deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-                v("Helper", "OneFlow AndriodId [" + deviceId + "]");
-            } else {
 
-            }
-        } catch (Exception e) {
-            deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-        }*/
         // KAI suggested to use random key 19-feb-2022
-
-        UUID.randomUUID();
 
         OFOneFlowSHP shp = new OFOneFlowSHP(context);
         deviceId = shp.getStringValue(OFConstants.SHP_DEVICE_UNIQUE_ID);
@@ -776,6 +765,30 @@ public class OFHelper {
         data[2] = screenInches;
 
         return data;
+    }
+
+    /**
+     * This method will accept HashMap and check for date object if found will convert date object to timestamp (in seconds) and return changed HashMap
+     *
+     * @param map
+     * @return
+     */
+    public static HashMap<String, Object> checkDateInHashMap(HashMap<String, Object> map) {
+
+        Gson gson = new Gson();
+        gson.toJson(map);
+        OFHelper.v("OneFlow", "OneFlow date object before[" + gson.toJson(map) + "]");
+        System.out.println("OneFlow date object before[" + gson.toJson(map) + "]");
+
+        for (String key : map.keySet()) {
+            if (map.get(key) instanceof Date || map.get(key) instanceof java.sql.Date) {
+                Date dt = (Date) map.get(key);
+                map.put(key, dt.getTime() / 1000);
+            }
+        }
+        OFHelper.v("OneFlow", "OneFlow date object after[" + gson.toJson(map) + "]");
+        System.out.println("OneFlow date object after[" + gson.toJson(map) + "]");
+        return map;
     }
 }
 

@@ -30,7 +30,7 @@ public class OFGenericResponse<T>{// extends BaseResponse{
     private int success;
 
     @SerializedName("message")
-    private String message;
+    private String message = "Something went wrong";
 
 
 

@@ -47,14 +47,16 @@ public class OFRetroBaseService {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        //
+        //.readTimeout(120, TimeUnit.SECONDS)
         OkHttpClient clientDev = new OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
                 .build();
 
         OkHttpClient clientProd = new OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build();
 
         OFHelper.v("APIClient","BaseUrl ["+BASE_URL+"]");

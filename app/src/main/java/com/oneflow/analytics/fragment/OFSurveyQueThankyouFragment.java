@@ -49,8 +49,6 @@ import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.utils.OFHelper;
 
-import butterknife.ButterKnife;
-
 public class OFSurveyQueThankyouFragment extends Fragment {
 
 
@@ -89,7 +87,6 @@ public class OFSurveyQueThankyouFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.survey_que_thankyou_fragment, container, false);
-        ButterKnife.bind(this, view);
         OFHelper.v(tag, "OneFlow list data[" + surveyScreens + "]");
 
 

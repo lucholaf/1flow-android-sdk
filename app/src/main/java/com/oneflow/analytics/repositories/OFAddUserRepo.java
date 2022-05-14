@@ -38,7 +38,7 @@ public class OFAddUserRepo {
 
     static String tag = "OFAddUserRepo";
     OFMyResponseHandler myResponseHandler;
-    public static void addUser(OFAddUserRequest aur, Context context, OFMyResponseHandler mrh, OFConstants.ApiHitType hitType){
+    public static void addUser(String headerKey,OFAddUserRequest aur,  OFMyResponseHandler mrh, OFConstants.ApiHitType hitType){
 
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
@@ -46,7 +46,7 @@ public class OFAddUserRepo {
 
 
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/project-analytics-user/incoming_webhook/add-user";
-            responseCall = connectAPI.addUserComman(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP),aur,url);
+            responseCall = connectAPI.addUserComman(headerKey,aur,url);
 
             responseCall.enqueue(new Callback<OFGenericResponse<OFAddUserResultResponse>>() {
                 @Override
@@ -54,23 +54,13 @@ public class OFAddUserRepo {
                     OFHelper.v(tag, "OneFlow add user reached success["+response.isSuccessful()+"]");
 
                     if (response.isSuccessful()) {
-                        OFHelper.v(tag,"OneFlow add user response["+response.body().toString()+"]");
 
-                        new OFOneFlowSHP(context).setUserDetails(response.body().getResult());
-                        mrh.onResponseReceived(hitType,null,0l,"");
+                        OFHelper.v(tag,"OneFlow user created");
+                        mrh.onResponseReceived(hitType,response.body().getResult(),0l,"");
 
-                       /* AsyncTask.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                Helper.v(tag,"OneFlow inserting data");
-                                db.userDAO().insertUser(response.body().getResult());
-                                Helper.v(tag,"OneFlow inserted data");
-                            }
-                        }); */
-
-                        OFHelper.v(tag,"OneFlow record inserted...");
                     } else {
                         OFHelper.v(tag,"OneFlow response 0["+response.body()+"]");
+                        mrh.onResponseReceived(hitType,null,0l,response.message());
                        /* Helper.v(tag,"OneFlow response 1["+response.body().getMessage()+"]");
                         Helper.v(tag,"OneFlow response 2["+response.body().getSuccess()+"]");*/
 
@@ -80,13 +70,14 @@ public class OFAddUserRepo {
                 @Override
                 public void onFailure(Call<OFGenericResponse<OFAddUserResultResponse>> call, Throwable t) {
 
+                    mrh.onResponseReceived(hitType,null,0l,"Something went wrong");
                     OFHelper.e(tag,"OneFlow error["+t.toString()+"]");
                     OFHelper.e(tag,"OneFlow errorMsg["+t.getMessage()+"]");
 
                 }
             });
         } catch (Exception ex) {
-
+            OFHelper.e(tag,"Error["+ex.getMessage()+"]");
         }
 
     }

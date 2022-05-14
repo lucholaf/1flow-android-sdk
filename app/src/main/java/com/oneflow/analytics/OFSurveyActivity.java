@@ -59,7 +59,11 @@ import com.oneflow.analytics.fragment.OFSurveyQueFragment;
 import com.oneflow.analytics.fragment.OFSurveyQueTextFragment;
 import com.oneflow.analytics.fragment.OFSurveyQueThankyouFragment;
 import com.oneflow.analytics.model.survey.OFDataLogic;
+import com.oneflow.analytics.model.survey.OFFinishCallBack;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
+import com.oneflow.analytics.model.survey.OFSurveyChoises;
+import com.oneflow.analytics.model.survey.OFSurveyFinishChild;
+import com.oneflow.analytics.model.survey.OFSurveyFinishModel;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.model.survey.OFSurveyUserInput;
 import com.oneflow.analytics.model.survey.OFSurveyUserResponseChild;
@@ -76,8 +80,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 
-import butterknife.ButterKnife;
-
 
 public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseHandler {
 
@@ -93,8 +95,9 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
     public ArrayList<OFSurveyUserResponseChild> surveyResponseChildren;
     public ArrayList<OFSurveyScreens> screens;
     private Long inTime = 0l;
-
-
+    String surveyClosingStatus = "finished";
+    ArrayList<OFSurveyFinishModel> surveyFinishList;
+    String surveyName = "";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,15 +133,16 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
 
         window.setAttributes(wlp);
 
-        ButterKnife.bind(this);
+
 
         //String surveyType = this.getIntent().getStringExtra("SurveyType");
         OFGetSurveyListResponse surveyItem = (OFGetSurveyListResponse) this.getIntent().getSerializableExtra("SurveyType");
 
+        surveyName = surveyItem.getName();
         screens = surveyItem.getScreens();//checkSurveyTitleAndScreens(surveyType);
         triggerEventName = this.getIntent().getStringExtra("eventName");//surveyItem.getTrigger_event_name();
         // Helper.makeText(getApplicationContext(),"Size ["+screens.size()+"]",1);
-        setProgressMax(surveyItem.getScreens().size()-1); // -1 for excluding thankyou page from progress bar
+        setProgressMax(surveyItem.getScreens().size() - 1); // -1 for excluding thankyou page from progress bar
         selectedSurveyId = surveyItem.get_id();
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,13 +151,14 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
                 //closed survey logic for storage.
                 OFOneFlowSHP ofs = new OFOneFlowSHP(OFSurveyActivity.this);
                 ArrayList<String> closedSurveyList = ofs.getClosedSurveyList();
-                if(closedSurveyList==null){
+                if (closedSurveyList == null) {
                     closedSurveyList = new ArrayList<>();
                 }
-                OFHelper.v(tag,"OneFlow close button clicked ["+surveyResponseChildren+"]");
-                if (surveyResponseChildren ==null || surveyResponseChildren.size() == 0){
+                OFHelper.v(tag, "OneFlow close button clicked [" + surveyResponseChildren + "]");
+                if (surveyResponseChildren == null || surveyResponseChildren.size() == 0) {
 
-                    if(!closedSurveyList.contains(selectedSurveyId)){
+                    surveyClosingStatus = "skipped";
+                    if (!closedSurveyList.contains(selectedSurveyId)) {
                         closedSurveyList.add(selectedSurveyId);
                         ofs.setClosedSurveyList(closedSurveyList);
                         OFEventController ec = OFEventController.getInstance(OFSurveyActivity.this);
@@ -162,6 +167,8 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
                         ec.storeEventsInDB(OFConstants.AUTOEVENT_CLOSED_SURVEY, mapValue, 0);
                     }
 
+                } else {
+                    surveyClosingStatus = "closed";
                 }
 
                 OFSurveyActivity.this.finish();
@@ -413,6 +420,19 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
             prepareAndSubmitUserResposneNew();
         } else {
             OFHelper.v(tag, "OneFlow no input no submit");
+            surveyFinishList = new ArrayList<>();
+            Intent intent = new Intent("survey_finished");
+
+            OFFinishCallBack finishData = new OFFinishCallBack();
+            finishData.setStatus(surveyClosingStatus);
+            finishData.setSurveyId(selectedSurveyId);
+            finishData.setSurveyName(surveyName);
+            finishData.setTriggerName(triggerEventName);
+            finishData.setScreens(prepareFinishCallback());
+
+            intent.putExtra("data",new Gson().toJson(finishData));
+            //OFHelper.v(tag,"OneFlow sending data ["+new Gson().toJson(finishData)+"]");
+            sendBroadcast(intent);
         }
         OFHelper.v(tag, "OneFlow onPause called");
         //overridePendingTransition(0, R.anim.slide_down_dialog_sdk);
@@ -448,15 +468,15 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
                 asrc.setAnswer_index(answerIndex);
             }
             boolean found = false;
-            // checking if list alread have same value
-            for(OFSurveyUserResponseChild src: surveyResponseChildren){
-                if(src.getScreen_id()==screenID){
-                    OFHelper.v(tag,"OneFlow Replacing value");
+            // checking if list already have same value
+            for (OFSurveyUserResponseChild src : surveyResponseChildren) {
+                if (src.getScreen_id() == screenID) {
+                    OFHelper.v(tag, "OneFlow Replacing Value");
                     found = true;
-                    Collections.replaceAll(surveyResponseChildren,src,asrc);
+                    Collections.replaceAll(surveyResponseChildren, src, asrc);
                 }
             }
-            if(!found) {
+            if (!found) {
                 surveyResponseChildren.add(asrc);
             }
         }
@@ -468,10 +488,11 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
             } else {
                 initFragment();
             }
-        }catch(Exception ex){
-            OFHelper.e(tag,"Survey Result error["+ex.getMessage()+"]");
+        } catch (Exception ex) {
+            OFHelper.e(tag, "Survey Result error[" + ex.getMessage() + "]");
         }
     }
+
 
     //Checking rules
     private void preparePositionOnRule(String screenID, String answerIndex, String answerValue) {
@@ -479,7 +500,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         boolean found = false;
         String action = "", type = "";
 
-        if(screens.get(position-1).getRules()!=null) {
+        if (screens.get(position - 1).getRules() != null) {
             for (OFDataLogic dataLogic : screens.get(position - 1).getRules().getDataLogic()) {
 
                 OFHelper.v(tag, "OneFlow condition rule[" + new Gson().toJson(screens.get(position - 1).getRules()) + "]");
@@ -689,7 +710,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         //if internet available then send to api else store locally
         if (OFHelper.isConnected(this)) {
             OFHelper.v(tag, "OneFlow calling submit user Resposne");
-            OFSurvey.submitUserResponse(this, sur);
+            OFSurvey.submitUserResponse(new OFOneFlowSHP(OFSurveyActivity.this).getStringValue(OFConstants.APPIDSHP), sur, OFConstants.ApiHitType.surveySubmited, OFSurveyActivity.this);
         } else {
 
             sur.setUser_id(ofs.getStringValue(OFConstants.USERUNIQUEIDSHP));
@@ -735,7 +756,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
 //        OFHelper.v(tag, "OneFlow answer position [" +new Gson().toJson(screens.get(position-1) )+ "]");
         if (position >= screens.size()) {
             OFSurveyActivity.this.finish();
-            // overridePendingTransition(0,R.anim.slide_down_dialog);
+            //overridePendingTransition(0,R.anim.slide_down_dialog);
             //slideDown();
         } else {
             loadFragments(screens.get(position));
@@ -781,8 +802,8 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
         //int v = (int) (Math.ceil(100 / screens.size())) * (position + 1);
 
         //Integer temp = (int) (Math.ceil(100f / screens.size())) * (position + 1);//((Integer)(Math.ceil(100/screens.size()))*(position+1);
-       // final Integer progressValueTo = temp > 110 ? 110 : temp;//((Integer)(Math.ceil(100/screens.size()))*(position+1);
-       // int progressValueFrom = (int) (Math.ceil(100f / screens.size())) * (position);
+        // final Integer progressValueTo = temp > 110 ? 110 : temp;//((Integer)(Math.ceil(100/screens.size()))*(position+1);
+        // int progressValueFrom = (int) (Math.ceil(100f / screens.size())) * (position);
         //OFHelper.v(tag, "OneFlow progressValue before [" + Math.ceil(100f / screens.size()) + "] ceil[" + (100f / screens.size()) + "]from[" + progressValueFrom + "]to[" + progressValueTo + "]screenSize[" + screens.size() + "]position[" + position + "]");
 
 
@@ -823,7 +844,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
     }
 
     private void setProgressAnimate() {
-       // OFHelper.v(tag, "OneFlow animation started [" + position + "] max [" + pagePositionPBar.getProgress() + "]postion[" + (position * 100) + "]");
+        // OFHelper.v(tag, "OneFlow animation started [" + position + "] max [" + pagePositionPBar.getProgress() + "]postion[" + (position * 100) + "]");
         if (position == 0) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -836,7 +857,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
                 }
             }, 500);
         } else {
-            ObjectAnimator animation = ObjectAnimator.ofInt(pagePositionPBar, "progress", pagePositionPBar.getProgress(), (position+1) * 100);
+            ObjectAnimator animation = ObjectAnimator.ofInt(pagePositionPBar, "progress", pagePositionPBar.getProgress(), (position + 1) * 100);
             animation.setDuration(500);
             animation.setAutoCancel(true);
             animation.setInterpolator(new DecelerateInterpolator());
@@ -892,17 +913,116 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
                 //if internet available then send to api else store locally
                 if (OFHelper.isConnected(this)) {
                     OFSurveyUserInput sur = (OFSurveyUserInput) obj;
-                    OFHelper.v(tag, "OneFlow calling submit user Resposne ["+sur.getAnswers()+"]");
-                    if(sur.getAnswers()!=null) {
-                        if(sur.getAnswers().size()>0) {
-                            OFSurvey.submitUserResponse(this, sur);
+                    OFHelper.v(tag, "OneFlow calling submit user Resposne [" + sur.getAnswers() + "]");
+                    if (sur.getAnswers() != null) {
+                        if (sur.getAnswers().size() > 0) {
+                            OFSurvey.submitUserResponse(new OFOneFlowSHP(OFSurveyActivity.this).getStringValue(OFConstants.APPIDSHP), sur, OFConstants.ApiHitType.surveySubmited, OFSurveyActivity.this);
                         }
                     }
                 } else {
                     OFHelper.v(tag, "OneFlow no data connectivity available submit survey later");
                 }
                 break;
+            case surveySubmited:
+
+                OFHelper.v(tag, "OneFlow survey submitted successfully");
+                OFSurveyUserInput sur = (OFSurveyUserInput) obj;
+                //Updating survey once data is sent to server, Sending type null as return is not required
+                OFLogUserDBRepo.updateSurveyInput(OFSurveyActivity.this, null, null, true, sur.get_id());
+
+                new OFOneFlowSHP(OFSurveyActivity.this).storeValue(sur.getSurvey_id(), Calendar.getInstance().getTimeInMillis());
+
+                Intent intent = new Intent("survey_finished");
+
+                OFFinishCallBack finishData = new OFFinishCallBack();
+                finishData.setStatus(surveyClosingStatus);
+                finishData.setSurveyId(sur.getSurvey_id());
+                finishData.setSurveyName(surveyName);
+                finishData.setTriggerName(sur.getTrigger_event());
+                finishData.setScreens(prepareFinishCallback());
+
+                intent.putExtra("data",new Gson().toJson(finishData));
+                //OFHelper.v(tag,"OneFlow sending data ["+new Gson().toJson(finishData)+"]");
+                sendBroadcast(intent);
+                break;
+        }
+    }
+
+    private ArrayList<OFSurveyFinishModel> prepareFinishCallback() {
+        ArrayList<OFSurveyFinishModel> list = new ArrayList<>();
+        OFSurveyFinishModel finishModel = null;
+        OFSurveyFinishChild finishChild = null;
+        ArrayList<OFSurveyFinishChild> listInner;
+       // if(surveyResponseChildren.size()>0) {
+            for (int i = 0; i < screens.size() - 1; i++) {
+
+                OFSurveyScreens ss = screens.get(i);
+
+                finishModel = new OFSurveyFinishModel();
+                finishModel.setScreenId(ss.get_id());
+                finishModel.setQuestionTitle(ss.getTitle());
+                finishModel.setQuestionType(ss.getInput().getInput_type());
+                listInner = new ArrayList<>();
+                for (OFSurveyUserResponseChild sr : surveyResponseChildren) {
+                    if (sr.getScreen_id().equalsIgnoreCase(ss.get_id())) {
+                        finishChild = new OFSurveyFinishChild();
+                        if (ss.getInput().getInput_type().equalsIgnoreCase("mcq") ||
+                                ss.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
+                            //This if is for handling multiple option in checkbox.
+                            if (sr.getAnswer_index().contains(",")) {
+                                String[] options = sr.getAnswer_index().split(",");
+                               // OFHelper.v(tag,"OneFlow sending data ["+options.length+"]");
+                                for (String option : options) {
+                                  //  OFHelper.v(tag,"OneFlow sending data inside loop["+option+"]");
+                                    finishChild = new OFSurveyFinishChild();
+                                    finishChild.setAnswerValue(getFieldValue(ss, option));
+                                    if (finishChild.getAnswerValue().equalsIgnoreCase("other") || finishChild.getAnswerValue().equalsIgnoreCase("others")) {
+                                        finishChild.setOtherValue(sr.getAnswer_value());
+                                    }
+                                    listInner.add(finishChild);
+                                }
+                            } else {
+                                finishChild.setAnswerValue(getFieldValue(ss, sr.getAnswer_index()));
+                                if (finishChild.getAnswerValue().equalsIgnoreCase("other") || finishChild.getAnswerValue().equalsIgnoreCase("others")) {
+                                    finishChild.setOtherValue(sr.getAnswer_value());
+                                }
+                                listInner.add(finishChild);
+                            }
+
+
+                        } else {
+                            finishChild.setAnswerValue(sr.getAnswer_value());
+                            listInner.add(finishChild);
+                        }
+
+                    }
+
+                    finishModel.setQuestionAns(listInner);
+
+                }
+                if(finishModel.getQuestionAns() !=null && finishModel.getQuestionAns().size()>0) {
+                    list.add(finishModel);
+                }
+            }
+        //}
+       // OFHelper.v(tag,"OneFlow list ["+new Gson().toJson(list)+"]");
+        return list;
+    }
+
+
+    public String getFieldValue(OFSurveyScreens ss, String findThisId) {
+        String label = "";
+        OFHelper.v(tag,"OneFlow field value in ["+ss+"]["+findThisId+"]");
+        for(OFSurveyChoises choice : ss.getInput().getChoices()){
+
+            if(choice.getId().equalsIgnoreCase(findThisId)){
+                label = choice.getTitle();
+                break;
+            }
 
         }
+        OFHelper.v(tag,"OneFlow field value out ["+label+"]");
+        return label;
+
     }
 }

@@ -36,7 +36,7 @@ import retrofit2.Response;
 
 public class OFEventAPIRepo {
     static String tag = "EventAPIRepo";
-    public static void sendLogsToApi(Context context, OFEventAPIRequest ear, OFMyResponseHandler mrh, OFConstants.ApiHitType type, Integer []ids){
+    public static void sendLogsToApi(String headerKey, OFEventAPIRequest ear, OFMyResponseHandler mrh, OFConstants.ApiHitType type, Integer []ids){
 
         OFHelper.v(tag,"OneFlow sendLogsToApi reached");
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
@@ -45,7 +45,7 @@ public class OFEventAPIRepo {
 
 
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/events-bulk/incoming_webhook/insert-events";
-            responseCall = connectAPI.uploadAllUnSyncedEvents(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP),ear,url);
+            responseCall = connectAPI.uploadAllUnSyncedEvents(headerKey,ear,url);
 
             responseCall.enqueue(new Callback<OFGenericResponse<OFEventSubmitResponse>>() {
                 @Override

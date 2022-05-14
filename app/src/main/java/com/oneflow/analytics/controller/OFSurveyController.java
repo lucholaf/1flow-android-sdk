@@ -54,7 +54,8 @@ public class OFSurveyController implements OFMyResponseHandler {
 
     public void getSurveyFromAPI() {
         OFHelper.v("SurveyController", "OneFlow reached SurveyController 0");
-        OFSurvey.getSurvey(mContext, this, OFConstants.ApiHitType.fetchSurveysFromAPI);
+        OFOneFlowSHP shp = new OFOneFlowSHP(mContext);
+        OFSurvey.getSurvey(shp.getStringValue(OFConstants.APPIDSHP), this, OFConstants.ApiHitType.fetchSurveysFromAPI,shp.getUserDetails().getAnalytic_user_id(),shp.getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
     }
 
     public void fetchSurveyFromList() {
@@ -72,6 +73,20 @@ public class OFSurveyController implements OFMyResponseHandler {
         switch (hitType) {
             case fetchSurveysFromAPI:
                 OFHelper.v("SurveyController","OneFlow survey received");
+
+                ArrayList<OFGetSurveyListResponse> surveyListResponse = (ArrayList<OFGetSurveyListResponse>)obj;
+                if(surveyListResponse!=null) {
+                    new OFOneFlowSHP(mContext).setSurveyList(surveyListResponse);
+
+                    Intent intent = new Intent("survey_list_fetched");
+                    mContext.sendBroadcast(intent);
+
+                }else{
+                    if(OFConstants.MODE.equalsIgnoreCase("dev")) {
+                        OFHelper.makeText(mContext, reserved, 1);
+                    }
+                }
+
                 //OFEventDBRepo.fetchEventsBeforeSurvey(mContext, this, OFConstants.ApiHitType.fetchEventsBeforSurveyFetched);
                 break;
             case fetchEventsBeforSurveyFetched:

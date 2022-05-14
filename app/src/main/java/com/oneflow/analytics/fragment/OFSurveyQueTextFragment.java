@@ -47,7 +47,6 @@ import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.utils.OFHelper;
 
-import butterknife.ButterKnife;
 
 public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClickListener {
 
@@ -129,7 +128,6 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.survey_que_text_fragment, container, false);
-        ButterKnife.bind(this, view);
 
         animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
         animation2 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);

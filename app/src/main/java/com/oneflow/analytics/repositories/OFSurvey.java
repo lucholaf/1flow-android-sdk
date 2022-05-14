@@ -42,35 +42,29 @@ public class OFSurvey {
 
     static String tag = "Survey";
 
-    public static void getSurvey(Context context, OFMyResponseHandler mrh, OFConstants.ApiHitType type) {
+    public static void getSurvey(String headerKey, OFMyResponseHandler mrh, OFConstants.ApiHitType type,String userId, String sessionId) {
         OFHelper.v(tag, "OneFlow survey reached getSurvey called");
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
-        OFOneFlowSHP oshp = new OFOneFlowSHP(context);
+
         try {
             Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> responseCall = null;
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys";
-            responseCall = connectAPI.getSurvey(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP),
-                    url,"android", OFConstants.MODE,oshp.getUserDetails().getAnalytic_user_id(),oshp.getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
+            responseCall = connectAPI.getSurvey(headerKey, url,"android", OFConstants.MODE,userId,sessionId);
 
             responseCall.enqueue(new Callback<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>>() {
                 @Override
                 public void onResponse(Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> call, Response<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> response) {
 
 
-                    /*Helper.v(tag,"OneFlow survey list response["+response.isSuccessful()+"]");
-                    Helper.v(tag,"OneFlow survey list response["+response.body().getSuccess()+"]");*/
+                    OFHelper.v(tag,"OneFlow survey list response["+response.isSuccessful()+"]");
+
                     if (response.isSuccessful()) {
 
-                        //Helper.v(tag,"OneFlow counter reached at["+counter+"]");
-                        new OFOneFlowSHP(context).setSurveyList(response.body().getResult());
-
-                        Intent intent = new Intent("survey_list_fetched");
-                        context.sendBroadcast(intent);
-
-                        mrh.onResponseReceived(type, null, 0l,"");
+                        mrh.onResponseReceived(type, response.body().getResult(), 0l,"");
 
                     } else {
                         OFHelper.v(tag, "OneFlow survey list not fetched isSuccessfull false");
+                        mrh.onResponseReceived(type, null, 0l,response.message());
                         //TempResponseModel trm = new Gson().fromJson(response.body())
                     }
 
@@ -89,12 +83,12 @@ public class OFSurvey {
         }
     }
 
-    public static void submitUserResponse(Context context, OFSurveyUserInput sur) {
+    public static void submitUserResponse(String headerKey, OFSurveyUserInput sur, OFConstants.ApiHitType type,OFMyResponseHandler handler) {
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
             Call<OFGenericResponse<String>> responseCall = null;
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/add_survey_response";
-            responseCall = connectAPI.submitSurveyUserResponse(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP), sur, url);
+            responseCall = connectAPI.submitSurveyUserResponse(headerKey, sur, url);
 
             responseCall.enqueue(new Callback<OFGenericResponse<String>>() {
                 @Override
@@ -110,10 +104,7 @@ public class OFSurvey {
                         OFHelper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
                         OFHelper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
 
-                        //Updating survey once data is sent to server, Sending type null as return is not required
-                        OFLogUserDBRepo.updateSurveyInput(context, null, null, true, sur.get_id());
-
-                        new OFOneFlowSHP(context).storeValue(sur.getSurvey_id(), Calendar.getInstance().getTimeInMillis());
+                        handler.onResponseReceived(type,sur,0l,"");
                         /*AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {

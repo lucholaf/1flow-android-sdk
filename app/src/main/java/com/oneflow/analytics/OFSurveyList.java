@@ -32,7 +32,6 @@ import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import butterknife.ButterKnife;
 
 public class OFSurveyList extends OFSDKBaseActivity {
 
@@ -42,8 +41,6 @@ public class OFSurveyList extends OFSDKBaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.simple_survey_list);
-        ButterKnife.bind(this);
-
 
         listOfSurvey = (RecyclerView) findViewById(R.id.list_of_survey);
 

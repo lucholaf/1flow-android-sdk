@@ -38,46 +38,29 @@ import retrofit2.Response;
 public class OFLogUserRepo {
 
     static String tag = "LogUserRepo";
-    OFMyResponseHandler myResponseHandler;
-    public static void logUser(OFLogUserRequest lur, Context context, OFMyResponseHandler mrh, OFConstants.ApiHitType hitType){
+
+    public static void logUser(String headerKey,OFLogUserRequest lur,  OFMyResponseHandler mrh, OFConstants.ApiHitType hitType){
 
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
             Call<OFGenericResponse<OFLogUserResponse>> responseCall = null;
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/Log-user/incoming_webhook/anonymous-user-api";
-            responseCall = connectAPI.logUser(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP),lur,url);
+            responseCall = connectAPI.logUser(headerKey,lur,url);
 
             responseCall.enqueue(new Callback<OFGenericResponse<OFLogUserResponse>>() {
                 @Override
                 public void onResponse(Call<OFGenericResponse<OFLogUserResponse>> call, Response<OFGenericResponse<OFLogUserResponse>> response) {
 
 
+                    OFHelper.v(tag,"OneFlow Loguser response["+response.isSuccessful()+"]");
                     if (response.isSuccessful()) {
 
-                        // replacing current session id and user analytical id
-                        OFOneFlowSHP ofs = new OFOneFlowSHP(context);
-                        ofs.storeValue(OFConstants.SHP_LOG_USER_KEY,lur.getSystem_id());//ofs.getLogUserRequest().getSystem_id()); // system id stored for sending next app launch
-                        ofs.clearLogUserRequest();
-                        OFAddUserResultResponse aurr = ofs.getUserDetails();
-                        //setting up new user analytical id
-                        OFHelper.v(tag,"OneFlow new Analytic id["+response.body().getResult().getAnalytic_user_id()+"] old Analytic id["+aurr.getAnalytic_user_id()+"]");
-                        aurr.setAnalytic_user_id(response.body().getResult().getAnalytic_user_id());
-                        ofs.setUserDetails(aurr);
-                        OFHelper.v(tag,"OneFlow new Session id["+response.body().getResult().getSessionId()+"] old Session id["+ofs.getStringValue(OFConstants.SESSIONDETAIL_IDSHP)+"]");
-                        ofs.storeValue(OFConstants.SESSIONDETAIL_IDSHP,response.body().getResult().getSessionId());
-
-                        //storing this to support multi user survey
-                        ofs.storeValue(OFConstants.USERUNIQUEIDSHP,lur.getSystem_id());
-
-                       // mrh.onResponseReceived(hitType,null,0);
-                        OFHelper.v(tag,"OneFlow record inserted...");
-
-                        //Update old survey's user id
-                        OFLogUserDBRepo.updateSurveyUserId(context,mrh,lur.getSystem_id(),hitType);
+                       mrh.onResponseReceived(hitType,response.body().getResult(),0l,lur.getSystem_id());
 
 
                     } else {
                         OFHelper.v(tag,"OneFlow response 0["+response.body()+"]");
+                        mrh.onResponseReceived(hitType,response.body().getResult(),0l,"");
                        /* Helper.v(tag,"OneFlow response 1["+response.body().getMessage()+"]");
                         Helper.v(tag,"OneFlow response 2["+response.body().getSuccess()+"]");*/
 

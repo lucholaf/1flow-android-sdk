@@ -21,7 +21,7 @@ package com.oneflow.analytics.utils;
 public interface OFConstants {
 
 
-    String MODE = "prod";
+    String MODE = "dev";
     String DBNAME = "one_flow_db";
     String APPKEYSHP = "one_flow_config_key";
     String APPIDSHP = "one_flow_app_id_key";
@@ -44,7 +44,7 @@ public interface OFConstants {
     String AUTOEVENT_CLOSED_SURVEY = "$flow_closed";
 
     String SHP_SURVEYSTART = "survey_starts";
-    String SHP_ONEFLOW_CONFTIMING = "conf_timing";
+    String SHP_ONEFLOW_CONFTIMING = "shp_conf_timing";
     String SHP_SURVEY_RUNNING = "survey_running";
     String SHP_SHOULD_SHOW_SURVEY = "should_show_survey";
     String SHP_DEVICE_UNIQUE_ID = "device_unique_id";
@@ -58,7 +58,8 @@ public interface OFConstants {
     enum ApiHitType{
         Config,CreateUser, CreateSession, RecordLogs, fetchEventsFromDB, sendEventsToAPI, insertEventsInDB,
         deleteEventsFromDB, logUser, insertSurveyInDB, fetchSurveysFromDB, deleteSurveyFromDB, fetchLocation,
-        fetchSurveysFromAPI,fetchEventsBeforSurveyFetched,fetchSubmittedSurvey,checkResurveyNSubmission
+        fetchSurveysFromAPI,fetchEventsBeforSurveyFetched,fetchSubmittedSurvey,checkResurveyNSubmission,updateSurveyIds,
+        surveySubmited
     }
     enum BRActionType{
         submitEvents,submitSurveys
