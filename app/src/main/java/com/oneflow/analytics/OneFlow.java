@@ -710,7 +710,7 @@ public class OneFlow implements OFMyResponseHandler {
                     csr.setLibrary_name("1flow-android-sdk");
                     csr.setLibrary_version(String.valueOf(1));
                     csr.setApi_endpoint("session");
-                    csr.setApi_version("0.6.34");
+                    csr.setApi_version("0.6.35");
                     csr.setApp_version(OFHelper.getAppVersion(mContext));
 
                     recordEvents(OFConstants.AUTOEVENT_SESSIONSTART, null);
