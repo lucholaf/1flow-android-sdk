@@ -51,6 +51,9 @@ public interface OFConstants {
     String SHP_SHOULD_PRINT_LOG = "should_print_log";
     String SHP_LOG_USER_KEY = "log_user_key";
 
+
+    String surveyDetail = "surveyDetail";
+
     String os = "android";
 
 

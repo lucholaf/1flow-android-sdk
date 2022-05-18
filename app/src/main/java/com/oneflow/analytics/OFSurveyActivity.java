@@ -430,7 +430,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
             finishData.setTriggerName(triggerEventName);
             finishData.setScreens(prepareFinishCallback());
 
-            intent.putExtra("data",new Gson().toJson(finishData));
+            intent.putExtra(OFConstants.surveyDetail,new Gson().toJson(finishData));
             //OFHelper.v(tag,"OneFlow sending data ["+new Gson().toJson(finishData)+"]");
             sendBroadcast(intent);
         }
@@ -941,7 +941,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
                 finishData.setTriggerName(sur.getTrigger_event());
                 finishData.setScreens(prepareFinishCallback());
 
-                intent.putExtra("data",new Gson().toJson(finishData));
+                intent.putExtra(OFConstants.surveyDetail,new Gson().toJson(finishData));
                 //OFHelper.v(tag,"OneFlow sending data ["+new Gson().toJson(finishData)+"]");
                 sendBroadcast(intent);
                 break;
