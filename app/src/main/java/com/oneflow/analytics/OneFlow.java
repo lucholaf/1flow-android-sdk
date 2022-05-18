@@ -90,7 +90,6 @@ public class OneFlow implements OFMyResponseHandler {
     private static Long duration = 1000 * 60 * 60 * 12L;
     private static Long interval = 1000 * 100L; //100L L FOR LONG
 
-
     static BillingClient bcFake;
 
     private OneFlow(Context context) {
@@ -710,7 +709,7 @@ public class OneFlow implements OFMyResponseHandler {
                     csr.setLibrary_name("1flow-android-sdk");
                     csr.setLibrary_version(String.valueOf(1));
                     csr.setApi_endpoint("session");
-                    csr.setApi_version("0.6.36");
+                    csr.setApi_version("0.6.37");
                     csr.setApp_version(OFHelper.getAppVersion(mContext));
 
                     recordEvents(OFConstants.AUTOEVENT_SESSIONSTART, null);
