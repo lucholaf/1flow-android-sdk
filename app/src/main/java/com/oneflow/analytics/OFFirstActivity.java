@@ -99,7 +99,7 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
 
         OFFontSetup optionsFont = new OFFontSetup(faceBold, 12f);
 
-        String projectKey = "oneflow_sandbox_VvvTNsBijDSs94gxlYlmLBEwrskiNg1rGTqHFdLtMU0UvPoiyO+0XF0fEqxpzfsG22mEAnPCIjV2YPWJPmmqQg==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
+        String projectKey = "oneflow_prod_ghTA3yOAx9+KfK1Ezdpaf3TcN983BmhlRvDeP4pY4S1RQWpJKlys+7HGFpZ4h1ljwSx++5GTJyzxo6WglmLpJA==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
 
         OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);
         OneFlow.shouldShowSurvey(true);
@@ -111,6 +111,7 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
         @Override
         public void onReceive(Context context, Intent intent) {
             OFHelper.v(tag, "OneFlow reached receiver");
+
             if (intent.getAction().equalsIgnoreCase("survey_list_fetched")) {
                 slr = new OFOneFlowSHP(OFFirstActivity.this).getSurveyList();
                 if (slr.size() > 0) {
@@ -122,7 +123,7 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
                 OFEventDBRepo.fetchEvents(OFFirstActivity.this, OFFirstActivity.this, OFConstants.ApiHitType.fetchEventsFromDB);
 
             }else if(intent.getAction().equalsIgnoreCase("survey_finished")){
-                String triggerName = intent.getStringExtra("data");
+                String triggerName = intent.getStringExtra("surveyDetail");
                 OFHelper.v(tag,"OneFlow Submitted survey data["+triggerName+"]");
             }
         }
