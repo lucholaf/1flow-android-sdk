@@ -62,7 +62,7 @@ public class BaseFragment extends Fragment {
 
 
         if (theme.getRemove_watermark()) {
-            // waterMarkLayout.setVisibility(View.GONE);
+             waterMarkLayout.setVisibility(View.GONE);
         } else {
             waterMarkLayout.setVisibility(View.VISIBLE);
         }
