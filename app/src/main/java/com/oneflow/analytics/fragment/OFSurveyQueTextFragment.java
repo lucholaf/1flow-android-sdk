@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -54,7 +55,6 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     OFCustomTextViewBold surveyTitle, submitButton;
     RelativeLayout optionLayout;
     OFCustomEditText userInput;
-
 
     OFCustomTextView surveyInputLimit, skipBtn;
 
@@ -135,6 +135,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         animation4 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
         animation5 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
 
+
         surveyTitle = (OFCustomTextViewBold) view.findViewById(R.id.survey_title);
         submitButton = (OFCustomTextViewBold) view.findViewById(R.id.submit_btn);
         surveyDescription = (OFCustomTextView) view.findViewById(R.id.survey_description);
@@ -142,10 +143,24 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         userInput = (OFCustomEditText) view.findViewById(R.id.child_user_input);
         surveyInputLimit = (OFCustomTextView) view.findViewById(R.id.text_limit);
         optionLayout = (RelativeLayout) view.findViewById(R.id.option_layout);
+        waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
+
+
+        handleWaterMarkStyle(sa.sdkTheme);
+        surveyTitle.setTextColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())));
+
+        int colorAlpha = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.8f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 80);
+        int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.6f);
+        surveyDescription.setTextColor(colorAlpha);
+        skipBtn.setTextColor(colorlike);
+        ((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
 
         submitButtonBeautification();
 
         skipBtn.setOnClickListener(this);
+
+        surveyInputLimit.setTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.3f));
+
 
         OFHelper.v(tag, "OneFlow list data[" + surveyScreens + "]");
         animationIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
@@ -190,8 +205,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
 
                 if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
-                    // if (surveyScreens.getButtons().size() == 1) {
-                    //if (submitButton.getVisibility() != View.VISIBLE) {
+
                     try {
                         if (!OFHelper.validateString(surveyScreens.getButtons().get(0).getTitle()).equalsIgnoreCase("NA")) {
                             submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
@@ -199,33 +213,21 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
                     } catch (Exception ex) {
                         OFHelper.e(tag, "Button list not found");
                     }
-                    //submitButton.setVisibility(View.VISIBLE);
-                    //gdSubmit.setColor(Color.parseColor(sa.themeColor));
+
                     if (!isActive) {
                         transitActive();
                         isActive = true;
                     }
-                    //submitButton.startAnimation(animationIn);
-                    //}
-                   /* } else if (surveyScreens.getButtons().size() == 2) {
-                        submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
-                        submitButton.setVisibility(View.VISIBLE);
-                        submitButton.startAnimation(animationIn);
-                        *//*cancelButton.setText(surveyScreens.getButtons().get(1).getTitle());
-                        cancelButton.setVisibility(View.VISIBLE);*//*
 
-                    }*/
                 } else {
                     if (surveyScreens.getButtons().size() == 1) {
-                        //submitButton.setVisibility(View.INVISIBLE);
-                        // gdSubmit.setColor(sa.getResources().getColor(R.color.ratings_focused));//Color.parseColor(sa.themeColor));
+
                         if (isActive) {
                             transitInActive();
                             isActive = false;
                         }
                     } else if (surveyScreens.getButtons().size() == 2) {
-                        //submitButton.setVisibility(View.INVISIBLE);
-                        //gdSubmit.setColor(sa.getResources().getColor(R.color.ratings_focused));//Color.parseColor(sa.themeColor));
+
                         if (isActive) {
                             transitInActive();
                             isActive = false;
@@ -262,9 +264,10 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         GradientDrawable gdOption = (GradientDrawable) optionLayout.getBackground();
         //submitButton.setVisibility(View.INVISIBLE);
         gdOption.setColor(sa.getResources().getColor(R.color.white));
-        gdSubmit.setColor(sa.getResources().getColor(R.color.ratings_focused));//Color.parseColor(sa.themeColor));
+        int colorAlpha = OFHelper.manipulateColor(Color.parseColor(sa.themeColor),0.5f);
+        gdSubmit.setColor(colorAlpha);//Color.parseColor(sa.themeColor));
 
-        int colorAlpha = ColorUtils.setAlphaComponent(Color.parseColor(sa.themeColor), 125);
+
         submitButton.setOnTouchListener(new View.OnTouchListener() {
 
             @Override

@@ -25,6 +25,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
@@ -39,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.graphics.ColorUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -153,22 +155,23 @@ public class OFHelper {
     //Log methods
     public static void v(String tag, String msg) {
 
-
+        int printRange = 4000;
 
         if (commanLogEnable){//OFConstants.MODE.equalsIgnoreCase("dev")) {
 
-            Log.v(tag,msg);
-
-            /*if (msg.length() > printCharLimit) {
-                for(int i=0;i<msg.length();i+=printCharLimit){
-                    Log.v(tag, "OneFlow continue printing["+i+"]");
+            if (msg.length() > printRange) {
+                long range = msg.length() / printRange;
+                //       Log.v(tag,"OneAxis length range["+range+"]");
+                for (int k = 0; k <= range; k++) {
+                    if (k == range) {
+                        Log.v(tag, "continueLast::" + msg.substring((k * printRange)));
+                        break;
+                    }
+                    Log.v(tag, "continue[" + k + "]::" + msg.substring((k * printRange), (k * printRange) + printRange) + "]");
                 }
-
-                Log.v(tag, msg.substring(0, printCharLimit));
-                Log.v("continue", msg.substring(printCharLimit, msg.length()));
             } else {
                 Log.v(tag, msg);
-            }*/
+            }
         }
     }
 
@@ -789,6 +792,93 @@ public class OFHelper {
         OFHelper.v("OneFlow", "OneFlow date object after[" + gson.toJson(map) + "]");
         System.out.println("OneFlow date object after[" + gson.toJson(map) + "]");
         return map;
+    }
+    public static String getAlphaHexColor(String color,int per){
+        String mainColor = "",hex="";
+        String returnColor = "";
+        v("Helper", "OneFlow colors alpha in["+color+"]");
+        if(color.length()>0) {
+            mainColor = color.substring(color.length() - 6);
+
+            hex = Integer.toHexString(getAlphaNumber(per)).toUpperCase();
+
+            v("Helper", "OneFlow colors alpha in["+mainColor+"]alpha["+getAlphaNumber(per)+"]["+hex+"]");
+
+            returnColor = "#"+hex+mainColor.toUpperCase();
+        }else{
+            returnColor = "NA";
+        }
+        v("Helper", "OneFlow colors alpha out["+returnColor+"]");
+        return returnColor;
+    }
+    public static String handlerColor(String color){
+        String colorNew ="";
+        v("Helper", "OneFlow colors transparancy in[" + color + "]");
+        try {
+
+            String tranparancy = "";
+
+            if(color.startsWith("#")){
+                if(color.length()>7){
+                    tranparancy = color.substring(7,8);
+                }
+            }else{
+                if(color.length()>6){
+                    tranparancy = color.substring(6, 8);
+                }
+            }
+
+            String tempColor;
+            if (!color.startsWith("#")) {
+                tempColor = color.substring(0, 6);
+            } else {
+                tempColor = color.substring(1, 7);
+            }
+
+            colorNew = "#"+tranparancy+tempColor;
+           /* if (!color.startsWith("#")) {
+                colorNew = "#" +colorNew;//color;
+            }*/
+            v("Helper", "OneFlow colors transparancy out [" + tranparancy + "]tempColor[" + tempColor + "]colorNew[" + colorNew + "]");
+        } catch (Exception ex) {
+            //styleColor=""+getResources().getColor(R.color.colorPrimaryDark);
+        }
+
+
+
+        return colorNew;
+    }
+
+    public static int getAlphaNumber(int percentage){
+         return Math.round((255*percentage)/100);
+    }
+    public static int manipulateColor(int color, float factor) {
+        factor = 1.0f - factor;
+       /* int a = Color.alpha(color);
+        int r = Math.round(Color.red(color) * factor);
+        int g = Math.round(Color.green(color) * factor);
+        int b = Math.round(Color.blue(color) * factor);
+        return Color.argb(a,
+                Math.min(r,255),
+                Math.min(g,255),
+                Math.min(b,255));*/
+        return ColorUtils.blendARGB(color, Color.WHITE, factor);
+    }
+
+
+    public static int lighten(int color, double fraction) {
+
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        red = lightenColor(red, fraction);
+        green = lightenColor(green, fraction);
+        blue = lightenColor(blue, fraction);
+        int alpha = Color.alpha(color);
+        return Color.argb(alpha, red, green, blue);
+    }
+    private static int lightenColor(int color, double fraction) {
+        return (int) Math.min(color + (color * fraction), 255);
     }
 }
 

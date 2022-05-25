@@ -21,6 +21,7 @@ package com.oneflow.analytics.fragment;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
 
@@ -49,13 +51,13 @@ import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.utils.OFHelper;
 
-public class OFSurveyQueThankyouFragment extends Fragment {
+public class OFSurveyQueThankyouFragment extends BaseFragment {
 
 
 
     ImageView thankyouImage,waterMarkImage;
 
-    LinearLayout waterMarkLayout;
+   // LinearLayout waterMarkLayout;
 
     OFCustomTextViewBold surveyTitle;
 
@@ -93,28 +95,28 @@ public class OFSurveyQueThankyouFragment extends Fragment {
         thankyouImage = (ImageView)view.findViewById(R.id.thankyou_img);
         waterMarkImage = (ImageView)view.findViewById(R.id.watermark_img);
         waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
-        waterMarkLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String waterMark = "https://1flow.app/?utm_source=1flow-android-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow";//https://www.notion.so/Powered-by-1Flow-logo-should-link-to-website-c186fca5220e41d19f420dd871f9696d";
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(waterMark));
-                startActivity(browserIntent);
-            }
-        });
-        surveyTitle = (OFCustomTextViewBold) view.findViewById(R.id.survey_title);
-        surveyDescription = (OFCustomTextView) view.findViewById(R.id.survey_description);
-        //surveyTitle.setText(surveyScreens.getTitle());
-        /*if(surveyScreens.getMessage()!=null) {
-            surveyDescription.setText(surveyScreens.getMessage());
+
+        /*if(sa.sdkTheme.getRemove_watermark()){
+            waterMarkLayout.setVisibility(View.GONE);
         }else{
-            surveyDescription.setVisibility(View.GONE);
+            waterMarkLayout.setVisibility(View.VISIBLE);
         }*/
 
+
+        surveyTitle = (OFCustomTextViewBold) view.findViewById(R.id.survey_title);
+        surveyDescription = (OFCustomTextView) view.findViewById(R.id.survey_sub_title);
+
+        surveyTitle.setTextColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())));
+
+        int colorAlpha = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.8f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 80);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 80);
+        int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.6f);
+        ((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
+        surveyDescription.setTextColor(colorAlpha);
+
         sa.position = sa.screens.size();
-
-
+        handleWaterMarkStyle(sa.sdkTheme);
         //Glide.with(this).load(R.drawable.thank_you).into(thankyouImage);
-        Glide.with(this).load(R.drawable.thank_you).into(new DrawableImageViewTarget(thankyouImage) {
+        Glide.with(this).load(R.drawable.thanku_bg).into(new DrawableImageViewTarget(thankyouImage) {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 super.onResourceReady(resource, transition);

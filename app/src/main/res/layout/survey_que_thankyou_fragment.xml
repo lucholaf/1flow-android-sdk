@@ -93,6 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
+        android:background="@drawable/btn_rounded_rectangle_watermark"
         android:clickable="true"
         android:gravity="center_vertical"
         android:padding="10dp">

@@ -23,6 +23,13 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
+        android:id="@+id/main_survey_child"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        
+        >
+
+    <RelativeLayout
         android:id="@+id/slider_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -91,9 +98,10 @@
             android:layout_below="@id/view_layout"
             android:layout_gravity="bottom"
             android:layout_marginBottom="-6dp"
-            android:background="@color/plainwhite"
             android:indeterminate="false"
             android:progress="100"
             android:scaleY="1.2" />
+        <!--android:background="@color/plainwhite"-->
     </androidx.cardview.widget.CardView>
+</RelativeLayout>
 </RelativeLayout>

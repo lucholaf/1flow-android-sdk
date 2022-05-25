@@ -68,7 +68,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
     /*@BindView(R.id.cancel_btn)
     CustomTextViewBold cancelButton;*/
     RelativeLayout optionLayout;
-    LinearLayout waterMarkLayout;
+
     //this is for testing
 
     String tag = this.getClass().getName();
@@ -218,6 +218,24 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         optionLayout = (RelativeLayout) view.findViewById(R.id.option_layout);
         waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
 
+
+        OFHelper.v(tag, "OneFlow theme text color[" + sa.sdkTheme.getText_color() + "] ");
+        int colorTitle = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 1.0f);
+
+        surveyTitle.setTextColor(colorTitle);
+
+        int colorDesc = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.8f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), OFHelper.getAlphaNumber(80));
+        int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.6f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), OFHelper.getAlphaNumber(60));
+
+
+        surveyDescription.setTextColor(colorDesc);
+        ratingsNotLike.setTextColor(colorlike);
+        ratingsFullLike.setTextColor(colorlike);
+        starRatingLabel.setTextColor(colorlike);
+        ((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
+
+
+        handleWaterMarkStyle(sa.sdkTheme);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -349,7 +367,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         }
 
         OFHelper.v(tag, "OneFlow theme color [" + sa.themeColor + "]");
-        dashboardAdapter = new OFSurveyOptionsAdapter(getActivity(), surveyScreens.getInput(), this, sa.themeColor);
+        dashboardAdapter = new OFSurveyOptionsAdapter(getActivity(), surveyScreens.getInput(), this, sa.themeColor, OFHelper.handlerColor(sa.sdkTheme.getText_color()));
 
         surveyOptionRecyclerView.setLayoutManager(mLayoutManager);
         surveyOptionRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -378,7 +396,8 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
     private void submitButtonBeautification() {
         gdSubmit = (GradientDrawable) (submitButton).getBackground();
         gdSubmit.setColor(Color.parseColor(sa.themeColor));
-        int colorAlpha = ColorUtils.setAlphaComponent(Color.parseColor(sa.themeColor), 125);
+        int colorAlpha = OFHelper.manipulateColor(Color.parseColor(sa.themeColor),0.5f);;
+        submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
         submitButton.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -410,7 +429,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
 
         if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
             //submitButton.setVisibility(View.INVISIBLE);
-            gdSubmit.setColor(sa.getResources().getColor(R.color.ratings_focused));//Color.parseColor(sa.themeColor));
+            gdSubmit.setColor(colorAlpha);//Color.parseColor(sa.themeColor));
         } else {
             submitButton.setVisibility(View.GONE);
         }
@@ -667,7 +686,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         }
 
 
-       // OFHelper.v(tag, "OneFlow button size found[" + checkBoxSelection.size() + "]othervalue[" + str + "]btn[" + surveyScreens.getButtons() + "][" + surveyScreens.getButtons().size() + "]");
+        // OFHelper.v(tag, "OneFlow button size found[" + checkBoxSelection.size() + "]othervalue[" + str + "]btn[" + surveyScreens.getButtons() + "][" + surveyScreens.getButtons().size() + "]");
         if (checkBoxSelection.size() > 0) {
             if (surveyScreens.getButtons() != null) {
                 if (surveyScreens.getButtons().size() == 1) {
@@ -709,8 +728,8 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
                     cancelButton.setVisibility(View.VISIBLE);
                     cancelButton.setOnClickListener(this);*/
                 // }
-            }else{
-                OFHelper.e(tag,"Button list not found");
+            } else {
+                OFHelper.e(tag, "Button list not found");
             }
         } else {
             //In case of selection reverted

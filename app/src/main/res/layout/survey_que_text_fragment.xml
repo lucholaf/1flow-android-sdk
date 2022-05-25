@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                android:background="@color/white"
+                android:background="@color/full_transparancy"
                 android:gravity="top|left"
                 android:inputType="textMultiLine"
                 android:isScrollContainer="false"
@@ -114,6 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/skip_btn"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/btn_rounded_rectangle_watermark"
             android:layout_marginTop="15dp"
             android:padding="10dp">
 
@@ -124,6 +125,7 @@
                 android:src="@drawable/powered_by" />
 
             <com.oneflow.analytics.customwidgets.OFCustomTextView
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

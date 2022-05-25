@@ -22,7 +22,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:clickable="true"
-    android:padding="@dimen/field_padding">
+    android:layout_margin="2dp"
+    android:padding="6dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -34,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30sp"
-            android:padding="10dp"
+            android:padding="6dp"
             android:textColor="@color/black"
             android:text="@string/smileyHtml2" />
 

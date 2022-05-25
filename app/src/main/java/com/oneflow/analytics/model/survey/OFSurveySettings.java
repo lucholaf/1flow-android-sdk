@@ -35,7 +35,17 @@ public class OFSurveySettings extends OFBaseModel {
     private OFFrequencyCapping frequency_capping;
     @SerializedName("retake_survey")
     private OFRetakeSurvey retake_survey;
+    @SerializedName("sdk_theme")
+    private OFSDKSettingsTheme sdkTheme = new OFSDKSettingsTheme() ;
 
+
+    public OFSDKSettingsTheme getSdkTheme() {
+        return sdkTheme;
+    }
+
+    public void setSdkTheme(OFSDKSettingsTheme sdkTheme) {
+        this.sdkTheme = sdkTheme;
+    }
 
     public Boolean getClosedAsFinished() {
         return closedAsFinished;

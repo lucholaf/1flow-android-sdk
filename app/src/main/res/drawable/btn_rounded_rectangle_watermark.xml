@@ -18,17 +18,8 @@
   -->
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <stroke
-        android:width="0dp"
-        android:color="@color/new_theme_gray" />
 
-    <padding
-        android:bottom="0dip"
-        android:left="0dip"
-        android:right="0dip"
-        android:top="0dip" />
-
-    <solid android:color="@color/new_theme_gray" />
-
-    <corners android:radius="5dp"/>
+       <corners
+       android:radius="30dp"
+        />
 </shape>
