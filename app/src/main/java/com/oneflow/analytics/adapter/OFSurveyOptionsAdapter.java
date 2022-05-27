@@ -381,7 +381,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     ((MCQRadioViewHolder) holder).otherSubmit.setTag(surveyInputs.getChoices().get(position).getId() == null ? String.valueOf(position) : surveyInputs.getChoices().get(position).getId());
 
                     ((MCQRadioViewHolder) holder).othersEditText.setHintTextColor(OFHelper.manipulateColor(Color.parseColor(themeTextColor),0.3f));
-
+                    ((MCQRadioViewHolder) holder).othersEditText.setTextColor(OFHelper.manipulateColor(Color.parseColor(themeTextColor),1.0f));
                     ((MCQRadioViewHolder) holder).otherSubmit.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -501,6 +501,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     ((MCQCheckBoxViewHolder) holder).title.setText(surveyInputs.getChoices().get(position).getTitle());
                     ((MCQCheckBoxViewHolder) holder).title.setTextColor(Color.parseColor(themeTextColor));
                     ((MCQCheckBoxViewHolder) holder).othersEditText.setHintTextColor(OFHelper.manipulateColor(Color.parseColor(themeTextColor),0.3f));
+                    ((MCQCheckBoxViewHolder) holder).othersEditText.setTextColor(OFHelper.manipulateColor(Color.parseColor(themeTextColor),1.0f));
                     ((MCQCheckBoxViewHolder) holder).title.setTag(surveyInputs.getChoices().get(position).getId() == null ? String.valueOf(position) : surveyInputs.getChoices().get(position).getId());
                     ((MCQCheckBoxViewHolder) holder).title.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -522,6 +523,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     gdCheckbox.setColor(colorAlpha5);//mContext.getResources().getColor(R.color.new_theme_gray));
                     GradientDrawable submitGradient = (GradientDrawable) ((MCQCheckBoxViewHolder) holder).otherSubmit.getBackground();
                     submitGradient.setColor(Color.parseColor(themeColor));
+
                     ((MCQCheckBoxViewHolder) holder).otherSubmit.setTag(surveyInputs.getChoices().get(position).getId() == null ? String.valueOf(position) : surveyInputs.getChoices().get(position).getId());
                     ((MCQCheckBoxViewHolder) holder).otherSubmit.setOnClickListener(new View.OnClickListener() {
                         @Override

@@ -159,7 +159,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
         skipBtn.setOnClickListener(this);
 
-        surveyInputLimit.setTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.3f));
+        surveyInputLimit.setTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.5f));
 
 
         OFHelper.v(tag, "OneFlow list data[" + surveyScreens + "]");
@@ -193,6 +193,9 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         surveyInputLimit.setText("0/" + surveyScreens.getInput().getMax_chars());
         OFHelper.v(tag, " OneFlow onTextChanged min[" + surveyScreens.getInput().getMin_chars() + "]max[" + surveyScreens.getInput().getMax_chars() + "]");
         //setMaxLength(surveyScreens.getInput().getMax_chars());
+        userInput.setHintTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())),0.5f));
+        userInput.setTextColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())));
+        submitButton.requestFocus();
         userInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -261,9 +264,9 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
     private void submitButtonBeautification() {
         gdSubmit = (GradientDrawable) (submitButton).getBackground();
-        GradientDrawable gdOption = (GradientDrawable) optionLayout.getBackground();
+       // GradientDrawable gdOption = (GradientDrawable) optionLayout.getBackground();
         //submitButton.setVisibility(View.INVISIBLE);
-        gdOption.setColor(sa.getResources().getColor(R.color.white));
+        //gdOption.setColor(sa.getResources().getColor(R.color.white));
         int colorAlpha = OFHelper.manipulateColor(Color.parseColor(sa.themeColor),0.5f);
         gdSubmit.setColor(colorAlpha);//Color.parseColor(sa.themeColor));
 

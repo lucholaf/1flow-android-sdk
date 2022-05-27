@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -33,6 +34,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.oneflow.analytics.adapter.OFSurveyListAdapter;
+import com.oneflow.analytics.customwidgets.OFCustomEditText;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.model.OFFontSetup;
 import com.oneflow.analytics.model.events.OFRecordEventsTab;
@@ -53,7 +55,7 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
 
     String tag = this.getClass().getName();
     OFCustomTextView result, sendLogsToAPI;
-
+    OFCustomEditText fakeEditText;
     RecyclerView listOfSurvey;
 
     ArrayList<OFGetSurveyListResponse> slr;
@@ -67,6 +69,7 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
         result = (OFCustomTextView) findViewById(R.id.result);
         sendLogsToAPI = (OFCustomTextView) findViewById(R.id.send_log_to_api);
         listOfSurvey = (RecyclerView) findViewById(R.id.list_of_survey);
+        fakeEditText = (OFCustomEditText) findViewById(R.id.fake_edit_text);
 
         OFOneFlowSHP ofs = new OFOneFlowSHP(this);
 
@@ -93,17 +96,20 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
         //OneFlow.configure(this, "BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"1XdRfcEB8jVN05hkDk/+ltke3BHrQ3R9W35JBylCWzg=");//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//"u6NKK1Vx5xbx3TeOt3ASTGRABmN1gIhhnef53wwwGKo=");//"BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//
         //OneFlow.configure(getApplicationContext(), "uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==");//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");
         //OneFlow.configure(getApplicationContext(), "uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==");//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");
-        OFFontSetup titleSetup = new OFFontSetup(faceReg, 20F);
+       /* OFFontSetup titleSetup = new OFFontSetup(faceReg, 20F);
 
         OFFontSetup descriptionFont = new OFFontSetup(null, 12f);
 
-        OFFontSetup optionsFont = new OFFontSetup(faceBold, 12f);
+        OFFontSetup optionsFont = new OFFontSetup(faceBold, 12f);*/
 
-        String projectKey = "oneflow_prod_ghTA3yOAx9+KfK1Ezdpaf3TcN983BmhlRvDeP4pY4S1RQWpJKlys+7HGFpZ4h1ljwSx++5GTJyzxo6WglmLpJA==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
+        String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
 
         OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);
         OneFlow.shouldShowSurvey(true);
         OneFlow.shouldPrintLog(true);
+
+        fakeEditText.setHintTextColor(Color.parseColor("#00ff00"));
+        fakeEditText.setTextColor(Color.parseColor("#0000ff"));
 
     }
 
