@@ -23,6 +23,7 @@ import android.content.Intent;
 
 import com.oneflow.analytics.OFSurveyActivity;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
+import com.oneflow.analytics.repositories.OFEventDBRepo;
 import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
@@ -86,44 +87,53 @@ public class OFSurveyController implements OFMyResponseHandler {
                         OFHelper.makeText(mContext, reserved, 1);
                     }
                 }
-
-                //OFEventDBRepo.fetchEventsBeforeSurvey(mContext, this, OFConstants.ApiHitType.fetchEventsBeforSurveyFetched);
+                //Enabled again on 13/June/22
+                OFEventDBRepo.fetchEventsBeforeSurvey(mContext, this, OFConstants.ApiHitType.fetchEventsBeforSurveyFetched);
                 break;
             case fetchEventsBeforSurveyFetched:
                 String[] name = (String[]) obj;
-                OFHelper.v("SurveyController", "OneFlow events before survey found[" + Arrays.asList(name) + "]");
-                OFGetSurveyListResponse surveyItem = checkSurveyTitleAndScreens(Arrays.asList(name));
-                OFHelper.v("SurveyController", "OneFlow survey found[" + surveyItem + "]");
-                if (surveyItem != null) {
-                      if (surveyItem.getScreens() != null) {
+                OFHelper.v("SurveyController", "OneFlow events before survey found[" + Arrays.asList(name) + "]length["+name.length+"]");
+                if(name.length>0) {
+                    Object[] ret = checkSurveyTitleAndScreens(Arrays.asList(name));
+                    OFGetSurveyListResponse surveyItem = (OFGetSurveyListResponse) ret[1];
+                    OFHelper.v("SurveyController", "OneFlow survey found[" + surveyItem + "]");
+                    if (surveyItem != null) {
+                        if (surveyItem.getScreens() != null) {
 
-                        OFHelper.v("OneFlow", "OneFlow screens not null");
+                            OFHelper.v("OneFlow", "OneFlow screens not null");
 
-                        if (surveyItem.getScreens().size() > 0) {
-                            new OFOneFlowSHP(mContext).storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
-                            Intent intent = new Intent(mContext.getApplicationContext(), OFSurveyActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
-                            mContext.getApplicationContext().startActivity(intent);
-                        }else{
-                            OFHelper.v("SurveyController","OneFlow no older survey found");
+                            if (surveyItem.getScreens().size() > 0) {
+                                new OFOneFlowSHP(mContext).storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
+                                Intent intent = new Intent(mContext.getApplicationContext(), OFSurveyActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
+                                intent.putExtra("eventName", (String) ret[0]);
+                                mContext.getApplicationContext().startActivity(intent);
+                            } else {
+                                OFHelper.v("SurveyController", "OneFlow no older survey found");
+                            }
+
                         }
 
                     }
-
                 }
-
 
                 break;
         }
 
     }
 
-    private OFGetSurveyListResponse checkSurveyTitleAndScreens(List<String> type) {
+    /**
+     * This method will return survey and its event name
+     * @param type
+     * @return [0] = event name [1] = Survey data
+     */
+    private Object[] checkSurveyTitleAndScreens(List<String> type) {
+        Object []ret = new Object[2];
         OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
         if (ofs.getBooleanValue(OFConstants.SHP_SHOULD_SHOW_SURVEY,true)) {
             ArrayList<OFGetSurveyListResponse> slr = ofs.getSurveyList();
-            OFGetSurveyListResponse gslr = null;
+            //OFGetSurveyListResponse gslr = null;
             //ArrayList<SurveyScreens> surveyScreens = null;
 
             int counter = 0;
@@ -138,10 +148,11 @@ public class OFSurveyController implements OFMyResponseHandler {
                     for (String name : type) {
 
                         if (item.getTrigger_event_name().contains(name)) {
-                            gslr = item;
+                          //  gslr = item;
                             recordFound = true;
                             OFHelper.v("SurveyController", "OneFlow survey from against[" + name + "]");
-
+                            ret[0]=name;
+                            ret[1]=item;
                             break;
                         }
                     }
@@ -154,7 +165,7 @@ public class OFSurveyController implements OFMyResponseHandler {
 
             //retake survey check not required
 
-            return gslr;
+            return ret;
         }else{
             return null;
         }

@@ -33,21 +33,19 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
 
     public Context context;
 
+
     @Override
     public void onReceive(final Context context, final Intent intent) {
 
         this.context = context;
         // int status = NetworkUtil.getConnectivityStatusString(context);
         //Helper.makeText(context,"OneFlow Receiver called ["+intent.getAction()+"]",1);
-        OFHelper.v("NetworkChangeReceiver", "OneFlow network state changes[" + OFHelper.isConnected(context) + "]");
-
 
         if (OFHelper.isConnected(context)) {
             // Helper.makeText(context,"Network available",1);
-
-            OFLocationResponse lr = new OFOneFlowSHP(context).getUserLocationDetails();
-
-            if (lr != null) {
+            OFOneFlowSHP shp = new OFOneFlowSHP(context);
+           // OFLocationResponse lr = new OFOneFlowSHP(context).getUserLocationDetails();
+            if (shp.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN,false)) {
                 checkOffLineSurvey();
             } else {
                 String projectKey = new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP);

@@ -45,7 +45,7 @@ public class OFLogUserRepo {
         try {
             Call<OFGenericResponse<OFLogUserResponse>> responseCall = null;
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/Log-user/incoming_webhook/anonymous-user-api";
-            responseCall = connectAPI.logUser(headerKey,lur,url);
+            responseCall = connectAPI.logUser(headerKey,lur);//,url);
 
             responseCall.enqueue(new Callback<OFGenericResponse<OFLogUserResponse>>() {
                 @Override

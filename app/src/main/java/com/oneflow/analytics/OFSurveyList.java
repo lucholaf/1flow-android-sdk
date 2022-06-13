@@ -59,7 +59,7 @@ public class OFSurveyList extends OFSDKBaseActivity {
         public void onClick(View v) {
             String tag = (String) v.getTag();
 
-            //GetSurveyListResponse surveyItem = checkSurveyTitleAndScreens(tag);
+
 
             HashMap<String,String> mapvalues = new HashMap<String, String>();
             mapvalues.put("testKey1","testValue1");

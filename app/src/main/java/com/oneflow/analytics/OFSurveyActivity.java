@@ -105,111 +105,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
 
     //public HashMap<Integer,String> colorCode;
 
-   /* public void initHashMap(){
-        colorCode = new HashMap<>();
-        colorCode.put(100,"FF");
-        colorCode.put(99,"FC");
-        colorCode.put(98,"FA");
-        colorCode.put(97,"F7");
-        colorCode.put(96,"F5");
-        colorCode.put(95,"F2");
-        colorCode.put(94,"F0");
-        colorCode.put(93,"ED");
-        colorCode.put(92,"EB");
-        colorCode.put(91,"E8");
-        colorCode.put(90,"E6");
-        colorCode.put(89,"E3");
-        colorCode.put(88,"E0");
-        colorCode.put(87,"DE");
-        colorCode.put(86,"DB");
-        colorCode.put(85,"D9");
-        colorCode.put(84,"D6");
-        colorCode.put(83,"D4");
-        colorCode.put(82,"D1");
-        colorCode.put(81,"CF");
-        colorCode.put(80,"CC");
-        colorCode.put(79,"C9");
-        colorCode.put(78,"C7");
-        colorCode.put(77,"C4");
-        colorCode.put(76,"C2");
-        colorCode.put(75,"BF");
-        colorCode.put(74,"BD");
-        colorCode.put(73,"BA");
-        colorCode.put(72,"B8");
-        colorCode.put(71,"B5");
-        colorCode.put(70,"B3");
-        colorCode.put(69,"B0");
-        colorCode.put(68,"AD");
-        colorCode.put(67,"AB");
-        colorCode.put(66,"A8");
-        colorCode.put(65,"A6");
-        colorCode.put(64,"A3");
-        colorCode.put(63,"A1");
-        colorCode.put(62,"9E");
-        colorCode.put(61,"9C");
-        colorCode.put(60,"99");
-        colorCode.put(59,"96");
-        colorCode.put(58,"94");
-        colorCode.put(57,"91");
-        colorCode.put(56,"8F");
-        colorCode.put(55,"8C");
-        colorCode.put(54,"8A");
-        colorCode.put(53,"87");
-        colorCode.put(52,"85");
-        colorCode.put(51,"82");
-        colorCode.put(50,"80");
-        colorCode.put(49,"7D");
-        colorCode.put(48,"7A");
-        colorCode.put(47,"78");
-        colorCode.put(46,"75");
-        colorCode.put(45,"73");
-        colorCode.put(44,"70");
-        colorCode.put(43,"6E");
-        colorCode.put(42,"6B");
-        colorCode.put(41,"69");
-        colorCode.put(40,"66");
-        colorCode.put(39,"63");
-        colorCode.put(38,"61");
-        colorCode.put(37,"5E");
-        colorCode.put(36,"5C");
-        colorCode.put(35,"59");
-        colorCode.put(34,"57");
-        colorCode.put(33,"54");
-        colorCode.put(32,"52");
-        colorCode.put(31,"4F");
-        colorCode.put(30,"4D");
-        colorCode.put(29,"4A");
-        colorCode.put(28,"47");
-        colorCode.put(27,"45");
-        colorCode.put(26,"42");
-        colorCode.put(25,"40");
-        colorCode.put(24,"3D");
-        colorCode.put(23,"3B");
-        colorCode.put(22,"38");
-        colorCode.put(21,"36");
-        colorCode.put(20,"33");
-        colorCode.put(19,"30");
-        colorCode.put(18,"2E");
-        colorCode.put(17,"2B");
-        colorCode.put(16,"29");
-        colorCode.put(15,"26");
-        colorCode.put(14,"24");
-        colorCode.put(13,"21");
-        colorCode.put(12,"1F");
-        colorCode.put(11,"1C");
-        colorCode.put(10,"1A");
-        colorCode.put(9,"17");
-        colorCode.put(8,"14");
-        colorCode.put(7,"12");
-        colorCode.put(6,"0F");
-        colorCode.put(5,"0D");
-        colorCode.put(4,"0A");
-        colorCode.put(3,"08");
-        colorCode.put(2,"05");
-        colorCode.put(1,"03");
-        colorCode.put(0,"00");
 
-    }*/
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -257,7 +153,7 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
 
 
         surveyName = surveyItem.getName();
-        screens = surveyItem.getScreens();//checkSurveyTitleAndScreens(surveyType);
+        screens = surveyItem.getScreens();
         triggerEventName = this.getIntent().getStringExtra("eventName");//surveyItem.getTrigger_event_name();
         // Helper.makeText(getApplicationContext(),"Size ["+screens.size()+"]",1);
         setProgressMax(surveyItem.getScreens().size() - 1); // -1 for excluding thankyou page from progress bar

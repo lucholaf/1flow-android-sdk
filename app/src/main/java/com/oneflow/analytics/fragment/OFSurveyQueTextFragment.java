@@ -306,7 +306,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
-        View[] animateViews = new View[]{surveyTitle, surveyDescription, optionLayout, submitButton, skipBtn};
+        View[] animateViews = new View[]{surveyTitle, surveyDescription, optionLayout, submitButton};//, skipBtn};
 
 
         Animation[] annim = new Animation[]{animation1, animation2, animation3, animation4, animation5};

@@ -36,7 +36,7 @@ public interface OFConstants {
     String SDKVERSIONSHP = "sdk_version_key";
     String BRACTION_EVENTS = "one_flow_submit_events";
     String BRACTION_SURVEYS = "one_flow_submit_surveys";
-    String AUTOEVENT_FIRSTOPEN = "first_open";
+    String AUTOEVENT_FIRSTOPEN = "first_open"; //Used for sharedpref also
     String AUTOEVENT_APPUPDATE = "app_updated";
     String AUTOEVENT_SESSIONSTART = "session_start";
     String AUTOEVENT_INAPP_PURCHASE = "in_app_purchase";
@@ -50,6 +50,8 @@ public interface OFConstants {
     String SHP_DEVICE_UNIQUE_ID = "device_unique_id";
     String SHP_SHOULD_PRINT_LOG = "should_print_log";
     String SHP_LOG_USER_KEY = "log_user_key";
+    String SHP_NETWORK_LISTENER = "network_listener";
+    String SHP_TIMER_LISTENER = "timer_listener";
 
 
     String surveyDetail = "surveyDetail";
@@ -59,7 +61,7 @@ public interface OFConstants {
 
 
     enum ApiHitType{
-        Config,CreateUser, CreateSession, RecordLogs, fetchEventsFromDB, sendEventsToAPI, insertEventsInDB,
+        Config, FirstOpen, CreateUser, CreateSession, RecordLogs, fetchEventsFromDB, sendEventsToAPI, insertEventsInDB,
         deleteEventsFromDB, logUser, insertSurveyInDB, fetchSurveysFromDB, deleteSurveyFromDB, fetchLocation,
         fetchSurveysFromAPI,fetchEventsBeforSurveyFetched,fetchSubmittedSurvey,checkResurveyNSubmission,updateSurveyIds,
         surveySubmited

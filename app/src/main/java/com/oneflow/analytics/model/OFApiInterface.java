@@ -41,39 +41,47 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 
+
 public interface OFApiInterface {
 
-    @POST//("v1/2021-06-15/project_users")
-    Call<OFGenericResponse<OFAddUserResultResponse>> addUserComman(@Header("one_flow_key") String headerKey, @Body OFAddUserRequest aur, @Url String url);
+    @POST("add-user")
+    Call<OFGenericResponse<OFAddUserResultResponse>> addUserComman(@Header("one_flow_key") String headerKey, @Body OFAddUserRequest aur);//, @Url String url);
 
-    @POST//("v1/2021-06-15/sessions")
-    Call<OFGenericResponse<OFCreateSessionResponse>> createSession(@Header("one_flow_key") String headerKey, @Body OFCreateSessionRequest aur, @Url String url);
+    @POST("add-session")
+    Call<OFGenericResponse<OFCreateSessionResponse>> createSession(@Header("one_flow_key") String headerKey, @Body OFCreateSessionRequest aur);//, @Url String url);
 
-    @GET//("v1/2021-06-15/survey")
+/*
+@Url String url,
+ @Query("mode") String mode
+*
+* */
+    @GET("surveys")
     Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> getSurvey(@Header("one_flow_key") String headerKey,
-                                                                          @Url String url,
+
                                                                           @Query("platform") String platform,
-                                                                          @Query("mode") String mode,
                                                                           @Query("user_id") String userId,
                                                                           @Query("session_id") String sessionId
+
+
+
+
     );
 
     @GET("v1/2021-06-15/location")
     Call<OFLocationResponse> getLocation(@Header("one_flow_key") String headerKey);
 
-    @POST//("v1/2021-06-15/survey-response")
-    Call<OFGenericResponse<String>> submitSurveyUserResponse(@Header("one_flow_key") String headerKey, @Body OFSurveyUserInput aur, @Url String url);
+    @POST("add-responses")
+    Call<OFGenericResponse> submitSurveyUserResponse(@Header("one_flow_key") String headerKey, @Body OFSurveyUserInput aur);//, @Url String url);
 
     ///@POST("v1/2021-06-15/events/bulk")
-    @POST  //("https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/events-bulk/incoming_webhook/insert-events")
-    Call<OFGenericResponse<OFEventSubmitResponse>> uploadAllUnSyncedEvents(@Header("one_flow_key") String headerKey, @Body OFEventAPIRequest ear, @Url String url);
+    @POST("events")
+    Call<OFGenericResponse> uploadAllUnSyncedEvents(@Header("one_flow_key") String headerKey, @Body OFEventAPIRequest ear);//, @Url String url);
 
     @GET("v1/2021-06-15/keys/{project_id}")
     Call<String> fetchProjectDetails(@Header("one_flow_key") String headerKey,@Path("project_id") String projectKey);
 
-    @POST//("v1/2021-06-15/project_users/log_user")
-    Call<OFGenericResponse<OFLogUserResponse>> logUser(@Header("one_flow_key") String headerKey, @Body OFLogUserRequest request, @Url String url);
-
+    @POST("log-user")
+    Call<OFGenericResponse<OFLogUserResponse>> logUser(@Header("one_flow_key") String headerKey, @Body OFLogUserRequest request);//, @Url String url);
 
 
    /* @POST("v1/2021-06-15/json")

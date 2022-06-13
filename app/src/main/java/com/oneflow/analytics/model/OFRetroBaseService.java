@@ -35,10 +35,11 @@ public class OFRetroBaseService {
     public static String urlPrefix = "https://";
 
 
-    public static String baseDomainDev = "dev.1flow.app/api/";
+    public static String baseDomainDev = "ez37ppkkcs.eu-west-1.awsapprunner.com/api/2021-06-15/";
    // public static String baseDomainProd = "1flow.app/api/";
     //public static String baseDomainProd = "api.1flow.app/";
-    public static String baseDomainProd = "api.1flow.app/";
+    //public static String baseDomainProd = "api.1flow.app/";
+    public static String baseDomainProd = "y33xx6sddf.eu-west-1.awsapprunner.com/api/2021-06-15/";
 
     public static final String BASE_URL = urlPrefix+ baseDomainProd;
 
@@ -48,6 +49,7 @@ public class OFRetroBaseService {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         //.readTimeout(120, TimeUnit.SECONDS)
+        //.addInterceptor(interceptor)
         OkHttpClient clientDev = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)

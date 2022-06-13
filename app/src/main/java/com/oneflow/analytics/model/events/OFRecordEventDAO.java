@@ -28,13 +28,19 @@ import java.util.List;
 public interface OFRecordEventDAO {
 
     @Insert
-    void insertAll(OFRecordEventsTab ret);
+    long insertAll(OFRecordEventsTab ret);
 
     @Query("Select * from RecordEvents")
     OFRecordEventsTab getAllRecordedEvents();
 
     @Query("Select name from RecordEvents where created_on<:surveyTime")
     String[] getEventBeforeSurvey(Long surveyTime);
+
+   /* @Query("Select * from RecordEvents")// where name like :eventName
+    List<OFRecordEventsTab> findIfEventAlreadyLogged();//String eventName);*/
+
+    @Query("Select name from RecordEvents where created_on>:surveyTime order by created_on")
+    String[] getEventBeforeSurvey3Sec(Long surveyTime);
 
     @Query("Select * from RecordEvents where synced = 0")
     List<OFRecordEventsTab> getAllUnsyncedEvents();

@@ -49,14 +49,15 @@ public class OFSurvey {
         try {
             Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> responseCall = null;
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys";
-            responseCall = connectAPI.getSurvey(headerKey, url,"android", OFConstants.MODE,userId,sessionId);
+            //responseCall = connectAPI.getSurvey(headerKey, url,"android", OFConstants.MODE,userId,sessionId);
+            responseCall = connectAPI.getSurvey(headerKey, "android", userId,sessionId);//,OFConstants.MODE);
 
             responseCall.enqueue(new Callback<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>>() {
                 @Override
                 public void onResponse(Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> call, Response<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> response) {
 
 
-                    OFHelper.v(tag,"OneFlow survey list response["+response.isSuccessful()+"]");
+                    OFHelper.v(tag,"OneFlow recordEvents survey list response["+response.isSuccessful()+"]at ["+OFHelper.formatedDate(System.currentTimeMillis(),"dd-MM-yyyy hh:mm:ss.SSS")+"]");
 
                     if (response.isSuccessful()) {
 
@@ -86,13 +87,13 @@ public class OFSurvey {
     public static void submitUserResponse(String headerKey, OFSurveyUserInput sur, OFConstants.ApiHitType type,OFMyResponseHandler handler) {
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
-            Call<OFGenericResponse<String>> responseCall = null;
+            Call<OFGenericResponse> responseCall = null;
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/add_survey_response";
-            responseCall = connectAPI.submitSurveyUserResponse(headerKey, sur, url);
+            responseCall = connectAPI.submitSurveyUserResponse(headerKey, sur);//, url);
 
-            responseCall.enqueue(new Callback<OFGenericResponse<String>>() {
+            responseCall.enqueue(new Callback<OFGenericResponse>() {
                 @Override
-                public void onResponse(Call<OFGenericResponse<String>> call, Response<OFGenericResponse<String>> response) {
+                public void onResponse(Call<OFGenericResponse> call, Response<OFGenericResponse> response) {
 
 
                     OFHelper.v(tag, "OneFlow reached success[" + response.isSuccessful() + "]");
@@ -126,7 +127,7 @@ public class OFSurvey {
                 }
 
                 @Override
-                public void onFailure(Call<OFGenericResponse<String>> call, Throwable t) {
+                public void onFailure(Call<OFGenericResponse> call, Throwable t) {
 
                     OFHelper.e(tag, "OneFlow error[" + t.toString() + "]");
                     OFHelper.e(tag, "OneFlow errorMsg[" + t.getMessage() + "]");
@@ -141,13 +142,13 @@ public class OFSurvey {
     public static void submitUserResponseOffline(Context context, OFSurveyUserInput sur, OFMyResponseHandler mrh, OFConstants.ApiHitType type) {
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
-            Call<OFGenericResponse<String>> responseCall = null;
+            Call<OFGenericResponse> responseCall = null;
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/add_survey_response";
-            responseCall = connectAPI.submitSurveyUserResponse(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP), sur, url);
+            responseCall = connectAPI.submitSurveyUserResponse(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP), sur);//, url);
 
-            responseCall.enqueue(new Callback<OFGenericResponse<String>>() {
+            responseCall.enqueue(new Callback<OFGenericResponse>() {
                 @Override
-                public void onResponse(Call<OFGenericResponse<String>> call, Response<OFGenericResponse<String>> response) {
+                public void onResponse(Call<OFGenericResponse> call, Response<OFGenericResponse> response) {
 
 
                     OFHelper.v(tag, "OneFlow reached success[" + response.isSuccessful() + "]");
@@ -181,7 +182,7 @@ public class OFSurvey {
                 }
 
                 @Override
-                public void onFailure(Call<OFGenericResponse<String>> call, Throwable t) {
+                public void onFailure(Call<OFGenericResponse> call, Throwable t) {
 
                     OFHelper.e(tag, "OneFlow error[" + t.toString() + "]");
                     OFHelper.e(tag, "OneFlow errorMsg[" + t.getMessage() + "]");

@@ -41,8 +41,8 @@ public class OFCreateSession {
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
             Call<OFGenericResponse<OFCreateSessionResponse>> responseCall = null;
-            String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/sessions/incoming_webhook/add_sessions";
-            responseCall = connectAPI.createSession(headerKey,csr,url);
+           // String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/sessions/incoming_webhook/add_sessions";
+            responseCall = connectAPI.createSession(headerKey,csr);//,url);
 
             responseCall.enqueue(new Callback<OFGenericResponse<OFCreateSessionResponse>>() {
                 @Override

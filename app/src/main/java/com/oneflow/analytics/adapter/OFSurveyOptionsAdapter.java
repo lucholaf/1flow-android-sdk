@@ -151,7 +151,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.surveyInputs = surveyInputs;
         this.themeColor = themeColor;
         this.themeTextColor = themeTextColor;
-        OFHelper.v(tag, "OneFlow theme color [" + themeColor + "]input type [" + surveyInputs.getInput_type() + "]childSize[" + new Gson().toJson(surveyInputs.getRatingsList()) + "]");
+        //OFHelper.v(tag, "OneFlow theme color [" + themeColor + "]input type [" + surveyInputs.getInput_type() + "]childSize[" + new Gson().toJson(surveyInputs.getRatingsList()) + "]");
         if (surveyInputs.getInput_type().equalsIgnoreCase("rating-emojis")) {
             viewType = 4;
             listSize = surveyInputs.getRatingsList().size();
@@ -199,7 +199,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        OFHelper.v(tag, "OneFlow createViewHolder called viewtype [" + viewType + "]");
+        //OFHelper.v(tag, "OneFlow createViewHolder called viewtype [" + viewType + "]");
         switch (viewType) {
             case 0:
                 //numericals
@@ -236,10 +236,10 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     CheckBox cbGlobal;
 
     public String handleCheckboxFromOutside() {
-        OFHelper.v(tag, "OneFlow handleCheckboxFromOutside [" + otherLayoutGlobal + "]");
+       // OFHelper.v(tag, "OneFlow handleCheckboxFromOutside [" + otherLayoutGlobal + "]");
         String retString = "";
         if (otherLayoutGlobal != null) {
-            OFHelper.v(tag, "OneFlow handleCheckboxFromOutside [" + otherLayoutGlobal.getVisibility() + "]");
+        //    OFHelper.v(tag, "OneFlow handleCheckboxFromOutside [" + otherLayoutGlobal.getVisibility() + "]");
             if (otherLayoutGlobal.getVisibility() == View.VISIBLE) {
                 otherLayoutGlobal.setVisibility(View.GONE);
                 cbGlobal.setText(otherLayoutGlobal.getTag().toString());
@@ -260,11 +260,11 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        OFHelper.v(tag, "OneFlow viewtype [" + viewType + "]5["+OFHelper.getAlphaNumber(5)+"]");
+        //OFHelper.v(tag, "OneFlow viewtype [" + viewType + "]5["+OFHelper.getAlphaNumber(5)+"]");
         int colorAlpha = OFHelper.manipulateColor(Color.parseColor(themeTextColor),0.5f);//ColorUtils.setAlphaComponent(Color.parseColor(themeColor), OFHelper.getAlphaNumber(0.));
         int colorAlpha5 = OFHelper.manipulateColor(Color.parseColor(themeTextColor),0.05f);//ColorUtils.setAlphaComponent(Color.parseColor(themeTextColor), OFHelper.getAlphaNumber(25));
         //int colorAlpha5 = OFHelper.lighten(Color.parseColor(themeTextColor),0.d);
-        OFHelper.v(tag, "OneFlow colorAlpha 50[" + colorAlpha + "]colorAlpha5["+colorAlpha5+"]");
+      //  OFHelper.v(tag, "OneFlow colorAlpha 50[" + colorAlpha + "]colorAlpha5["+colorAlpha5+"]");
         int statesRadio[][] = {{android.R.attr.state_checked}, {}};
         int colorsRadio[] = {Color.parseColor(themeColor), mContext.getResources().getColor(R.color.ratings_focused)};
         try {
@@ -336,14 +336,14 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     break;
                 case 1:
                     //Radio
-                    OFHelper.v(tag, "OneFlow title [" + surveyInputs.getChoices().get(position).getTitle() + "]tag[" + surveyInputs.getChoices().get(position).getId() + "]");
+            //        OFHelper.v(tag, "OneFlow title [" + surveyInputs.getChoices().get(position).getTitle() + "]tag[" + surveyInputs.getChoices().get(position).getId() + "]");
 
                     if (OneFlow.optionsFace != null) {
                         if (OneFlow.optionsFace.getTypeface() != null) {
                             ((MCQRadioViewHolder) holder).title.setTypeface(OneFlow.optionsFace.getTypeface());
                         }
                         if (OneFlow.optionsFace.getFontSize() != null) {
-                            OFHelper.v(tag, "OneFlow changing font size");
+             //               OFHelper.v(tag, "OneFlow changing font size");
                             ((MCQRadioViewHolder) holder).title.setTextSize(OneFlow.optionsFace.getFontSize());
                         }
                     }
@@ -489,7 +489,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     ((TextViewHolder) holder).title.setTextColor(Color.parseColor(themeTextColor));
                     break;
                 case 3:
-                    OFHelper.v(tag, "OneFlow title [" + surveyInputs.getChoices().get(position).getTitle() + "]tag[" + surveyInputs.getChoices().get(position).getId() + "]");
+                //    OFHelper.v(tag, "OneFlow title [" + surveyInputs.getChoices().get(position).getTitle() + "]tag[" + surveyInputs.getChoices().get(position).getId() + "]");
                     if (OneFlow.optionsFace != null) {
                         if (OneFlow.optionsFace.getTypeface() != null) {
                             ((MCQCheckBoxViewHolder) holder).title.setTypeface(OneFlow.optionsFace.getTypeface());
@@ -654,7 +654,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     });
                     break;
                 case 5:
-                    OFHelper.v(tag, "OneFlow binding views");
+                //    OFHelper.v(tag, "OneFlow binding views");
 
                     if (surveyInputs.getRatingsList().get(position).getSelected()) {
                         ((RatingsStar) holder).stars.setImageDrawable(mContext.getResources().getDrawable(R.drawable.selected_star));//mContext.getResources().getDrawable(R.drawable.ic_baseline_star_92));

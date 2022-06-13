@@ -41,15 +41,15 @@ public class OFEventAPIRepo {
         OFHelper.v(tag,"OneFlow sendLogsToApi reached");
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
-            Call<OFGenericResponse<OFEventSubmitResponse>> responseCall = null;
+            Call<OFGenericResponse> responseCall = null;
 
 
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/events-bulk/incoming_webhook/insert-events";
-            responseCall = connectAPI.uploadAllUnSyncedEvents(headerKey,ear,url);
+            responseCall = connectAPI.uploadAllUnSyncedEvents(headerKey,ear);//,url);
 
-            responseCall.enqueue(new Callback<OFGenericResponse<OFEventSubmitResponse>>() {
+            responseCall.enqueue(new Callback<OFGenericResponse>() {
                 @Override
-                public void onResponse(Call<OFGenericResponse<OFEventSubmitResponse>> call, Response<OFGenericResponse<OFEventSubmitResponse>> response) {
+                public void onResponse(Call<OFGenericResponse> call, Response<OFGenericResponse> response) {
                     OFHelper.v(tag, "OneFlow sendLogsToApi reached success["+response.isSuccessful()+"]");
                     OFHelper.v(tag, "OneFlow sendLogsToApi reached success raw["+response.raw()+"]");
                     OFHelper.v(tag, "OneFlow sendLogsToApi reached success errorBody["+response.errorBody()+"]");
@@ -66,7 +66,7 @@ public class OFEventAPIRepo {
                 }
 
                 @Override
-                public void onFailure(Call<OFGenericResponse<OFEventSubmitResponse>> call, Throwable t) {
+                public void onFailure(Call<OFGenericResponse> call, Throwable t) {
 
 
                     OFHelper.e(tag,"OneFlow error["+t.toString()+"]");
