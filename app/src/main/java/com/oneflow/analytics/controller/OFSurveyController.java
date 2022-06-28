@@ -71,55 +71,59 @@ public class OFSurveyController implements OFMyResponseHandler {
     public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
 
         OFHelper.v("SurveyController","OneFlow onReceived called type["+hitType+"]");
-        switch (hitType) {
-            case fetchSurveysFromAPI:
-                OFHelper.v("SurveyController","OneFlow survey received");
 
-                ArrayList<OFGetSurveyListResponse> surveyListResponse = (ArrayList<OFGetSurveyListResponse>)obj;
-                if(surveyListResponse!=null) {
-                    new OFOneFlowSHP(mContext).setSurveyList(surveyListResponse);
+            switch (hitType) {
+                case fetchSurveysFromAPI:
+                    OFHelper.v("SurveyController", "OneFlow survey received");
+                    if(obj!=null) {
+                        ArrayList<OFGetSurveyListResponse> surveyListResponse = (ArrayList<OFGetSurveyListResponse>) obj;
+                        if (surveyListResponse != null) {
+                            new OFOneFlowSHP(mContext).setSurveyList(surveyListResponse);
 
-                    Intent intent = new Intent("survey_list_fetched");
-                    mContext.sendBroadcast(intent);
+                            Intent intent = new Intent("survey_list_fetched");
+                            mContext.sendBroadcast(intent);
 
-                }else{
-                    if(OFConstants.MODE.equalsIgnoreCase("dev")) {
-                        OFHelper.makeText(mContext, reserved, 1);
-                    }
-                }
-                //Enabled again on 13/June/22
-                OFEventDBRepo.fetchEventsBeforeSurvey(mContext, this, OFConstants.ApiHitType.fetchEventsBeforSurveyFetched);
-                break;
-            case fetchEventsBeforSurveyFetched:
-                String[] name = (String[]) obj;
-                OFHelper.v("SurveyController", "OneFlow events before survey found[" + Arrays.asList(name) + "]length["+name.length+"]");
-                if(name.length>0) {
-                    Object[] ret = checkSurveyTitleAndScreens(Arrays.asList(name));
-                    OFGetSurveyListResponse surveyItem = (OFGetSurveyListResponse) ret[1];
-                    OFHelper.v("SurveyController", "OneFlow survey found[" + surveyItem + "]");
-                    if (surveyItem != null) {
-                        if (surveyItem.getScreens() != null) {
-
-                            OFHelper.v("OneFlow", "OneFlow screens not null");
-
-                            if (surveyItem.getScreens().size() > 0) {
-                                new OFOneFlowSHP(mContext).storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
-                                Intent intent = new Intent(mContext.getApplicationContext(), OFSurveyActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
-                                intent.putExtra("eventName", (String) ret[0]);
-                                mContext.getApplicationContext().startActivity(intent);
-                            } else {
-                                OFHelper.v("SurveyController", "OneFlow no older survey found");
+                        } else {
+                            if (OFConstants.MODE.equalsIgnoreCase("dev")) {
+                                OFHelper.makeText(mContext, reserved, 1);
                             }
-
                         }
-
+                        //Enabled again on 13/June/22
+                        OFEventDBRepo.fetchEventsBeforeSurvey(mContext, this, OFConstants.ApiHitType.fetchEventsBeforSurveyFetched);
                     }
-                }
+                    break;
+                case fetchEventsBeforSurveyFetched:
+                    if(obj!=null) {
+                        String[] name = (String[]) obj;
+                        OFHelper.v("SurveyController", "OneFlow events before survey found[" + Arrays.asList(name) + "]length[" + name.length + "]");
+                        if (name.length > 0) {
+                            Object[] ret = checkSurveyTitleAndScreens(Arrays.asList(name));
+                            OFGetSurveyListResponse surveyItem = (OFGetSurveyListResponse) ret[1];
+                            OFHelper.v("SurveyController", "OneFlow survey found[" + surveyItem + "]");
+                            if (surveyItem != null) {
+                                if (surveyItem.getScreens() != null) {
 
-                break;
-        }
+                                    OFHelper.v("OneFlow", "OneFlow screens not null");
+
+                                    if (surveyItem.getScreens().size() > 0) {
+                                        new OFOneFlowSHP(mContext).storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
+                                        Intent intent = new Intent(mContext.getApplicationContext(), OFSurveyActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        intent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
+                                        intent.putExtra("eventName", (String) ret[0]);
+                                        mContext.getApplicationContext().startActivity(intent);
+                                    } else {
+                                        OFHelper.v("SurveyController", "OneFlow no older survey found");
+                                    }
+
+                                }
+
+                            }
+                        }
+                    }
+                    break;
+            }
+
 
     }
 

@@ -953,24 +953,26 @@ public class OFSurveyActivity extends AppCompatActivity implements OFMyResponseH
             case surveySubmited:
 
                 OFHelper.v(tag, "OneFlow survey submitted successfully");
-                OFSurveyUserInput sur = (OFSurveyUserInput) obj;
-                //Updating survey once data is sent to server, Sending type null as return is not required
-                OFLogUserDBRepo.updateSurveyInput(OFSurveyActivity.this, null, null, true, sur.get_id());
+                if(obj!=null) {
+                    OFSurveyUserInput sur = (OFSurveyUserInput) obj;
+                    //Updating survey once data is sent to server, Sending type null as return is not required
+                    OFLogUserDBRepo.updateSurveyInput(OFSurveyActivity.this, null, null, true, sur.get_id());
 
-                new OFOneFlowSHP(OFSurveyActivity.this).storeValue(sur.getSurvey_id(), Calendar.getInstance().getTimeInMillis());
+                    new OFOneFlowSHP(OFSurveyActivity.this).storeValue(sur.getSurvey_id(), Calendar.getInstance().getTimeInMillis());
 
-                Intent intent = new Intent("survey_finished");
+                    Intent intent = new Intent("survey_finished");
 
-                OFFinishCallBack finishData = new OFFinishCallBack();
-                finishData.setStatus(surveyClosingStatus);
-                finishData.setSurveyId(sur.getSurvey_id());
-                finishData.setSurveyName(surveyName);
-                finishData.setTriggerName(sur.getTrigger_event());
-                finishData.setScreens(prepareFinishCallback());
+                    OFFinishCallBack finishData = new OFFinishCallBack();
+                    finishData.setStatus(surveyClosingStatus);
+                    finishData.setSurveyId(sur.getSurvey_id());
+                    finishData.setSurveyName(surveyName);
+                    finishData.setTriggerName(sur.getTrigger_event());
+                    finishData.setScreens(prepareFinishCallback());
 
-                intent.putExtra(OFConstants.surveyDetail,new Gson().toJson(finishData));
-                //OFHelper.v(tag,"OneFlow sending data ["+new Gson().toJson(finishData)+"]");
-                sendBroadcast(intent);
+                    intent.putExtra(OFConstants.surveyDetail, new Gson().toJson(finishData));
+                    //OFHelper.v(tag,"OneFlow sending data ["+new Gson().toJson(finishData)+"]");
+                    sendBroadcast(intent);
+                }
                 break;
         }
     }

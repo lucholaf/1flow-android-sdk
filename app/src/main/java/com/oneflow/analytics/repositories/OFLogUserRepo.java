@@ -54,13 +54,15 @@ public class OFLogUserRepo {
 
                     OFHelper.v(tag,"OneFlow Loguser response["+response.isSuccessful()+"]");
                     if (response.isSuccessful()) {
-
-                       mrh.onResponseReceived(hitType,response.body().getResult(),0l,lur.getSystem_id());
-
+                        if(response.body()!=null) {
+                            mrh.onResponseReceived(hitType, response.body().getResult(), 0l, lur.getSystem_id());
+                        }else{
+                            OFHelper.v(tag,"OneFlow Loguser response body is empty");
+                        }
 
                     } else {
                         OFHelper.v(tag,"OneFlow response 0["+response.body()+"]");
-                        mrh.onResponseReceived(hitType,response.body().getResult(),0l,"");
+                        mrh.onResponseReceived(hitType,null,0l,"");
                        /* Helper.v(tag,"OneFlow response 1["+response.body().getMessage()+"]");
                         Helper.v(tag,"OneFlow response 2["+response.body().getSuccess()+"]");*/
 

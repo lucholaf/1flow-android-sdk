@@ -68,14 +68,18 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
         switch (hitType) {
 
             case fetchSurveysFromDB:
-                OFSurveyUserInput survey = (OFSurveyUserInput) obj;
-                if (survey != null) {
-                    OFSurvey.submitUserResponseOffline(context, survey, this, OFConstants.ApiHitType.logUser);
+                if(obj!=null) {
+                    OFSurveyUserInput survey = (OFSurveyUserInput) obj;
+                    if (survey != null) {
+                        OFSurvey.submitUserResponseOffline(context, survey, this, OFConstants.ApiHitType.logUser);
+                    }
                 }
                 break;
             case logUser:
-                OFSurveyUserInput survey1 = (OFSurveyUserInput) obj;
-                OFLogUserDBRepo.deleteSentSurveyFromDB(context, new Integer[]{survey1.get_id()}, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                if(obj!=null) {
+                    OFSurveyUserInput survey1 = (OFSurveyUserInput) obj;
+                    OFLogUserDBRepo.deleteSentSurveyFromDB(context, new Integer[]{survey1.get_id()}, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                }
                 break;
             case deleteSurveyFromDB:
                 checkOffLineSurvey();

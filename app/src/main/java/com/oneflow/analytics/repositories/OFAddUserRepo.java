@@ -57,7 +57,9 @@ public class OFAddUserRepo {
                     if (response.isSuccessful()) {
 
                         OFHelper.v(tag,"OneFlow user created");
-                        mrh.onResponseReceived(hitType,response.body().getResult(),0l,"");
+                        if(response.body()!=null) {
+                            mrh.onResponseReceived(hitType, response.body().getResult(), 0l, "");
+                        }
 
                     } else {
                         OFHelper.v(tag,"OneFlow response 0["+response.body()+"]");

@@ -51,8 +51,10 @@ public class OFCreateSession {
 
                     if (response.isSuccessful()) {
 
-                        OFHelper.v(tag,"OneFlow session created ["+response.body().getResult().getSystem_id()+"]");
-                        mrh.onResponseReceived(hitType,response.body().getResult(),0l,"");
+                        if(response.body()!=null) {
+                            OFHelper.v(tag, "OneFlow session created [" + response.body().getResult().getSystem_id() + "]");
+                            mrh.onResponseReceived(hitType, response.body().getResult(), 0l, "");
+                        }
 
                     } else {
                         //mrh.onResponseReceived(response.body(), type);

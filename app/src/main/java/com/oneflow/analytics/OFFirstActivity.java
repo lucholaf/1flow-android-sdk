@@ -275,8 +275,10 @@ public class OFFirstActivity extends OFSDKBaseActivity implements OFMyResponseHa
     public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
         switch (hitType) {
             case fetchEventsFromDB:
-                List<OFRecordEventsTab> list = (List<OFRecordEventsTab>) obj;
-                sendLogsToAPI.setText("Send Events to API (" + list.size() + ")");
+                if(obj!=null) {
+                    List<OFRecordEventsTab> list = (List<OFRecordEventsTab>) obj;
+                    sendLogsToAPI.setText("Send Events to API (" + list.size() + ")");
+                }
                 break;
 
         }
