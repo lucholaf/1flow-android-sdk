@@ -31,8 +31,8 @@ android {
       //  applicationId "com.circo.oneflow"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 8
-        versionName "1.6"
+        versionCode 9
+        versionName "1.7"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

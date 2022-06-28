@@ -727,7 +727,7 @@ public class OneFlow implements OFMyResponseHandler {
                     csr.setLibrary_name("1flow-android-sdk");
                     csr.setLibrary_version(String.valueOf(1));
                     csr.setApi_endpoint("session");
-                    csr.setApi_version("0.6.41");
+                    csr.setApi_version("0.6.42");
                     csr.setApp_version(OFHelper.getAppVersion(mContext));
 
                     recordEvents(OFConstants.AUTOEVENT_SESSIONSTART, null);
@@ -812,8 +812,9 @@ public class OneFlow implements OFMyResponseHandler {
                             OFEventAPIRepo.sendLogsToApi(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), ear, fc, OFConstants.ApiHitType.sendEventsToAPI, ids);
                         }
                     } else {
-                        OFHelper.e("OneFlow", "OneFlow checking No event available hitting log");
+
                         OFLogUserRequest lur = ofshp.getLogUserRequest();
+                        OFHelper.e("OneFlow", "OneFlow checking No event available hitting log["+lur+"]");
                         if (lur != null) {
                             OFLogUserRepo.logUser(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), lur, this, OFConstants.ApiHitType.logUser);
                         }
