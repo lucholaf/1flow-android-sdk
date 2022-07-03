@@ -36,15 +36,14 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.ColorUtils;
-import androidx.fragment.app.Fragment;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.oneflow.analytics.OFSurveyActivity;
+import com.oneflow.analytics.OFSDKBaseActivity;
+import com.oneflow.analytics.OFSurveyActivityBottom;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
@@ -177,12 +176,12 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
         }
     }
 
-    OFSurveyActivity sa;
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        sa = (OFSurveyActivity) context;
+        sa = (OFSDKBaseActivity) context;
 
     }
 

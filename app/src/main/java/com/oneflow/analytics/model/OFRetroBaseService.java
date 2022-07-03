@@ -41,7 +41,7 @@ public class OFRetroBaseService {
     //public static String baseDomainProd = "api.1flow.app/";
     public static String baseDomainProd = "y33xx6sddf.eu-west-1.awsapprunner.com/api/2021-06-15/";
 
-    public static final String BASE_URL = urlPrefix+ baseDomainProd;
+    public static final String BASE_URL = urlPrefix+ baseDomainDev;
 
     public static Retrofit getClient() {
 

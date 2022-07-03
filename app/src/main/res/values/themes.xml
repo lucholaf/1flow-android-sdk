@@ -53,17 +53,26 @@
 
     </style>
 
-    <style name="DialogAnimationNewTheme" >
+    <style name="DialogTransitionFromBottom" >
         <item name="android:activityOpenEnterAnimation">@anim/slide_up_new_theme</item>
         <item name="android:activityOpenExitAnimation">@anim/slide_up_new_theme</item>
         <item name="android:activityCloseEnterAnimation">@anim/slide_down_new_theme</item>
         <item name="android:activityCloseExitAnimation">@anim/slide_down_new_theme</item>
-       <!-- <item name="android:windowEnterAnimation">@anim/slide_up_dialog_sdk</item>-->
-        <!--<item name="android:windowExitAnimation">@anim/out_to_left</item>
-        <item name="android:activityOpenEnterAnimation">@anim/slide_up_dialog</item>
-        <item name="android:activityOpenExitAnimation">@anim/out_to_left</item>
-        <item name="android:activityCloseEnterAnimation">@anim/slide_up_dialog</item>
-        <item name="android:activityCloseExitAnimation">@anim/out_to_left</item>-->
+
+    </style>
+    <style name="DialogTransitionFromTop" >
+        <item name="android:activityOpenEnterAnimation">@anim/slide_enter_from_top</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_enter_from_top</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_exit_upward</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_exit_upward</item>
+
+    </style>
+    <style name="DialogTransitionCenter" >
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in_sdk</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_in_sdk</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_out_sdk</item>
+        <item name="android:activityCloseExitAnimation">@anim/fade_out_sdk</item>
+
     </style>
     <style name="DialogAnimation_2">
         <item name="android:windowEnterAnimation">@anim/slide_up_new_theme</item>
@@ -80,22 +89,78 @@
         <item name="android:windowAnimationStyle">@style/DialogAnimation_2</item>
         <item name="android:windowBackground">@null</item>
     </style>
-    <style name="CDialogTheme" parent="@style/Theme.AppCompat">
+    <style name="CDialogThemeBottom" parent="@style/Theme.AppCompat">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowActionBar">false</item>
-        <item name="android:windowAnimationStyle">@style/DialogAnimationNewTheme</item>
+        <item name="android:windowAnimationStyle">@style/DialogTransitionFromBottom</item>
         <item name="android:windowBackground">@color/full_transparancy</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimAmount">0.25</item>
         <item name="android:backgroundDimEnabled">true</item>
-
-
-
     </style>
-
+    <style name="CDialogThemeCenter" parent="@style/Theme.AppCompat">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowAnimationStyle">@style/DialogTransitionCenter</item>
+        <item name="android:windowBackground">@color/full_transparancy</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimAmount">0.25</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+    <style name="CDialogThemeBannerBottom" parent="@style/Theme.AppCompat">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowAnimationStyle">@style/DialogTransitionFromBottom</item>
+        <item name="android:windowBackground">@color/full_transparancy</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimAmount">0.25</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+    <style name="CDialogThemeBannerTop" parent="@style/Theme.AppCompat">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowAnimationStyle">@style/DialogTransitionFromTop</item>
+        <item name="android:windowBackground">@color/full_transparancy</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimAmount">0.25</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+    <style name="CDialogThemeTop" parent="@style/Theme.AppCompat">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowAnimationStyle">@style/DialogTransitionFromTop</item>
+        <item name="android:windowBackground">@color/full_transparancy</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimAmount">0.25</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+    <style name="CDialogThemeFullScreen" parent="@style/Theme.AppCompat">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowAnimationStyle">@style/DialogTransitionCenter</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimAmount">0.25</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
     <style name="AnotherTheme" parent="@style/Theme.AppCompat">
         <item name="android:background">@android:color/transparent</item>
         <!--on below line we are displaying the windowNotitle as true as we are not displaying our status bar-->
@@ -107,7 +172,7 @@
         <!--on below line we are adding a window translucent as true-->
         <item name="android:windowIsTranslucent">true</item>
         <!--on below line we are adding a window animationstyle-->
-        <item name="android:windowAnimationStyle">@style/DialogAnimationNewTheme</item>
+        <item name="android:windowAnimationStyle">@style/DialogTransitionFromBottom</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 </resources>

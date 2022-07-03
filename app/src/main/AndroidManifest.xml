@@ -40,25 +40,50 @@
 
         </activity>
         <activity android:name="com.oneflow.analytics.OFFirstActivity">
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
         <!--<action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>-->
         <!--android:theme="@style/AppDialog"-->
         <activity
-            android:name="com.oneflow.analytics.OFSurveyActivity"
-            android:theme="@style/CDialogTheme"
+            android:name="com.oneflow.analytics.OFSurveyActivityBottom"
+            android:theme="@style/CDialogThemeBottom"
             >
-            <!--<intent-filter>
 
-                <data android:mimeType="text/plain"/>
-                &lt;!&ndash;<data android:scheme="survey" android:host="begin"/>
-                <data android:mimeType="survey-page"/>&ndash;&gt;
-            </intent-filter>-->
+        </activity>
+        <activity
+            android:name="com.oneflow.analytics.OFSurveyActivityCenter"
+            android:theme="@style/CDialogThemeCenter"
+            >
+
+        </activity>
+        <activity
+            android:name="com.oneflow.analytics.OFSurveyActivityBannerTop"
+            android:theme="@style/CDialogThemeBannerTop"
+            >
+
+        </activity>
+        <activity
+            android:name="com.oneflow.analytics.OFSurveyActivityBannerBottom"
+            android:theme="@style/CDialogThemeBottom"
+            >
+
+        </activity>
+        <activity
+            android:name="com.oneflow.analytics.OFSurveyActivityTop"
+            android:theme="@style/CDialogThemeTop"
+            >
+
+        </activity>
+        <activity
+            android:name="com.oneflow.analytics.OFSurveyActivityFullScreen"
+            android:theme="@style/CDialogThemeFullScreen"
+            >
+
         </activity>
     </application>
 

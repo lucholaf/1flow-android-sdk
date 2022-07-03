@@ -43,13 +43,11 @@ import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.google.gson.Gson;
 import com.oneflow.analytics.controller.OFEventController;
 import com.oneflow.analytics.controller.OFSurveyController;
 import com.oneflow.analytics.model.OFConnectivity;
 import com.oneflow.analytics.model.OFFontSetup;
 import com.oneflow.analytics.model.adduser.OFAddUserRequest;
-import com.oneflow.analytics.model.adduser.OFAddUserResponse;
 import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
 import com.oneflow.analytics.model.adduser.OFDeviceDetails;
 import com.oneflow.analytics.model.createsession.OFCreateSessionRequest;
@@ -77,7 +75,6 @@ import com.oneflow.analytics.utils.OFNetworkChangeReceiver;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -91,6 +88,8 @@ public class OneFlow implements OFMyResponseHandler {
     private static Long interval = 1000 * 100L; //100L L FOR LONG
 
     static BillingClient bcFake;
+
+    HashMap<String, Class> activityName;
 
     private OneFlow(Context context) {
         this.mContext = context;
@@ -176,9 +175,31 @@ public class OneFlow implements OFMyResponseHandler {
     }
 
 
+    public void setUpHashForActivity() {
+        activityName = new HashMap<>();
+        activityName.put("top-banner", OFSurveyActivityBannerTop.class);
+        activityName.put("bottom-banner", OFSurveyActivityBannerBottom.class);
+        activityName.put("top-center",OFSurveyActivityTop.class);
+        activityName.put("center-middle", OFSurveyActivityCenter.class);
+        activityName.put("bottom-center", OFSurveyActivityBottom.class);
+        activityName.put("fullscreen",OFSurveyActivityFullScreen.class);
+           /*activityName.put("top-left",);
+                activityName.put("top-center",);
+                activityName.put("top-right",);
+                activityName.put("left-middle",); */
+                /*activityName.put("right-middle",);
+                activityName.put("bottom-left",); */
+
+        //activityName.put("bottom-right",);
+
+
+
+
+    }
+
     public static void configureLocal(Context mContext, String projectKey) {
         final OneFlow fc = new OneFlow(mContext);
-
+        //fc.setUpHashForActivity();
         bcFake = BillingClient.newBuilder(mContext)
                 .setListener(new PurchasesUpdatedListener() {
                     @Override
@@ -814,13 +835,13 @@ public class OneFlow implements OFMyResponseHandler {
                     } else {
 
                         OFLogUserRequest lur = ofshp.getLogUserRequest();
-                        OFHelper.e("OneFlow", "OneFlow checking No event available hitting log["+lur+"]");
+                        OFHelper.e("OneFlow", "OneFlow checking No event available hitting log[" + lur + "]");
                         if (lur != null) {
                             OFLogUserRepo.logUser(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), lur, this, OFConstants.ApiHitType.logUser);
                         }
                     }
-                }else{
-                    OFHelper.e("OneFlow","OneFlow subimission failed fetchedEvents");
+                } else {
+                    OFHelper.e("OneFlow", "OneFlow subimission failed fetchedEvents");
                 }
                 break;
             case sendEventsToAPI:
@@ -905,8 +926,11 @@ public class OneFlow implements OFMyResponseHandler {
                                     if (closedSurveyList != null) {
                                         hasClosed = closedSurveyList.contains(gslr.get_id());
                                     }
-                                    OFHelper.v("OneFlow", "OneFlow closed survey[" + hasClosed + "][" + gslr.getSurveySettings().getClosedAsFinished() + "]");
+                                    OFHelper.v("OneFlow", "OneFlow closed survey[" + hasClosed + "][" + gslr.getSurveySettings().getClosedAsFinished() + "]position["+gslr.getSurveySettings().getSdkTheme().getWidgetPosition().getMobile()+"]");
                                     if (!(gslr.getSurveySettings().getClosedAsFinished() && hasClosed)) { // this if is for empty closed survey
+
+                                        setUpHashForActivity();
+
                                         HashMap<String, Object> mapValue = new HashMap<>();
                                         mapValue.put("survey_id", gslr.get_id());
                                         OFEventController ec = OFEventController.getInstance(mContext);
@@ -914,10 +938,13 @@ public class OneFlow implements OFMyResponseHandler {
 
                                         ofs.storeValue(OFConstants.SHP_SURVEY_RUNNING, true);
                                         ofs.storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
-                                        Intent surveyIntent = new Intent(mContext.getApplicationContext(), OFSurveyActivity.class);
-                                        //surveyIntent.setType("plain/text");
+
+                                        Intent surveyIntent = null;
+
+                                        surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get(gslr.getSurveySettings().getSdkTheme().getWidgetPosition().getMobile()));
+
                                         surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        surveyIntent.putExtra("SurveyType", gslr);//"move_file_in_folder");//""empty0");//
+                                        surveyIntent.putExtra("SurveyType", gslr);
                                         surveyIntent.putExtra("eventName", reserved);
                                         mContext.getApplicationContext().startActivity(surveyIntent);
                                     }
@@ -968,6 +995,7 @@ public class OneFlow implements OFMyResponseHandler {
 
         }
     }
+
 
     private OFConnectivity getConnectivityData() {
         OFConnectivity connectivity = new OFConnectivity();

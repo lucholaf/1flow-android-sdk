@@ -36,13 +36,13 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.oneflow.analytics.OFSurveyActivity;
+import com.oneflow.analytics.OFSDKBaseActivity;
+import com.oneflow.analytics.OFSurveyActivityBottom;
 import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.adapter.OFSurveyOptionsAdapter;
@@ -453,7 +453,8 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        sa = (OFSurveyActivity) context;
+        //sa = (OFSurveyActivityBottom) context;
+        sa = (OFSDKBaseActivity) context;
         sa.position++;
 
     }

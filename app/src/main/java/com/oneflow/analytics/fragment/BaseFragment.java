@@ -12,16 +12,15 @@ import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 
-import com.oneflow.analytics.OFSurveyActivity;
-import com.oneflow.analytics.R;
-import com.oneflow.analytics.adapter.OFSurveyOptionsAdapter;
+import com.oneflow.analytics.OFSDKBaseActivity;
+import com.oneflow.analytics.OFSurveyActivityBottom;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.utils.OFHelper;
 
 public class BaseFragment extends Fragment {
     public boolean isActive = false;
     public GradientDrawable gdSubmit;
-    public OFSurveyActivity sa;
+    public OFSDKBaseActivity sa;
     LinearLayout waterMarkLayout;
 
     public void transitActive() {

@@ -21,7 +21,7 @@ package com.oneflow.analytics.controller;
 import android.content.Context;
 import android.content.Intent;
 
-import com.oneflow.analytics.OFSurveyActivity;
+import com.oneflow.analytics.OFSurveyActivityBottom;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.repositories.OFEventDBRepo;
 import com.oneflow.analytics.repositories.OFSurvey;
@@ -107,7 +107,7 @@ public class OFSurveyController implements OFMyResponseHandler {
 
                                     if (surveyItem.getScreens().size() > 0) {
                                         new OFOneFlowSHP(mContext).storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
-                                        Intent intent = new Intent(mContext.getApplicationContext(), OFSurveyActivity.class);
+                                        Intent intent = new Intent(mContext.getApplicationContext(), OFSurveyActivityBottom.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         intent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
                                         intent.putExtra("eventName", (String) ret[0]);
