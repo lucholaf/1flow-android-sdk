@@ -30,6 +30,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -53,6 +54,7 @@ public class OFSurveyActivityFullScreen extends OFSDKBaseActivity {
     String tag = this.getClass().getName();
 
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,8 @@ public class OFSurveyActivityFullScreen extends OFSDKBaseActivity {
         basePopupLayout = (RelativeLayout) findViewById(R.id.base_popup_layout);
         mainChildForBackground = (RelativeLayout) findViewById(R.id.view_layout);
         fragmentView = (FrameLayout) findViewById(R.id.fragment_view);
+        waterMarkLayout = (LinearLayout) findViewById(R.id.bottom_water_mark);
+
 
         Window window = this.getWindow();
 
@@ -91,7 +95,7 @@ public class OFSurveyActivityFullScreen extends OFSDKBaseActivity {
 
     }
 
-    @Override
+    /*@Override
     protected void onStart() {
         super.onStart();
     
@@ -199,6 +203,6 @@ public class OFSurveyActivityFullScreen extends OFSDKBaseActivity {
         });
         initFragment();
 
-    }
+    }*/
 
 }

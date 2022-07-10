@@ -181,7 +181,7 @@ public class OneFlow implements OFMyResponseHandler {
         activityName.put("bottom-banner", OFSurveyActivityBannerBottom.class);
         activityName.put("top-center",OFSurveyActivityTop.class);
         activityName.put("center-middle", OFSurveyActivityCenter.class);
-        activityName.put("bottom-center", OFSurveyActivityBottom.class);
+        activityName.put("bottom-center", OFSurveyActivityBottom.class); //default one
         activityName.put("fullscreen",OFSurveyActivityFullScreen.class);
            /*activityName.put("top-left",);
                 activityName.put("top-center",);

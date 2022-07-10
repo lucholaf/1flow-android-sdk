@@ -91,7 +91,7 @@ public class OFSurveyActivityBannerTop extends OFSDKBaseActivity {
 
     }
 
-    @Override
+    /*@Override
     protected void onStart() {
         super.onStart();
     
@@ -199,6 +199,6 @@ public class OFSurveyActivityBannerTop extends OFSDKBaseActivity {
         });
         initFragment();
 
-    }
+    }*/
 
 }

@@ -43,6 +43,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.oneflow.analytics.OFSDKBaseActivity;
 import com.oneflow.analytics.OFSurveyActivityBottom;
+import com.oneflow.analytics.OFSurveyActivityFullScreen;
 import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.adapter.OFSurveyOptionsAdapter;
@@ -232,7 +233,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         ratingsNotLike.setTextColor(colorlike);
         ratingsFullLike.setTextColor(colorlike);
         starRatingLabel.setTextColor(colorlike);
-        ((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
+        //((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
 
 
         handleWaterMarkStyle(sa.sdkTheme);
@@ -456,6 +457,13 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         //sa = (OFSurveyActivityBottom) context;
         sa = (OFSDKBaseActivity) context;
         sa.position++;
+        if(sa instanceof OFSurveyActivityFullScreen){
+            OFHelper.v(tag,"OneFlow which FullScreen found");
+        }else if(sa instanceof OFSurveyActivityBottom){
+            OFHelper.v(tag,"OneFlow which Bottom found");
+        }else {
+            OFHelper.v(tag,"OneFlow which unknown found");
+        }
 
     }
 
