@@ -18,13 +18,17 @@
 
 package com.oneflow.analytics;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.DragEvent;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -39,6 +43,7 @@ import androidx.core.content.ContextCompat;
 
 import com.oneflow.analytics.controller.OFEventController;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
+import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
@@ -92,7 +97,7 @@ public class OFSurveyActivityFullScreen extends OFSDKBaseActivity {
         wlp.flags &= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
 
        // window.setAttributes(wlp);
-
+        handleWaterMarkStyle();
     }
 
     /*@Override
@@ -208,5 +213,55 @@ public class OFSurveyActivityFullScreen extends OFSDKBaseActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.nothing,R.anim.fade_out_sdk);
+    }
+    public void handleWaterMarkStyle() {
+
+        try {
+
+                if (!sdkTheme.getRemove_watermark()) {
+                    waterMarkLayout.setVisibility(View.GONE);
+                } else {
+                    waterMarkLayout.setVisibility(View.VISIBLE);
+                }
+                int colorAlpha = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.1f);
+                GradientDrawable gd = (GradientDrawable) waterMarkLayout.getBackground();
+                waterMarkLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String waterMark = "https://1flow.app/?utm_source=1flow-android-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow";//https://www.notion.so/Powered-by-1Flow-logo-should-link-to-website-c186fca5220e41d19f420dd871f9696d";
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(waterMark));
+                        startActivity(browserIntent);
+                    }
+                });
+                waterMarkLayout.setOnTouchListener(new View.OnTouchListener() {
+
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+
+                        switch (event.getAction()) {
+
+                            case MotionEvent.ACTION_DOWN:
+                                gd.setColor(colorAlpha);
+                                break;
+
+                            case MotionEvent.ACTION_MOVE:
+                                // touch move code
+                                //Helper.makeText(mContext,"Moved",1);
+                                break;
+
+                            case MotionEvent.ACTION_UP:
+
+                                gd.setColor(null);
+
+
+                                break;
+                        }
+                        return false;
+                    }
+                });
+
+        } catch (Exception ex) {
+            OFHelper.e("BaseFragment", "OneFlow watermark error ");
+        }
     }
 }
