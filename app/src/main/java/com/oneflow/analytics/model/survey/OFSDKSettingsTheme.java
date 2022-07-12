@@ -19,7 +19,7 @@ public class OFSDKSettingsTheme implements Serializable {
     @SerializedName("remove_watermark")
     private Boolean remove_watermark = false;
     @SerializedName("dark_overlay")
-    private Boolean dark_overlay;
+    private Boolean dark_overlay = false;
     @SerializedName("close_button")
     private Boolean close_button = false;
     @SerializedName("progress_bar")
