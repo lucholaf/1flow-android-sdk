@@ -6,16 +6,20 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.oneflow.analytics.OFSDKBaseActivity;
 import com.oneflow.analytics.OFSurveyActivityBottom;
 import com.oneflow.analytics.OFSurveyActivityFullScreen;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
+import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.utils.OFHelper;
 
 public class BaseFragment extends Fragment {
@@ -23,6 +27,22 @@ public class BaseFragment extends Fragment {
     public GradientDrawable gdSubmit;
     public OFSDKBaseActivity sa;
     LinearLayout waterMarkLayout;
+    public OFSurveyScreens surveyScreens;
+    public OFSDKSettingsTheme sdkTheme;
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("data",surveyScreens);
+        OFHelper.v("BaseFrag","OneFlow fragment onSaveState called");
+    }
+
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        //surveyScreens = (OFSurveyScreens) savedInstanceState.get("data");
+        OFHelper.v("BaseFrag","OneFlow fragment onViewStateRestore called");
+    }
 
     public void transitActive() {
         int colorFrom = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);//getResources().getColor(R.color.ratings_focused);
@@ -64,7 +84,7 @@ public class BaseFragment extends Fragment {
             if (sa instanceof OFSurveyActivityFullScreen) {
                 waterMarkLayout.setVisibility(View.GONE);
             } else {
-                if (theme.getRemove_watermark()) {
+                if (!theme.getRemove_watermark()) {
                     waterMarkLayout.setVisibility(View.GONE);
                 } else {
                     waterMarkLayout.setVisibility(View.VISIBLE);

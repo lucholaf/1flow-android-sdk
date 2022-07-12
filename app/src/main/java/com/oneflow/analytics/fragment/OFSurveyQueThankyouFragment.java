@@ -47,6 +47,7 @@ import com.oneflow.analytics.OFSurveyActivityBottom;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
+import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.utils.OFHelper;
 
@@ -64,13 +65,14 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
 
     String tag = this.getClass().getName();
 
-    OFSurveyScreens surveyScreens;
 
-    public static OFSurveyQueThankyouFragment newInstance(OFSurveyScreens ahdList) {
+
+    public static OFSurveyQueThankyouFragment newInstance(OFSurveyScreens ahdList, OFSDKSettingsTheme sdkTheme) {
         OFSurveyQueThankyouFragment myFragment = new OFSurveyQueThankyouFragment();
 
         Bundle args = new Bundle();
         args.putSerializable("data", ahdList);
+        args.putSerializable("theme", sdkTheme);
         myFragment.setArguments(args);
         return myFragment;
     }
@@ -79,7 +81,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         surveyScreens = (OFSurveyScreens) getArguments().getSerializable("data");
-
+        sdkTheme = (OFSDKSettingsTheme) getArguments().getSerializable("theme");
     }
 
 
@@ -105,15 +107,15 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
         surveyTitle = (OFCustomTextViewBold) view.findViewById(R.id.survey_title);
         surveyDescription = (OFCustomTextView) view.findViewById(R.id.survey_sub_title);
 
-        surveyTitle.setTextColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())));
+        surveyTitle.setTextColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())));
 
-        int colorAlpha = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.8f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 80);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 80);
-        int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.6f);
+        int colorAlpha = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.8f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 80);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 80);
+        int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.6f);
         ((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
         surveyDescription.setTextColor(colorAlpha);
 
         sa.position = sa.screens.size();
-        handleWaterMarkStyle(sa.sdkTheme);
+        handleWaterMarkStyle(sdkTheme);
         //Glide.with(this).load(R.drawable.thank_you).into(thankyouImage);
         Glide.with(this).load(R.drawable.thanku_bg).into(new DrawableImageViewTarget(thankyouImage) {
             @Override

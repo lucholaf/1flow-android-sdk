@@ -45,6 +45,7 @@ import com.oneflow.analytics.R;
 import com.oneflow.analytics.customwidgets.OFCustomEditText;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
+import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.utils.OFHelper;
 
@@ -64,13 +65,15 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
 
     String tag = this.getClass().getName();
-    OFSurveyScreens surveyScreens;
 
-    public static OFSurveyQueTextFragment newInstance(OFSurveyScreens ahdList) {
+
+    public static OFSurveyQueTextFragment newInstance(OFSurveyScreens ahdList, OFSDKSettingsTheme sdkTheme) {
         OFSurveyQueTextFragment myFragment = new OFSurveyQueTextFragment();
 
         Bundle args = new Bundle();
         args.putSerializable("data", ahdList);
+        args.putSerializable("theme", sdkTheme);
+
         myFragment.setArguments(args);
         return myFragment;
     }
@@ -79,7 +82,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         surveyScreens = (OFSurveyScreens) getArguments().getSerializable("data");
-
+        sdkTheme = (OFSDKSettingsTheme) getArguments().getSerializable("theme");
     }
 
     int i = 0;
@@ -146,11 +149,11 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
 
 
-        handleWaterMarkStyle(sa.sdkTheme);
-        surveyTitle.setTextColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())));
+        handleWaterMarkStyle(sdkTheme);
+        surveyTitle.setTextColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())));
 
-        int colorAlpha = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.8f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 80);
-        int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.6f);
+        int colorAlpha = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.8f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 80);
+        int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.6f);
         surveyDescription.setTextColor(colorAlpha);
         skipBtn.setTextColor(colorlike);
         ((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
@@ -159,7 +162,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
         skipBtn.setOnClickListener(this);
 
-        surveyInputLimit.setTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.5f));
+        surveyInputLimit.setTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.5f));
 
 
         OFHelper.v(tag, "OneFlow list data[" + surveyScreens + "]");
@@ -193,8 +196,8 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         surveyInputLimit.setText("0/" + surveyScreens.getInput().getMax_chars());
         OFHelper.v(tag, " OneFlow onTextChanged min[" + surveyScreens.getInput().getMin_chars() + "]max[" + surveyScreens.getInput().getMax_chars() + "]");
         //setMaxLength(surveyScreens.getInput().getMax_chars());
-        userInput.setHintTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())),0.5f));
-        userInput.setTextColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())));
+        userInput.setHintTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())),0.5f));
+        userInput.setTextColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())));
         submitButton.requestFocus();
         userInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -263,37 +266,41 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
 
     private void submitButtonBeautification() {
-        gdSubmit = (GradientDrawable) (submitButton).getBackground();
-       // GradientDrawable gdOption = (GradientDrawable) optionLayout.getBackground();
-        //submitButton.setVisibility(View.INVISIBLE);
-        //gdOption.setColor(sa.getResources().getColor(R.color.white));
-        int colorAlpha = OFHelper.manipulateColor(Color.parseColor(sa.themeColor),0.5f);
-        gdSubmit.setColor(colorAlpha);//Color.parseColor(sa.themeColor));
+        try {
+            gdSubmit = (GradientDrawable) (submitButton).getBackground();
+            // GradientDrawable gdOption = (GradientDrawable) optionLayout.getBackground();
+            //submitButton.setVisibility(View.INVISIBLE);
+            //gdOption.setColor(sa.getResources().getColor(R.color.white));
+            int colorAlpha = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);
+            gdSubmit.setColor(colorAlpha);//Color.parseColor(sa.themeColor));
 
 
-        submitButton.setOnTouchListener(new View.OnTouchListener() {
+            submitButton.setOnTouchListener(new View.OnTouchListener() {
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
-                            gdSubmit.setColor(colorAlpha);
-                        }
-                        break;
-                    case MotionEvent.ACTION_MOVE:
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
+                                gdSubmit.setColor(colorAlpha);
+                            }
+                            break;
+                        case MotionEvent.ACTION_MOVE:
 
-                        break;
+                            break;
 
-                    case MotionEvent.ACTION_UP:
-                        if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
-                            gdSubmit.setColor(Color.parseColor(sa.themeColor));
-                        }
-                        break;
+                        case MotionEvent.ACTION_UP:
+                            if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
+                                gdSubmit.setColor(Color.parseColor(sa.themeColor));
+                            }
+                            break;
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
+        }catch(Exception ex){
+
+        }
     }
 
     private void setMaxLength(int maxLength) {

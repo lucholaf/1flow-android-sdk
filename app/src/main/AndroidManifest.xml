@@ -39,7 +39,8 @@
         <activity android:name="com.oneflow.analytics.ProjectSetup">
 
         </activity>
-        <activity android:name="com.oneflow.analytics.OFFirstActivity">
+        <activity android:name="com.oneflow.analytics.OFFirstActivity"
+            >
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -52,9 +53,11 @@
         <activity
             android:name="com.oneflow.analytics.OFSurveyActivityBottom"
             android:theme="@style/CDialogThemeBottom"
+
             >
 
         </activity>
+        <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
         <activity
             android:name="com.oneflow.analytics.OFSurveyActivityCenter"
             android:theme="@style/CDialogThemeCenter"
@@ -64,24 +67,28 @@
         <activity
             android:name="com.oneflow.analytics.OFSurveyActivityBannerTop"
             android:theme="@style/CDialogThemeBannerTop"
+
             >
 
         </activity>
         <activity
             android:name="com.oneflow.analytics.OFSurveyActivityBannerBottom"
             android:theme="@style/CDialogThemeBottom"
+
             >
 
         </activity>
         <activity
             android:name="com.oneflow.analytics.OFSurveyActivityTop"
             android:theme="@style/CDialogThemeTop"
+
             >
 
         </activity>
         <activity
             android:name="com.oneflow.analytics.OFSurveyActivityFullScreen"
             android:theme="@style/CDialogThemeFullScreen"
+
             >
 
         </activity>

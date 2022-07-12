@@ -29,6 +29,7 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.Display;
 import android.view.DragEvent;
@@ -43,6 +44,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -106,11 +108,31 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     private boolean isScrollingUp = false;
     private boolean isScrollingDown = false;
     LinearLayout waterMarkLayout;
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("SurveyType",surveyItem);
+        outState.putSerializable("SurveyTheme",sdkTheme);
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        surveyItem = (OFGetSurveyListResponse) savedInstanceState.getSerializable("SurveyType");
+        sdkTheme = (OFSDKSettingsTheme) savedInstanceState.getSerializable("SurveyTheme");
+        OFHelper.v(tag,"OneFlow Restore called:"+sdkTheme.getText_color());
+        //position--;
+    }
+
+    OFGetSurveyListResponse surveyItem;
     @Override
     protected void onStart() {
         super.onStart();
 
-        OFGetSurveyListResponse surveyItem = (OFGetSurveyListResponse) this.getIntent().getSerializableExtra("SurveyType");
+         surveyItem = (OFGetSurveyListResponse) this.getIntent().getSerializableExtra("SurveyType");
 
         surveyName = surveyItem.getName();
         screens = surveyItem.getScreens();
@@ -239,6 +261,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
             window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND); // This flag is required to set otherwise the setDimAmount method will not show any effect
             window.setDimAmount(0f); //0 for no dim to 1 for full dim
         }
+
         initFragment();
     }
     @Override
@@ -634,11 +657,11 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
             try {
                 if (screen.getInput().getInput_type().equalsIgnoreCase("thank_you")) {
                     pagePositionPBar.setVisibility(View.GONE);
-                    frag = OFSurveyQueThankyouFragment.newInstance(screen);
+                    frag = OFSurveyQueThankyouFragment.newInstance(screen,sdkTheme);
                 } else if (screen.getInput().getInput_type().equalsIgnoreCase("text")) {
-                    frag = OFSurveyQueTextFragment.newInstance(screen);
+                    frag = OFSurveyQueTextFragment.newInstance(screen,sdkTheme);
                 } else {
-                    frag = OFSurveyQueFragment.newInstance(screen);
+                    frag = OFSurveyQueFragment.newInstance(screen,sdkTheme);
                 }
             } catch (Exception ex) {
                 OFHelper.e(tag, "OneFlow ERROR [" + ex.getMessage() + "]");

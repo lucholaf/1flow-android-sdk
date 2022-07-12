@@ -50,8 +50,10 @@ import com.oneflow.analytics.adapter.OFSurveyOptionsAdapter;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
 import com.oneflow.analytics.model.survey.OFRatingsModel;
+import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyChoises;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
+import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.utils.OFGenericClickHandler;
 import com.oneflow.analytics.utils.OFHelper;
 
@@ -73,17 +75,20 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
     //this is for testing
 
     String tag = this.getClass().getName();
-    OFSurveyScreens surveyScreens;
+
     OFSurveyOptionsAdapter dashboardAdapter;
     Animation animation1, animation2, animation3, animation4, animationIn;//animationOut;
 
     String ratingsLabel[] = new String[]{"Very dissatisfied", "Somewhat dissatisfied", "Not dissatisfied nor satisfied", "Somewhat satisfied", "Very satisfied"};
 
-    public static OFSurveyQueFragment newInstance(OFSurveyScreens ahdList) {
+
+    public static OFSurveyQueFragment newInstance(OFSurveyScreens ahdList, OFSDKSettingsTheme sdkTheme) {
         OFSurveyQueFragment myFragment = new OFSurveyQueFragment();
 
         Bundle args = new Bundle();
         args.putSerializable("data", ahdList);
+        args.putSerializable("theme", sdkTheme);
+
         myFragment.setArguments(args);
         return myFragment;
     }
@@ -91,9 +96,17 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        surveyScreens = (OFSurveyScreens) getArguments().getSerializable("data");
-
+        try {
+            surveyScreens = (OFSurveyScreens) getArguments().getSerializable("data");
+            sdkTheme = (OFSDKSettingsTheme) getArguments().getSerializable("theme");
+        }catch(Exception ex){
+            surveyScreens = (OFSurveyScreens) savedInstanceState.get("data");
+            OFHelper.v("QueFrag","OneFlow fragment onCreate inside catch ");
+        }
+        OFHelper.v("QueFrag","OneFlow fragment onCreate called ["+surveyScreens.get_id()+"]");
     }
+
+
 
     int i = 0;
 
@@ -221,12 +234,13 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
 
 
 //        OFHelper.v(tag, "OneFlow theme text color[" + sa.sdkTheme.getText_color() + "] ");
-        int colorTitle = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 1.0f);
+
+        int colorTitle = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 1.0f);
 
         surveyTitle.setTextColor(colorTitle);
 
-        int colorDesc = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.8f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), OFHelper.getAlphaNumber(80));
-        int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.6f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), OFHelper.getAlphaNumber(60));
+        int colorDesc = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.8f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), OFHelper.getAlphaNumber(80));
+        int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.6f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), OFHelper.getAlphaNumber(60));
 
 
         surveyDescription.setTextColor(colorDesc);
@@ -236,7 +250,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         //((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
 
 
-        handleWaterMarkStyle(sa.sdkTheme);
+        handleWaterMarkStyle(sdkTheme);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -368,7 +382,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         }
 
         OFHelper.v(tag, "OneFlow theme color [" + sa.themeColor + "]");
-        dashboardAdapter = new OFSurveyOptionsAdapter(getActivity(), surveyScreens.getInput(), this, sa.themeColor, OFHelper.handlerColor(sa.sdkTheme.getText_color()));
+        dashboardAdapter = new OFSurveyOptionsAdapter(getActivity(), surveyScreens.getInput(), this, sa.themeColor, OFHelper.handlerColor(sdkTheme.getText_color()));
 
         surveyOptionRecyclerView.setLayoutManager(mLayoutManager);
         surveyOptionRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -395,46 +409,50 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
 
 
     private void submitButtonBeautification() {
-        gdSubmit = (GradientDrawable) (submitButton).getBackground();
-        gdSubmit.setColor(Color.parseColor(sa.themeColor));
-        int colorAlpha = OFHelper.manipulateColor(Color.parseColor(sa.themeColor),0.5f);;
-        submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
-        submitButton.setOnTouchListener(new View.OnTouchListener() {
+        try {
+            gdSubmit = (GradientDrawable) (submitButton).getBackground();
+            gdSubmit.setColor(Color.parseColor(sa.themeColor));
+            int colorAlpha = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);
+            ;
+            submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
+            submitButton.setOnTouchListener(new View.OnTouchListener() {
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
 
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        if (checkBoxSelection != null && checkBoxSelection.size() > 0) {
-                            gdSubmit.setColor(colorAlpha);
-                        }
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        //touch move code
-                        //Helper.makeText(mContext,"Moved",1);
-                        break;
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            if (checkBoxSelection != null && checkBoxSelection.size() > 0) {
+                                gdSubmit.setColor(colorAlpha);
+                            }
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            //touch move code
+                            //Helper.makeText(mContext,"Moved",1);
+                            break;
 
-                    case MotionEvent.ACTION_UP:
-                        // touch up code
-                        //Helper.makeText(mContext, "Released", 1);
-                        if (checkBoxSelection != null && checkBoxSelection.size() > 0) {
-                            gdSubmit.setColor(Color.parseColor(sa.themeColor));
-                        }
+                        case MotionEvent.ACTION_UP:
+                            // touch up code
+                            //Helper.makeText(mContext, "Released", 1);
+                            if (checkBoxSelection != null && checkBoxSelection.size() > 0) {
+                                gdSubmit.setColor(Color.parseColor(sa.themeColor));
+                            }
 
-                        break;
+                            break;
+                    }
+                    return false;
                 }
-                return false;
+            });
+
+            if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
+                //submitButton.setVisibility(View.INVISIBLE);
+                gdSubmit.setColor(colorAlpha);//Color.parseColor(sa.themeColor));
+            } else {
+                submitButton.setVisibility(View.GONE);
             }
-        });
+        }catch(Exception ex){
 
-        if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
-            //submitButton.setVisibility(View.INVISIBLE);
-            gdSubmit.setColor(colorAlpha);//Color.parseColor(sa.themeColor));
-        } else {
-            submitButton.setVisibility(View.GONE);
         }
-
     }
 
     private ArrayList<OFRatingsModel> prepareRatingsList(int min, int max) {
