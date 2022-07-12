@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class OFSDKSettingsTheme implements Serializable {
 
     @SerializedName("widget_position")
-    private OFSDKWidgetPosition widgetPosition =new OFSDKWidgetPosition();
+    private String widgetPosition;
     @SerializedName("background_color")
     private String background_color = "#ffffff";
     @SerializedName("background_color_opacity")
@@ -21,15 +21,15 @@ public class OFSDKSettingsTheme implements Serializable {
     @SerializedName("dark_overlay")
     private Boolean dark_overlay;
     @SerializedName("close_button")
-    private Boolean close_button;
+    private Boolean close_button = false;
     @SerializedName("progress_bar")
-    private Boolean progress_bar;
+    private Boolean progress_bar = true;
 
-    public OFSDKWidgetPosition getWidgetPosition() {
+    public String getWidgetPosition() {
         return widgetPosition;
     }
 
-    public void setWidgetPosition(OFSDKWidgetPosition widgetPosition) {
+    public void setWidgetPosition(String widgetPosition) {
         this.widgetPosition = widgetPosition;
     }
 

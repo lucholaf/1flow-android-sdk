@@ -71,7 +71,7 @@ public class OFSurveyActivityTop extends OFSDKBaseActivity {
         mainChildForBackground = (RelativeLayout) findViewById(R.id.view_layout);
         fragmentView = (FrameLayout) findViewById(R.id.fragment_view);
 
-        Window window = this.getWindow();
+        window = this.getWindow();
 
         WindowManager.LayoutParams wlp = window.getAttributes();
         OFHelper.v(tag, "OneFlow Window size width[" + window.getAttributes().width + "]height[" + window.getAttributes().height + "]");
@@ -87,6 +87,7 @@ public class OFSurveyActivityTop extends OFSDKBaseActivity {
         wlp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         wlp.flags &= WindowManager.LayoutParams.FLAG_DIM_BEHIND;
 
+        //window.setWindowAnimations(R.style.WindowTransitionFromTop);
         window.setAttributes(wlp);
 
     }
@@ -201,4 +202,10 @@ public class OFSurveyActivityTop extends OFSDKBaseActivity {
 
     }*/
 
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.nothing,R.anim.slide_exit_upward);
+    }
 }

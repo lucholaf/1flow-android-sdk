@@ -71,7 +71,7 @@ public class OFSurveyActivityBottom extends OFSDKBaseActivity {
         mainChildForBackground = (RelativeLayout) findViewById(R.id.view_layout);
         fragmentView = (FrameLayout) findViewById(R.id.fragment_view);
 
-        Window window = this.getWindow();
+        window = this.getWindow();
 
         WindowManager.LayoutParams wlp = window.getAttributes();
         OFHelper.v(tag, "OneFlow Window size width[" + window.getAttributes().width + "]height[" + window.getAttributes().height + "]");
@@ -89,6 +89,12 @@ public class OFSurveyActivityBottom extends OFSDKBaseActivity {
 
         window.setAttributes(wlp);
 
-    }
 
+
+    }
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.nothing,R.anim.slide_down_new_theme);
+    }
 }

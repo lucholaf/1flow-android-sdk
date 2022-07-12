@@ -61,12 +61,19 @@
 
     </style>
     <style name="DialogTransitionFromTop" >
-        <item name="android:activityOpenEnterAnimation">@anim/fade_in_sdk</item>
+        <item name="android:activityOpenEnterAnimation">@anim/slide_enter_from_top</item>
         <item name="android:activityOpenExitAnimation">@anim/fade_out_sdk</item>
-        <item name="android:activityCloseEnterAnimation">@anim/slide_enter_from_top</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_out_sdk</item>
         <item name="android:activityCloseExitAnimation">@anim/fade_out_sdk</item>
+    </style>
+    <style name="WindowTransitionFromTop">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_enter_from_top</item>
+       <!-- <item name="android:activityOpenExitAnimation">@anim/slide_exit_upward</item>-->
+      <!--  <item name="android:activityCloseEnterAnimation">@anim/slide_enter_from_top</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_exit_upward</item>-->
 
     </style>
+
     <style name="DialogTransitionCenter" >
         <item name="android:activityOpenEnterAnimation">@anim/fade_in_sdk</item>
         <item name="android:activityOpenExitAnimation">@anim/fade_in_sdk</item>
@@ -98,9 +105,10 @@
         <item name="android:windowBackground">@color/full_transparancy</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:backgroundDimAmount">0.25</item>
-        <item name="android:backgroundDimEnabled">true</item>
+        <!--<item name="android:backgroundDimAmount">0.25</item>
+        <item name="android:backgroundDimEnabled">true</item>-->
     </style>
+
     <style name="CDialogThemeCenter" parent="@style/Theme.AppCompat">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -110,8 +118,8 @@
         <item name="android:windowBackground">@color/full_transparancy</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:backgroundDimAmount">0.25</item>
-        <item name="android:backgroundDimEnabled">true</item>
+        <!--<item name="android:backgroundDimAmount">0.25</item>
+        <item name="android:backgroundDimEnabled">true</item>-->
     </style>
     <style name="CDialogThemeBannerBottom" parent="@style/Theme.AppCompat">
         <item name="android:windowFrame">@null</item>
@@ -134,20 +142,20 @@
         <item name="android:windowBackground">@color/full_transparancy</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:backgroundDimAmount">0.25</item>
-        <item name="android:backgroundDimEnabled">true</item>
+        <!--<item name="android:backgroundDimAmount">0.25</item>
+        <item name="android:backgroundDimEnabled">true</item>-->
     </style>
     <style name="CDialogThemeTop" parent="@style/Theme.AppCompat">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowActionBar">false</item>
-        <item name="android:windowAnimationStyle">@style/DialogTransitionFromTop</item>
+        <item name="android:windowAnimationStyle">@style/WindowTransitionFromTop</item>
         <item name="android:windowBackground">@color/full_transparancy</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:backgroundDimAmount">0.25</item>
-        <item name="android:backgroundDimEnabled">true</item>
+        <!--<item name="android:backgroundDimAmount">0.25</item>
+        <item name="android:backgroundDimEnabled">true</item>-->
     </style>
     <style name="CDialogThemeFullScreen" parent="@style/Theme.AppCompat">
         <item name="android:windowFrame">@null</item>
@@ -158,8 +166,8 @@
         <item name="android:windowBackground">@null</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:backgroundDimAmount">0.25</item>
-        <item name="android:backgroundDimEnabled">true</item>
+        <!--<item name="android:backgroundDimAmount">0.25</item>
+        <item name="android:backgroundDimEnabled">true</item>-->
     </style>
     <style name="AnotherTheme" parent="@style/Theme.AppCompat">
         <item name="android:background">@android:color/transparent</item>

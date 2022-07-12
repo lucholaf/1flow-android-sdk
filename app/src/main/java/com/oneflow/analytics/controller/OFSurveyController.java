@@ -21,7 +21,12 @@ package com.oneflow.analytics.controller;
 import android.content.Context;
 import android.content.Intent;
 
+import com.oneflow.analytics.OFSurveyActivityBannerBottom;
+import com.oneflow.analytics.OFSurveyActivityBannerTop;
 import com.oneflow.analytics.OFSurveyActivityBottom;
+import com.oneflow.analytics.OFSurveyActivityCenter;
+import com.oneflow.analytics.OFSurveyActivityFullScreen;
+import com.oneflow.analytics.OFSurveyActivityTop;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.repositories.OFEventDBRepo;
 import com.oneflow.analytics.repositories.OFSurvey;
@@ -33,6 +38,7 @@ import com.oneflow.analytics.utils.OFMyResponseHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 public class OFSurveyController implements OFMyResponseHandler {
@@ -66,7 +72,29 @@ public class OFSurveyController implements OFMyResponseHandler {
     public void submitFinishedSurveyToAPI() {
 
     }
+    HashMap<String, Class> activityName;
+    public void setUpHashForActivity() {
+        activityName = new HashMap<>();
 
+        activityName.put("top-banner", OFSurveyActivityBannerTop.class);
+        activityName.put("bottom-banner", OFSurveyActivityBannerBottom.class);
+
+        activityName.put("fullscreen", OFSurveyActivityFullScreen.class);
+
+        activityName.put("top-left", OFSurveyActivityTop.class);
+        activityName.put("top-center", OFSurveyActivityTop.class);
+        activityName.put("top-right", OFSurveyActivityTop.class);
+
+        activityName.put("middle-left", OFSurveyActivityCenter.class); //name changed
+        activityName.put("middle-center", OFSurveyActivityCenter.class); //name changed
+        activityName.put("middle-right", OFSurveyActivityCenter.class); //name changed
+
+        activityName.put("bottom-left", OFSurveyActivityBottom.class);
+        activityName.put("bottom-center", OFSurveyActivityBottom.class); //default one
+        activityName.put("bottom-right", OFSurveyActivityBottom.class);
+
+
+    }
     @Override
     public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
 
@@ -106,12 +134,18 @@ public class OFSurveyController implements OFMyResponseHandler {
                                     OFHelper.v("OneFlow", "OneFlow screens not null");
 
                                     if (surveyItem.getScreens().size() > 0) {
+                                        setUpHashForActivity();
                                         new OFOneFlowSHP(mContext).storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
-                                        Intent intent = new Intent(mContext.getApplicationContext(), OFSurveyActivityBottom.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        intent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
-                                        intent.putExtra("eventName", (String) ret[0]);
-                                        mContext.getApplicationContext().startActivity(intent);
+                                        Intent surveyIntent = null;
+                                        if (surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
+                                            surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get("bottom-center"));
+                                        } else {
+                                            surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get(surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition()));
+                                        }
+                                        surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        surveyIntent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
+                                        surveyIntent.putExtra("eventName", (String) ret[0]);
+                                        mContext.getApplicationContext().startActivity(surveyIntent);
                                     } else {
                                         OFHelper.v("SurveyController", "OneFlow no older survey found");
                                     }

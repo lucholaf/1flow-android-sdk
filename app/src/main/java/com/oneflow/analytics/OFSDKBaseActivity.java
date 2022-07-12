@@ -34,6 +34,8 @@ import android.view.Display;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -83,6 +85,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
 
     String tag = this.getClass().getName();
+    Window window;
     ProgressBar pagePositionPBar;
     ImageView closeBtn;
     View slider;
@@ -190,6 +193,10 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
         sdkTheme = surveyItem.getSurveySettings().getSdkTheme();
 
+        OFHelper.v(tag,"OneFlow sdkTheme ["+new Gson().toJson(sdkTheme)+"]" );
+        OFHelper.v(tag,"OneFlow sdkTheme Close["+sdkTheme.getClose_button()+"]" );
+        OFHelper.v(tag,"OneFlow sdkTheme progress["+sdkTheme.getProgress_bar()+"]" );
+
         mainChildForBackground.setBackgroundColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getBackground_color())));
 
         Drawable closeIcon= closeBtn.getDrawable();
@@ -209,8 +216,10 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 return false;
             }
         });
-        initFragment();
 
+        OFHelper.v(tag,"OneFlow sdkTheme 0["+sdkTheme+"]widget["+sdkTheme.getWidgetPosition()+"]" );
+        OFHelper.v(tag,"OneFlow sdkTheme 0 Close["+sdkTheme.getClose_button()+"]" );
+        OFHelper.v(tag,"OneFlow sdkTheme 0 progress["+sdkTheme.getProgress_bar()+"]" );
         //New theme custome UI
         if(sdkTheme.getProgress_bar()){
             pagePositionPBar.setVisibility(View.VISIBLE);
@@ -223,7 +232,14 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
             closeBtn.setVisibility(View.GONE);
         }
 
-
+        if(sdkTheme.getDark_overlay()) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND); // This flag is required to set otherwise the setDimAmount method will not show any effect
+            window.setDimAmount(0.25f); //0 for no dim to 1 for full dim
+        }else{
+            window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND); // This flag is required to set otherwise the setDimAmount method will not show any effect
+            window.setDimAmount(0f); //0 for no dim to 1 for full dim
+        }
+        initFragment();
     }
     @Override
     protected void onPause() {

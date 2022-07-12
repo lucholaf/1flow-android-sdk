@@ -47,7 +47,7 @@ public class OFSurveyListAdapter extends RecyclerView.Adapter<OFSurveyListAdapte
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         OFHelper.v(this.getClass().getName(), "OneFlow adapter postion[" + position + "]");
 
-        holder.txtSurveyKey.setText(itemsList.get(position).getTrigger_event_name());
+        holder.txtSurveyKey.setText(itemsList.get(position).getTrigger_event_name()+" ("+itemsList.get(position).getName()+")");
         holder.txtSurveyKey.setTag(itemsList.get(position).getTrigger_event_name());
         holder.txtSurveyKey.setOnClickListener(gch);
 

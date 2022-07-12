@@ -220,7 +220,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
 
 
-        OFHelper.v(tag, "OneFlow theme text color[" + sa.sdkTheme.getText_color() + "] ");
+//        OFHelper.v(tag, "OneFlow theme text color[" + sa.sdkTheme.getText_color() + "] ");
         int colorTitle = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 1.0f);
 
         surveyTitle.setTextColor(colorTitle);

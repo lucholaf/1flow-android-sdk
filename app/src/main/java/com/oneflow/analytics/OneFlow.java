@@ -20,6 +20,7 @@
 
 package com.oneflow.analytics;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -177,22 +178,23 @@ public class OneFlow implements OFMyResponseHandler {
 
     public void setUpHashForActivity() {
         activityName = new HashMap<>();
+
         activityName.put("top-banner", OFSurveyActivityBannerTop.class);
         activityName.put("bottom-banner", OFSurveyActivityBannerBottom.class);
-        activityName.put("top-center",OFSurveyActivityTop.class);
-        activityName.put("center-middle", OFSurveyActivityCenter.class);
+
+        activityName.put("fullscreen", OFSurveyActivityFullScreen.class);
+
+        activityName.put("top-left", OFSurveyActivityTop.class);
+        activityName.put("top-center", OFSurveyActivityTop.class);
+        activityName.put("top-right", OFSurveyActivityTop.class);
+
+        activityName.put("middle-left", OFSurveyActivityCenter.class); //name changed
+        activityName.put("middle-center", OFSurveyActivityCenter.class); //name changed
+        activityName.put("middle-right", OFSurveyActivityCenter.class); //name changed
+
+        activityName.put("bottom-left", OFSurveyActivityBottom.class);
         activityName.put("bottom-center", OFSurveyActivityBottom.class); //default one
-        activityName.put("fullscreen",OFSurveyActivityFullScreen.class);
-           /*activityName.put("top-left",);
-                activityName.put("top-center",);
-                activityName.put("top-right",);
-                activityName.put("left-middle",); */
-                /*activityName.put("right-middle",);
-                activityName.put("bottom-left",); */
-
-        //activityName.put("bottom-right",);
-
-
+        activityName.put("bottom-right", OFSurveyActivityBottom.class);
 
 
     }
@@ -926,7 +928,7 @@ public class OneFlow implements OFMyResponseHandler {
                                     if (closedSurveyList != null) {
                                         hasClosed = closedSurveyList.contains(gslr.get_id());
                                     }
-                                    OFHelper.v("OneFlow", "OneFlow closed survey[" + hasClosed + "][" + gslr.getSurveySettings().getClosedAsFinished() + "]position["+gslr.getSurveySettings().getSdkTheme().getWidgetPosition().getMobile()+"]");
+                                    OFHelper.v("OneFlow", "OneFlow closed survey[" + hasClosed + "][" + gslr.getSurveySettings().getClosedAsFinished() + "]position[" + gslr.getSurveySettings().getSdkTheme().getWidgetPosition() + "]");
                                     if (!(gslr.getSurveySettings().getClosedAsFinished() && hasClosed)) { // this if is for empty closed survey
 
                                         setUpHashForActivity();
@@ -940,13 +942,18 @@ public class OneFlow implements OFMyResponseHandler {
                                         ofs.storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
 
                                         Intent surveyIntent = null;
-
-                                        surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get(gslr.getSurveySettings().getSdkTheme().getWidgetPosition().getMobile()));
+                                        if (gslr.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
+                                            surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get("bottom-center"));
+                                        } else {
+                                            surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get(gslr.getSurveySettings().getSdkTheme().getWidgetPosition()));
+                                        }
 
                                         surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         surveyIntent.putExtra("SurveyType", gslr);
                                         surveyIntent.putExtra("eventName", reserved);
+
                                         mContext.getApplicationContext().startActivity(surveyIntent);
+
                                     }
                                 }
                             }

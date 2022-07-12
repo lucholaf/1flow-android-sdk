@@ -75,7 +75,7 @@ public class OFSurveyActivityFullScreen extends OFSDKBaseActivity {
         waterMarkLayout = (LinearLayout) findViewById(R.id.bottom_water_mark);
 
 
-        Window window = this.getWindow();
+        window = this.getWindow();
 
         WindowManager.LayoutParams wlp = window.getAttributes();
         OFHelper.v(tag, "OneFlow Window size width[" + window.getAttributes().width + "]height[" + window.getAttributes().height + "]");
@@ -204,5 +204,9 @@ public class OFSurveyActivityFullScreen extends OFSDKBaseActivity {
         initFragment();
 
     }*/
-
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.nothing,R.anim.fade_out_sdk);
+    }
 }
