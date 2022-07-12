@@ -36,13 +36,14 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.oneflow.analytics.OFSurveyActivity;
+import com.oneflow.analytics.OFSDKBaseActivity;
+import com.oneflow.analytics.OFSurveyActivityBottom;
+import com.oneflow.analytics.OFSurveyActivityFullScreen;
 import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.adapter.OFSurveyOptionsAdapter;
@@ -219,7 +220,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
 
 
-        OFHelper.v(tag, "OneFlow theme text color[" + sa.sdkTheme.getText_color() + "] ");
+//        OFHelper.v(tag, "OneFlow theme text color[" + sa.sdkTheme.getText_color() + "] ");
         int colorTitle = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 1.0f);
 
         surveyTitle.setTextColor(colorTitle);
@@ -232,7 +233,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         ratingsNotLike.setTextColor(colorlike);
         ratingsFullLike.setTextColor(colorlike);
         starRatingLabel.setTextColor(colorlike);
-        ((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
+        //((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
 
 
         handleWaterMarkStyle(sa.sdkTheme);
@@ -453,8 +454,16 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        sa = (OFSurveyActivity) context;
+        //sa = (OFSurveyActivityBottom) context;
+        sa = (OFSDKBaseActivity) context;
         sa.position++;
+        if(sa instanceof OFSurveyActivityFullScreen){
+            OFHelper.v(tag,"OneFlow which FullScreen found");
+        }else if(sa instanceof OFSurveyActivityBottom){
+            OFHelper.v(tag,"OneFlow which Bottom found");
+        }else {
+            OFHelper.v(tag,"OneFlow which unknown found");
+        }
 
     }
 

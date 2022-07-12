@@ -37,9 +37,9 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.ColorUtils;
 
-import com.oneflow.analytics.OFSurveyActivity;
+import com.oneflow.analytics.OFSDKBaseActivity;
+import com.oneflow.analytics.OFSurveyActivityBottom;
 import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.customwidgets.OFCustomEditText;
@@ -438,7 +438,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        sa = (OFSurveyActivity) context;
+        sa = (OFSDKBaseActivity) context;
         sa.position++;
 
     }
