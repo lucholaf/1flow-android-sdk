@@ -647,18 +647,17 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
 
     private void loadFragments(OFSurveyScreens screen) {
-        //setProgressBarPosition();
-        //setProgressBarPositionAsync();
+
         setProgressAnimate();
-        //Helper.makeText(getApplicationContext(),"Screen input ["+screen.getInput().getInput_type()+"]",1);
-        //Helper.showAlert(getApplicationContext(),"","Screen input type["+screen.getInput().getInput_type()+"]");
+
         if (screen != null) {
             Fragment frag = null;
             try {
                 if (screen.getInput().getInput_type().equalsIgnoreCase("thank_you")) {
                     pagePositionPBar.setVisibility(View.GONE);
                     frag = OFSurveyQueThankyouFragment.newInstance(screen,sdkTheme);
-                } else if (screen.getInput().getInput_type().equalsIgnoreCase("text")) {
+                } else if (screen.getInput().getInput_type().equalsIgnoreCase("text") ||
+                        screen.getInput().getInput_type().equalsIgnoreCase("short-text")) {
                     frag = OFSurveyQueTextFragment.newInstance(screen,sdkTheme);
                 } else {
                     frag = OFSurveyQueFragment.newInstance(screen,sdkTheme);

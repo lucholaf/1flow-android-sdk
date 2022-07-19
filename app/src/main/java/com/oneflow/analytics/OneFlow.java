@@ -283,7 +283,7 @@ public class OneFlow implements OFMyResponseHandler {
                 recordEvents(OFConstants.AUTOEVENT_FIRSTOPEN, mapValue);*/
 
 
-                // cheching for update, if version number has changed
+                // checking for update, if version number has changed
                 String oldVersion = ofs.getStringValue(OFConstants.SDKVERSIONSHP);
 
                 OFHelper.v("FeedbackController", "OneFlow current version [" + currentVersion + "]old version [" + oldVersion + "]");

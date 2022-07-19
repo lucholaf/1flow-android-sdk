@@ -55,7 +55,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
     OFCustomTextViewBold surveyTitle, submitButton;
     RelativeLayout optionLayout;
-    OFCustomEditText userInput;
+    OFCustomEditText userInput, userInputShort;
 
     OFCustomTextView surveyInputLimit, skipBtn;
 
@@ -144,6 +144,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         surveyDescription = (OFCustomTextView) view.findViewById(R.id.survey_description);
         skipBtn = (OFCustomTextView) view.findViewById(R.id.skip_btn);
         userInput = (OFCustomEditText) view.findViewById(R.id.child_user_input);
+        userInputShort = (OFCustomEditText) view.findViewById(R.id.child_user_input_short);
         surveyInputLimit = (OFCustomTextView) view.findViewById(R.id.text_limit);
         optionLayout = (RelativeLayout) view.findViewById(R.id.option_layout);
         waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
@@ -158,7 +159,6 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         skipBtn.setTextColor(colorlike);
         ((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
 
-        submitButtonBeautification();
 
         skipBtn.setOnClickListener(this);
 
@@ -196,8 +196,20 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         surveyInputLimit.setText("0/" + surveyScreens.getInput().getMax_chars());
         OFHelper.v(tag, " OneFlow onTextChanged min[" + surveyScreens.getInput().getMin_chars() + "]max[" + surveyScreens.getInput().getMax_chars() + "]");
         //setMaxLength(surveyScreens.getInput().getMax_chars());
-        userInput.setHintTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())),0.5f));
+        userInput.setHintTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.5f));
         userInput.setTextColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())));
+        userInputShort.setHintTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.5f));
+        userInputShort.setTextColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())));
+
+        if (!surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
+            userInputShort.setVisibility(View.GONE);
+            optionLayout.setVisibility(View.INVISIBLE);
+            submitButtonBeautification();
+        } else {
+            optionLayout.setVisibility(View.GONE);
+            userInputShort.setVisibility(View.INVISIBLE);
+        }
+
         submitButton.requestFocus();
         userInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -298,7 +310,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
                     return false;
                 }
             });
-        }catch(Exception ex){
+        } catch (Exception ex) {
 
         }
     }
@@ -313,8 +325,14 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
-        View[] animateViews = new View[]{surveyTitle, surveyDescription, optionLayout, submitButton};//, skipBtn};
+        View[] animateViews;
 
+        if (!surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
+            animateViews = new View[]{surveyTitle, surveyDescription, optionLayout, submitButton};//, skipBtn};
+        } else {
+            animateViews = new View[]{surveyTitle, surveyDescription, userInputShort, submitButton};
+
+        }
 
         Animation[] annim = new Animation[]{animation1, animation2, animation3, animation4, animation5};
 
@@ -456,13 +474,17 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         if (v.getId() == R.id.skip_btn) {
             sa.addUserResponseToList(surveyScreens.get_id(), null, null);
         } else if (v.getId() == R.id.submit_btn) {
-            if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
+            if (!surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
+                if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
+                    sa.addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString().trim().length() > 0 ? userInput.getText().toString().trim() : null);
+                }
+            } else {
                 sa.addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString().trim().length() > 0 ? userInput.getText().toString().trim() : null);
             }
+
         } else if (v.getId() == R.id.cancel_btn) {
             //  Helper.makeText(getActivity(), "Clicked on cancel button", 1);
         }
     }
-
 
 }
