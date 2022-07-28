@@ -204,14 +204,15 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
             OneFlow.recordEvents("Others", mapvalues);
 
         } else if (v.getId() == R.id.record_log) {
-            OFHelper.v(tag, "OneFlow Clicked on button record log");
+            /*OFHelper.v(tag, "OneFlow Clicked on button record log");
             String localTag = (String) v.getTag();
             HashMap<String, Object> mapvalues = new HashMap<String, Object>();
             mapvalues.put("testKey1_" + localTag, "testValue1");
             mapvalues.put("namewa", "Bigu");
             mapvalues.put("testKey3_" + localTag, "testValue3");
             mapvalues.put("testKey3_" + localTag, 23);
-            OneFlow.recordEvents(localTag, mapvalues);
+            OneFlow.recordEvents(localTag, mapvalues);*/
+            startActivity(new Intent(OFFirstActivity.this,OFSecondActivity.class));
         } else if (v.getId() == R.id.configure_project) {
             //  Helper.makeText(FirstActivity.this, "Clicked on button conf", 1);
             OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=", null);

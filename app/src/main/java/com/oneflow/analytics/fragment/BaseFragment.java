@@ -2,20 +2,24 @@ package com.oneflow.analytics.fragment;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.oneflow.analytics.OFSDKBaseActivity;
 import com.oneflow.analytics.OFSurveyActivityBottom;
 import com.oneflow.analytics.OFSurveyActivityFullScreen;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
+import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.utils.OFHelper;
 
 public class BaseFragment extends Fragment {
@@ -23,6 +27,50 @@ public class BaseFragment extends Fragment {
     public GradientDrawable gdSubmit;
     public OFSDKBaseActivity sa;
     LinearLayout waterMarkLayout;
+    public OFSurveyScreens surveyScreens;
+    public OFSDKSettingsTheme sdkTheme;
+    public String themeColor;
+    public String tag = this.getClass().getName();
+    CustomFrag customFrag;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        //sa = (OFSurveyActivityBottom) context;
+        try {
+            sa = (OFSDKBaseActivity) context;
+            OFHelper.v(tag,"OneFlow custom suvery reading");
+        }catch(Exception ex){
+            OFHelper.v(tag,"OneFlow custom suvery exception");
+            sa = null;
+            customFrag = CustomFrag.newInstance();
+            OFHelper.v(tag,"OneFlow custom suvery exception ["+customFrag+"]");
+            ex.printStackTrace();
+
+        }
+        if(sa == null){
+            customFrag.position++;
+        }else {
+            sa.position++;
+        }
+        if(sa instanceof OFSurveyActivityFullScreen){
+            OFHelper.v(tag,"OneFlow which FullScreen found");
+        }else if(sa instanceof OFSurveyActivityBottom){
+            OFHelper.v(tag,"OneFlow which Bottom found");
+        }else {
+            OFHelper.v(tag,"OneFlow which unknown found");
+        }
+
+    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        surveyScreens = (OFSurveyScreens) getArguments().getSerializable("data");
+        sdkTheme = (OFSDKSettingsTheme) getArguments().getSerializable("theme");
+        themeColor = (String) getArguments().getString("themeColor");
+
+    }
 
     public void transitActive() {
         int colorFrom = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);//getResources().getColor(R.color.ratings_focused);

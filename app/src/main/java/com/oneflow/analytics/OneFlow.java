@@ -413,6 +413,35 @@ public class OneFlow implements OFMyResponseHandler {
         OFCreateSession.createSession(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), csr, this, OFConstants.ApiHitType.CreateSession);
     }
 
+    static String type="";
+
+    public static void recordEvents(String eventName, HashMap eventValues, String type) {
+        OneFlow.type = type;
+        OFHelper.v("FeedbackController", "OneFlow recordEvents record called with[" + eventName + "]at[" + OFHelper.formatedDate(System.currentTimeMillis(), "dd-MM-yyyy hh:mm:ss.SSS") + "]type[" + type + "]");
+        try {
+            // this 'if' is for converting date object to second format(timestamp)
+            if (eventValues != null) {
+                eventValues = OFHelper.checkDateInHashMap(eventValues);
+            }
+            OFHelper.v("FeedbackController", "OneFlow recordEvents record called with[" + eventValues + "]");
+            if (mContext != null) {
+                // storage, api call and check survey if available.
+                //EventController.getInstance(mContext).storeEventsInDB(eventName, eventValues, 0);
+                OFEventController ec = OFEventController.getInstance(mContext);
+                ec.storeEventsInDB(eventName, eventValues, 0);
+
+
+                //Checking if any survey available under coming event.
+                new OneFlow(mContext).checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
+
+            } else {
+                OFHelper.v("OneFlow", "OneFlow null context for event");
+            }
+        } catch (Exception ex) {
+
+        }
+    }
+
     /**
      * Record events on any user action. This method will recognize if any survey is available against this event name
      *
@@ -679,7 +708,7 @@ public class OneFlow implements OFMyResponseHandler {
 
     @Override
     public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
-        OFHelper.v("OneFlow", "OneFlow onReceived type[" + hitType + "]reserve[" + reserve + "]");
+        OFHelper.v("OneFlow", "OneFlow onReceived obj [" + obj + "]type[" + hitType + "]reserve[" + reserve + "]");
         switch (hitType) {
 
 
@@ -757,6 +786,7 @@ public class OneFlow implements OFMyResponseHandler {
 
                     createSession(csr);
                 } else {
+                    OFHelper.v("OneFlow", "OneFlow create user not done");
                     OFHelper.headerKey = "";
                     if (OFConstants.MODE.equalsIgnoreCase("dev")) {
                         OFHelper.makeText(mContext, reserved, 1);
@@ -928,10 +958,10 @@ public class OneFlow implements OFMyResponseHandler {
                                     if (closedSurveyList != null) {
                                         hasClosed = closedSurveyList.contains(gslr.get_id());
                                     }
-                                    OFHelper.v("OneFlow", "OneFlow closed survey[" + hasClosed + "][" + gslr.getSurveySettings().getClosedAsFinished() + "]position[" + gslr.getSurveySettings().getSdkTheme().getWidgetPosition() + "]");
+                                    OFHelper.v("OneFlow", "OneFlow closed survey[" + hasClosed + "][" + gslr.getSurveySettings().getClosedAsFinished() + "]position[" + gslr.getSurveySettings().getSdkTheme().getWidgetPosition() + "]type["+type+"]");
                                     if (!(gslr.getSurveySettings().getClosedAsFinished() && hasClosed)) { // this if is for empty closed survey
 
-                                        setUpHashForActivity();
+
 
                                         HashMap<String, Object> mapValue = new HashMap<>();
                                         mapValue.put("survey_id", gslr.get_id());
@@ -942,17 +972,27 @@ public class OneFlow implements OFMyResponseHandler {
                                         ofs.storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
 
                                         Intent surveyIntent = null;
-                                        if (gslr.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
-                                            surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get("bottom-center"));
+                                        OFHelper.v("OneFlow","OneFlow type of request["+type+"]");
+                                        if (type.equalsIgnoreCase("")) {
+                                            setUpHashForActivity();
+                                            if (gslr.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
+                                                surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get("bottom-center"));
+                                            } else {
+                                                surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get(gslr.getSurveySettings().getSdkTheme().getWidgetPosition()));
+                                            }
                                         } else {
-                                            surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get(gslr.getSurveySettings().getSdkTheme().getWidgetPosition()));
+                                            surveyIntent = new Intent("CustomView");
                                         }
-
                                         surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         surveyIntent.putExtra("SurveyType", gslr);
                                         surveyIntent.putExtra("eventName", reserved);
 
-                                        mContext.getApplicationContext().startActivity(surveyIntent);
+
+                                        if (type.equalsIgnoreCase("")) {
+                                            mContext.getApplicationContext().startActivity(surveyIntent);
+                                        } else {
+                                            mContext.sendBroadcast(surveyIntent);
+                                        }
 
                                     }
                                 }

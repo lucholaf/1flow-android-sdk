@@ -45,6 +45,7 @@ import com.oneflow.analytics.R;
 import com.oneflow.analytics.customwidgets.OFCustomEditText;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
+import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.utils.OFHelper;
 
@@ -64,23 +65,21 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
 
     String tag = this.getClass().getName();
-    OFSurveyScreens surveyScreens;
 
-    public static OFSurveyQueTextFragment newInstance(OFSurveyScreens ahdList) {
+
+    public static OFSurveyQueTextFragment newInstance(OFSurveyScreens ahdList, OFSDKSettingsTheme sdkTheme, String themeColor) {
         OFSurveyQueTextFragment myFragment = new OFSurveyQueTextFragment();
 
         Bundle args = new Bundle();
         args.putSerializable("data", ahdList);
+        args.putSerializable("theme", sdkTheme);
+        args.putString("themeColor",themeColor);
         myFragment.setArguments(args);
+
         return myFragment;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        surveyScreens = (OFSurveyScreens) getArguments().getSerializable("data");
 
-    }
 
     int i = 0;
 
@@ -146,11 +145,11 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
 
 
-        handleWaterMarkStyle(sa.sdkTheme);
-        surveyTitle.setTextColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())));
+        handleWaterMarkStyle(sdkTheme);
+        surveyTitle.setTextColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())));
 
-        int colorAlpha = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.8f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 80);
-        int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.6f);
+        int colorAlpha = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.8f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 80);
+        int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.6f);
         surveyDescription.setTextColor(colorAlpha);
         skipBtn.setTextColor(colorlike);
         ((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
@@ -159,7 +158,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
         skipBtn.setOnClickListener(this);
 
-        surveyInputLimit.setTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())), 0.5f));
+        surveyInputLimit.setTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.5f));
 
 
         OFHelper.v(tag, "OneFlow list data[" + surveyScreens + "]");
@@ -193,8 +192,8 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         surveyInputLimit.setText("0/" + surveyScreens.getInput().getMax_chars());
         OFHelper.v(tag, " OneFlow onTextChanged min[" + surveyScreens.getInput().getMin_chars() + "]max[" + surveyScreens.getInput().getMax_chars() + "]");
         //setMaxLength(surveyScreens.getInput().getMax_chars());
-        userInput.setHintTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())),0.5f));
-        userInput.setTextColor(Color.parseColor(OFHelper.handlerColor(sa.sdkTheme.getText_color())));
+        userInput.setHintTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())),0.5f));
+        userInput.setTextColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())));
         submitButton.requestFocus();
         userInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -266,9 +265,9 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         gdSubmit = (GradientDrawable) (submitButton).getBackground();
        // GradientDrawable gdOption = (GradientDrawable) optionLayout.getBackground();
         //submitButton.setVisibility(View.INVISIBLE);
-        //gdOption.setColor(sa.getResources().getColor(R.color.white));
-        int colorAlpha = OFHelper.manipulateColor(Color.parseColor(sa.themeColor),0.5f);
-        gdSubmit.setColor(colorAlpha);//Color.parseColor(sa.themeColor));
+        //gdOption.setColor(getResources().getColor(R.color.white));
+        int colorAlpha = OFHelper.manipulateColor(Color.parseColor(themeColor),0.5f);
+        gdSubmit.setColor(colorAlpha);//Color.parseColor(themeColor));
 
 
         submitButton.setOnTouchListener(new View.OnTouchListener() {
@@ -287,7 +286,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
                     case MotionEvent.ACTION_UP:
                         if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
-                            gdSubmit.setColor(Color.parseColor(sa.themeColor));
+                            gdSubmit.setColor(Color.parseColor(themeColor));
                         }
                         break;
                 }
@@ -436,21 +435,21 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        sa = (OFSDKBaseActivity) context;
-        sa.position++;
-
-    }
-
-    @Override
     public void onClick(View v) {
 
         if (v.getId() == R.id.skip_btn) {
-            sa.addUserResponseToList(surveyScreens.get_id(), null, null);
+            if(sa == null) {
+                customFrag.addUserResponseToList(surveyScreens.get_id(), null, null);
+            }else{
+                sa.addUserResponseToList(surveyScreens.get_id(), null, null);
+            }
         } else if (v.getId() == R.id.submit_btn) {
             if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
-                sa.addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString().trim().length() > 0 ? userInput.getText().toString().trim() : null);
+                if(sa == null) {
+                    customFrag.addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString().trim().length() > 0 ? userInput.getText().toString().trim() : null);
+                }else{
+                    sa.addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString().trim().length() > 0 ? userInput.getText().toString().trim() : null);
+                }
             }
         } else if (v.getId() == R.id.cancel_btn) {
             //  Helper.makeText(getActivity(), "Clicked on cancel button", 1);
