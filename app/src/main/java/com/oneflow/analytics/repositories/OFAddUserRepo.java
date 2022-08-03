@@ -20,6 +20,7 @@ package com.oneflow.analytics.repositories;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.oneflow.analytics.model.OFApiInterface;
 import com.oneflow.analytics.model.OFGenericResponse;
 import com.oneflow.analytics.model.OFRetroBaseService;
@@ -29,6 +30,9 @@ import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,8 +66,8 @@ public class OFAddUserRepo {
                         }
 
                     } else {
-                        OFHelper.v(tag,"OneFlow response 0["+response.body()+"]");
-                        mrh.onResponseReceived(hitType,null,0l,response.message());
+                        OFHelper.v(tag, "OneFlow response 0[" + response.message() + "]");
+                         mrh.onResponseReceived(hitType, null, 0l, response.message());
                        /* Helper.v(tag,"OneFlow response 1["+response.body().getMessage()+"]");
                         Helper.v(tag,"OneFlow response 2["+response.body().getSuccess()+"]");*/
 

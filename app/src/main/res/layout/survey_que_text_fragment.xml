@@ -61,13 +61,12 @@
             <com.oneflow.analytics.customwidgets.OFCustomEditText
                 android:id="@+id/child_user_input_short"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
+                android:layout_height="40dp"
                 android:layout_margin="@dimen/field_padding"
                 android:background="@drawable/gray_rectangle_withborder"
                 android:hint="Type here"
                 android:padding="@dimen/field_padding"
-                android:textSize="@dimen/page_sub_header_2"
+                android:textSize="@dimen/page_sub_header_3"
                 android:visibility="invisible" />
 
             <RelativeLayout
@@ -92,7 +91,7 @@
                     android:isScrollContainer="false"
                     android:minHeight="100dp"
                     android:padding="@dimen/field_padding"
-                    android:textSize="@dimen/page_sub_header_2" />
+                    android:textSize="@dimen/page_sub_header_3" />
 
                 <com.oneflow.analytics.customwidgets.OFCustomTextView
                     android:id="@+id/text_limit"

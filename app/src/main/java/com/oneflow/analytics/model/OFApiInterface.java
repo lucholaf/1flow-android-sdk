@@ -60,7 +60,8 @@ public interface OFApiInterface {
 
                                                                           @Query("platform") String platform,
                                                                           @Query("user_id") String userId,
-                                                                          @Query("session_id") String sessionId
+                                                                          @Query("session_id") String sessionId,
+                                                                          @Query("min_version") String minVersion
 
 
 

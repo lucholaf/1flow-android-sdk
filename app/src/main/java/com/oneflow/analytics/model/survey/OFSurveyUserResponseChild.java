@@ -20,7 +20,9 @@ package com.oneflow.analytics.model.survey;
 
 import com.google.gson.annotations.SerializedName;
 
-public class OFSurveyUserResponseChild {
+import java.io.Serializable;
+
+public class OFSurveyUserResponseChild implements Serializable {
     @SerializedName("screen_id")
     private String screen_id;
     @SerializedName("answer_index")

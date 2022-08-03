@@ -70,6 +70,7 @@ import com.oneflow.analytics.repositories.OFProjectDetails;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
+import com.oneflow.analytics.utils.OFLogCountdownTimer;
 import com.oneflow.analytics.utils.OFMyCountDownTimer;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
 import com.oneflow.analytics.utils.OFNetworkChangeReceiver;
@@ -737,20 +738,14 @@ public class OneFlow implements OFMyResponseHandler {
                     csr.setLocation_check(true);
                     csr.setLocation(null);
                     csr.setConnectivity(getConnectivityData());
-                    String version = "0.1";
-                    try {
-                        PackageInfo pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
-                        version = pInfo.versionName;
-                    } catch (PackageManager.NameNotFoundException e) {
-                        e.printStackTrace();
-                    }
 
-                    csr.setApi_version(version);
-                    csr.setApp_build_number("23451");
+                    csr.setApi_version(OFHelper.getAppVersionName(mContext));
+                    csr.setApp_build_number(OFHelper.getAppVersionName(mContext));
                     csr.setLibrary_name("1flow-android-sdk");
                     csr.setLibrary_version(String.valueOf(1));
                     csr.setApi_endpoint("session");
-                    csr.setApi_version("0.6.44");
+
+
                     csr.setApp_version(OFHelper.getAppVersion(mContext));
 
                     recordEvents(OFConstants.AUTOEVENT_SESSIONSTART, null);
@@ -987,12 +982,15 @@ public class OneFlow implements OFMyResponseHandler {
                         //Updating old submitted surveys with logged user id.
                         OFLogUserDBRepo.updateSurveyUserId(mContext, this, reserved, OFConstants.ApiHitType.updateSurveyIds);
                     } else {
+                        OFHelper.e("OneFlow", "OneFlow subimission failed logUser");
+                       // OFLogCountdownTimer.getInstance(mContext,15000l,5000l).start();
                         if (OFConstants.MODE.equalsIgnoreCase("dev")) {
                             OFHelper.makeText(mContext, reserved, 1);
                         }
                     }
                 } else {
                     OFHelper.e("OneFlow", "OneFlow subimission failed logUser");
+                   // OFLogCountdownTimer.getInstance(mContext,15000l,5000l).start();
                 }
 
                 break;

@@ -92,7 +92,23 @@ public class OFHelper {
         String version = "";
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            version = pInfo.versionName;
+            version = String.valueOf(pInfo.versionCode);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return version;
+    }
+    /**
+     * This method will return current app version
+     *
+     * @param context
+     * @return
+     */
+    public static String getAppVersionName(Context context) {
+        String version = "";
+        try {
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            version = String.valueOf(pInfo.versionName);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

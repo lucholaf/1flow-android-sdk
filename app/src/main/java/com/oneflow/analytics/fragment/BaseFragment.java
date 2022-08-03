@@ -2,6 +2,7 @@ package com.oneflow.analytics.fragment;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -29,19 +30,37 @@ public class BaseFragment extends Fragment {
     LinearLayout waterMarkLayout;
     public OFSurveyScreens surveyScreens;
     public OFSDKSettingsTheme sdkTheme;
+    public String themeColor;
+    public String tag = this.getClass().getName();
+    CustomFrag customFrag;
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable("data",surveyScreens);
-        OFHelper.v("BaseFrag","OneFlow fragment onSaveState called");
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        //sa = (OFSurveyActivityBottom) context;
+        try {
+            sa = (OFSDKBaseActivity) context;
+            OFHelper.v(tag,"OneFlow custom suvery reading");
+        }catch(Exception ex){
+            OFHelper.v(tag,"OneFlow custom suvery exception");
+            sa = null;
+            customFrag = CustomFrag.newInstance();
+            OFHelper.v(tag,"OneFlow custom suvery exception ["+customFrag+"]");
+            ex.printStackTrace();
+        }
+
+
     }
 
-
     @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        //surveyScreens = (OFSurveyScreens) savedInstanceState.get("data");
-        OFHelper.v("BaseFrag","OneFlow fragment onViewStateRestore called");
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        surveyScreens = (OFSurveyScreens) getArguments().getSerializable("data");
+        sdkTheme = (OFSDKSettingsTheme) getArguments().getSerializable("theme");
+        themeColor = (String) getArguments().getString("themeColor");
+
+
     }
 
     public void transitActive() {
@@ -84,7 +103,7 @@ public class BaseFragment extends Fragment {
             if (sa instanceof OFSurveyActivityFullScreen) {
                 waterMarkLayout.setVisibility(View.GONE);
             } else {
-                if (!theme.getRemove_watermark()) {
+                if (theme.getRemove_watermark()) {
                     waterMarkLayout.setVisibility(View.GONE);
                 } else {
                     waterMarkLayout.setVisibility(View.VISIBLE);

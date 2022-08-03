@@ -20,7 +20,9 @@ package com.oneflow.analytics.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class OFGenericResponse<T>{// extends BaseResponse{
+import java.io.Serializable;
+
+public class OFGenericResponse<T> implements Serializable {// extends BaseResponse{
 
 
     @SerializedName("result")

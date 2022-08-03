@@ -104,7 +104,8 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         OFFontSetup optionsFont = new OFFontSetup(faceBold, 12f);*/
 
         //String projectKey = "oneflow_sandbox_7oKyqBl/myk8h1Zkq1uSk+8BmonEPLE7VLEhpgUD5FG8OpPFJ+nnLDVB5q6WSp60Os46wKO/gpmOmQwNwVgiaw==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
-        String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
+        //String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
+        String projectKey = "oneflow_sandbox_IAdwwiWgTe/4ZeERbTw2CttZS4NhPXWaQChZJ3KlFl2GPbYtycgZLeZJxPSWMnDkinwUMkYQcOsmoyYPXvhQhQ==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
 
         OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);
         OneFlow.shouldShowSurvey(true);

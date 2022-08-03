@@ -30,6 +30,7 @@
         android:layout_margin="@dimen/field_padding"
         android:background="@drawable/btn_rounded_rectangle_normal"
         android:text="Submit"
+        android:textStyle="bold"
         android:visibility="invisible" />
 
     <com.oneflow.analytics.customwidgets.OFCustomTextViewBold
@@ -40,6 +41,7 @@
         android:layout_toLeftOf="@id/submit_btn"
         android:background="@drawable/btn_rounded_rectangle_normal"
         android:text="Cancel"
+        android:textStyle="bold"
         android:visibility="gone" />
 
 

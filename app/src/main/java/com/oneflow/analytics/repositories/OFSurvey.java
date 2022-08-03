@@ -42,7 +42,7 @@ public class OFSurvey {
 
     static String tag = "Survey";
 
-    public static void getSurvey(String headerKey, OFMyResponseHandler mrh, OFConstants.ApiHitType type,String userId, String sessionId) {
+    public static void getSurvey(String headerKey, OFMyResponseHandler mrh, OFConstants.ApiHitType type,String userId, String sessionId,String versionName) {
         OFHelper.v(tag, "OneFlow survey reached getSurvey called");
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
 
@@ -50,7 +50,7 @@ public class OFSurvey {
             Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> responseCall = null;
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys";
             //responseCall = connectAPI.getSurvey(headerKey, url,"android", OFConstants.MODE,userId,sessionId);
-            responseCall = connectAPI.getSurvey(headerKey, "android", userId,sessionId);//,OFConstants.MODE);
+            responseCall = connectAPI.getSurvey(headerKey, "android", userId,sessionId,versionName);//,OFConstants.MODE);
 
             responseCall.enqueue(new Callback<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>>() {
                 @Override

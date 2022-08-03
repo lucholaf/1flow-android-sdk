@@ -47,6 +47,8 @@ import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
+import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
+import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 
 
@@ -63,26 +65,53 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
    /* @BindView(R.id.cancel_btn)
     CustomTextViewBold cancelButton;*/
 
+    String userText="";
 
     String tag = this.getClass().getName();
 
 
-    public static OFSurveyQueTextFragment newInstance(OFSurveyScreens ahdList, OFSDKSettingsTheme sdkTheme) {
+    public static OFSurveyQueTextFragment newInstance(OFSurveyScreens ahdList, OFSDKSettingsTheme sdkTheme, String themeColor) {
         OFSurveyQueTextFragment myFragment = new OFSurveyQueTextFragment();
 
         Bundle args = new Bundle();
         args.putSerializable("data", ahdList);
         args.putSerializable("theme", sdkTheme);
-
+        args.putString("themeColor",themeColor);
         myFragment.setArguments(args);
+
         return myFragment;
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        surveyScreens = (OFSurveyScreens) getArguments().getSerializable("data");
-        sdkTheme = (OFSDKSettingsTheme) getArguments().getSerializable("theme");
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+
+        OFHelper.v(tag,"OneFlow reached onSaveInstanceState");
+        if(surveyScreens.getInput().getInput_type().equalsIgnoreCase("short-text")){
+            new OFOneFlowSHP(getActivity()).storeValue("userInput",userInputShort.getText().toString());
+        }else{
+            new OFOneFlowSHP(getActivity()).storeValue("userInput",userInput.getText().toString());
+        }
+
+        outState.putString("userText",userText);
+        super.onSaveInstanceState(outState);
+    }
+
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        try {
+            OFHelper.v(tag,"OneFlow reached onSaveInstanceState");
+            userText = savedInstanceState.getString("userText");
+            OFHelper.v(tag,"OneFlow reached onSaveInstanceState0["+userText+"]");
+            if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("short-text")) {
+                userInputShort.setText(userText);
+            } else {
+                userInput.setText(userText);
+            }
+        }catch(Exception ex){
+
+        }
     }
 
     int i = 0;
@@ -150,6 +179,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
 
 
+
         handleWaterMarkStyle(sdkTheme);
         surveyTitle.setTextColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())));
 
@@ -201,11 +231,13 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         userInputShort.setHintTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.5f));
         userInputShort.setTextColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())));
 
-        if (!surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
+        if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
+            userInput.setHint(surveyScreens.getInput().getPlaceholderText());
             userInputShort.setVisibility(View.GONE);
             optionLayout.setVisibility(View.INVISIBLE);
             submitButtonBeautification();
         } else {
+            userInputShort.setHint(surveyScreens.getInput().getPlaceholderText());
             optionLayout.setVisibility(View.GONE);
             userInputShort.setVisibility(View.INVISIBLE);
         }
@@ -282,9 +314,9 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
             gdSubmit = (GradientDrawable) (submitButton).getBackground();
             // GradientDrawable gdOption = (GradientDrawable) optionLayout.getBackground();
             //submitButton.setVisibility(View.INVISIBLE);
-            //gdOption.setColor(sa.getResources().getColor(R.color.white));
-            int colorAlpha = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);
-            gdSubmit.setColor(colorAlpha);//Color.parseColor(sa.themeColor));
+            //gdOption.setColor(getResources().getColor(R.color.white));
+            int colorAlpha = OFHelper.manipulateColor(Color.parseColor(themeColor), 0.5f);
+            gdSubmit.setColor(colorAlpha);//Color.parseColor(themeColor));
 
 
             submitButton.setOnTouchListener(new View.OnTouchListener() {
@@ -303,7 +335,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
                         case MotionEvent.ACTION_UP:
                             if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
-                                gdSubmit.setColor(Color.parseColor(sa.themeColor));
+                                gdSubmit.setColor(Color.parseColor(themeColor));
                             }
                             break;
                     }
@@ -326,12 +358,17 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     public void onResume() {
         super.onResume();
         View[] animateViews;
-
-        if (!surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
+        String savedValue = new OFOneFlowSHP(getActivity()).getStringValue("userInput");
+        if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
             animateViews = new View[]{surveyTitle, surveyDescription, optionLayout, submitButton};//, skipBtn};
+            if(!savedValue.equalsIgnoreCase("NA")) {
+                userInput.setText(savedValue);
+            }
         } else {
             animateViews = new View[]{surveyTitle, surveyDescription, userInputShort, submitButton};
-
+            if(!savedValue.equalsIgnoreCase("NA")) {
+                userInputShort.setText(savedValue);
+            }
         }
 
         Animation[] annim = new Animation[]{animation1, animation2, animation3, animation4, animation5};
@@ -457,29 +494,40 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
                 }
             });
         }
+
+        OFHelper.v(tag,"OneFlow reached onResume 0["+userText+"]");
+        if(!userText.isEmpty()) {
+            if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("short-text")) {
+                userInputShort.setText(userText);
+            } else {
+                userInput.setText(userText);
+            }
+        }
     }
 
 
-    @Override
+
+    /*  @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         sa = (OFSDKBaseActivity) context;
         sa.position++;
 
-    }
+    }*/
 
     @Override
     public void onClick(View v) {
 
+        new OFOneFlowSHP(getActivity()).storeValue("userInput","");
         if (v.getId() == R.id.skip_btn) {
             sa.addUserResponseToList(surveyScreens.get_id(), null, null);
         } else if (v.getId() == R.id.submit_btn) {
-            if (!surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
+            if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
                 if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
                     sa.addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString().trim().length() > 0 ? userInput.getText().toString().trim() : null);
                 }
             } else {
-                sa.addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString().trim().length() > 0 ? userInput.getText().toString().trim() : null);
+                sa.addUserResponseToList(surveyScreens.get_id(), null, userInputShort.getText().toString().trim().length() > 0 ? userInputShort.getText().toString().trim() : null);
             }
 
         } else if (v.getId() == R.id.cancel_btn) {

@@ -67,23 +67,26 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
 
 
 
-    public static OFSurveyQueThankyouFragment newInstance(OFSurveyScreens ahdList, OFSDKSettingsTheme sdkTheme) {
+    public static OFSurveyQueThankyouFragment newInstance(OFSurveyScreens ahdList, OFSDKSettingsTheme sdkTheme, String themeColor) {
         OFSurveyQueThankyouFragment myFragment = new OFSurveyQueThankyouFragment();
 
         Bundle args = new Bundle();
         args.putSerializable("data", ahdList);
         args.putSerializable("theme", sdkTheme);
+        args.putString("themeColor",themeColor);
         myFragment.setArguments(args);
+
         return myFragment;
     }
 
-    @Override
+
+ /*   @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         surveyScreens = (OFSurveyScreens) getArguments().getSerializable("data");
         sdkTheme = (OFSDKSettingsTheme) getArguments().getSerializable("theme");
     }
-
+*/
 
     @Nullable
     @Override
@@ -180,12 +183,12 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
 
 
 
-    @Override
+   /* @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         sa = (OFSDKBaseActivity) context;
 
-    }
+    }*/
 
 
     public void handleClick(View v) {

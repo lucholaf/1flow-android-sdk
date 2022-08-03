@@ -25,6 +25,8 @@ import java.util.ArrayList;
 
 public class OFSurveyInputs extends OFBaseModel {
 
+    @SerializedName("placeholder_text")
+    private String placeholderText;
     @SerializedName("min_val")
     private Integer min_val;
     @SerializedName("max_val")
@@ -58,6 +60,14 @@ public class OFSurveyInputs extends OFBaseModel {
     /*@SerializedName("rating_text")
     private String []rating_text ;*/
 
+
+    public String getPlaceholderText() {
+        return placeholderText;
+    }
+
+    public void setPlaceholderText(String placeholderText) {
+        this.placeholderText = placeholderText;
+    }
 
     public String getOtherOption() {
         return otherOption;
