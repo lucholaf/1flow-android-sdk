@@ -70,7 +70,7 @@ import com.oneflow.analytics.repositories.OFProjectDetails;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
-import com.oneflow.analytics.utils.OFLogCountdownTimer;
+//import com.oneflow.analytics.utils.OFLogCountdownTimer;
 import com.oneflow.analytics.utils.OFMyCountDownTimer;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
 import com.oneflow.analytics.utils.OFNetworkChangeReceiver;

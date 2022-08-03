@@ -32,7 +32,7 @@ public class BaseFragment extends Fragment {
     public OFSDKSettingsTheme sdkTheme;
     public String themeColor;
     public String tag = this.getClass().getName();
-    CustomFrag customFrag;
+    //CustomFrag customFrag;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -44,8 +44,8 @@ public class BaseFragment extends Fragment {
         }catch(Exception ex){
             OFHelper.v(tag,"OneFlow custom suvery exception");
             sa = null;
-            customFrag = CustomFrag.newInstance();
-            OFHelper.v(tag,"OneFlow custom suvery exception ["+customFrag+"]");
+            //customFrag = CustomFrag.newInstance();
+           // OFHelper.v(tag,"OneFlow custom suvery exception ["+customFrag+"]");
             ex.printStackTrace();
         }
 
