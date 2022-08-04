@@ -699,23 +699,7 @@ public class OneFlow implements OFMyResponseHandler {
 
                     OFCreateSessionRequest csr = new OFCreateSessionRequest();
 
-                    //OFLocationResponse lr = new OFOneFlowSHP(mContext).getUserLocationDetails();
-               /* OFLocationDetails ld = new OFLocationDetails();
-                ld.setCity(lr.getCity());
-                ld.setRegion(lr.getRegion());
-                ld.setCountry(lr.getCountry());
 
-                try {
-                    ld.setLatitude(Double.parseDouble(lr.getLat()));
-                } catch (Exception ex) {
-                    ld.setLatitude(0d);
-                }
-
-                try {
-                    ld.setLongitude(Double.parseDouble(lr.getLon()));
-                } catch (Exception ex) {
-                    ld.setLongitude(0d);
-                }*/
 
                     OFDeviceDetails ddc = new OFDeviceDetails();
                     ddc.setUnique_id(OFHelper.getDeviceId(mContext));
@@ -787,7 +771,7 @@ public class OneFlow implements OFMyResponseHandler {
                         }
                     }
                 } else {
-                    OFHelper.e("OneFlow", "OneFlow subimission failed checkResurveyNSubmission");
+                    OFHelper.e("OneFlow", "OneFlow subimission failed CreateSession");
                 }
 
                 break;
