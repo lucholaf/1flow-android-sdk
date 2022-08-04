@@ -267,7 +267,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
     @Override
     public void onBackPressed() {
-        if (!sdkTheme.getClose_button()) {
+        if (false){//!sdkTheme.getClose_button()) {
             finishSurveyNow();
             super.onBackPressed();
         }

@@ -141,7 +141,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
 
                                     sa.initFragment();
                                 }
-                            }, 200);
+                            }, 20);
 
                         }
                     });
