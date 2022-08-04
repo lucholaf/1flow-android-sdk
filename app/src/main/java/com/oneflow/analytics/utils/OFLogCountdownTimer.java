@@ -24,11 +24,11 @@ public class OFLogCountdownTimer extends CountDownTimer implements OFMyResponseH
     private OFLogCountdownTimer(Context context, Long duration, Long interval) {
         super(duration, interval);
         this.mContext = context;
-        OFHelper.v("OFLogCountdownTimer", "OneFlow Constructor called");
+       // OFHelper.v("OFLogCountdownTimer", "OneFlow LogApi Constructor called");
     }
     @Override
     public void onTick(long millisUntilFinished) {
-        OFHelper.v("OFLogCountdownTimer", "OneFlow onTick called ");
+       // OFHelper.v("OFLogCountdownTimer", "OneFlow LogApi onTick called ");
         OFLogUserRequest lur = new OFOneFlowSHP(mContext).getLogUserRequest();
         if (lur != null) {
             OFLogUserRepo.logUser(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), lur, this, OFConstants.ApiHitType.logUser);
@@ -37,8 +37,9 @@ public class OFLogCountdownTimer extends CountDownTimer implements OFMyResponseH
 
     @Override
     public void onFinish() {
-
+       // OFHelper.v("OFLogCountdownTimer", "OneFlow LogApi onFinish called ");
     }
+
 
     @Override
     public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
@@ -63,7 +64,7 @@ public class OFLogCountdownTimer extends CountDownTimer implements OFMyResponseH
                         ofs.storeValue(OFConstants.USERUNIQUEIDSHP, reserved);
 
                         // mrh.onResponseReceived(hitType,null,0);
-                        OFHelper.v("OneFlow", "OneFlow Log record inserted...");
+                       // OFHelper.v("OneFlow", "OneFlow Log record inserted...");
 
                         //Updating old submitted surveys with logged user id.
                         OFLogUserDBRepo.updateSurveyUserId(mContext, this, reserved, OFConstants.ApiHitType.updateSurveyIds);
@@ -74,7 +75,7 @@ public class OFLogCountdownTimer extends CountDownTimer implements OFMyResponseH
                         }
                     }
                 } else {
-                    OFHelper.e("OneFlow", "OneFlow subimission failed logUser");
+                   // OFHelper.e("OneFlow", "OneFlow LogApi failed logUser");
                    // OFLogCountdownTimer.getInstance(mContext, 3000l, 1000l).start();
                 }
 

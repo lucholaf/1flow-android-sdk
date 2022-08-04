@@ -71,6 +71,7 @@ import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 //import com.oneflow.analytics.utils.OFLogCountdownTimer;
+import com.oneflow.analytics.utils.OFLogCountdownTimer;
 import com.oneflow.analytics.utils.OFMyCountDownTimer;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
 import com.oneflow.analytics.utils.OFNetworkChangeReceiver;
@@ -943,6 +944,7 @@ public class OneFlow implements OFMyResponseHandler {
                 }
                 break;
             case logUser:
+
                 if (obj != null) {
                     OFLogUserResponse logUserResponse = (OFLogUserResponse) obj;
                     if (logUserResponse != null) {
@@ -966,15 +968,15 @@ public class OneFlow implements OFMyResponseHandler {
                         //Updating old submitted surveys with logged user id.
                         OFLogUserDBRepo.updateSurveyUserId(mContext, this, reserved, OFConstants.ApiHitType.updateSurveyIds);
                     } else {
-                        OFHelper.e("OneFlow", "OneFlow subimission failed logUser");
-                       // OFLogCountdownTimer.getInstance(mContext,15000l,5000l).start();
+                       // OFHelper.e("OneFlow", "OneFlow LogApi subimission failed logUser");
+                        OFLogCountdownTimer.getInstance(mContext,15000l,5000l).start();
                         if (OFConstants.MODE.equalsIgnoreCase("dev")) {
                             OFHelper.makeText(mContext, reserved, 1);
                         }
                     }
                 } else {
-                    OFHelper.e("OneFlow", "OneFlow subimission failed logUser");
-                   // OFLogCountdownTimer.getInstance(mContext,15000l,5000l).start();
+                  //  OFHelper.e("OneFlow", "OneFlow LogApi subimission failed logUser");
+                    OFLogCountdownTimer.getInstance(mContext,15000l,5000l).start();
                 }
 
                 break;
