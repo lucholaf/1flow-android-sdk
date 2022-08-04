@@ -62,7 +62,7 @@ public class OFSurveyController implements OFMyResponseHandler {
     public void getSurveyFromAPI() {
         OFHelper.v("SurveyController", "OneFlow reached SurveyController 0");
         OFOneFlowSHP shp = new OFOneFlowSHP(mContext);
-        OFSurvey.getSurvey(shp.getStringValue(OFConstants.APPIDSHP), this, OFConstants.ApiHitType.fetchSurveysFromAPI,shp.getUserDetails().getAnalytic_user_id(),shp.getStringValue(OFConstants.SESSIONDETAIL_IDSHP),OFHelper.getAppVersionName(mContext));
+        OFSurvey.getSurvey(shp.getStringValue(OFConstants.APPIDSHP), this, OFConstants.ApiHitType.fetchSurveysFromAPI,shp.getUserDetails().getAnalytic_user_id(),shp.getStringValue(OFConstants.SESSIONDETAIL_IDSHP),OFConstants.currentVersion);
     }
 
     public void fetchSurveyFromList() {

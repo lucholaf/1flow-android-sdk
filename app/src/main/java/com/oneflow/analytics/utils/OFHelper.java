@@ -82,12 +82,12 @@ public class OFHelper {
     public static String gpsProviderInfo;
 
 
-    /**
+   /* *//**
      * This method will return current app version
      *
      * @param context
      * @return
-     */
+     *//*
     public static String getAppVersion(Context context) {
         String version = "";
         try {
@@ -98,12 +98,12 @@ public class OFHelper {
         }
         return version;
     }
-    /**
+    *//**
      * This method will return current app version
      *
      * @param context
      * @return
-     */
+     *//*
     public static String getAppVersionName(Context context) {
         String version = "";
         try {
@@ -113,7 +113,7 @@ public class OFHelper {
             e.printStackTrace();
         }
         return version;
-    }
+    }*/
 
 
 

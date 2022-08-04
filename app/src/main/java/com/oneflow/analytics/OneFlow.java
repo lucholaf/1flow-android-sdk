@@ -278,7 +278,7 @@ public class OneFlow implements OFMyResponseHandler {
 
 
                 //Fetching current app version
-                String currentVersion = OFHelper.getAppVersion(mContext);
+
                /* HashMap<String, String> mapValue = new HashMap<>();
                 mapValue.put("app_version", currentVersion);
                 recordEvents(OFConstants.AUTOEVENT_FIRSTOPEN, mapValue);*/
@@ -287,15 +287,15 @@ public class OneFlow implements OFMyResponseHandler {
                 // checking for update, if version number has changed
                 String oldVersion = ofs.getStringValue(OFConstants.SDKVERSIONSHP);
 
-                OFHelper.v("FeedbackController", "OneFlow current version [" + currentVersion + "]old version [" + oldVersion + "]");
+                OFHelper.v("FeedbackController", "OneFlow current version [" + OFConstants.currentVersion + "]old version [" + oldVersion + "]");
 
 
                 if (oldVersion.equalsIgnoreCase("NA")) {
-                    ofs.storeValue(OFConstants.SDKVERSIONSHP, currentVersion);
+                    ofs.storeValue(OFConstants.SDKVERSIONSHP, OFConstants.currentVersion);
                 } else {
-                    if (!oldVersion.equalsIgnoreCase(currentVersion)) {
+                    if (!oldVersion.equalsIgnoreCase(OFConstants.currentVersion)) {
                         HashMap<String, String> mapUpdateValue = new HashMap<>();
-                        mapUpdateValue.put("app_version_current", currentVersion);
+                        mapUpdateValue.put("app_version_current", OFConstants.currentVersion);
                         mapUpdateValue.put("app_version_previous", oldVersion);
                         recordEvents(OFConstants.AUTOEVENT_APPUPDATE, mapUpdateValue);
                     }
@@ -723,14 +723,14 @@ public class OneFlow implements OFMyResponseHandler {
                     csr.setLocation(null);
                     csr.setConnectivity(getConnectivityData());
 
-                    csr.setApi_version(OFHelper.getAppVersionName(mContext));
-                    csr.setApp_build_number(OFHelper.getAppVersionName(mContext));
+                    csr.setApi_version(OFConstants.currentVersion);
+                    csr.setApp_build_number(OFConstants.currentVersion);
                     csr.setLibrary_name("1flow-android-sdk");
                     csr.setLibrary_version(String.valueOf(1));
                     csr.setApi_endpoint("session");
 
 
-                    csr.setApp_version(OFHelper.getAppVersion(mContext));
+                    csr.setApp_version(OFConstants.currentVersion);
 
                     recordEvents(OFConstants.AUTOEVENT_SESSIONSTART, null);
 
@@ -751,9 +751,9 @@ public class OneFlow implements OFMyResponseHandler {
 
                         OFHelper.v("FeedbackController", "OneFlow checking firstOpen [" + oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN, false) + "]");
                         if (!oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN, false)) {
-                            String currentVersion = OFHelper.getAppVersion(mContext);
+
                             HashMap<String, Object> mapValue = new HashMap<>();
-                            mapValue.put("app_version", currentVersion);
+                            mapValue.put("app_version", OFConstants.currentVersion);
                             recordEvents(OFConstants.AUTOEVENT_FIRSTOPEN, mapValue);
                             oneFlowSHP.storeValue(OFConstants.AUTOEVENT_FIRSTOPEN, true);
                         }
