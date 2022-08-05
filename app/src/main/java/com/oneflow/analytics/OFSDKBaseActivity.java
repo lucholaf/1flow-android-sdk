@@ -128,6 +128,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     }
 
     OFGetSurveyListResponse surveyItem;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -267,7 +268,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
     @Override
     public void onBackPressed() {
-        if (false){//!sdkTheme.getClose_button()) {
+        if (false) {//!sdkTheme.getClose_button()) {
             finishSurveyNow();
             super.onBackPressed();
         }
@@ -276,7 +277,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
     @Override
     protected void onPause() {
-        OFHelper.v(tag, "OneFlow checking value onPause called " + surveyResponseChildren.size());
+       // OFHelper.v(tag, "OneFlow checking value onPause called " + surveyResponseChildren.size());
 
 
         OFHelper.v(tag, "OneFlow onPause called");
@@ -294,9 +295,28 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         OFHelper.v(tag, "OneFlow answer position after finishSurveyNow called");
         new OFOneFlowSHP(this).storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
         //on close of this page considering survey is over, so submit the respones to api
-        if (surveyResponseChildren.size() > 0) {
-            OFHelper.v(tag, "OneFlow input found submitting");
-            prepareAndSubmitUserResposneNew();
+        if (surveyResponseChildren != null) {
+            if (surveyResponseChildren.size() > 0) {
+
+                OFHelper.v(tag, "OneFlow input found submitting");
+                prepareAndSubmitUserResposneNew();
+            } else {
+                OFHelper.v(tag, "OneFlow no input no submit");
+                surveyFinishList = new ArrayList<>();
+                Intent intent = new Intent("survey_finished");
+
+                OFFinishCallBack finishData = new OFFinishCallBack();
+                finishData.setStatus(surveyClosingStatus);
+                finishData.setSurveyId(selectedSurveyId);
+                finishData.setSurveyName(surveyName);
+                finishData.setTriggerName(triggerEventName);
+                finishData.setScreens(prepareFinishCallback());
+
+                intent.putExtra(OFConstants.surveyDetail, new Gson().toJson(finishData));
+                //OFHelper.v(tag,"OneFlow sending data ["+new Gson().toJson(finishData)+"]");
+                sendBroadcast(intent);
+                OFSDKBaseActivity.this.finish();
+            }
         } else {
             OFHelper.v(tag, "OneFlow no input no submit");
             surveyFinishList = new ArrayList<>();
@@ -312,7 +332,9 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
             intent.putExtra(OFConstants.surveyDetail, new Gson().toJson(finishData));
             //OFHelper.v(tag,"OneFlow sending data ["+new Gson().toJson(finishData)+"]");
             sendBroadcast(intent);
+            OFSDKBaseActivity.this.finish();
         }
+
     }
 
     @Override
@@ -799,42 +821,44 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
             finishModel.setQuestionTitle(ss.getTitle());
             finishModel.setQuestionType(ss.getInput().getInput_type());
             listInner = new ArrayList<>();
-            for (OFSurveyUserResponseChild sr : surveyResponseChildren) {
-                if (sr.getScreen_id().equalsIgnoreCase(ss.get_id())) {
-                    finishChild = new OFSurveyFinishChild();
-                    if (ss.getInput().getInput_type().equalsIgnoreCase("mcq") ||
-                            ss.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
-                        //This if is for handling multiple option in checkbox.
-                        if (sr.getAnswer_index().contains(",")) {
-                            String[] options = sr.getAnswer_index().split(",");
-                            // OFHelper.v(tag,"OneFlow sending data ["+options.length+"]");
-                            for (String option : options) {
-                                //  OFHelper.v(tag,"OneFlow sending data inside loop["+option+"]");
-                                finishChild = new OFSurveyFinishChild();
-                                finishChild.setAnswerValue(getFieldValue(ss, option));
+            if(surveyResponseChildren!=null) {
+                for (OFSurveyUserResponseChild sr : surveyResponseChildren) {
+                    if (sr.getScreen_id().equalsIgnoreCase(ss.get_id())) {
+                        finishChild = new OFSurveyFinishChild();
+                        if (ss.getInput().getInput_type().equalsIgnoreCase("mcq") ||
+                                ss.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
+                            //This if is for handling multiple option in checkbox.
+                            if (sr.getAnswer_index().contains(",")) {
+                                String[] options = sr.getAnswer_index().split(",");
+                                // OFHelper.v(tag,"OneFlow sending data ["+options.length+"]");
+                                for (String option : options) {
+                                    //  OFHelper.v(tag,"OneFlow sending data inside loop["+option+"]");
+                                    finishChild = new OFSurveyFinishChild();
+                                    finishChild.setAnswerValue(getFieldValue(ss, option));
+                                    if (finishChild.getAnswerValue().equalsIgnoreCase("other") || finishChild.getAnswerValue().equalsIgnoreCase("others")) {
+                                        finishChild.setOtherValue(sr.getAnswer_value());
+                                    }
+                                    listInner.add(finishChild);
+                                }
+                            } else {
+                                finishChild.setAnswerValue(getFieldValue(ss, sr.getAnswer_index()));
                                 if (finishChild.getAnswerValue().equalsIgnoreCase("other") || finishChild.getAnswerValue().equalsIgnoreCase("others")) {
                                     finishChild.setOtherValue(sr.getAnswer_value());
                                 }
                                 listInner.add(finishChild);
                             }
+
+
                         } else {
-                            finishChild.setAnswerValue(getFieldValue(ss, sr.getAnswer_index()));
-                            if (finishChild.getAnswerValue().equalsIgnoreCase("other") || finishChild.getAnswerValue().equalsIgnoreCase("others")) {
-                                finishChild.setOtherValue(sr.getAnswer_value());
-                            }
+                            finishChild.setAnswerValue(sr.getAnswer_value());
                             listInner.add(finishChild);
                         }
 
-
-                    } else {
-                        finishChild.setAnswerValue(sr.getAnswer_value());
-                        listInner.add(finishChild);
                     }
 
+                    finishModel.setQuestionAns(listInner);
+
                 }
-
-                finishModel.setQuestionAns(listInner);
-
             }
             if (finishModel.getQuestionAns() != null && finishModel.getQuestionAns().size() > 0) {
                 list.add(finishModel);
