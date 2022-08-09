@@ -476,23 +476,28 @@ public class OneFlow implements OFMyResponseHandler {
      */
     public static void logUser(String uniqueId, HashMap<String, Object> userDetail) {
         OFHelper.v("OneFlow", "OneFlow logUser data stored 0");
-        if (OFHelper.isConnected(mContext)) {
-            if (userDetail != null) {
-                userDetail = OFHelper.checkDateInHashMap(userDetail);
+        // User id must not be empty
+        if (OFHelper.validateString(uniqueId).equalsIgnoreCase("NA")) {
+            OFHelper.e("OneFlow LogUser Error","User id must not be empty to log user");
+        } else {
+            if (OFHelper.isConnected(mContext)) {
+                if (userDetail != null) {
+                    userDetail = OFHelper.checkDateInHashMap(userDetail);
+                }
+                OFHelper.v("OneFlow", "OneFlow logUser data stored 1");
+                OFAddUserResultResponse aurr = new OFOneFlowSHP(mContext).getUserDetails();
+                if (aurr != null) {
+                    OFHelper.v("OneFlow", "OneFlow logUser data stored 2");
+                    OFLogUserRequest lur = new OFLogUserRequest();
+                    lur.setSystem_id(uniqueId);
+                    lur.setAnonymous_user_id(new OFOneFlowSHP(mContext).getUserDetails().getAnalytic_user_id());
+                    lur.setParameters(userDetail);
+                    lur.setSession_id(new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
+                    new OFOneFlowSHP(mContext).setLogUserRequest(lur);
+                    // this api calling shifted to send Event api response
+                }
+                sendEventsToApi(mContext);
             }
-            OFHelper.v("OneFlow", "OneFlow logUser data stored 1");
-            OFAddUserResultResponse aurr = new OFOneFlowSHP(mContext).getUserDetails();
-            if (aurr != null) {
-                OFHelper.v("OneFlow", "OneFlow logUser data stored 2");
-                OFLogUserRequest lur = new OFLogUserRequest();
-                lur.setSystem_id(uniqueId);
-                lur.setAnonymous_user_id(new OFOneFlowSHP(mContext).getUserDetails().getAnalytic_user_id());
-                lur.setParameters(userDetail);
-                lur.setSession_id(new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
-                new OFOneFlowSHP(mContext).setLogUserRequest(lur);
-                // this api calling shifted to send Event api response
-            }
-            sendEventsToApi(mContext);
         }
     }
 
@@ -699,7 +704,6 @@ public class OneFlow implements OFMyResponseHandler {
                     display.getMetrics(metrics);
 
                     OFCreateSessionRequest csr = new OFCreateSessionRequest();
-
 
 
                     OFDeviceDetails ddc = new OFDeviceDetails();
@@ -968,15 +972,15 @@ public class OneFlow implements OFMyResponseHandler {
                         //Updating old submitted surveys with logged user id.
                         OFLogUserDBRepo.updateSurveyUserId(mContext, this, reserved, OFConstants.ApiHitType.updateSurveyIds);
                     } else {
-                       // OFHelper.e("OneFlow", "OneFlow LogApi subimission failed logUser");
-                        OFLogCountdownTimer.getInstance(mContext,15000l,5000l).start();
+                        // OFHelper.e("OneFlow", "OneFlow LogApi subimission failed logUser");
+                        OFLogCountdownTimer.getInstance(mContext, 15000l, 5000l).start();
                         if (OFConstants.MODE.equalsIgnoreCase("dev")) {
                             OFHelper.makeText(mContext, reserved, 1);
                         }
                     }
                 } else {
-                  //  OFHelper.e("OneFlow", "OneFlow LogApi subimission failed logUser");
-                    OFLogCountdownTimer.getInstance(mContext,15000l,5000l).start();
+                    //  OFHelper.e("OneFlow", "OneFlow LogApi subimission failed logUser");
+                    OFLogCountdownTimer.getInstance(mContext, 15000l, 5000l).start();
                 }
 
                 break;
