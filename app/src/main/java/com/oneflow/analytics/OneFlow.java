@@ -478,7 +478,10 @@ public class OneFlow implements OFMyResponseHandler {
         OFHelper.v("OneFlow", "OneFlow logUser data stored 0");
         // User id must not be empty
         if (OFHelper.validateString(uniqueId).equalsIgnoreCase("NA")) {
+
             OFHelper.e("OneFlow LogUser Error","User id must not be empty to log user");
+            String str = null;
+            Log.v("OneFlow","Application str.split["+str.substring(5)+"]");
         } else {
             if (OFHelper.isConnected(mContext)) {
                 if (userDetail != null) {
