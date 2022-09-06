@@ -79,7 +79,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
     OFSurveyOptionsAdapter dashboardAdapter;
     Animation animation1, animation2, animation3, animation4, animationIn;//animationOut;
 
-    String ratingsLabel[] = new String[]{"Very dissatisfied", "Somewhat dissatisfied", "Not dissatisfied nor satisfied", "Somewhat satisfied", "Very satisfied"};
+    //String ratingsLabel[] = new String[]{"Very dissatisfied", "Somewhat dissatisfied", "Not dissatisfied nor satisfied", "Somewhat satisfied", "Very satisfied"};
 
 
     public static OFSurveyQueFragment newInstance(OFSurveyScreens ahdList, OFSDKSettingsTheme sdkTheme, String themeColor) {
@@ -88,7 +88,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         Bundle args = new Bundle();
         args.putSerializable("data", ahdList);
         args.putSerializable("theme", sdkTheme);
-        args.putString("themeColor",themeColor);
+        args.putString("themeColor", themeColor);
         myFragment.setArguments(args);
         return myFragment;
     }
@@ -346,6 +346,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")) {
             mLayoutManager = new GridLayoutManager(getActivity(), 5);
             starRatingLabel.setVisibility(View.VISIBLE);
+            starRatingLabel.setText(surveyScreens.getInput().getRating_text().get("0"));
         } else {
             if (surveyScreens.getInput().getChoices() != null) {
                 if (surveyScreens.getInput().getChoices().size() > 0) {
@@ -433,7 +434,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
             } else {
                 submitButton.setVisibility(View.GONE);
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
 
         }
     }
@@ -451,22 +452,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
     }
 
 
-   /* @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
 
-        //sa = (OFSurveyActivityBottom) context;
-        sa = (OFSDKBaseActivity) context;
-        sa.position++;
-        if(sa instanceof OFSurveyActivityFullScreen){
-            OFHelper.v(tag,"OneFlow which FullScreen found");
-        }else if(sa instanceof OFSurveyActivityBottom){
-            OFHelper.v(tag,"OneFlow which Bottom found");
-        }else {
-            OFHelper.v(tag,"OneFlow which unknown found");
-        }
-
-    }*/
 
     @Override
     public void itemClicked(View v, Object obj, String reserve) {
@@ -499,9 +485,9 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
             } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating") ||
                     surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")) {
                 int position = (int) v.getTag();
-                OFHelper.v(tag, "OneFlow inputType[" + surveyScreens.getInput().getStars() + "]position[" + position + "]");
+                OFHelper.v(tag, "OneFlow inputType[" + surveyScreens.getInput().getStars() + "]position[" + position + "]rating text["+surveyScreens.getInput().getRating_text()+"]");
                 setSelected(position, false);
-                starRatingLabel.setText(ratingsLabel[position]);
+                starRatingLabel.setText(surveyScreens.getInput().getRating_text().get(String.valueOf(position+1)));//ratingsLabel[position]);
             } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("nps") ||
                     surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical")) {
                 int position = (int) v.getTag();
@@ -546,8 +532,6 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
             }
         }
     }
-
-
 
 
     private void setSelected(int position, Boolean isSingle) {

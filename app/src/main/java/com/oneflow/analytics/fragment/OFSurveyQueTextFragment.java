@@ -62,8 +62,6 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     OFCustomTextView surveyInputLimit, skipBtn;
 
     OFCustomTextView surveyDescription;
-   /* @BindView(R.id.cancel_btn)
-    CustomTextViewBold cancelButton;*/
 
     String userText="";
 
@@ -507,13 +505,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
 
 
-    /*  @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        sa = (OFSDKBaseActivity) context;
-        sa.position++;
 
-    }*/
 
     @Override
     public void onClick(View v) {

@@ -42,11 +42,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.gson.Gson;
 import com.oneflow.analytics.OFSDKBaseActivity;
 import com.oneflow.analytics.OFSurveyActivityBottom;
+import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
+import com.oneflow.analytics.model.survey.OFDataLogic;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.utils.OFHelper;
@@ -56,8 +59,6 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
 
 
     ImageView thankyouImage,waterMarkImage;
-
-   // LinearLayout waterMarkLayout;
 
     OFCustomTextViewBold surveyTitle;
 
@@ -80,13 +81,23 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
     }
 
 
- /*   @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        surveyScreens = (OFSurveyScreens) getArguments().getSerializable("data");
-        sdkTheme = (OFSDKSettingsTheme) getArguments().getSerializable("theme");
+    private void ruleAction(){
+        OFHelper.v(tag,"OneFlow thankyou page rule ["+new Gson().toJson(surveyScreens.getRules())+"]");
+        if(surveyScreens.getRules()!=null) {
+            OFDataLogic dl = surveyScreens.getRules().getDataLogic().get(0);
+            if (dl != null) {
+                if (dl.getType().equalsIgnoreCase("open-url")) {
+                    //todo need to close properly
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(dl.getAction()));
+                    startActivity(browserIntent);
+                } else if (dl.getType().equalsIgnoreCase("rating")) {
+                    // OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
+                    sa.reviewThisApp(getActivity());
+                }
+            }
+        }
     }
-*/
+
 
     @Nullable
     @Override
@@ -100,22 +111,42 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
         waterMarkImage = (ImageView)view.findViewById(R.id.watermark_img);
         waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
 
-        /*if(sa.sdkTheme.getRemove_watermark()){
-            waterMarkLayout.setVisibility(View.GONE);
-        }else{
-            waterMarkLayout.setVisibility(View.VISIBLE);
-        }*/
-
-
         surveyTitle = (OFCustomTextViewBold) view.findViewById(R.id.survey_title);
         surveyDescription = (OFCustomTextView) view.findViewById(R.id.survey_sub_title);
-
         surveyTitle.setTextColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())));
 
         int colorAlpha = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.8f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 80);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 80);
         int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.6f);
         ((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
         surveyDescription.setTextColor(colorAlpha);
+
+
+
+        if (OneFlow.titleFace != null) {
+            if (OneFlow.titleFace.getTypeface() != null) {
+                surveyTitle.setTypeface(OneFlow.titleFace.getTypeface());
+            }
+            if (OneFlow.titleFace.getFontSize() != null) {
+                surveyTitle.setTextSize(OneFlow.titleFace.getFontSize());
+            }
+        }
+        surveyTitle.setText(surveyScreens.getTitle());
+        if (surveyScreens.getMessage() != null) {
+
+            if (OneFlow.subTitleFace != null) {
+                if (OneFlow.subTitleFace.getTypeface() != null) {
+                    surveyDescription.setTypeface(OneFlow.subTitleFace.getTypeface());
+                }
+
+                if (OneFlow.subTitleFace.getFontSize() != null) {
+                    surveyDescription.setTextSize(OneFlow.subTitleFace.getFontSize());
+                }
+            }
+            surveyDescription.setText(surveyScreens.getMessage());
+        } else {
+            surveyDescription.setVisibility(View.GONE);
+        }
+
 
         sa.position = sa.screens.size();
         handleWaterMarkStyle(sdkTheme);
@@ -135,21 +166,34 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                         @Override
                         public void onAnimationEnd(Drawable drawable) {
                             super.onAnimationEnd(drawable);
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
+                            if (surveyScreens.getRules() != null) {
+                                if (surveyScreens.getRules().getDismissBehavior().getFadesAway()) {
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
 
-                                    sa.initFragment();
+                                            sa.finish();
+                                        }
+                                    }, surveyScreens.getRules().getDismissBehavior().getFadesAway() ? (surveyScreens.getRules().getDismissBehavior().getDelayInSeconds() * 1000) : 20);
+                                    // above logic is added for fade away if true then should fade away in mentioned duration
                                 }
-                            }, 20);
+                            }else{
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
 
+                                        sa.finish();
+                                    }
+                                },  20);
+                            }
                         }
                     });
                 }
 
             }
         });
-
+        ruleAction();
+        sa.initFragment();
         return view;
 
     }

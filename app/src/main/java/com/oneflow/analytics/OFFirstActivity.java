@@ -103,9 +103,12 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         OFFontSetup optionsFont = new OFFontSetup(faceBold, 12f);*/
 
-        //String projectKey = "oneflow_sandbox_7oKyqBl/myk8h1Zkq1uSk+8BmonEPLE7VLEhpgUD5FG8OpPFJ+nnLDVB5q6WSp60Os46wKO/gpmOmQwNwVgiaw==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
-        //String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
-        String projectKey = "oneflow_sandbox_IAdwwiWgTe/4ZeERbTw2CttZS4NhPXWaQChZJ3KlFl2GPbYtycgZLeZJxPSWMnDkinwUMkYQcOsmoyYPXvhQhQ==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
+        String projectKey = "oneflow_sandbox_2Z9e492aa1qH22E2SnoSAT5broVR80RF9EXhQ0UcOTyZNgDRCsS4Y88hG4mL+IjPURFgrvCIsuNtUinVIr/ClQ==";
+        //String projectKey = "oneflow_sandbox_9NtGc0TDDoOiq+c4z1OTaYpAsu6wUfZ+qECnLtbRYDKiSvMn+sbP+Y1UuSt3bu2RfOr+N4ZNk+84ZEyCeFgJGg==";
+        //String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";
+        //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";
+        //String projectKey = "oneflow_prod_G0Qg6dUDtbx8cyOWd4HQ/XBCEE+OfsH5EL+5rz4GBoAJ3nxlqKqZo0Hj5yMmhDjcBDAMNuOlvDpqAoB8nivvmQ==";
+        //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
 
         OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);
         OneFlow.shouldShowSurvey(true);
@@ -238,7 +241,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
                     dl.setValues("Values");
 
                     OFDataLogic obj[] = new OFDataLogic[]{dl};
-                    if (!edittext.getText().toString().isEmpty()) {
+                    //if (!edittext.getText().toString().isEmpty()) {
                         dialog.cancel();
                         HashMap<String, Object> mapValue = new HashMap<>();
                         mapValue.put("location", "Bihar");
@@ -254,9 +257,9 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
                         mapValue.put("pojo", dl);
                         mapValue.put("pojoArray", obj);
                         OneFlow.logUser(edittext.getText().toString(), mapValue);
-                    } else {
+                    /*} else {
                         OFHelper.makeText(OFFirstActivity.this, "Enter email id", 1);
-                    }
+                    }*/
                 }
             });
 

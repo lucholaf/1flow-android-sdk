@@ -22,6 +22,7 @@ import com.google.gson.annotations.SerializedName;
 import com.oneflow.analytics.model.OFBaseModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class OFSurveyInputs extends OFBaseModel {
 
@@ -57,9 +58,17 @@ public class OFSurveyInputs extends OFBaseModel {
     private String rating_max_text;
     @SerializedName("other_option_id")
     private String otherOption = "";
-    /*@SerializedName("rating_text")
-    private String []rating_text ;*/
+    @SerializedName("rating_text")
+    private HashMap<String,String> rating_text;
 
+
+    public HashMap<String, String> getRating_text() {
+        return rating_text;
+    }
+
+    public void setRating_text(HashMap<String, String> rating_text) {
+        this.rating_text = rating_text;
+    }
 
     public String getPlaceholderText() {
         return placeholderText;

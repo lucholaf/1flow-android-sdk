@@ -58,6 +58,7 @@ import com.google.android.play.core.tasks.Task;
 import com.google.gson.Gson;
 import com.oneflow.analytics.controller.OFEventController;
 import com.oneflow.analytics.fragment.OFSurveyQueFragment;
+import com.oneflow.analytics.fragment.OFSurveyQueInfoFragment;
 import com.oneflow.analytics.fragment.OFSurveyQueTextFragment;
 import com.oneflow.analytics.fragment.OFSurveyQueThankyouFragment;
 import com.oneflow.analytics.model.survey.OFDataLogic;
@@ -139,7 +140,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         screens = surveyItem.getScreens();
         triggerEventName = this.getIntent().getStringExtra("eventName");//surveyItem.getTrigger_event_name();
         // Helper.makeText(getApplicationContext(),"Size ["+screens.size()+"]",1);
-        setProgressMax(surveyItem.getScreens().size() - 1); // -1 for excluding thankyou page from progress bar
+        setProgressMax(surveyItem.getScreens().size()); // -1 for excluding thankyou page from progress bar; 2-sept-2022 showing progressbar at thankyou page
         selectedSurveyId = surveyItem.get_id();
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,7 +152,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 if (closedSurveyList == null) {
                     closedSurveyList = new ArrayList<>();
                 }
-                OFHelper.v(tag, "OneFlow close button clicked [" + surveyResponseChildren + "]");
+                OFHelper.v(tag, "OneFlow close button clicked [" + surveyResponseChildren + "]position["+position+"]size["+screens.size()+"]");
                 if (surveyResponseChildren == null || surveyResponseChildren.size() == 0) {
 
                     surveyClosingStatus = "skipped";
@@ -164,12 +165,19 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                         ec.storeEventsInDB(OFConstants.AUTOEVENT_CLOSED_SURVEY, mapValue, 0);
                     }
 
-                } else {
+                }else if (position == screens.size()) {
+                    surveyClosingStatus = "finished";
+                }
+                else {
                     surveyClosingStatus = "closed";
                 }
 
-                //OFSDKBaseActivity.this.finish();
-                finishSurveyNow();
+                if(position>=screens.size()){
+                    OFSDKBaseActivity.this.finish();
+                }else{
+                    finishSurveyNow();
+                }
+
                 // overridePendingTransition(0,R.anim.slide_down_dialog);
             }
         });
@@ -235,7 +243,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 OFHelper.v(tag, "OneFlow getAction[" + event.getAction() + "]");
                 OFHelper.v(tag, "OneFlow getX[" + event.getX() + "]");
 
-                OFSDKBaseActivity.this.finish();
+               // OFSDKBaseActivity.this.finish1();
                 // overridePendingTransition(0,R.anim.slide_down_dialog);
                 return false;
             }
@@ -269,7 +277,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     @Override
     public void onBackPressed() {
         if (false) {//!sdkTheme.getClose_button()) {
-            finishSurveyNow();
+          //  finishSurvey1Now();//remaned to avoid find count
             super.onBackPressed();
         }
 
@@ -378,7 +386,6 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 }
             }
             if (!found) {
-
                 surveyResponseChildren.add(asrc);
             }
         }
@@ -649,12 +656,9 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
     public void initFragment() {
         OFHelper.v(tag, "OneFlow answer position initFrag [" + position + "]screensize[" + screens.size() + "]selected answers[" + new Gson().toJson(surveyResponseChildren) + "]");
-//        OFHelper.v(tag, "OneFlow answer position [" +new Gson().toJson(screens.get(position-1) )+ "]");
+//      OFHelper.v(tag, "OneFlow answer position [" +new Gson().toJson(screens.get(position-1) )+ "]");
         if (position >= screens.size()) {
-            //this.finish();
             finishSurveyNow();
-            //overridePendingTransition(0,R.anim.slide_down_dialog);
-            //slideDown();
         } else {
             loadFragments();
         }
@@ -682,6 +686,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
             }, 500);
         } else {
             ObjectAnimator animation = ObjectAnimator.ofInt(pagePositionPBar, "progress", pagePositionPBar.getProgress(), (position + 1) * 100);
+
             animation.setDuration(500);
             animation.setAutoCancel(true);
             animation.setInterpolator(new DecelerateInterpolator());
@@ -714,16 +719,29 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     public Fragment getFragment() {
         Fragment frag = null;
         try {
+            OFHelper.v(tag, "OneFlow finding reached getFragment");
             OFSurveyScreens screen = validateScreens();
-            OFHelper.v(tag, "OneFlow finding question type [" + screen + "]");
+
             if (screen != null) {
-                if (screen.getInput().getInput_type().equalsIgnoreCase("thank_you")) {
-                    pagePositionPBar.setVisibility(View.GONE);
+                OFHelper.v(tag, "OneFlow finding question type found inputtype[" + screen.getInput().getInput_type() + "]");
+                if (screen.getInput().getInput_type().equalsIgnoreCase("thank_you") ||
+                        screen.getInput().getInput_type().equalsIgnoreCase("end-screen")
+                ) {
+
+                    //Now thankyou page will also show progress bar 2-sept-2022
+                    //pagePositionPBar.setVisibility(View.GONE);
                     frag = OFSurveyQueThankyouFragment.newInstance(screen, sdkTheme, themeColor);
+                    //Logic for showing close button if fade away is false then have to show close button at thankyou page
+                    if(!screen.getRules().getDismissBehavior().getFadesAway()){
+                        closeBtn.setVisibility(View.VISIBLE);
+                    }
+
                 } else if (screen.getInput().getInput_type().equalsIgnoreCase("text") ||
                         screen.getInput().getInput_type().equalsIgnoreCase("short-text")
                 ) {
                     frag = OFSurveyQueTextFragment.newInstance(screen, sdkTheme, themeColor);
+                }else if (screen.getInput().getInput_type().equalsIgnoreCase("welcome-screen")) {
+                    frag = OFSurveyQueInfoFragment.newInstance(screen, sdkTheme, themeColor);
                 } else {
                     frag = OFSurveyQueFragment.newInstance(screen, sdkTheme, themeColor);
                 }
@@ -741,14 +759,14 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
      * @return
      */
     public OFSurveyScreens validateScreens() {
-        String[] possibleType = new String[]{"text", "short-text", "thank_you", "rating-numerical", "rating-5-star", "rating", "rating-emojis", "nps"};
+        String[] possibleType = new String[]{"text", "short-text", "thank_you", "rating-numerical", "rating-5-star", "rating", "rating-emojis", "nps","welcome-screen","end-screen"};
         OFSurveyScreens screen = null;
-
+        OFHelper.v(tag, "OneFlow finding reached validateScreens");
         while (position < screens.size()) {
             screen = screens.get(position);
             OFHelper.v(tag, "OneFlow finding question type [" + screen.getInput().getInput_type() + "]");
             if (Arrays.asList(possibleType).contains(screen.getInput().getInput_type())) {
-                OFHelper.v(tag, "OneFlow finding question type [" + screen.getInput().getInput_type() + "] found");
+                OFHelper.v(tag, "OneFlow finding question type [" + screen.getInput().getInput_type() + "] found position["+position+"]");
                 break; // if found then stop;
             } else {
                 OFHelper.v(tag, "OneFlow finding question type [" + screen.getInput().getInput_type() + "] not found skipping this question");
@@ -801,7 +819,9 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                     //OFHelper.v(tag,"OneFlow sending data ["+new Gson().toJson(finishData)+"]");
                     sendBroadcast(intent);
                 }
-                OFSDKBaseActivity.this.finish();
+                if (position < screens.size()) {   //this logic is added to avoid wait on thankyou page after clicking close button
+                    OFSDKBaseActivity.this.finish();
+                }
                 break;
         }
     }

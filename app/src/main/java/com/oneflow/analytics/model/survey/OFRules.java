@@ -12,6 +12,16 @@ public class OFRules extends OFBaseModel {
     private ArrayList<OFDataLogic> dataLogic;
     @SerializedName("_id")
     private String _id;
+    @SerializedName("dismiss_behavior")
+    private OFDismissBehavior dismissBehavior;
+
+    public OFDismissBehavior getDismissBehavior() {
+        return dismissBehavior;
+    }
+
+    public void setDismissBehavior(OFDismissBehavior dismissBehavior) {
+        this.dismissBehavior = dismissBehavior;
+    }
 
     public String getUserProperty() {
         return userProperty;
