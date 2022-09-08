@@ -81,22 +81,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
     }
 
 
-    private void ruleAction(){
-        OFHelper.v(tag,"OneFlow thankyou page rule ["+new Gson().toJson(surveyScreens.getRules())+"]");
-        if(surveyScreens.getRules()!=null) {
-            OFDataLogic dl = surveyScreens.getRules().getDataLogic().get(0);
-            if (dl != null) {
-                if (dl.getType().equalsIgnoreCase("open-url")) {
-                    //todo need to close properly
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(dl.getAction()));
-                    startActivity(browserIntent);
-                } else if (dl.getType().equalsIgnoreCase("rating")) {
-                    // OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
-                    sa.reviewThisApp(getActivity());
-                }
-            }
-        }
-    }
+
 
 
     @Nullable
@@ -173,6 +158,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                                         public void run() {
 
                                             sa.finish();
+                                            sa.ruleAction();
                                         }
                                     }, surveyScreens.getRules().getDismissBehavior().getFadesAway() ? (surveyScreens.getRules().getDismissBehavior().getDelayInSeconds() * 1000) : 20);
                                     // above logic is added for fade away if true then should fade away in mentioned duration
@@ -192,7 +178,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
 
             }
         });
-        ruleAction();
+
         sa.initFragment();
         return view;
 

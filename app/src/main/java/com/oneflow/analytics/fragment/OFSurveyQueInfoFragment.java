@@ -53,7 +53,7 @@ import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFHelper;
 
-public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClickListener{
+public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClickListener {
 
 
     ImageView waterMarkImage;
@@ -136,6 +136,16 @@ public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClic
         submitButton.setOnClickListener(this);
         handleWaterMarkStyle(sdkTheme);
         //Glide.with(this).load(R.drawable.thank_you).into(thankyouImage);
+
+        try {
+            if (!OFHelper.validateString(surveyScreens.getButtons().get(0).getTitle()).equalsIgnoreCase("NA")) {
+                submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
+            }
+        } catch (Exception ex) {
+            OFHelper.e(tag, "Button list not found");
+        }
+
+
         submitButtonBeautification();
         submitButton.requestFocus();
         transitActive();
@@ -362,6 +372,7 @@ public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClic
         }
 
     }
+
     @Override
     public void onClick(View v) {
 
@@ -370,7 +381,7 @@ public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClic
             sa.addUserResponseToList(surveyScreens.get_id(), null, null);
         } else if (v.getId() == R.id.submit_btn) {*/
 
-                    sa.addUserResponseToList(surveyScreens.get_id(), null,  null);
+        sa.addUserResponseToList(surveyScreens.get_id(), null, null);
 
 
         /*} else if (v.getId() == R.id.cancel_btn) {

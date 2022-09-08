@@ -24,7 +24,7 @@ import com.oneflow.analytics.utils.OFConstants;
 import java.io.Serializable;
 
 public class OFBaseModel implements Serializable {
-    @SerializedName("mode") String mode = OFConstants.MODE;//"dev";//""prod" ;
+    /*@SerializedName("mode") String mode = OFConstants.MODE;//"dev";//""prod" ;
 
     public String getMode() {
         return mode;
@@ -32,5 +32,5 @@ public class OFBaseModel implements Serializable {
 
     public void setMode(String mode) {
         this.mode = mode;
-    }
+    }*/
 }

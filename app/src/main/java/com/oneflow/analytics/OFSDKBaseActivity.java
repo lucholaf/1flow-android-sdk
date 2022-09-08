@@ -129,7 +129,22 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     }
 
     OFGetSurveyListResponse surveyItem;
-
+    public void ruleAction(){
+        OFHelper.v(tag,"OneFlow thankyou page rule ["+new Gson().toJson(screens.get(screens.size()-1).getRules())+"]");
+        if(screens.get(screens.size()-1).getRules()!=null) {
+            OFDataLogic dl = screens.get(screens.size()-1).getRules().getDataLogic().get(0);
+            if (dl != null) {
+                if (dl.getType().equalsIgnoreCase("open-url")) {
+                    //todo need to close properly
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(dl.getAction()));
+                    startActivity(browserIntent);
+                } else if (dl.getType().equalsIgnoreCase("rating")) {
+                    // OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
+                    reviewThisApp(OFSDKBaseActivity.this);
+                }
+            }
+        }
+    }
     @Override
     protected void onStart() {
         super.onStart();
