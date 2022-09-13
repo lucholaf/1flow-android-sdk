@@ -146,9 +146,9 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                         public void onAnimationEnd(Drawable drawable) {
                             super.onAnimationEnd(drawable);
 
-                            OFHelper.v(tag,"OneFlow rules["+new Gson().toJson(surveyScreens.getRules())+"]");
+                            //OFHelper.v(tag,"OneFlow rules["+new Gson().toJson(surveyScreens.getRules())+"]");
 
-                            if(surveyScreens.getRules()!=null){
+                            if (surveyScreens.getRules() != null) {
                                 if (surveyScreens.getRules().getDismissBehavior() != null) {
                                     if (surveyScreens.getRules().getDismissBehavior().getFadesAway()) {
                                         new Handler().postDelayed(new Runnable() {
@@ -170,7 +170,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                                         }
                                     }, 20);
                                 }
-                            }else{
+                            } else {
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
@@ -181,7 +181,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                             }
 
 
-                            if (surveyScreens.getRules() != null) {
+                            /*if (surveyScreens.getRules() != null) {
                                 if (surveyScreens.getRules().getDismissBehavior() != null) {
                                     if (surveyScreens.getRules().getDismissBehavior().getFadesAway()) {
                                         new Handler().postDelayed(new Runnable() {
@@ -202,7 +202,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                                         }
                                     }, 20);
                                 }
-                            }
+                            }*/
                         }
                     });
                 }
@@ -218,29 +218,35 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
-                //Logic for showing close button if fade away is false then have to show close button at thankyou page
-                if (!surveyScreens.getRules().getDismissBehavior().getFadesAway()) {
-                    sa.closeBtn.setVisibility(View.VISIBLE);
-                }
+        try {
+            //Logic for showing close button if fade away is false then have to show close button at thankyou page
+            if (!surveyScreens.getRules().getDismissBehavior().getFadesAway()) {
+                sa.closeBtn.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception ex) {
+            OFHelper.e(tag, "OneFlow Error[" + ex.getMessage() + "]");
+        }
     }
 
-    private void ruleAction(){
-        OFHelper.v(tag,"OneFlow thankyou page rule ["+new Gson().toJson(surveyScreens.getRules())+"]");
-        if(surveyScreens.getRules()!=null) {
-            OFDataLogic dl = surveyScreens.getRules().getDataLogic().get(0);
-            if (dl != null) {
-                if (dl.getType().equalsIgnoreCase("open-url")) {
-                    //todo need to close properly
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(dl.getAction()));
-                    startActivity(browserIntent);
-                } else if (dl.getType().equalsIgnoreCase("rating")) {
-                    // OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
-                    sa.reviewThisApp(getActivity());
+    private void ruleAction() {
+        //OFHelper.v(tag,"OneFlow thankyou page rule ["+new Gson().toJson(surveyScreens.getRules())+"]");
+        if (surveyScreens.getRules() != null) {
+            if (surveyScreens.getRules().getDataLogic() != null && surveyScreens.getRules().getDataLogic().size() > 0) {
+                OFDataLogic dl = surveyScreens.getRules().getDataLogic().get(0);
+                if (dl != null) {
+                    if (dl.getType().equalsIgnoreCase("open-url")) {
+                        //todo need to close properly
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(dl.getAction()));
+                        startActivity(browserIntent);
+                    } else if (dl.getType().equalsIgnoreCase("rating")) {
+                        // OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
+                        sa.reviewThisApp(getActivity());
+                    }
                 }
             }
         }
     }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);

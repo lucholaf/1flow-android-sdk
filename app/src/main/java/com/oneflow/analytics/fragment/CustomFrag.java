@@ -266,7 +266,7 @@ public class CustomFrag extends Fragment {
         }
         OFHelper.v(tag, "OneFlow position [" + position + "]");
         try {
-            OFHelper.v(tag, "OneFlow rules [" + new Gson().toJson(screens.get(position - 1).getRules()) + "]");
+           // OFHelper.v(tag, "OneFlow rules [" + new Gson().toJson(screens.get(position - 1).getRules()) + "]");
             if (screens.get(position - 1).getRules() != null) {
                 preparePositionOnRule(screenID, answerIndex, answerValue);
             } else {

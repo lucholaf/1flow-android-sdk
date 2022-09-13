@@ -398,7 +398,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         OFHelper.v(tag, "OneFlow position after[" + position + "]");
 
         try {
-            OFHelper.v(tag, "OneFlow rules [" + new Gson().toJson(screens.get(position - 1).getRules()) + "]");
+           // OFHelper.v(tag, "OneFlow rules [" + new Gson().toJson(screens.get(position - 1).getRules()) + "]");
             if (screens.get(position - 1).getRules() != null) {
                 preparePositionOnRule(screenID, answerIndex, answerValue);
             } else {
@@ -417,29 +417,30 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         String action = "", type = "";
 
         if (screens.get(position - 1).getRules() != null) {
-            for (OFDataLogic dataLogic : screens.get(position - 1).getRules().getDataLogic()) {
+            if(screens.get(position-1).getRules().getDataLogic()!=null) {
+                for (OFDataLogic dataLogic : screens.get(position - 1).getRules().getDataLogic()) {
 
-                OFHelper.v(tag, "OneFlow condition rule[" + new Gson().toJson(screens.get(position - 1).getRules()) + "]");
-                OFHelper.v(tag, "OneFlow condition 0[" + dataLogic.getCondition() + "]");
-                action = dataLogic.getAction();
-                type = dataLogic.getType();
-                if (dataLogic.getCondition().equalsIgnoreCase("is")) {
+                    OFHelper.v(tag, "OneFlow condition rule[" + new Gson().toJson(screens.get(position - 1).getRules()) + "]");
+                    OFHelper.v(tag, "OneFlow condition 0[" + dataLogic.getCondition() + "]");
+                    action = dataLogic.getAction();
+                    type = dataLogic.getType();
+                    if (dataLogic.getCondition().equalsIgnoreCase("is")) {
 
-                    OFHelper.v(tag, "OneFlow condition at is ");
-                    if (answerIndex != null) {
-                        OFHelper.v(tag, "OneFlow condition value[" + dataLogic.getValues() + "][" + answerIndex + "]");
-                        if (dataLogic.getValues().equalsIgnoreCase(answerIndex)) {
-                            found = true;
-                            break;
+                        OFHelper.v(tag, "OneFlow condition at is ");
+                        if (answerIndex != null) {
+                            OFHelper.v(tag, "OneFlow condition value[" + dataLogic.getValues() + "][" + answerIndex + "]");
+                            if (dataLogic.getValues().equalsIgnoreCase(answerIndex)) {
+                                found = true;
+                                break;
 
-                        }
-                    } else {
-                        if (answerValue != null) {
-                            String[] valueArray = answerValue.split(",");
-                            String[] logicValue = dataLogic.getValues().split(",");
-                            int i = 0;
-                            OFHelper.v(tag, "OneFlow condition[" + Arrays.asList(valueArray) + "][" + dataLogic.getValues() + "]");
-                            // if(logicValue.length == valueArray.length) {
+                            }
+                        } else {
+                            if (answerValue != null) {
+                                String[] valueArray = answerValue.split(",");
+                                String[] logicValue = dataLogic.getValues().split(",");
+                                int i = 0;
+                                OFHelper.v(tag, "OneFlow condition[" + Arrays.asList(valueArray) + "][" + dataLogic.getValues() + "]");
+                                // if(logicValue.length == valueArray.length) {
                             /*while (i < valueArray.length) {
                                 if (dataLogic.getValues().equalsIgnoreCase(valueArray[i])) {
                                     OFHelper.v(tag, "OneFlow condition[found in array]");
@@ -449,72 +450,73 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                                 }
                                 i++;
                             }*/
-                            if (Arrays.equals(valueArray, logicValue)) {
-                                found = true;
-                                break;
-                            }
-                            //}
+                                if (Arrays.equals(valueArray, logicValue)) {
+                                    found = true;
+                                    break;
+                                }
+                                //}
                         /*// breaking outer loop
                         if(found) break;*/
+                            }
                         }
-                    }
-                } else if (dataLogic.getCondition().equalsIgnoreCase("is-not")) {
+                    } else if (dataLogic.getCondition().equalsIgnoreCase("is-not")) {
 
-                    OFHelper.v(tag, "OneFlow condition at is NOT [" + dataLogic.getValues() + "]index[" + answerIndex + "]");
-                    if (!dataLogic.getValues().equalsIgnoreCase(answerIndex)) {
-                        found = true;
-                        break;
-                        //findNextQuestionPosition(dataLogic.getValues());
-                    } /*else {
-                    initFragment();
-                }*/
-                } else if (dataLogic.getCondition().equalsIgnoreCase("is-one-of")) {
-
-                    OFHelper.v(tag, "OneFlow condition at is one of [" + dataLogic.getValues() + "]index[" + answerIndex + "]answerValue[" + answerValue + "]");
-                    String[] rulesArray = dataLogic.getValues().split(",");
-
-                    if (answerIndex != null) {
-                        if (Arrays.asList(rulesArray).contains(answerIndex)) {
+                        OFHelper.v(tag, "OneFlow condition at is NOT [" + dataLogic.getValues() + "]index[" + answerIndex + "]");
+                        if (!dataLogic.getValues().equalsIgnoreCase(answerIndex)) {
                             found = true;
                             break;
-                        }
-                    } else {
-                        String[] values = answerValue.split(",");
-                        for (String value : values) {
-                            OFHelper.v(tag, "OneFlow condition[" + value + "][" + Arrays.asList(values) + "][" + Arrays.asList(rulesArray).contains(value) + "]");
-                            if (Arrays.asList(rulesArray).contains(value)) {
+                            //findNextQuestionPosition(dataLogic.getValues());
+                        } /*else {
+                    initFragment();
+                }*/
+                    } else if (dataLogic.getCondition().equalsIgnoreCase("is-one-of")) {
+
+                        OFHelper.v(tag, "OneFlow condition at is one of [" + dataLogic.getValues() + "]index[" + answerIndex + "]answerValue[" + answerValue + "]");
+                        String[] rulesArray = dataLogic.getValues().split(",");
+
+                        if (answerIndex != null) {
+                            if (Arrays.asList(rulesArray).contains(answerIndex)) {
                                 found = true;
                                 break;
                             }
-                        }
-                        // breaking outer loop
-                        if (found) break;
-                    }
-                } else if (dataLogic.getCondition().equalsIgnoreCase("is-none-of")) {
-                    String[] rulesArray1 = dataLogic.getValues().split(",");
-                    found = true;
-                    if (answerIndex != null) {
-                        if (Arrays.asList(rulesArray1).contains(answerIndex)) {
-                            found = false;
-                            break;
-
-                        }
-                    } else {
-                        String[] values = answerValue.split(",");
-                        for (String value : values) {
-                            if (Arrays.asList(rulesArray1).contains(value)) {
-                                found = true;
-                                break;
+                        } else {
+                            String[] values = answerValue.split(",");
+                            for (String value : values) {
+                                OFHelper.v(tag, "OneFlow condition[" + value + "][" + Arrays.asList(values) + "][" + Arrays.asList(rulesArray).contains(value) + "]");
+                                if (Arrays.asList(rulesArray).contains(value)) {
+                                    found = true;
+                                    break;
+                                }
                             }
+                            // breaking outer loop
+                            if (found) break;
                         }
-                        // breaking outer loop
-                        if (found) break;
-                    }
-                } else if (dataLogic.getCondition().equalsIgnoreCase("is-any")) {
+                    } else if (dataLogic.getCondition().equalsIgnoreCase("is-none-of")) {
+                        String[] rulesArray1 = dataLogic.getValues().split(",");
+                        found = true;
+                        if (answerIndex != null) {
+                            if (Arrays.asList(rulesArray1).contains(answerIndex)) {
+                                found = false;
+                                break;
 
-                    //findNextQuestionPosition(dataLogic.getAction());
-                    found = true;
-                    break;
+                            }
+                        } else {
+                            String[] values = answerValue.split(",");
+                            for (String value : values) {
+                                if (Arrays.asList(rulesArray1).contains(value)) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            // breaking outer loop
+                            if (found) break;
+                        }
+                    } else if (dataLogic.getCondition().equalsIgnoreCase("is-any")) {
+
+                        //findNextQuestionPosition(dataLogic.getAction());
+                        found = true;
+                        break;
+                    }
                 }
             }
         }
@@ -727,11 +729,14 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                     //Now thankyou page will also show progress bar 2-sept-2022
                     //pagePositionPBar.setVisibility(View.GONE);
                     frag = OFSurveyQueThankyouFragment.newInstance(screen, sdkTheme, themeColor);
-
-                    //Logic for showing close button if fade away is false then have to show close button at thankyou page
-                    if (!screen.getRules().getDismissBehavior().getFadesAway()) {
-                        closeBtn.setVisibility(View.VISIBLE);
-                        shouldFadeAway = true;
+                    try {
+                        //Logic for showing close button if fade away is false then have to show close button at thankyou page
+                        if (!screen.getRules().getDismissBehavior().getFadesAway()) {
+                            closeBtn.setVisibility(View.VISIBLE);
+                            shouldFadeAway = true;
+                        }
+                    }catch (Exception ex){
+                        OFHelper.e(tag,"OneFlow ERROR["+ex.getMessage()+"]");
                     }
 
                 } else if (screen.getInput().getInput_type().equalsIgnoreCase("text") ||
