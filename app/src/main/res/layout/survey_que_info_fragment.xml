@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /* Copyright 2021 1Flow, Inc.
+  ~
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~ limitations under the License.*/
+  ~
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_centerInParent="true">
+
+
+
+        <com.oneflow.analytics.customwidgets.OFCustomTextViewBold
+            android:id="@+id/survey_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/field_padding"
+            android:text="Thank you!"
+            android:textColor="@color/txtblack"
+            android:visibility="invisible"
+            android:textSize="@dimen/page_sub_header_1" />
+
+        <com.oneflow.analytics.customwidgets.OFCustomTextView
+            android:id="@+id/survey_sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/survey_title"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/field_padding"
+            android:text="Your answer has been recorded."
+            android:textColor="@color/powored_by_txt_color"
+            android:textSize="@dimen/page_sub_header_3"
+            android:visibility="invisible" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/survey_title"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone">
+
+            <com.oneflow.analytics.customwidgets.OFCustomTextView
+                android:id="@+id/survey_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="@dimen/field_padding"
+                android:text="Real-time feedback powered by "
+                android:textColor="@color/txtgray"
+                android:textSize="@dimen/page_sub_header_4" />
+
+            <ImageView
+                android:id="@+id/watermark_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/survey_description"
+                android:src="@drawable/watermark" />
+        </RelativeLayout>
+
+        <include
+            android:id="@+id/btn_layout"
+            layout="@layout/buttons_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/survey_sub_title"
+
+            ></include>
+
+
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/bottom_water_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/btn_rounded_rectangle_watermark"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/powered_by" />
+
+        <com.oneflow.analytics.customwidgets.OFCustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="@string/powered_by"
+            android:textColor="@color/powored_by_txt_color" />
+    </LinearLayout>
+</LinearLayout>

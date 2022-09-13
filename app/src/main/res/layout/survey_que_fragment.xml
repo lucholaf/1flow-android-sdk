@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /* Copyright 2021 1Flow, Inc.
+  ~
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~ limitations under the License.*/
+  ~
+  -->
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        >
+
+        <com.oneflow.analytics.customwidgets.OFCustomTextViewBold
+            android:id="@+id/survey_title_que"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/field_padding"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="@dimen/field_padding"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/txtblack"
+            android:textSize="@dimen/page_sub_header_1"
+            android:visibility="invisible" />
+
+        <com.oneflow.analytics.customwidgets.OFCustomTextView
+            android:id="@+id/survey_description_que"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/survey_title_que"
+            android:layout_marginLeft="@dimen/field_padding"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="@dimen/field_padding"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/txtgray"
+            android:textSize="@dimen/page_sub_header_3"
+            android:visibility="invisible" />
+
+        <RelativeLayout
+            android:id="@+id/option_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/survey_description_que"
+            android:layout_margin="@dimen/field_padding"
+            android:gravity="center_horizontal"
+            android:visibility="invisible">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/survey_options_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                android:padding="0.5dp" />
+
+            <com.oneflow.analytics.customwidgets.OFCustomTextView
+                android:id="@+id/ratings_not_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/survey_options_list"
+                android:layout_marginTop="@dimen/field_padding"
+                android:text=""
+                android:textColor="@color/txtgray"
+                android:textSize="@dimen/page_sub_header_4" />
+
+            <com.oneflow.analytics.customwidgets.OFCustomTextView
+                android:id="@+id/star_ratings_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/survey_options_list"
+                android:layout_marginTop="@dimen/field_padding"
+                android:layout_centerHorizontal="true"
+                android:text="Please select an option"
+                android:textColor="@color/select_option_color"
+                android:visibility="gone"
+                android:textSize="@dimen/page_sub_header_4" />
+
+            <com.oneflow.analytics.customwidgets.OFCustomTextView
+                android:id="@+id/ratings_full_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/survey_options_list"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/field_padding"
+                android:text=""
+                android:textColor="@color/txtgray"
+                android:textSize="@dimen/page_sub_header_4" />
+
+        </RelativeLayout>
+
+        <include
+            android:id="@+id/btn_layout"
+            layout="@layout/buttons_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/option_layout"></include>
+
+        <LinearLayout
+            android:id="@+id/bottom_water_mark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_layout"
+            android:visibility="gone"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_horizontal"
+            android:padding="10dp"
+            android:background="@drawable/btn_rounded_rectangle_watermark"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/powered_by" />
+
+            <com.oneflow.analytics.customwidgets.OFCustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@string/powered_by"
+                android:textColor="@color/powored_by_txt_color"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
