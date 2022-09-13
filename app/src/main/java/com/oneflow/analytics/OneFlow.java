@@ -720,7 +720,7 @@ public class OneFlow implements OFMyResponseHandler {
                     ddc.setScreen_width(metrics.widthPixels);
                     ddc.setScreen_height(metrics.heightPixels);
                     String userId = "NA";
-                    //OFAddUserResultResponse ofarr = new OFOneFlowSHP(mContext).getUserDetails();
+
                     if (userResponse != null) {
                         userId = userResponse.getAnalytic_user_id();
                     }

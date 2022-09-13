@@ -52,7 +52,7 @@ public class OFSurveyListAdapter extends RecyclerView.Adapter<OFSurveyListAdapte
         holder.txtSurveyKey.setOnClickListener(gch);
 
         if (itemsList.get(position).getScreens() != null) {
-            holder.txtSurveyData.setText("" + (itemsList.get(position).getScreens().size()-1));
+            holder.txtSurveyData.setText("" + (itemsList.get(position).getScreens().size()));
         }
 
 

@@ -136,6 +136,13 @@ public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClic
         submitButton.setOnClickListener(this);
         handleWaterMarkStyle(sdkTheme);
         //Glide.with(this).load(R.drawable.thank_you).into(thankyouImage);
+        try {
+            if (!OFHelper.validateString(surveyScreens.getButtons().get(0).getTitle()).equalsIgnoreCase("NA")) {
+                submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
+            }
+        } catch (Exception ex) {
+            OFHelper.e(tag, "Button list not found");
+        }
         submitButtonBeautification();
         submitButton.requestFocus();
         transitActive();

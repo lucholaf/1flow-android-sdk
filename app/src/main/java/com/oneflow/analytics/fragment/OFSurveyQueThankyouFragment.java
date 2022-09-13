@@ -57,8 +57,7 @@ import com.oneflow.analytics.utils.OFHelper;
 public class OFSurveyQueThankyouFragment extends BaseFragment {
 
 
-
-    ImageView thankyouImage,waterMarkImage;
+    ImageView thankyouImage, waterMarkImage;
 
     OFCustomTextViewBold surveyTitle;
 
@@ -67,35 +66,16 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
     String tag = this.getClass().getName();
 
 
-
     public static OFSurveyQueThankyouFragment newInstance(OFSurveyScreens ahdList, OFSDKSettingsTheme sdkTheme, String themeColor) {
         OFSurveyQueThankyouFragment myFragment = new OFSurveyQueThankyouFragment();
 
         Bundle args = new Bundle();
         args.putSerializable("data", ahdList);
         args.putSerializable("theme", sdkTheme);
-        args.putString("themeColor",themeColor);
+        args.putString("themeColor", themeColor);
         myFragment.setArguments(args);
 
         return myFragment;
-    }
-
-
-    private void ruleAction(){
-        OFHelper.v(tag,"OneFlow thankyou page rule ["+new Gson().toJson(surveyScreens.getRules())+"]");
-        if(surveyScreens.getRules()!=null) {
-            OFDataLogic dl = surveyScreens.getRules().getDataLogic().get(0);
-            if (dl != null) {
-                if (dl.getType().equalsIgnoreCase("open-url")) {
-                    //todo need to close properly
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(dl.getAction()));
-                    startActivity(browserIntent);
-                } else if (dl.getType().equalsIgnoreCase("rating")) {
-                    // OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
-                    sa.reviewThisApp(getActivity());
-                }
-            }
-        }
     }
 
 
@@ -107,8 +87,8 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
         OFHelper.v(tag, "OneFlow list data[" + surveyScreens + "]");
 
 
-        thankyouImage = (ImageView)view.findViewById(R.id.thankyou_img);
-        waterMarkImage = (ImageView)view.findViewById(R.id.watermark_img);
+        thankyouImage = (ImageView) view.findViewById(R.id.thankyou_img);
+        waterMarkImage = (ImageView) view.findViewById(R.id.watermark_img);
         waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
 
         surveyTitle = (OFCustomTextViewBold) view.findViewById(R.id.survey_title);
@@ -119,7 +99,6 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
         int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.6f);
         ((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
         surveyDescription.setTextColor(colorAlpha);
-
 
 
         if (OneFlow.titleFace != null) {
@@ -166,16 +145,30 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                         @Override
                         public void onAnimationEnd(Drawable drawable) {
                             super.onAnimationEnd(drawable);
-                            if (surveyScreens.getRules() != null) {
-                                if (surveyScreens.getRules().getDismissBehavior().getFadesAway()) {
+
+                            OFHelper.v(tag,"OneFlow rules["+new Gson().toJson(surveyScreens.getRules())+"]");
+
+                            if(surveyScreens.getRules()!=null){
+                                if (surveyScreens.getRules().getDismissBehavior() != null) {
+                                    if (surveyScreens.getRules().getDismissBehavior().getFadesAway()) {
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                ruleAction();
+                                                sa.finish();
+                                            }
+                                        }, surveyScreens.getRules().getDismissBehavior().getFadesAway() ? (surveyScreens.getRules().getDismissBehavior().getDelayInSeconds() * 1000) : 20);
+                                        // above logic is added for fade away if true then should fade away in mentioned duration
+                                    }
+                                } else {
                                     new Handler().postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
-
+                                            ruleAction();
                                             sa.finish();
                                         }
-                                    }, surveyScreens.getRules().getDismissBehavior().getFadesAway() ? (surveyScreens.getRules().getDismissBehavior().getDelayInSeconds() * 1000) : 20);
-                                    // above logic is added for fade away if true then should fade away in mentioned duration
+                                    }, 20);
                                 }
                             }else{
                                 new Handler().postDelayed(new Runnable() {
@@ -184,7 +177,31 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
 
                                         sa.finish();
                                     }
-                                },  20);
+                                }, 20);
+                            }
+
+
+                            if (surveyScreens.getRules() != null) {
+                                if (surveyScreens.getRules().getDismissBehavior() != null) {
+                                    if (surveyScreens.getRules().getDismissBehavior().getFadesAway()) {
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                sa.finish();
+                                            }
+                                        }, surveyScreens.getRules().getDismissBehavior().getFadesAway() ? (surveyScreens.getRules().getDismissBehavior().getDelayInSeconds() * 1000) : 20);
+                                        // above logic is added for fade away if true then should fade away in mentioned duration
+                                    }
+                                } else {
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            sa.finish();
+                                        }
+                                    }, 20);
+                                }
                             }
                         }
                     });
@@ -192,12 +209,27 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
 
             }
         });
-        ruleAction();
+        //ruleAction();
         sa.initFragment();
         return view;
 
     }
-
+    private void ruleAction(){
+        OFHelper.v(tag,"OneFlow thankyou page rule ["+new Gson().toJson(surveyScreens.getRules())+"]");
+        if(surveyScreens.getRules()!=null) {
+            OFDataLogic dl = surveyScreens.getRules().getDataLogic().get(0);
+            if (dl != null) {
+                if (dl.getType().equalsIgnoreCase("open-url")) {
+                    //todo need to close properly
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(dl.getAction()));
+                    startActivity(browserIntent);
+                } else if (dl.getType().equalsIgnoreCase("rating")) {
+                    // OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
+                    sa.reviewThisApp(getActivity());
+                }
+            }
+        }
+    }
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -236,10 +268,10 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
 
 
     public void handleClick(View v) {
-        if(v.getId()== R.id.watermark_img){
-                String waterMark = "https://1flow.app/?utm_source=1flow-android-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow";//https://www.notion.so/Powered-by-1Flow-logo-should-link-to-website-c186fca5220e41d19f420dd871f9696d";
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(waterMark));
-                startActivity(browserIntent);
+        if (v.getId() == R.id.watermark_img) {
+            String waterMark = "https://1flow.app/?utm_source=1flow-android-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow";//https://www.notion.so/Powered-by-1Flow-logo-should-link-to-website-c186fca5220e41d19f420dd871f9696d";
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(waterMark));
+            startActivity(browserIntent);
 
         }
     }

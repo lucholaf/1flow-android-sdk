@@ -78,6 +78,7 @@ import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -165,16 +166,15 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                         ec.storeEventsInDB(OFConstants.AUTOEVENT_CLOSED_SURVEY, mapValue, 0);
                     }
 
-                }else if (position == screens.size()) {
+                } else if (position == screens.size()) {
                     surveyClosingStatus = "finished";
-                }
-                else {
+                } else {
                     surveyClosingStatus = "closed";
                 }
 
-                if(position>=screens.size()){
+                if (position >= screens.size()) {
                     OFSDKBaseActivity.this.finish();
-                }else{
+                } else {
                     finishSurveyNow();
                 }
 
@@ -243,8 +243,6 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 OFHelper.v(tag, "OneFlow getAction[" + event.getAction() + "]");
                 OFHelper.v(tag, "OneFlow getX[" + event.getX() + "]");
 
-               // OFSDKBaseActivity.this.finish1();
-                // overridePendingTransition(0,R.anim.slide_down_dialog);
                 return false;
             }
         });
@@ -277,7 +275,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     @Override
     public void onBackPressed() {
         if (false) {//!sdkTheme.getClose_button()) {
-          //  finishSurvey1Now();//remaned to avoid find count
+
             super.onBackPressed();
         }
 
@@ -285,9 +283,6 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
     @Override
     protected void onPause() {
-       // OFHelper.v(tag, "OneFlow checking value onPause called " + surveyResponseChildren.size());
-
-
         OFHelper.v(tag, "OneFlow onPause called");
         //overridePendingTransition(0, R.anim.slide_down_dialog_sdk);
         super.onPause();
@@ -428,16 +423,8 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                         if (dataLogic.getValues().equalsIgnoreCase(answerIndex)) {
                             found = true;
                             break;
-                            //action = dataLogic.getAction();
-                            /*if (dataLogic.getAction().equalsIgnoreCase("the-end")) {
-                                position = screens.size();
-                                initFragment();
-                            } else {
-                                findNextQuestionPosition(dataLogic.getAction());
-                            }*/
-                        } /*else {
-                        initFragment();
-                    }*/
+
+                        }
                     } else {
                         if (answerValue != null) {
                             String[] valueArray = answerValue.split(",");
@@ -534,15 +521,16 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 if (type.equalsIgnoreCase("open-url")) {
                     //todo need to close properly
 
-                    position = screens.size();
-                    initFragment();
-
+                    //position = screens.size();
+                    //initFragment();
+                    finishSurveyNow();
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(action));
                     startActivity(browserIntent);
                 } else if (type.equalsIgnoreCase("rating")) {
                     // OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
-                    position = screens.size();
-                    initFragment();
+                    //position = screens.size();
+                    //initFragment();
+                    finishSurveyNow();
                     reviewThisApp(this);
                 } else {
                     findNextQuestionPosition(action);
@@ -732,7 +720,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                     //pagePositionPBar.setVisibility(View.GONE);
                     frag = OFSurveyQueThankyouFragment.newInstance(screen, sdkTheme, themeColor);
                     //Logic for showing close button if fade away is false then have to show close button at thankyou page
-                    if(!screen.getRules().getDismissBehavior().getFadesAway()){
+                    if (!screen.getRules().getDismissBehavior().getFadesAway()) {
                         closeBtn.setVisibility(View.VISIBLE);
                     }
 
@@ -740,7 +728,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                         screen.getInput().getInput_type().equalsIgnoreCase("short-text")
                 ) {
                     frag = OFSurveyQueTextFragment.newInstance(screen, sdkTheme, themeColor);
-                }else if (screen.getInput().getInput_type().equalsIgnoreCase("welcome-screen")) {
+                } else if (screen.getInput().getInput_type().equalsIgnoreCase("welcome-screen")) {
                     frag = OFSurveyQueInfoFragment.newInstance(screen, sdkTheme, themeColor);
                 } else {
                     frag = OFSurveyQueFragment.newInstance(screen, sdkTheme, themeColor);
@@ -759,14 +747,14 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
      * @return
      */
     public OFSurveyScreens validateScreens() {
-        String[] possibleType = new String[]{"text", "short-text", "thank_you", "rating-numerical", "rating-5-star", "rating", "rating-emojis", "nps","welcome-screen","end-screen"};
+        String[] possibleType = new String[]{"text", "short-text", "thank_you", "mcq", "checkbox", "rating-numerical", "rating-5-star", "rating", "rating-emojis", "nps", "welcome-screen", "end-screen"};
         OFSurveyScreens screen = null;
         OFHelper.v(tag, "OneFlow finding reached validateScreens");
         while (position < screens.size()) {
             screen = screens.get(position);
             OFHelper.v(tag, "OneFlow finding question type [" + screen.getInput().getInput_type() + "]");
             if (Arrays.asList(possibleType).contains(screen.getInput().getInput_type())) {
-                OFHelper.v(tag, "OneFlow finding question type [" + screen.getInput().getInput_type() + "] found position["+position+"]");
+                OFHelper.v(tag, "OneFlow finding question type [" + screen.getInput().getInput_type() + "] found position[" + position + "]");
                 break; // if found then stop;
             } else {
                 OFHelper.v(tag, "OneFlow finding question type [" + screen.getInput().getInput_type() + "] not found skipping this question");
@@ -819,9 +807,18 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                     //OFHelper.v(tag,"OneFlow sending data ["+new Gson().toJson(finishData)+"]");
                     sendBroadcast(intent);
                 }
-                if (position < screens.size()) {   //this logic is added to avoid wait on thankyou page after clicking close button
-                    OFSDKBaseActivity.this.finish();
-                }
+
+                /*this logic is added to avoid wait on thankyou page after clicking close button,
+                 * Below logic will also help to close survey if there is no thankyou page
+                 * */
+                OFHelper.v(tag,"OneFlow input response current screen["+screens.get(position-1).getInput().getInput_type()+"]");
+                    if (!(screens.get(position-1).getInput().getInput_type().equalsIgnoreCase("thank_you") ||
+                            screens.get(position-1).getInput().getInput_type().equalsIgnoreCase("end-screen")
+                    )) {
+                        OFSDKBaseActivity.this.finish();
+                    }
+
+
                 break;
         }
     }
@@ -841,7 +838,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
             finishModel.setQuestionTitle(ss.getTitle());
             finishModel.setQuestionType(ss.getInput().getInput_type());
             listInner = new ArrayList<>();
-            if(surveyResponseChildren!=null) {
+            if (surveyResponseChildren != null) {
                 for (OFSurveyUserResponseChild sr : surveyResponseChildren) {
                     if (sr.getScreen_id().equalsIgnoreCase(ss.get_id())) {
                         finishChild = new OFSurveyFinishChild();
