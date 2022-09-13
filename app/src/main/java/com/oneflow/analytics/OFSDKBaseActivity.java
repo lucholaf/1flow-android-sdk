@@ -91,7 +91,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     String tag = this.getClass().getName();
     Window window;
     ProgressBar pagePositionPBar;
-    ImageView closeBtn;
+    public ImageView closeBtn;
     View slider;
     RelativeLayout sliderLayout, basePopupLayout, mainChildForBackground;
     FrameLayout fragmentView;
@@ -130,6 +130,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     }
 
     OFGetSurveyListResponse surveyItem;
+    boolean shouldFadeAway = false;
 
     @Override
     protected void onStart() {
@@ -153,7 +154,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 if (closedSurveyList == null) {
                     closedSurveyList = new ArrayList<>();
                 }
-                OFHelper.v(tag, "OneFlow close button clicked [" + surveyResponseChildren + "]position["+position+"]size["+screens.size()+"]");
+                OFHelper.v(tag, "OneFlow close button clicked [" + surveyResponseChildren + "]position[" + position + "]size[" + screens.size() + "]");
                 if (surveyResponseChildren == null || surveyResponseChildren.size() == 0) {
 
                     surveyClosingStatus = "skipped";
@@ -256,11 +257,18 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         } else {
             pagePositionPBar.setVisibility(View.GONE);
         }
+
+        OFHelper.v(tag, "OneFlow position[" + position + "]size[" + sdkTheme.getClose_button() + "][" + shouldFadeAway + "]");
         if (sdkTheme.getClose_button()) {
             closeBtn.setVisibility(View.VISIBLE);
         } else {
+
             closeBtn.setVisibility(View.GONE);
+
         }
+
+
+
 
         if (sdkTheme.getDark_overlay()) {
             window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND); // This flag is required to set otherwise the setDimAmount method will not show any effect
@@ -719,9 +727,11 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                     //Now thankyou page will also show progress bar 2-sept-2022
                     //pagePositionPBar.setVisibility(View.GONE);
                     frag = OFSurveyQueThankyouFragment.newInstance(screen, sdkTheme, themeColor);
+
                     //Logic for showing close button if fade away is false then have to show close button at thankyou page
                     if (!screen.getRules().getDismissBehavior().getFadesAway()) {
                         closeBtn.setVisibility(View.VISIBLE);
+                        shouldFadeAway = true;
                     }
 
                 } else if (screen.getInput().getInput_type().equalsIgnoreCase("text") ||
@@ -807,16 +817,16 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                     //OFHelper.v(tag,"OneFlow sending data ["+new Gson().toJson(finishData)+"]");
                     sendBroadcast(intent);
                 }
-
+                surveyResponseChildren = null;
                 /*this logic is added to avoid wait on thankyou page after clicking close button,
                  * Below logic will also help to close survey if there is no thankyou page
                  * */
-                OFHelper.v(tag,"OneFlow input response current screen["+screens.get(position-1).getInput().getInput_type()+"]");
-                    if (!(screens.get(position-1).getInput().getInput_type().equalsIgnoreCase("thank_you") ||
-                            screens.get(position-1).getInput().getInput_type().equalsIgnoreCase("end-screen")
-                    )) {
-                        OFSDKBaseActivity.this.finish();
-                    }
+                OFHelper.v(tag, "OneFlow input response current screen[" + screens.get(position - 1).getInput().getInput_type() + "]");
+                if (!(screens.get(position - 1).getInput().getInput_type().equalsIgnoreCase("thank_you") ||
+                        screens.get(position - 1).getInput().getInput_type().equalsIgnoreCase("end-screen")
+                )) {
+                    OFSDKBaseActivity.this.finish();
+                }
 
 
                 break;

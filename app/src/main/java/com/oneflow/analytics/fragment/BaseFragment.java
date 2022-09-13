@@ -113,9 +113,12 @@ public class BaseFragment extends Fragment {
                 waterMarkLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         String waterMark = "https://1flow.app/?utm_source=1flow-android-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow";//https://www.notion.so/Powered-by-1Flow-logo-should-link-to-website-c186fca5220e41d19f420dd871f9696d";
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(waterMark));
                         startActivity(browserIntent);
+
+
                     }
                 });
                 waterMarkLayout.setOnTouchListener(new View.OnTouchListener() {

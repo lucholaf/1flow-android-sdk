@@ -214,6 +214,17 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
         return view;
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+                //Logic for showing close button if fade away is false then have to show close button at thankyou page
+                if (!surveyScreens.getRules().getDismissBehavior().getFadesAway()) {
+                    sa.closeBtn.setVisibility(View.VISIBLE);
+                }
+    }
+
     private void ruleAction(){
         OFHelper.v(tag,"OneFlow thankyou page rule ["+new Gson().toJson(surveyScreens.getRules())+"]");
         if(surveyScreens.getRules()!=null) {
@@ -267,14 +278,14 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
     }*/
 
 
-    public void handleClick(View v) {
+  /*  public void handleClick(View v) {
         if (v.getId() == R.id.watermark_img) {
             String waterMark = "https://1flow.app/?utm_source=1flow-android-sdk&utm_medium=watermark&utm_campaign=real-time+feedback+powered+by+1flow";//https://www.notion.so/Powered-by-1Flow-logo-should-link-to-website-c186fca5220e41d19f420dd871f9696d";
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(waterMark));
             startActivity(browserIntent);
 
         }
-    }
+    }*/
 
     Dialog dialog;
 
