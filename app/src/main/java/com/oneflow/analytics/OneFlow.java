@@ -21,6 +21,7 @@
 package com.oneflow.analytics;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -68,6 +69,7 @@ import com.oneflow.analytics.repositories.OFLogUserDBRepo;
 import com.oneflow.analytics.repositories.OFLogUserRepo;
 import com.oneflow.analytics.repositories.OFProjectDetails;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
+import com.oneflow.analytics.utils.OFActivityCallbacks;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 //import com.oneflow.analytics.utils.OFLogCountdownTimer;
@@ -119,11 +121,32 @@ public class OneFlow implements OFMyResponseHandler {
         }
     }
 
+
+    public static void registerActivityCallback(){
+        ((Application)mContext.getApplicationContext()).registerActivityLifecycleCallbacks(new OFActivityCallbacks());
+    }
     public static void configure(Context mContext, String projectKey, OFFontSetup titleFont) {
         if (!OFHelper.validateString(projectKey).equalsIgnoreCase("NA")) {
             if (OFHelper.validateString(OFHelper.headerKey).equalsIgnoreCase("NA")) {
                 configureLocal(mContext, projectKey);
                 titleFace = titleFont;
+
+            } else {
+                OFHelper.e("1Flow", "Re-register called, Nothing happen");
+            }
+        } else {
+            OFHelper.e("1Flow", "Empty project given");
+        }
+    }
+    public static void configure(Context mContext, String projectKey, OFFontSetup titleFont,Boolean trackScreens) {
+        if (!OFHelper.validateString(projectKey).equalsIgnoreCase("NA")) {
+            if (OFHelper.validateString(OFHelper.headerKey).equalsIgnoreCase("NA")) {
+                configureLocal(mContext, projectKey);
+                titleFace = titleFont;
+                if(trackScreens){
+                    registerActivityCallback();
+                }
+
             } else {
                 OFHelper.e("1Flow", "Re-register called, Nothing happen");
             }
