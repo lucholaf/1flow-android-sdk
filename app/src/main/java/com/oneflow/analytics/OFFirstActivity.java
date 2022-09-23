@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHandler {
 
@@ -76,8 +77,14 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         Long lastHit = ofs.getLongValue(OFConstants.SHP_ONEFLOW_CONFTIMING);
 
-        OFHelper.v(tag,"OneAxis lastHit["+lastHit+"]");
+        OFHelper.v(tag,"OneFlow lastHit["+lastHit+"]");
 
+        OFHelper.v(tag,"OneFlow LanguageCodeTAG["+ Locale.getDefault().toLanguageTag()+"]");
+        OFHelper.v(tag,"OneFlow LanguageCodeLanguage["+ Locale.getDefault().getLanguage()+"]");
+        OFHelper.v(tag,"OneFlow LanguageCodeISO3["+ Locale.getDefault().getISO3Language()+"]");
+        OFHelper.v(tag,"OneFlow LanguageCodetoString["+ Locale.getDefault().toString() +"]");
+        OFHelper.v(tag,"OneFlow LanguageCodeDisplayLanguage["+ Locale.getDefault().getDisplayLanguage()+"]");
+        OFHelper.v(tag,"OneFlow LanguageCountry["+Locale.getDefault().getCountry()+"]");
 
         slr = new ArrayList<>();
         addb = new OFSurveyListAdapter(this, slr, clickListener);
@@ -104,12 +111,12 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         OFFontSetup optionsFont = new OFFontSetup(faceBold, 12f);*/
 
        // String projectKey = "oneflow_sandbox_2Z9e492aa1qH22E2SnoSAT5broVR80RF9EXhQ0UcOTyZNgDRCsS4Y88hG4mL+IjPURFgrvCIsuNtUinVIr/ClQ==";
-        //String projectKey = "oneflow_sandbox_9NtGc0TDDoOiq+c4z1OTaYpAsu6wUfZ+qECnLtbRYDKiSvMn+sbP+Y1UuSt3bu2RfOr+N4ZNk+84ZEyCeFgJGg==";
+        String projectKey = "oneflow_sandbox_9NtGc0TDDoOiq+c4z1OTaYpAsu6wUfZ+qECnLtbRYDKiSvMn+sbP+Y1UuSt3bu2RfOr+N4ZNk+84ZEyCeFgJGg==";
         //String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";
         //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";
         //String projectKey = "oneflow_prod_G0Qg6dUDtbx8cyOWd4HQ/XBCEE+OfsH5EL+5rz4GBoAJ3nxlqKqZo0Hj5yMmhDjcBDAMNuOlvDpqAoB8nivvmQ==";
        // String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
-        String projectKey = "oneflow_prod_rjz2cV390BlTDSHQi1zHeL8w09+/ZQOJe7mpXJ1SY05sA2UapiKIZl+BwOq0JFoXJIxaXm87TQVo9MQnokf4fQ==";//WelcomeEndScreen
+       // String projectKey = "oneflow_prod_rjz2cV390BlTDSHQi1zHeL8w09+/ZQOJe7mpXJ1SY05sA2UapiKIZl+BwOq0JFoXJIxaXm87TQVo9MQnokf4fQ==";//WelcomeEndScreen
         //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
 
         OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);

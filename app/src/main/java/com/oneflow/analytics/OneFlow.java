@@ -45,6 +45,7 @@ import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.google.gson.Gson;
 import com.oneflow.analytics.controller.OFEventController;
 import com.oneflow.analytics.controller.OFSurveyController;
 import com.oneflow.analytics.model.OFConnectivity;
@@ -390,7 +391,7 @@ public class OneFlow implements OFMyResponseHandler {
         OFDeviceDetails dd = new OFDeviceDetails();
         dd.setUnique_id(OFHelper.getDeviceId(mContext));
         dd.setDevice_id(OFHelper.getDeviceId(mContext));
-        dd.setOs("iOS");//"android");
+        dd.setOs("android");
 
 
         //OFLocationResponse lr = new OFOneFlowSHP(mContext).getUserLocationDetails();
@@ -922,7 +923,7 @@ public class OneFlow implements OFMyResponseHandler {
                 if (obj != null) {
                     OFGetSurveyListResponse gslr = (OFGetSurveyListResponse) obj;
                     if (gslr != null) {
-                        OFHelper.v("FeedbackController", "OneFlow resurvey checked survey found surveyItem[" + gslr + "]event name[" + reserved + "]");
+                        OFHelper.v("FeedbackController", "OneFlow resurvey checked survey found surveyItem[" + new Gson().toJson(gslr) + "]event name[" + reserved + "]");
 
                         OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
 

@@ -772,6 +772,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 OFHelper.v(tag, "OneFlow finding question type [" + screen.getInput().getInput_type() + "] found position[" + position + "]");
                 break; // if found then stop;
             } else {
+                screen = null;
                 OFHelper.v(tag, "OneFlow finding question type [" + screen.getInput().getInput_type() + "] not found skipping this question");
                 position++;// if not found then check next survey
             }
