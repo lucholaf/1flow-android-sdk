@@ -17,31 +17,31 @@ public class OFActivityCallbacks implements Application.ActivityLifecycleCallbac
 
     @Override
     public void onActivityStarted(@NonNull Activity activity) {
-        OFHelper.d(tag,"Amit ActivityCallbacks onActivityStarted",true);
+        OFHelper.d(tag,"Amit ActivityCallbacks onActivityStarted["+activity.getClass().getName()+"]",true);
     }
 
     @Override
     public void onActivityResumed(@NonNull Activity activity) {
-        OFHelper.d(tag,"Amit ActivityCallbacks onActivityResumed",true);
+        OFHelper.d(tag,"Amit ActivityCallbacks onActivityResumed["+activity.getClass().getName()+"]",true);
     }
 
     @Override
     public void onActivityPaused(@NonNull Activity activity) {
-        OFHelper.d(tag,"Amit ActivityCallbacks onActivityPaused",true);
+        OFHelper.d(tag,"Amit ActivityCallbacks onActivityPaused["+activity.getClass().getName()+"]",true);
     }
 
     @Override
     public void onActivityStopped(@NonNull Activity activity) {
-        OFHelper.d(tag,"Amit ActivityCallbacks onActivityStopped",true);
+        OFHelper.d(tag,"Amit ActivityCallbacks onActivityStopped["+activity.getClass().getName()+"]",true);
     }
 
     @Override
     public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
-        OFHelper.d(tag,"Amit ActivityCallbacks onActivitySaveInstanceState",true);
+        OFHelper.d(tag,"Amit ActivityCallbacks onActivitySaveInstanceState["+activity.getClass().getName()+"]",true);
     }
 
     @Override
     public void onActivityDestroyed(@NonNull Activity activity) {
-        OFHelper.d(tag,"Amit ActivityCallbacks onActivityDestroyed",true);
+        OFHelper.d(tag,"Amit ActivityCallbacks onActivityDestroyed["+activity.getClass().getName()+"]",true);
     }
 }
