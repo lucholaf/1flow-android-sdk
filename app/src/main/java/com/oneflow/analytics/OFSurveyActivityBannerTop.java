@@ -45,19 +45,13 @@ import com.oneflow.analytics.utils.OFHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 public class OFSurveyActivityBannerTop extends OFSDKBaseActivity {
-
-
-
     String tag = this.getClass().getName();
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-
 
         setContentView(R.layout.survey_view_banner);
 
