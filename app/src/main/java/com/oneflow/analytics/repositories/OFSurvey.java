@@ -33,6 +33,7 @@ import com.oneflow.analytics.utils.OFMyResponseHandler;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,14 +44,19 @@ public class OFSurvey {
     static String tag = "Survey";
 
     public static void getSurvey(String headerKey, OFMyResponseHandler mrh, OFConstants.ApiHitType type,String userId, String sessionId,String versionName) {
-        OFHelper.v(tag, "OneFlow survey reached getSurvey called");
+
+        String language = Locale.getDefault().toString();
+        if(OFHelper.validateString(language).equalsIgnoreCase("NA")){
+            language = "en_US";
+        }
+        OFHelper.v(tag, "OneFlow Language survey reached getSurvey called language["+ language+"]");
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
 
         try {
             Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> responseCall = null;
-            String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys";
-            //responseCall = connectAPI.getSurvey(headerKey, url,"android", OFConstants.MODE,userId,sessionId);
-            responseCall = connectAPI.getSurvey(headerKey, "android", userId,sessionId,"hi-IN",versionName);//,OFConstants.MODE);
+            //String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys";
+
+            responseCall = connectAPI.getSurvey(headerKey, "android", userId,sessionId,language,versionName);//,OFConstants.MODE);
 
             responseCall.enqueue(new Callback<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>>() {
                 @Override

@@ -139,7 +139,7 @@ public class OneFlow implements OFMyResponseHandler {
             OFHelper.e("1Flow", "Empty project given");
         }
     }
-    public static void configure(Context mContext, String projectKey, OFFontSetup titleFont,Boolean trackScreens) {
+   /* public static void configure(Context mContext, String projectKey, OFFontSetup titleFont,Boolean trackScreens) {
         if (!OFHelper.validateString(projectKey).equalsIgnoreCase("NA")) {
             if (OFHelper.validateString(OFHelper.headerKey).equalsIgnoreCase("NA")) {
                 configureLocal(mContext, projectKey);
@@ -154,7 +154,7 @@ public class OneFlow implements OFMyResponseHandler {
         } else {
             OFHelper.e("1Flow", "Empty project given");
         }
-    }
+    }*/
 
     public static void configure(Context mContext, String projectKey, OFFontSetup titleFont, OFFontSetup descriptionFont) {
         if (!OFHelper.validateString(projectKey).equalsIgnoreCase("NA")) {
