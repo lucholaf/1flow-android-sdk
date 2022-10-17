@@ -533,15 +533,17 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
                     //position = screens.size();
                     //initFragment();
-                    finishSurveyNow();
+
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(action));
                     startActivity(browserIntent);
+                    finishSurveyNow();
                 } else if (type.equalsIgnoreCase("rating")) {
-                    // OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
+                    //OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
                     //position = screens.size();
                     //initFragment();
-                    finishSurveyNow();
+
                     reviewThisApp(this);
+                    finishSurveyNow();
                 } else {
                     findNextQuestionPosition(action);
                 }
