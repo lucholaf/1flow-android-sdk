@@ -39,7 +39,7 @@ import com.oneflow.analytics.sdkdb.survey.OFSubmittedSurveyDAO;
 import com.oneflow.analytics.sdkdb.survey.OFSubmittedSurveysTab;
 import com.oneflow.analytics.utils.OFConstants;
 
-@Database(entities = {OFRecordEventsTab.class, OFAddUserResultResponse.class, OFSubmittedSurveysTab.class, OFSurveyUserInput.class},version = 21)
+@Database(entities = {OFRecordEventsTab.class, OFAddUserResultResponse.class, OFSubmittedSurveysTab.class, OFSurveyUserInput.class},version = 22)
 @TypeConverters({OFMapConverter.class, OFDataConverterLocation.class, OFDataConverterDevice.class, OFSurveyUserResponseChildConverter.class})
 public abstract class OFSDKDB extends RoomDatabase {
 
