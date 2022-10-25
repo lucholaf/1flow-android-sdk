@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OFProjectKeyActivity">
+
+    <com.oneflow.analytics.customwidgets.OFCustomEditText
+        android:id="@+id/project_key"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/rounded_rectangle_with_border_gray"
+        android:padding="10dp" />
+
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
+        android:id="@+id/register_project"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/project_key"
+        android:layout_margin="40dp"
+        android:background="@color/purple_500"
+        android:gravity="center"
+        android:onClick="registerProject"
+        android:padding="10dp"
+        android:text="Register Project"
+        android:textAllCaps="true"
+        android:textColor="@color/white" />
+</RelativeLayout>

@@ -25,12 +25,35 @@
     android:padding="10dp"
     tools:context=".OFFirstActivity">
 
+    <ProgressBar
+
+        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:id="@+id/progress_circular"
+        android:layout_gravity="center|center_vertical"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_of_survey"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:visibility="gone"/>
+
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
+        android:id="@+id/no_survey"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/page_margin"
+        android:onClick="clickHandler"
+        android:padding="10dp"
+        android:text="No survey received"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_gravity="center_vertical|center_horizontal"
+         />
 
     <TextView
         android:id="@+id/configure_project"
@@ -133,10 +156,7 @@
         android:tag="button_clicked"
         android:text="button_clicked"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="bottom" />
 
     <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/connect_vpn"
@@ -196,7 +216,7 @@
         android:onClick="clickHandler"
         android:padding="10dp"
         android:text="Log User"
-
+        android:layout_gravity="bottom"
         android:visibility="visible" />
 
     <com.oneflow.analytics.customwidgets.OFCustomTextView

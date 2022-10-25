@@ -505,7 +505,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
                             public void run() {
                                 sa.addUserResponseToList(surveyScreens.get_id(), position, null);
                             }
-                        }, 1000);
+                        }, 5);
                     }
                 } else {
 
@@ -514,7 +514,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
                         public void run() {
                             sa.addUserResponseToList(surveyScreens.get_id(), position, (String) obj);
                         }
-                    }, 1000);
+                    }, 5);
                 }
 
             } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {

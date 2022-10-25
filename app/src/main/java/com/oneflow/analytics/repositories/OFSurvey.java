@@ -66,8 +66,11 @@ public class OFSurvey {
                     OFHelper.v(tag,"OneFlow recordEvents survey list response["+response.isSuccessful()+"]at ["+OFHelper.formatedDate(System.currentTimeMillis(),"dd-MM-yyyy hh:mm:ss.SSS")+"]");
 
                     if (response.isSuccessful()) {
-
+                        try{
                         mrh.onResponseReceived(type, response.body().getResult(), 0l,"");
+                        }catch(Exception ex){
+                            mrh.onResponseReceived(type, "", 0l,"");
+                        }
 
                     } else {
                         OFHelper.v(tag, "OneFlow survey list not fetched isSuccessfull false");
@@ -102,14 +105,14 @@ public class OFSurvey {
                 public void onResponse(Call<OFGenericResponse> call, Response<OFGenericResponse> response) {
 
 
-                    OFHelper.v(tag, "OneFlow reached success[" + response.isSuccessful() + "]");
-                    OFHelper.v(tag, "OneFlow reached success raw[" + response.raw() + "]");
+                    //OFHelper.v(tag, "OneFlow reached success[" + response.isSuccessful() + "]");
+                    //OFHelper.v(tag, "OneFlow reached success raw[" + response.raw() + "]");
 
                     //OFHelper.makeText(context.getApplicationContext(),"Survey submit status["+response.isSuccessful()+"]",1);
 
                     if (response.isSuccessful()) {
-                        OFHelper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
-                        OFHelper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
+                        //OFHelper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
+                        //OFHelper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
 
                         handler.onResponseReceived(type,sur,0l,"");
                         /*AsyncTask.execute(new Runnable() {
@@ -125,7 +128,7 @@ public class OFSurvey {
 
                     } else {
                         //mrh.onResponseReceived(response.body(), type);
-                        OFHelper.v(tag, "OneFlow response 0[" + response.body() + "]");
+                       // OFHelper.v(tag, "OneFlow response 0[" + response.body() + "]");
                         /*Helper.v(tag, "OneFlow response 1[" + response.body().getMessage() + "]");
                         Helper.v(tag, "OneFlow response 2[" + response.body().getSuccess() + "]");*/
                     }
@@ -164,8 +167,8 @@ public class OFSurvey {
 
 
                     if (response.isSuccessful()) {
-                        OFHelper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
-                        OFHelper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
+                      //  OFHelper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
+                       // OFHelper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
                         mrh.onResponseReceived(type, sur, 0l, "");
                         /*AsyncTask.execute(new Runnable() {
                             @Override

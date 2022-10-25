@@ -425,7 +425,8 @@ public class OneFlow implements OFMyResponseHandler {
         aur.setOFDeviceDetails(dd);
         aur.setOFLocationDetails(null);
         aur.setLocationCheck(true);
-
+        /*aur.setName("Amit");
+        aur.setEmail("amit@tryskybox.com");*/
         return aur;
     }
 
@@ -769,6 +770,9 @@ public class OneFlow implements OFMyResponseHandler {
                     createSession(csr);
                 } else {
                     OFHelper.headerKey = "";
+                    Intent intent = new Intent("survey_list_fetched");
+                    intent.putExtra("msg","Invalid project key");
+                    mContext.sendBroadcast(intent);
                     if (OFConstants.MODE.equalsIgnoreCase("dev")) {
                         OFHelper.makeText(mContext, reserved, 1);
                     }

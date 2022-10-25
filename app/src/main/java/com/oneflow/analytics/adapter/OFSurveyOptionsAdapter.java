@@ -338,6 +338,11 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     //Radio
             //        OFHelper.v(tag, "OneFlow title [" + surveyInputs.getChoices().get(position).getTitle() + "]tag[" + surveyInputs.getChoices().get(position).getId() + "]");
 
+                    //below block was used to check others option as it was not coming from api
+                    /*if(surveyInputs.getChoices().get(position).getTitle().equalsIgnoreCase("Others") || surveyInputs.getChoices().get(position).getTitle().equalsIgnoreCase("Other")) {
+                     surveyInputs.setOtherOption("0db4b95a7f8e192867e3630a");
+                    }*/
+
                     if (OneFlow.optionsFace != null) {
                         if (OneFlow.optionsFace.getTypeface() != null) {
                             ((MCQRadioViewHolder) holder).title.setTypeface(OneFlow.optionsFace.getTypeface());
@@ -448,7 +453,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                                     }
 
-                                    // touch up code
+                                    // touch release code
                                     CompoundButtonCompat.setButtonTintList(((MCQRadioViewHolder) holder).title, new ColorStateList(statesRadio, colorsRadio));//ColorStateList.valueOf(Color.parseColor(themeColor)));
                                     if (!rb.isChecked()) {
 

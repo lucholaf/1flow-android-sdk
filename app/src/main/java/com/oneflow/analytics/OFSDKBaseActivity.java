@@ -123,9 +123,12 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        surveyItem = (OFGetSurveyListResponse) savedInstanceState.getSerializable("SurveyType");
-        sdkTheme = (OFSDKSettingsTheme) savedInstanceState.getSerializable("SurveyTheme");
+        try {
+            surveyItem = (OFGetSurveyListResponse) savedInstanceState.getSerializable("SurveyType");
+            sdkTheme = (OFSDKSettingsTheme) savedInstanceState.getSerializable("SurveyTheme");
+        }catch(Exception ex){
 
+        }
         //position--;
     }
 
@@ -829,13 +832,16 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 /*this logic is added to avoid wait on thankyou page after clicking close button,
                  * Below logic will also help to close survey if there is no thankyou page
                  * */
-                OFHelper.v(tag, "OneFlow input response current screen[" + screens.get(position - 1).getInput().getInput_type() + "]");
-                if (!(screens.get(position - 1).getInput().getInput_type().equalsIgnoreCase("thank_you") ||
-                        screens.get(position - 1).getInput().getInput_type().equalsIgnoreCase("end-screen")
-                )) {
+               // OFHelper.v(tag, "OneFlow input response current screen[" + screens.get(position - 1).getInput().getInput_type() + "]");
+                try {
+                    if (!(screens.get(position - 1).getInput().getInput_type().equalsIgnoreCase("thank_you") ||
+                            screens.get(position - 1).getInput().getInput_type().equalsIgnoreCase("end-screen")
+                    )) {
+                        OFSDKBaseActivity.this.finish();
+                    }
+                }catch(Exception ex){
                     OFSDKBaseActivity.this.finish();
                 }
-
 
                 break;
         }
