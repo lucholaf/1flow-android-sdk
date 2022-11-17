@@ -69,15 +69,24 @@ public class OFSurvey {
                     OFHelper.v(tag, "OneFlow recordEvents survey list response[" + response.isSuccessful() + "]at [" + OFHelper.formatedDate(System.currentTimeMillis(), "dd-MM-yyyy hh:mm:ss.SSS") + "]");
 
                     if (response.isSuccessful()) {
-                        try {
+                        String throttling = "";
 
+                        try{
                             GsonBuilder builder = new GsonBuilder();
                             builder.serializeNulls();
                             Gson gson = builder.setPrettyPrinting().create();
 
-                            String throttling = gson.toJson(response.body().getThrottlingConfig());
+                            throttling = gson.toJson(response.body().getThrottlingConfig());
+                        }catch(Exception e){
+
+                        }
+
+
+                        try {
+
                             mrh.onResponseReceived(type, response.body().getResult(), 0l, throttling,null,null);
                         } catch (Exception ex) {
+                           // ex.printStackTrace();
                             mrh.onResponseReceived(type, "", 0l, "",null,null);
                         }
 

@@ -188,14 +188,15 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
         OFThrottlingConfig config = new OFOneFlowSHP(mContext).getThrottlingConfig();
         OFHelper.v("OneFlow", "OneFlow deactivate called config[" + new Gson().toJson(config) + "]");
         OFMyCountDownTimerThrottling.getInstance(mContext,0l,0l).cancel();
-        if(config.getGlobalTime()!=null && config.getGlobalTime()>0) {
-            OFMyCountDownTimerThrottling.getInstance(mContext, config.getGlobalTime() * 1000, ((Long) (config.getGlobalTime() * 1000) / 2)).start();
-        } else {
-            config.setActivated(false);
-            config.setActivatedById(null);
-            new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+        if(config!=null) {
+            if (config.getGlobalTime() != null && config.getGlobalTime() > 0) {
+                OFMyCountDownTimerThrottling.getInstance(mContext, config.getGlobalTime() * 1000, ((Long) (config.getGlobalTime() * 1000) / 2)).start();
+            } else {
+                config.setActivated(false);
+                config.setActivatedById(null);
+                new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+            }
         }
-
 
         /*if (config != null) {
 
