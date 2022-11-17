@@ -68,7 +68,7 @@ import com.oneflow.analytics.repositories.OFEventDBRepo;
 import com.oneflow.analytics.repositories.OFLogUserRepo;
 import com.oneflow.analytics.repositories.OFProjectDetails;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
-import com.oneflow.analytics.utils.MyDBAsyncTask;
+import com.oneflow.analytics.utils.OFMyDBAsyncTask;
 import com.oneflow.analytics.utils.OFActivityCallbacks;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
@@ -705,7 +705,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 onResponseReceived(hitType, null, 0l, "", null, null);
             } else {
                // OFLogUserDBRepo.findSurveyForID(mContext, this, OFConstants.ApiHitType.fetchSubmittedSurvey, gslr, gslr.get_id(), new OFOneFlowSHP(mContext).getStringValue(OFConstants.USERUNIQUEIDSHP), firedEventName);
-                new MyDBAsyncTask(mContext,this,OFConstants.ApiHitType.fetchSubmittedSurvey,false).execute(gslr, new OFOneFlowSHP(mContext).getStringValue(OFConstants.USERUNIQUEIDSHP), firedEventName);
+                new OFMyDBAsyncTask(mContext,this,OFConstants.ApiHitType.fetchSubmittedSurvey,false).execute(gslr, new OFOneFlowSHP(mContext).getStringValue(OFConstants.USERUNIQUEIDSHP), firedEventName);
             }
 
 
@@ -992,7 +992,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                                                         gslrGlobal = gslr;
                                                         //OFLogUserDBRepo.findLastSubmittedSurveyID(mContext, this, OFConstants.ApiHitType.lastSubmittedSurvey, null, reserved);
                                                         // check in submitted survey list locally if this survey has been submitted then false
-                                                        new MyDBAsyncTask(mContext,this, OFConstants.ApiHitType.lastSubmittedSurvey,false).execute();
+                                                        new OFMyDBAsyncTask(mContext,this, OFConstants.ApiHitType.lastSubmittedSurvey,false).execute();
 
                                                     }
                                                     //else nothing to do
@@ -1056,7 +1056,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                         //Updating old submitted surveys with logged user id.
                         //OFLogUserDBRepo.updateSurveyUserId(mContext, this, reserved, OFConstants.ApiHitType.updateSurveyIds);
-                        new MyDBAsyncTask(mContext,this,OFConstants.ApiHitType.updateSurveyIds,false).execute(reserved);
+                        new OFMyDBAsyncTask(mContext,this,OFConstants.ApiHitType.updateSurveyIds,false).execute(reserved);
                     } else {
                         // OFHelper.e("OneFlow", "OneFlow LogApi subimission failed logUser");
                         OFLogCountdownTimer.getInstance(mContext, 15000l, 5000l).start();

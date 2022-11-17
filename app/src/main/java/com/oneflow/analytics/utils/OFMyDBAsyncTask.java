@@ -7,19 +7,16 @@ import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.widget.ProgressBar;
 
-import com.google.gson.Gson;
-
 import com.oneflow.analytics.BuildConfig;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.model.survey.OFSurveyUserInput;
 import com.oneflow.analytics.sdkdb.OFSDKDB;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 
-public class MyDBAsyncTask extends android.os.AsyncTask<Object, Integer, Object[]> {
+public class OFMyDBAsyncTask extends android.os.AsyncTask<Object, Integer, Object[]> {
     String url;
     //private SpotsDialog dialog;
     private Dialog dialog;
@@ -36,7 +33,7 @@ public class MyDBAsyncTask extends android.os.AsyncTask<Object, Integer, Object[
     public boolean threadCanceled = false;
     ProgressBar pBar;
 
-    public MyDBAsyncTask(Context context, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType action, boolean showLoader) {
+    public OFMyDBAsyncTask(Context context, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType action, boolean showLoader) {
         this.context = context;
         this.mrh = mrh;
         db = OFSDKDB.getInstance(context);
@@ -48,7 +45,7 @@ public class MyDBAsyncTask extends android.os.AsyncTask<Object, Integer, Object[
             @Override
             public void onCancel(DialogInterface dialog) {
                 Log.v(tag, "Aastha cancel called");
-                MyDBAsyncTask.this.cancel(true);
+                OFMyDBAsyncTask.this.cancel(true);
                 threadCanceled = true;
             }
         });
@@ -58,7 +55,7 @@ public class MyDBAsyncTask extends android.os.AsyncTask<Object, Integer, Object[
 
     }
 
-    public MyDBAsyncTask(Context context, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType action) {
+    public OFMyDBAsyncTask(Context context, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType action) {
         this.context = context;
         this.mrh = mrh;
         db = OFSDKDB.getInstance(context);
@@ -70,7 +67,7 @@ public class MyDBAsyncTask extends android.os.AsyncTask<Object, Integer, Object[
             @Override
             public void onCancel(DialogInterface dialog) {
                 Log.v(tag, "OneFlow cancel called");
-                MyDBAsyncTask.this.cancel(true);
+                OFMyDBAsyncTask.this.cancel(true);
                 threadCanceled = true;
             }
         });
@@ -80,7 +77,7 @@ public class MyDBAsyncTask extends android.os.AsyncTask<Object, Integer, Object[
     }
 
 
-    public MyDBAsyncTask(Context context) {
+    public OFMyDBAsyncTask(Context context) {
         this.context = context;
 //        dialog = new SpotsDialog(context);
     }

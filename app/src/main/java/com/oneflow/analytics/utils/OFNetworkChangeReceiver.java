@@ -58,7 +58,7 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
 
     public void checkOffLineSurvey() {
         //OFLogUserDBRepo.fetchSurveyInput(context, this, OFConstants.ApiHitType.fetchSurveysFromDB);
-        new MyDBAsyncTask(context,this,OFConstants.ApiHitType.fetchSurveysFromDB).execute();
+        new OFMyDBAsyncTask(context,this,OFConstants.ApiHitType.fetchSurveysFromDB).execute();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
                 if(obj!=null) {
                     OFSurveyUserInput survey1 = (OFSurveyUserInput) obj;
                     //OFLogUserDBRepo.deleteSentSurveyFromDB(context, new Integer[]{survey1.get_id()}, this, OFConstants.ApiHitType.deleteEventsFromDB);
-                    new MyDBAsyncTask(context,this,OFConstants.ApiHitType.deleteEventsFromDB).execute(new Integer[]{survey1.get_id()});
+                    new OFMyDBAsyncTask(context,this,OFConstants.ApiHitType.deleteEventsFromDB).execute(new Integer[]{survey1.get_id()});
                 }
                 break;
             //case deleteSurveyFromDB:

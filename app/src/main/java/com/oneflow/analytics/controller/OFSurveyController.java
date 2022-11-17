@@ -31,14 +31,12 @@ import com.oneflow.analytics.OFSurveyActivityFullScreen;
 import com.oneflow.analytics.OFSurveyActivityTop;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.model.survey.OFThrottlingConfig;
-import com.oneflow.analytics.repositories.OFEventDBRepo;
 import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
-import com.oneflow.analytics.utils.MyDBAsyncTask;
+import com.oneflow.analytics.utils.OFMyDBAsyncTask;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyCountDownTimerThrottling;
-import com.oneflow.analytics.utils.OFMyResponseHandler;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import java.util.ArrayList;
@@ -140,7 +138,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                         }
                         //Enabled again on 13/June/22
                         //OFEventDBRepo.fetchEventsBeforeSurvey(mContext, this, OFConstants.ApiHitType.fetchEventsBeforSurveyFetched);
-                        new MyDBAsyncTask(mContext,this,OFConstants.ApiHitType.fetchEventsBeforSurveyFetched).execute();
+                        new OFMyDBAsyncTask(mContext,this,OFConstants.ApiHitType.fetchEventsBeforSurveyFetched).execute();
                     }
                     break;
                 case fetchEventsBeforSurveyFetched:

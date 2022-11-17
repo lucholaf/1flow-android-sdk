@@ -67,7 +67,7 @@ public class OFLogCountdownTimer extends CountDownTimer implements OFMyResponseH
 
                         //Updating old submitted surveys with logged user id.
                         //OFLogUserDBRepo.updateSurveyUserId(mContext, this, reserved, OFConstants.ApiHitType.updateSurveyIds);
-                        new MyDBAsyncTask(mContext,this,OFConstants.ApiHitType.updateSurveyIds,false).execute(reserved);
+                        new OFMyDBAsyncTask(mContext,this,OFConstants.ApiHitType.updateSurveyIds,false).execute(reserved);
                         cdt.cancel();
                     } else {
                         if (OFConstants.MODE.equalsIgnoreCase("dev")) {

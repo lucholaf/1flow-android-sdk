@@ -73,7 +73,7 @@ import com.oneflow.analytics.model.survey.OFSurveyUserInput;
 import com.oneflow.analytics.model.survey.OFSurveyUserResponseChild;
 import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
-import com.oneflow.analytics.utils.MyDBAsyncTask;
+import com.oneflow.analytics.utils.OFMyDBAsyncTask;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
@@ -646,7 +646,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         sur.setUser_id(ofs.getStringValue(OFConstants.USERUNIQUEIDSHP));
         sur.setCreatedOn(System.currentTimeMillis());
         //OFLogUserDBRepo.insertUserInputs(this, sur, this, OFConstants.ApiHitType.insertSurveyInDB);
-        new MyDBAsyncTask(this,this, OFConstants.ApiHitType.insertSurveyInDB,false).execute(sur);
+        new OFMyDBAsyncTask(this,this, OFConstants.ApiHitType.insertSurveyInDB,false).execute(sur);
         /*if (!(screens.get(screens.size() - 1).getInput().getInput_type().equalsIgnoreCase("thank_you") ||
                 screens.get(screens.size() - 1).getInput().getInput_type().equalsIgnoreCase("end-screen")
         )) {
@@ -821,7 +821,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                     OFSurveyUserInput sur = (OFSurveyUserInput) obj;
                     //Updating survey once data is sent to server, Sending type null as return is not required
                     //OFLogUserDBRepo.updateSurveyInput(this, null, null, true, sur.get_id());
-                    new MyDBAsyncTask(this,this,OFConstants.ApiHitType.updateSubmittedSurveyLocally,false).execute(true,sur.get_id());
+                    new OFMyDBAsyncTask(this,this,OFConstants.ApiHitType.updateSubmittedSurveyLocally,false).execute(true,sur.get_id());
 
                     new OFOneFlowSHP(this).storeValue(sur.getSurvey_id(), Calendar.getInstance().getTimeInMillis());
 
