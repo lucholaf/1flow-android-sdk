@@ -23,13 +23,11 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.oneflow.analytics.OneFlow;
-import com.oneflow.analytics.model.location.OFLocationResponse;
 import com.oneflow.analytics.model.survey.OFSurveyUserInput;
-import com.oneflow.analytics.repositories.OFLogUserDBRepo;
 import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 
-public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyResponseHandler {
+public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyResponseHandlerOneFlow {
 
     public Context context;
 
@@ -59,11 +57,12 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
 
 
     public void checkOffLineSurvey() {
-        OFLogUserDBRepo.fetchSurveyInput(context, this, OFConstants.ApiHitType.fetchSurveysFromDB);
+        //OFLogUserDBRepo.fetchSurveyInput(context, this, OFConstants.ApiHitType.fetchSurveysFromDB);
+        new MyDBAsyncTask(context,this,OFConstants.ApiHitType.fetchSurveysFromDB).execute();
     }
 
     @Override
-    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
+    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved, Object obj2, Object obj3) {
 
         switch (hitType) {
 
@@ -78,10 +77,12 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
             case logUser:
                 if(obj!=null) {
                     OFSurveyUserInput survey1 = (OFSurveyUserInput) obj;
-                    OFLogUserDBRepo.deleteSentSurveyFromDB(context, new Integer[]{survey1.get_id()}, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                    //OFLogUserDBRepo.deleteSentSurveyFromDB(context, new Integer[]{survey1.get_id()}, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                    new MyDBAsyncTask(context,this,OFConstants.ApiHitType.deleteEventsFromDB).execute(new Integer[]{survey1.get_id()});
                 }
                 break;
-            case deleteSurveyFromDB:
+            //case deleteSurveyFromDB:
+            case deleteEventsFromDB:
                 checkOffLineSurvey();
                 break;
         }

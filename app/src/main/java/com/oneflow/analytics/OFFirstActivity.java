@@ -47,6 +47,7 @@ import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
+import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,7 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHandler {
+public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHandlerOneFlow {
 
     String tag = this.getClass().getName();
     OFCustomTextView result, sendLogsToAPI,noSurvey;
@@ -305,7 +306,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
     }
 
     @Override
-    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
+    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved, Object Obj2, Object obj3) {
         switch (hitType) {
             case fetchEventsFromDB:
                 if(obj!=null) {

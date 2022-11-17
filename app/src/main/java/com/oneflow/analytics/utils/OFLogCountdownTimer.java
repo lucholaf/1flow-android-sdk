@@ -6,11 +6,10 @@ import android.os.CountDownTimer;
 import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
 import com.oneflow.analytics.model.loguser.OFLogUserResponse;
-import com.oneflow.analytics.repositories.OFLogUserDBRepo;
 import com.oneflow.analytics.repositories.OFLogUserRepo;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 
-public class OFLogCountdownTimer extends CountDownTimer implements OFMyResponseHandler{
+public class OFLogCountdownTimer extends CountDownTimer implements OFMyResponseHandlerOneFlow{
 
     Context mContext;
     static OFLogCountdownTimer cdt;
@@ -42,7 +41,7 @@ public class OFLogCountdownTimer extends CountDownTimer implements OFMyResponseH
 
 
     @Override
-    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
+    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved, Object obj2, Object obj3 ) {
         switch (hitType) {
             case logUser:
                 if (obj != null) {
@@ -67,7 +66,8 @@ public class OFLogCountdownTimer extends CountDownTimer implements OFMyResponseH
                        // OFHelper.v("OneFlow", "OneFlow Log record inserted...");
 
                         //Updating old submitted surveys with logged user id.
-                        OFLogUserDBRepo.updateSurveyUserId(mContext, this, reserved, OFConstants.ApiHitType.updateSurveyIds);
+                        //OFLogUserDBRepo.updateSurveyUserId(mContext, this, reserved, OFConstants.ApiHitType.updateSurveyIds);
+                        new MyDBAsyncTask(mContext,this,OFConstants.ApiHitType.updateSurveyIds,false).execute(reserved);
                         cdt.cancel();
                     } else {
                         if (OFConstants.MODE.equalsIgnoreCase("dev")) {

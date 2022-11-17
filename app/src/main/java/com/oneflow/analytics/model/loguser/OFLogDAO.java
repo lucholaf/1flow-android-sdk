@@ -36,6 +36,9 @@ public interface OFLogDAO {
     @Query("select * from SurveyUserInput where survey_id = :surveyId and user_id = :userId order by created_on desc limit 1")
     OFSurveyUserInput getSurveyForID(String surveyId, String userId);
 
+    @Query("select * from SurveyUserInput where synced = 'true' order by created_on desc limit 1")
+    OFSurveyUserInput getLastSyncedSurveyId();
+
     @Query("update SurveyUserInput set synced = :syncNew where _id = :id")
     int updateUserInput(Boolean syncNew,Integer id);
 

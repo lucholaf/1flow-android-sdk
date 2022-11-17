@@ -23,11 +23,13 @@ import android.content.SharedPreferences;
 import android.util.Base64;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
 import com.oneflow.analytics.model.location.OFLocationResponse;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
+import com.oneflow.analytics.model.survey.OFThrottlingConfig;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 
@@ -59,7 +61,9 @@ public class OFOneFlowSHP {
         //Resources res = context.getResources();
         /*key = res.getString(R.string.encrypt1);
         iv = res.getString(R.string.encrypt2);*/
-        gson = new Gson();
+        GsonBuilder builder = new GsonBuilder();
+        builder.serializeNulls();
+        gson = builder.setPrettyPrinting().create();
     }
 
     private static final String characterEncoding = "UTF-8";
@@ -166,6 +170,26 @@ public class OFOneFlowSHP {
         String json = gson.toJson(arr);
         OFHelper.v("json", "[" + json + "]");
         prefsEditor.putString(OFConstants.LOGUSERREQUESTSHP, json);
+        prefsEditor.apply();
+    }
+
+    public OFThrottlingConfig getThrottlingConfig() {
+        String json = pref.getString(OFConstants.SHP_THROTTLING_KEY, null);
+        OFHelper.v("json", "[" + json + "]");
+        OFThrottlingConfig obj;
+        if(json!=null) {
+            obj = gson.fromJson(json, OFThrottlingConfig.class);
+        }else{
+            return null;
+        }
+        return obj;
+    }
+
+    public void setThrottlingConfig(OFThrottlingConfig arr) {
+        SharedPreferences.Editor prefsEditor = pref.edit();
+        String json = gson.toJson(arr);
+        OFHelper.v("json", "[" + json + "]");
+        prefsEditor.putString(OFConstants.SHP_THROTTLING_KEY, json);
         prefsEditor.apply();
     }
     public void clearLogUserRequest(){

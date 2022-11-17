@@ -27,6 +27,7 @@ import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
+import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,7 +36,7 @@ import retrofit2.Response;
 public class OFCurrentLocation {
 
     static String tag = "CurrentLocation";
-    public static void getCurrentLocation(Context context, OFMyResponseHandler mrh, OFConstants.ApiHitType type){
+    public static void getCurrentLocation(Context context, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType type){
 
         OFHelper.v(tag,"OneFlow current location fetching ");
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
@@ -54,7 +55,7 @@ public class OFCurrentLocation {
                         /*Helper.v(tag,"OneFlow response["+response.body().getSuccess()+"]");*/
 
                         new OFOneFlowSHP(context).setUserLocationDetails(response.body());
-                        mrh.onResponseReceived(type,null,0l,"");
+                        mrh.onResponseReceived(type,null,0l,"",null,null);
 
                     } else {
                         //mrh.onResponseReceived(response.body(), type);

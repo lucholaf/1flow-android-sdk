@@ -30,6 +30,7 @@ import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
+import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +43,7 @@ public class OFAddUserRepo {
 
     static String tag = "OFAddUserRepo";
     OFMyResponseHandler myResponseHandler;
-    public static void addUser(String headerKey,OFAddUserRequest aur,  OFMyResponseHandler mrh, OFConstants.ApiHitType hitType){
+    public static void addUser(String headerKey, OFAddUserRequest aur, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType hitType){
 
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
@@ -62,12 +63,12 @@ public class OFAddUserRepo {
 
                         OFHelper.v(tag,"OneFlow user created");
                         if(response.body()!=null) {
-                            mrh.onResponseReceived(hitType, response.body().getResult(), 0l, "");
+                            mrh.onResponseReceived(hitType, response.body().getResult(), 0l, "",null,null);
                         }
 
                     } else {
                         OFHelper.v(tag, "OneFlow response 0[" + response.message() + "]");
-                         mrh.onResponseReceived(hitType, null, 0l, response.message());
+                         mrh.onResponseReceived(hitType, null, 0l, response.message(),null,null);
                        /* Helper.v(tag,"OneFlow response 1["+response.body().getMessage()+"]");
                         Helper.v(tag,"OneFlow response 2["+response.body().getSuccess()+"]");*/
 
@@ -77,7 +78,7 @@ public class OFAddUserRepo {
                 @Override
                 public void onFailure(Call<OFGenericResponse<OFAddUserResultResponse>> call, Throwable t) {
 
-                    mrh.onResponseReceived(hitType,null,0l,"Something went wrong");
+                    mrh.onResponseReceived(hitType,null,0l,"Something went wrong",null,null);
                     OFHelper.e(tag,"OneFlow error["+t.toString()+"]");
                     OFHelper.e(tag,"OneFlow errorMsg["+t.getMessage()+"]");
 

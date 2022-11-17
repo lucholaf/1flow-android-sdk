@@ -22,7 +22,12 @@ public class OFProjectKeyActivity extends AppCompatActivity {
         registerProject = (OFCustomTextView) findViewById(R.id.register_project);
         registerProject.setOnClickListener(listener);
         //String projectKy = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw=="; //AmitRepeatTest
-        String projectKy = "oneflow_sandbox_hPz4Tfti7FgaKJ+yTdDGgf+OTNdW2czSmdAFMJL40tGbCqDWfswx+2Zy47zGdcax6zwdQRaYJugbfKglb2SLFA=="; //FakeProject
+        //String projectKy = "oneflow_sandbox_jYPADflsoaQX2PxbP62NUrqOq+KJOXiwbvT8cGvwgRRU7Y9S37/ZUMvYIAXJg4Y4SVK6kaNCqqLdbcsxqpIobg=="; //AmitRepeatTest
+        String projectKy = "oneflow_sandbox_rO2j1pVVsisXXMNdhLIBeDOk+wrWzLmPztsYoMTOtb+OYs6qND6EsVENHv3IeNjS/Y9pP6rq6s3BzVknNJZMKA=="; //AmitRepeatTest
+        //String projectKy = "oneflow_sandbox_NSR9CSPdNygqtxXVU39VBKCozzqk3whBUEQ5/PwGh0cXDGp59m3oD99fkvUeHJQZ7u9P8z2pmjqLk4iR25jSSg=="; //flow1
+        //String projectKy = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA=="; //AmitTestingProject
+        //String projectKy = "oneflow_sandbox_hPz4Tfti7FgaKJ+yTdDGgf+OTNdW2czSmdAFMJL40tGbCqDWfswx+2Zy47zGdcax6zwdQRaYJugbfKglb2SLFA=="; //FakeProject
+        //String projectKy = "oneflow_prod_uzID3coYT8QigCkryZaRLrEMyhLJw+pICsgcfd5ZKKjoZB7XyOODueR0ZMbquVPQukvS25Ebh4cjm82Knsrw+Q=="; //Global Throttling Project
         //String projectKy = "oneflow_prod_6rAmoIlFw2c8/rMAPoD2TLCfWTM2Zc6aHyQKRfDofwNrgPdJOUX2HSEOxDMUf+8VJwLWnKIaARfj/i3Ktk1EHA=="; //Thao project
         projectKey = (OFCustomEditText) findViewById(R.id.project_key);
         projectKey.setText(projectKy);

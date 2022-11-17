@@ -27,6 +27,7 @@ import com.oneflow.analytics.sdkdb.OFSDKDB;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
+import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -36,7 +37,7 @@ import java.util.List;
 public class OFEventDBRepo {
 
 
-    public static void insertEvents(Context context, String eventName, HashMap<String, Object> data, int value, OFMyResponseHandler mrh, OFConstants.ApiHitType type) {
+    public static void insertEvents(Context context, String eventName, HashMap<String, Object> data, int value, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType type) {
         OFHelper.v("EventDBRepo.DeleteEvents", "OneFlow reached at insertEvent method");
 
         new AsyncTask<String, Integer, Integer>() {
@@ -58,13 +59,13 @@ public class OFEventDBRepo {
             @Override
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
-                mrh.onResponseReceived(type, 1, 0l, eventName);
+                mrh.onResponseReceived(type, 1, 0l, eventName,null,null);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
 
-    public static void deleteEvents(Context context, Integer[] ids, OFMyResponseHandler mrh, OFConstants.ApiHitType type) {
+    public static void deleteEvents(Context context, Integer[] ids, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType type) {
         OFHelper.v("EventDBRepo.DeleteEvents", "OneFlow reached at delete method");
         new AsyncTask<String, Integer, Integer>() {
 
@@ -78,13 +79,13 @@ public class OFEventDBRepo {
             @Override
             protected void onPostExecute(Integer integer) {
                 super.onPostExecute(integer);
-                mrh.onResponseReceived(type, integer, 0l, "");
+                mrh.onResponseReceived(type, integer, 0l, "",null,null);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
 
-    public static void fetchEvents(Context context, OFMyResponseHandler mrh, OFConstants.ApiHitType type) {
+    public static void fetchEvents(Context context, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType type) {
         OFHelper.v("EventDBRepo.fetchEvents", "OneFlow reached at fetchEvents method");
 
 
@@ -100,14 +101,14 @@ public class OFEventDBRepo {
             @Override
             protected void onPostExecute(List<OFRecordEventsTab> OFRecordEventsTabs) {
                 super.onPostExecute(OFRecordEventsTabs);
-                mrh.onResponseReceived(type, OFRecordEventsTabs, 0l, "");
+                mrh.onResponseReceived(type, OFRecordEventsTabs, 0l, "",null,null);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
 
 
-    public static void fetchEventsBeforeSurvey(Context context, OFMyResponseHandler mrh, OFConstants.ApiHitType type) {
+    public static void fetchEventsBeforeSurvey(Context context, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType type) {
         OFHelper.v("EventDBRepo.fetchEventsBeforeSurvey", "OneFlow reached at fetchEventsBeforeSurvey method");
         //String[] beforeSurveyEvent = new String[1];
         new AsyncTask<String, Integer, String[]>() {
@@ -124,7 +125,7 @@ public class OFEventDBRepo {
             @Override
             protected void onPostExecute(String[] strings) {
                 super.onPostExecute(strings);
-                mrh.onResponseReceived(type, strings, 0l, "");
+                mrh.onResponseReceived(type, strings, 0l, "",null,null);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 

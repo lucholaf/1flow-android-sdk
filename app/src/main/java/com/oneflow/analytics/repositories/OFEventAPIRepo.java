@@ -29,6 +29,7 @@ import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
+import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,7 +37,7 @@ import retrofit2.Response;
 
 public class OFEventAPIRepo {
     static String tag = "EventAPIRepo";
-    public static void sendLogsToApi(String headerKey, OFEventAPIRequest ear, OFMyResponseHandler mrh, OFConstants.ApiHitType type, Integer []ids){
+    public static void sendLogsToApi(String headerKey, OFEventAPIRequest ear, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType type, Integer []ids){
 
         OFHelper.v(tag,"OneFlow sendLogsToApi reached");
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
@@ -59,7 +60,7 @@ public class OFEventAPIRepo {
                     if (response.isSuccessful()) {
                         OFHelper.v(tag,"OneFlow response["+response.body().toString()+"]");
                         OFHelper.v(tag,"OneFlow response["+response.body().getSuccess()+"]");
-                        mrh.onResponseReceived(type,ids,0l,"");
+                        mrh.onResponseReceived(type,ids,0l,"",null,null);
                     } else {
                         OFHelper.v(tag,"OneFlow response 0["+response.body()+"]");
                     }

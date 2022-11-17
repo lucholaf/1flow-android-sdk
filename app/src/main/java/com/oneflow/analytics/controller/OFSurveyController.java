@@ -21,6 +21,8 @@ package com.oneflow.analytics.controller;
 import android.content.Context;
 import android.content.Intent;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.oneflow.analytics.OFSurveyActivityBannerBottom;
 import com.oneflow.analytics.OFSurveyActivityBannerTop;
 import com.oneflow.analytics.OFSurveyActivityBottom;
@@ -28,12 +30,16 @@ import com.oneflow.analytics.OFSurveyActivityCenter;
 import com.oneflow.analytics.OFSurveyActivityFullScreen;
 import com.oneflow.analytics.OFSurveyActivityTop;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
+import com.oneflow.analytics.model.survey.OFThrottlingConfig;
 import com.oneflow.analytics.repositories.OFEventDBRepo;
 import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
+import com.oneflow.analytics.utils.MyDBAsyncTask;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
+import com.oneflow.analytics.utils.OFMyCountDownTimerThrottling;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
+import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +47,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class OFSurveyController implements OFMyResponseHandler {
+public class OFSurveyController implements OFMyResponseHandlerOneFlow {
 
     Context mContext;
     static OFSurveyController sc;
@@ -96,28 +102,45 @@ public class OFSurveyController implements OFMyResponseHandler {
 
     }
     @Override
-    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
+    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved, Object obj2, Object obj3) {
 
         OFHelper.v("SurveyController","OneFlow onReceived called type["+hitType+"]");
 
             switch (hitType) {
                 case fetchSurveysFromAPI:
-                    OFHelper.v("SurveyController", "OneFlow survey received");
+                    OFHelper.v("SurveyController", "OneFlow survey received throttling["+reserved+"]");
                     if(obj!=null) {
                         ArrayList<OFGetSurveyListResponse> surveyListResponse = (ArrayList<OFGetSurveyListResponse>) obj;
+                        OFOneFlowSHP shp = new OFOneFlowSHP(mContext);
+                        if(!OFHelper.validateString(reserved).equalsIgnoreCase("NA")){
+                            GsonBuilder builder = new GsonBuilder();
+                            builder.serializeNulls();
+                            Gson gson = builder.setPrettyPrinting().create();
+
+
+                            OFThrottlingConfig ofThrottlingConfig = (OFThrottlingConfig)gson.fromJson(reserved,OFThrottlingConfig.class);
+                            shp.setThrottlingConfig(ofThrottlingConfig);
+                        }
+                        setupGlobalTimerToDeactivateThrottlingLocally();
+
                         if (surveyListResponse != null) {
-                            new OFOneFlowSHP(mContext).setSurveyList(surveyListResponse);
+
+                            shp.setSurveyList(surveyListResponse);
 
                             Intent intent = new Intent("survey_list_fetched");
                             mContext.sendBroadcast(intent);
 
                         } else {
+                            Intent intent = new Intent("survey_list_fetched");
+                            intent.putExtra("msg","No survey received");
+                            mContext.sendBroadcast(intent);
                             if (OFConstants.MODE.equalsIgnoreCase("dev")) {
                                 OFHelper.makeText(mContext, reserved, 1);
                             }
                         }
                         //Enabled again on 13/June/22
-                        OFEventDBRepo.fetchEventsBeforeSurvey(mContext, this, OFConstants.ApiHitType.fetchEventsBeforSurveyFetched);
+                        //OFEventDBRepo.fetchEventsBeforeSurvey(mContext, this, OFConstants.ApiHitType.fetchEventsBeforSurveyFetched);
+                        new MyDBAsyncTask(mContext,this,OFConstants.ApiHitType.fetchEventsBeforSurveyFetched).execute();
                     }
                     break;
                 case fetchEventsBeforSurveyFetched:
@@ -160,7 +183,47 @@ public class OFSurveyController implements OFMyResponseHandler {
 
 
     }
+    private void setupGlobalTimerToDeactivateThrottlingLocally() {
 
+
+        OFHelper.v("OneFlow", "OneFlow deactivate called ");
+        OFThrottlingConfig config = new OFOneFlowSHP(mContext).getThrottlingConfig();
+        OFHelper.v("OneFlow", "OneFlow deactivate called config[" + new Gson().toJson(config) + "]");
+        OFMyCountDownTimerThrottling.getInstance(mContext,0l,0l).cancel();
+        if(config.getGlobalTime()!=null && config.getGlobalTime()>0) {
+            OFMyCountDownTimerThrottling.getInstance(mContext, config.getGlobalTime() * 1000, ((Long) (config.getGlobalTime() * 1000) / 2)).start();
+        } else {
+            config.setActivated(false);
+            config.setActivatedById(null);
+            new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+        }
+
+
+        /*if (config != null) {
+
+            if (config.getGlobalTime() != null) {
+                if (config.getGlobalTime() > 0) {
+
+                    OFHelper.v("OneFlow", "OneFlow deactivate called config global time not null");
+                    if (config.isActivated()) {
+
+                        long throttlingLifeTime = config.getActivatedAt() + (config.getGlobalTime() * 1000);
+                        if (System.currentTimeMillis() > throttlingLifeTime) {
+                            OFHelper.v("OneFlow", "OneFlow deactivate called time finished");
+                            config.setActivated(false);
+                            config.setActivatedById(null);
+                            new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+                        }
+
+                    }
+                } else {
+                    config.setActivated(false);
+                    config.setActivatedById(null);
+                    new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+                }
+            }
+        }*/
+    }
     /**
      * This method will return survey and its event name
      * @param type

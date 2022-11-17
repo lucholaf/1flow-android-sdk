@@ -21,6 +21,8 @@ package com.oneflow.analytics.repositories;
 import android.content.Context;
 import android.content.Intent;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.oneflow.analytics.model.OFApiInterface;
 import com.oneflow.analytics.model.OFGenericResponse;
 import com.oneflow.analytics.model.OFRetroBaseService;
@@ -30,6 +32,7 @@ import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
+import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,38 +46,44 @@ public class OFSurvey {
 
     static String tag = "Survey";
 
-    public static void getSurvey(String headerKey, OFMyResponseHandler mrh, OFConstants.ApiHitType type,String userId, String sessionId,String versionName) {
+    public static void getSurvey(String headerKey, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType type, String userId, String sessionId, String versionName) {
 
         String language = Locale.getDefault().toString();
-        if(OFHelper.validateString(language).equalsIgnoreCase("NA")){
+        if (OFHelper.validateString(language).equalsIgnoreCase("NA")) {
             language = "en_US";
         }
-        OFHelper.v(tag, "OneFlow Language survey reached getSurvey called language["+ language+"]");
+        OFHelper.v(tag, "OneFlow Language survey reached getSurvey called language[" + language + "]");
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
 
         try {
             Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> responseCall = null;
             //String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys";
 
-            responseCall = connectAPI.getSurvey(headerKey, "android", userId,sessionId,language,versionName);//,OFConstants.MODE);
+            responseCall = connectAPI.getSurvey(headerKey, "android", userId, sessionId, language, versionName);//,OFConstants.MODE);
 
             responseCall.enqueue(new Callback<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>>() {
                 @Override
                 public void onResponse(Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> call, Response<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> response) {
 
 
-                    OFHelper.v(tag,"OneFlow recordEvents survey list response["+response.isSuccessful()+"]at ["+OFHelper.formatedDate(System.currentTimeMillis(),"dd-MM-yyyy hh:mm:ss.SSS")+"]");
+                    OFHelper.v(tag, "OneFlow recordEvents survey list response[" + response.isSuccessful() + "]at [" + OFHelper.formatedDate(System.currentTimeMillis(), "dd-MM-yyyy hh:mm:ss.SSS") + "]");
 
                     if (response.isSuccessful()) {
-                        try{
-                        mrh.onResponseReceived(type, response.body().getResult(), 0l,"");
-                        }catch(Exception ex){
-                            mrh.onResponseReceived(type, "", 0l,"");
+                        try {
+
+                            GsonBuilder builder = new GsonBuilder();
+                            builder.serializeNulls();
+                            Gson gson = builder.setPrettyPrinting().create();
+
+                            String throttling = gson.toJson(response.body().getThrottlingConfig());
+                            mrh.onResponseReceived(type, response.body().getResult(), 0l, throttling,null,null);
+                        } catch (Exception ex) {
+                            mrh.onResponseReceived(type, "", 0l, "",null,null);
                         }
 
                     } else {
                         OFHelper.v(tag, "OneFlow survey list not fetched isSuccessfull false");
-                        mrh.onResponseReceived(type, null, 0l,response.message());
+                        mrh.onResponseReceived(type, null, 0l, response.message(),null,null);
                         //TempResponseModel trm = new Gson().fromJson(response.body())
                     }
 
@@ -93,7 +102,7 @@ public class OFSurvey {
         }
     }
 
-    public static void submitUserResponse(String headerKey, OFSurveyUserInput sur, OFConstants.ApiHitType type,OFMyResponseHandler handler) {
+    public static void submitUserResponse(String headerKey, OFSurveyUserInput sur, OFConstants.ApiHitType type, OFMyResponseHandlerOneFlow handler) {
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
             Call<OFGenericResponse> responseCall = null;
@@ -114,7 +123,7 @@ public class OFSurvey {
                         //OFHelper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
                         //OFHelper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
 
-                        handler.onResponseReceived(type,sur,0l,"");
+                        handler.onResponseReceived(type, sur, 0l, "",null,null);
                         /*AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {
@@ -128,7 +137,7 @@ public class OFSurvey {
 
                     } else {
                         //mrh.onResponseReceived(response.body(), type);
-                       // OFHelper.v(tag, "OneFlow response 0[" + response.body() + "]");
+                        // OFHelper.v(tag, "OneFlow response 0[" + response.body() + "]");
                         /*Helper.v(tag, "OneFlow response 1[" + response.body().getMessage() + "]");
                         Helper.v(tag, "OneFlow response 2[" + response.body().getSuccess() + "]");*/
                     }
@@ -148,7 +157,7 @@ public class OFSurvey {
         }
     }
 
-    public static void submitUserResponseOffline(Context context, OFSurveyUserInput sur, OFMyResponseHandler mrh, OFConstants.ApiHitType type) {
+    public static void submitUserResponseOffline(Context context, OFSurveyUserInput sur, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType type) {
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
             Call<OFGenericResponse> responseCall = null;
@@ -167,9 +176,9 @@ public class OFSurvey {
 
 
                     if (response.isSuccessful()) {
-                      //  OFHelper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
-                       // OFHelper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
-                        mrh.onResponseReceived(type, sur, 0l, "");
+                        //  OFHelper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
+                        // OFHelper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
+                        mrh.onResponseReceived(type, sur, 0l, "",null,null);
                         /*AsyncTask.execute(new Runnable() {
                             @Override
                             public void run() {

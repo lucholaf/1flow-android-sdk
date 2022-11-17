@@ -31,11 +31,12 @@ import com.oneflow.analytics.sdkdb.OFSDKDB;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
+import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class OFEventController implements OFMyResponseHandler {
+public class OFEventController implements OFMyResponseHandlerOneFlow {
 
     Context mContext;
     OFSDKDB sdkdb;
@@ -64,7 +65,7 @@ public class OFEventController implements OFMyResponseHandler {
     }
 
     @Override
-    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
+    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved, Object obj2, Object obj3) {
 
         switch(hitType){
             case insertEventsInDB:

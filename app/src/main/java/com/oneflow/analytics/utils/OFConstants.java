@@ -21,7 +21,7 @@ package com.oneflow.analytics.utils;
 public interface OFConstants {
 
 
-    String currentVersion = "2022.10.25";
+    String currentVersion = "2022.11.15";
     String MODE = "prod";
     String DBNAME = "one_flow_db";
     String APPKEYSHP = "one_flow_config_key";
@@ -53,6 +53,8 @@ public interface OFConstants {
     String SHP_LOG_USER_KEY = "log_user_key";
     String SHP_NETWORK_LISTENER = "network_listener";
     String SHP_TIMER_LISTENER = "timer_listener";
+    String SHP_THROTTLING_KEY = "throttling_key";
+    String SHP_SURVEY_SEARCH_POSITION = "survey_search_position";
 
 
     String surveyDetail = "surveyDetail";
@@ -65,7 +67,7 @@ public interface OFConstants {
         Config, FirstOpen, CreateUser, CreateSession, RecordLogs, fetchEventsFromDB, sendEventsToAPI, insertEventsInDB,
         deleteEventsFromDB, logUser, insertSurveyInDB, fetchSurveysFromDB, deleteSurveyFromDB, fetchLocation,
         fetchSurveysFromAPI,fetchEventsBeforSurveyFetched,fetchSubmittedSurvey,checkResurveyNSubmission,updateSurveyIds,
-        surveySubmited
+        surveySubmited,lastSubmittedSurvey,updateSubmittedSurveyLocally
     }
     enum BRActionType{
         submitEvents,submitSurveys

@@ -31,7 +31,7 @@ import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 
 import java.util.ArrayList;
 
-public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHandler {
+public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHandlerOneFlow {
     Context mContext;
     static OFMyCountDownTimer cdt;
 
@@ -63,7 +63,7 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
     }
 
     @Override
-    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
+    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved,Object obj2, Object obj3) {
         OFHelper.v("OneFlow", "OneFlow onReceived type[" + hitType + "]");
         switch (hitType) {
 

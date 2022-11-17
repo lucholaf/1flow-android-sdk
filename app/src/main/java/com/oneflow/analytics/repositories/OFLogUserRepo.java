@@ -30,6 +30,7 @@ import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
+import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,7 +40,7 @@ public class OFLogUserRepo {
 
     static String tag = "LogUserRepo";
 
-    public static void logUser(String headerKey,OFLogUserRequest lur,  OFMyResponseHandler mrh, OFConstants.ApiHitType hitType){
+    public static void logUser(String headerKey, OFLogUserRequest lur, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType hitType){
 
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
@@ -55,14 +56,14 @@ public class OFLogUserRepo {
                     OFHelper.v(tag,"OneFlow Loguser response["+response.isSuccessful()+"]");
                     if (response.isSuccessful()) {
                         if(response.body()!=null) {
-                            mrh.onResponseReceived(hitType, response.body().getResult(), 0l, lur.getSystem_id());
+                            mrh.onResponseReceived(hitType, response.body().getResult(), 0l, lur.getSystem_id(),null,null);
                         }else{
                             OFHelper.v(tag,"OneFlow Loguser response body is empty");
                         }
 
                     } else {
                         OFHelper.v(tag,"OneFlow response 0["+response.body()+"]");
-                        mrh.onResponseReceived(hitType,null,0l,"");
+                        mrh.onResponseReceived(hitType,null,0l,"",null,null);
                        /* Helper.v(tag,"OneFlow response 1["+response.body().getMessage()+"]");
                         Helper.v(tag,"OneFlow response 2["+response.body().getSuccess()+"]");*/
 

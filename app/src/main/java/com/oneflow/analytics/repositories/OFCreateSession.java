@@ -29,6 +29,7 @@ import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
+import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,7 +37,7 @@ import retrofit2.Response;
 
 public class OFCreateSession {
     static String tag = "CreateSession";
-    public static void createSession(String headerKey,OFCreateSessionRequest csr,  OFMyResponseHandler mrh, OFConstants.ApiHitType hitType){
+    public static void createSession(String headerKey, OFCreateSessionRequest csr, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType hitType){
 
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
@@ -53,13 +54,13 @@ public class OFCreateSession {
 
                         if(response.body()!=null) {
                             OFHelper.v(tag, "OneFlow session created [" + response.body().getResult().getSystem_id() + "]");
-                            mrh.onResponseReceived(hitType, response.body().getResult(), 0l, "");
+                            mrh.onResponseReceived(hitType, response.body().getResult(), 0l, "",null,null);
                         }
 
                     } else {
                         //mrh.onResponseReceived(response.body(), type);
                         OFHelper.v(tag,"OneFlow session failed ["+response.body()+"]");
-                        mrh.onResponseReceived(hitType,null,0l,response.message());
+                        mrh.onResponseReceived(hitType,null,0l,response.message(),null,null);
 
 
                     }
@@ -70,7 +71,7 @@ public class OFCreateSession {
 
                     OFHelper.e(tag,"OneFlow create session error["+t.toString()+"]");
                     OFHelper.e(tag,"OneFlow creatd session errorMsg["+t.getMessage()+"]");
-                    mrh.onResponseReceived(hitType,null,0l,"Something went wrong");
+                    mrh.onResponseReceived(hitType,null,0l,"Something went wrong",null,null);
 
                 }
             });
