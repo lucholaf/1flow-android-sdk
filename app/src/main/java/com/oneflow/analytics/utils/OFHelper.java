@@ -796,8 +796,8 @@ public class OFHelper {
 
         Gson gson = new Gson();
         gson.toJson(map);
-        OFHelper.v("OneFlow", "OneFlow date object before[" + gson.toJson(map) + "]");
-        System.out.println("OneFlow date object before[" + gson.toJson(map) + "]");
+        //OFHelper.v("OneFlow", "OneFlow date object before[" + gson.toJson(map) + "]");
+       // System.out.println("OneFlow date object before[" + gson.toJson(map) + "]");
 
         for (String key : map.keySet()) {
             if (map.get(key) instanceof Date || map.get(key) instanceof java.sql.Date) {
@@ -805,31 +805,31 @@ public class OFHelper {
                 map.put(key, dt.getTime() / 1000);
             }
         }
-        OFHelper.v("OneFlow", "OneFlow date object after[" + gson.toJson(map) + "]");
-        System.out.println("OneFlow date object after[" + gson.toJson(map) + "]");
+       // OFHelper.v("OneFlow", "OneFlow date object after[" + gson.toJson(map) + "]");
+       // System.out.println("OneFlow date object after[" + gson.toJson(map) + "]");
         return map;
     }
     public static String getAlphaHexColor(String color,int per){
         String mainColor = "",hex="";
         String returnColor = "";
-        v("Helper", "OneFlow colors alpha in["+color+"]");
+        //v("Helper", "OneFlow colors alpha in["+color+"]");
         if(color.length()>0) {
             mainColor = color.substring(color.length() - 6);
 
             hex = Integer.toHexString(getAlphaNumber(per)).toUpperCase();
 
-            v("Helper", "OneFlow colors alpha in["+mainColor+"]alpha["+getAlphaNumber(per)+"]["+hex+"]");
+            //v("Helper", "OneFlow colors alpha in["+mainColor+"]alpha["+getAlphaNumber(per)+"]["+hex+"]");
 
             returnColor = "#"+hex+mainColor.toUpperCase();
         }else{
             returnColor = "NA";
         }
-        v("Helper", "OneFlow colors alpha out["+returnColor+"]");
+        //v("Helper", "OneFlow colors alpha out["+returnColor+"]");
         return returnColor;
     }
     public static String handlerColor(String color){
         String colorNew ="";
-        v("Helper", "OneFlow colors transparancy in[" + color + "]");
+       // v("Helper", "OneFlow colors transparancy in[" + color + "]");
         try {
 
             String tranparancy = "";
@@ -855,7 +855,7 @@ public class OFHelper {
            /* if (!color.startsWith("#")) {
                 colorNew = "#" +colorNew;//color;
             }*/
-            v("Helper", "OneFlow colors transparancy out [" + tranparancy + "]tempColor[" + tempColor + "]colorNew[" + colorNew + "]");
+           // v("Helper", "OneFlow colors transparancy out [" + tranparancy + "]tempColor[" + tempColor + "]colorNew[" + colorNew + "]");
         } catch (Exception ex) {
             //styleColor=""+getResources().getColor(R.color.colorPrimaryDark);
         }

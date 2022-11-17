@@ -39,7 +39,7 @@ public class OFEventAPIRepo {
     static String tag = "EventAPIRepo";
     public static void sendLogsToApi(String headerKey, OFEventAPIRequest ear, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType type, Integer []ids){
 
-        OFHelper.v(tag,"OneFlow sendLogsToApi reached");
+        //OFHelper.v(tag,"OneFlow sendLogsToApi reached");
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
             Call<OFGenericResponse> responseCall = null;
@@ -51,15 +51,15 @@ public class OFEventAPIRepo {
             responseCall.enqueue(new Callback<OFGenericResponse>() {
                 @Override
                 public void onResponse(Call<OFGenericResponse> call, Response<OFGenericResponse> response) {
-                    OFHelper.v(tag, "OneFlow sendLogsToApi reached success["+response.isSuccessful()+"]");
+                   /* OFHelper.v(tag, "OneFlow sendLogsToApi reached success["+response.isSuccessful()+"]");
                     OFHelper.v(tag, "OneFlow sendLogsToApi reached success raw["+response.raw()+"]");
                     OFHelper.v(tag, "OneFlow sendLogsToApi reached success errorBody["+response.errorBody()+"]");
-                    OFHelper.v(tag, "OneFlow sendLogsToApi reached success message["+response.message()+"]");
+                    OFHelper.v(tag, "OneFlow sendLogsToApi reached success message["+response.message()+"]");*/
 
 
                     if (response.isSuccessful()) {
-                        OFHelper.v(tag,"OneFlow response["+response.body().toString()+"]");
-                        OFHelper.v(tag,"OneFlow response["+response.body().getSuccess()+"]");
+                       // OFHelper.v(tag,"OneFlow response["+response.body().toString()+"]");
+                        //OFHelper.v(tag,"OneFlow response["+response.body().getSuccess()+"]");
                         mrh.onResponseReceived(type,ids,0l,"",null,null);
                     } else {
                         OFHelper.v(tag,"OneFlow response 0["+response.body()+"]");

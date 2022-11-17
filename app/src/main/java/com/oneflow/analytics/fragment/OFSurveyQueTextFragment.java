@@ -128,12 +128,12 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation START [" + i + "]");
+                    //OFHelper.v(tag, "OneFlow animation START [" + i + "]");
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation END[" + i + "]");
+                   // OFHelper.v(tag, "OneFlow animation END[" + i + "]");
                     if (i < animateViews.length) {
                         animateViews[i++].startAnimation(animation);
                     }
