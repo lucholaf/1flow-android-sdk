@@ -52,7 +52,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
 
     private OFSurveyController(Context context) {
         this.mContext = context;
-       // getSurveyFromAPI();
+        // getSurveyFromAPI();
     }
 
     public static OFSurveyController getInstance(Context context) {
@@ -104,100 +104,119 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
 
         OFHelper.v("SurveyController","OneFlow onReceived called type["+hitType+"]");
 
-            switch (hitType) {
-                case fetchSurveysFromAPI:
-                    OFHelper.v("SurveyController", "OneFlow survey received throttling["+reserved+"]");
-                    if(obj!=null) {
-                        ArrayList<OFGetSurveyListResponse> surveyListResponse = (ArrayList<OFGetSurveyListResponse>) obj;
-                        OFOneFlowSHP shp = new OFOneFlowSHP(mContext);
-                        if(!OFHelper.validateString(reserved).equalsIgnoreCase("NA")){
-                            GsonBuilder builder = new GsonBuilder();
-                            builder.serializeNulls();
-                            Gson gson = builder.setPrettyPrinting().create();
+        switch (hitType) {
+            case fetchSurveysFromAPI:
+                OFHelper.v("SurveyController", "OneFlow survey received throttling[" + reserved + "]");
+                if (obj != null) {
+                    ArrayList<OFGetSurveyListResponse> surveyListResponse = (ArrayList<OFGetSurveyListResponse>) obj;
+                    OFOneFlowSHP shp = new OFOneFlowSHP(mContext);
+                    if (!OFHelper.validateString(reserved).equalsIgnoreCase("NA")) {
+                        GsonBuilder builder = new GsonBuilder();
+                        builder.serializeNulls();
+                        Gson gson = builder.setPrettyPrinting().create();
 
 
-                            OFThrottlingConfig ofThrottlingConfig = (OFThrottlingConfig)gson.fromJson(reserved,OFThrottlingConfig.class);
-                            shp.setThrottlingConfig(ofThrottlingConfig);
-                        }
-                        setupGlobalTimerToDeactivateThrottlingLocally();
-
-                        if (surveyListResponse != null) {
-
-                            shp.setSurveyList(surveyListResponse);
-
-                            Intent intent = new Intent("survey_list_fetched");
-                            mContext.sendBroadcast(intent);
-
-                        } else {
-                            Intent intent = new Intent("survey_list_fetched");
-                            intent.putExtra("msg","No survey received");
-                            mContext.sendBroadcast(intent);
-                            if (OFConstants.MODE.equalsIgnoreCase("dev")) {
-                                OFHelper.makeText(mContext, reserved, 1);
-                            }
-                        }
-                        //Enabled again on 13/June/22
-                        //OFEventDBRepo.fetchEventsBeforeSurvey(mContext, this, OFConstants.ApiHitType.fetchEventsBeforSurveyFetched);
-                        new OFMyDBAsyncTask(mContext,this,OFConstants.ApiHitType.fetchEventsBeforSurveyFetched).execute();
+                        OFThrottlingConfig ofThrottlingConfig = (OFThrottlingConfig) gson.fromJson(reserved, OFThrottlingConfig.class);
+                        shp.setThrottlingConfig(ofThrottlingConfig);
                     }
-                    break;
-                case fetchEventsBeforSurveyFetched:
-                    if(obj!=null) {
-                        String[] name = (String[]) obj;
-                        OFHelper.v("SurveyController", "OneFlow events before survey found[" + Arrays.asList(name) + "]length[" + name.length + "]");
-                        if (name.length > 0) {
-                            Object[] ret = checkSurveyTitleAndScreens(Arrays.asList(name));
-                            OFGetSurveyListResponse surveyItem = (OFGetSurveyListResponse) ret[1];
-                            OFHelper.v("SurveyController", "OneFlow survey found[" + surveyItem + "]");
-                            if (surveyItem != null) {
-                                if (surveyItem.getScreens() != null) {
+                    setupGlobalTimerToDeactivateThrottlingLocally();
 
-                                    OFHelper.v("OneFlow", "OneFlow screens not null");
+                    if (surveyListResponse != null) {
 
-                                    if (surveyItem.getScreens().size() > 0) {
-                                        setUpHashForActivity();
-                                        new OFOneFlowSHP(mContext).storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
-                                        Intent surveyIntent = null;
-                                        if (surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
-                                            surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get("bottom-center"));
-                                        } else {
-                                            surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get(surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition()));
-                                        }
-                                        surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        surveyIntent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
-                                        surveyIntent.putExtra("eventName", (String) ret[0]);
-                                        mContext.getApplicationContext().startActivity(surveyIntent);
+                        shp.setSurveyList(surveyListResponse);
+
+                        Intent intent = new Intent("survey_list_fetched");
+                        mContext.sendBroadcast(intent);
+
+                    } else {
+                        Intent intent = new Intent("survey_list_fetched");
+                        intent.putExtra("msg", "No survey received");
+                        mContext.sendBroadcast(intent);
+                        if (OFConstants.MODE.equalsIgnoreCase("dev")) {
+                            OFHelper.makeText(mContext, reserved, 1);
+                        }
+                    }
+                    //Enabled again on 13/June/22
+                    //OFEventDBRepo.fetchEventsBeforeSurvey(mContext, this, OFConstants.ApiHitType.fetchEventsBeforSurveyFetched);
+                    new OFMyDBAsyncTask(mContext, this, OFConstants.ApiHitType.fetchEventsBeforSurveyFetched).execute();
+                }
+                break;
+            case fetchEventsBeforSurveyFetched:
+                if (obj != null) {
+                    String[] name = (String[]) obj;
+                    OFHelper.v("SurveyController", "OneFlow events before survey found[" + Arrays.asList(name) + "]length[" + name.length + "]");
+                    if (name.length > 0) {
+                        Object[] ret = checkSurveyTitleAndScreens(Arrays.asList(name));
+                        OFGetSurveyListResponse surveyItem = (OFGetSurveyListResponse) ret[1];
+                        OFHelper.v("SurveyController", "OneFlow survey found[" + surveyItem + "]");
+                        if (surveyItem != null) {
+                            if (surveyItem.getScreens() != null) {
+
+                                OFHelper.v("OneFlow", "OneFlow screens not null");
+
+                                if (surveyItem.getScreens().size() > 0) {
+                                    setUpHashForActivity();
+                                    new OFOneFlowSHP(mContext).storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
+                                    Intent surveyIntent = null;
+                                    if (surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
+                                        surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get("bottom-center"));
                                     } else {
-                                        OFHelper.v("SurveyController", "OneFlow no older survey found");
+                                        surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get(surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition()));
                                     }
-
+                                    surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    surveyIntent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
+                                    surveyIntent.putExtra("eventName", (String) ret[0]);
+                                    mContext.getApplicationContext().startActivity(surveyIntent);
+                                } else {
+                                    OFHelper.v("SurveyController", "OneFlow no older survey found");
                                 }
 
                             }
+
                         }
                     }
-                    break;
-            }
+                }
+                break;
+        }
 
 
     }
+
     private void setupGlobalTimerToDeactivateThrottlingLocally() {
 
 
-        OFHelper.v("OneFlow", "OneFlow deactivate called ");
+        OFHelper.v("OneFlow", "OneFlow checking throttling after survey received");
         OFThrottlingConfig config = new OFOneFlowSHP(mContext).getThrottlingConfig();
-        OFHelper.v("OneFlow", "OneFlow deactivate called config[" + new Gson().toJson(config) + "]");
-        OFMyCountDownTimerThrottling.getInstance(mContext,0l,0l).cancel();
-        if(config!=null) {
+        OFHelper.v("OneFlow", "OneFlow checking called config[" + new Gson().toJson(config) + "]");
+        //OFMyCountDownTimerThrottling.getInstance(mContext,0l,0l).cancel();
+        if (config != null) {
+            OFHelper.v("OneFlow", "OneFlow checking called config[" + config.getActivatedById() + "][" + config.getActivatedAt() + "]");
             if (config.getGlobalTime() != null && config.getGlobalTime() > 0) {
-                OFMyCountDownTimerThrottling.getInstance(mContext, config.getGlobalTime() * 1000, ((Long) (config.getGlobalTime() * 1000) / 2)).start();
+
+
+                if (config.isActivated()) {
+
+                    long throttlingLifeTime = (config.getActivatedAt() + config.getGlobalTime()) * 1000;
+                    OFHelper.v("OneFlow", "OneFlow checking called activated at [" + OFHelper.formatedDate(config.getActivatedAt() * 1000, "dd-MM-yyyy hh:mm:ss") + "]readable[" + OFHelper.formatedDate(throttlingLifeTime, "dd-MM-yyyy hh:mm:ss") + "]");
+                    if (System.currentTimeMillis() < throttlingLifeTime) {
+                        long throttlingFinishTime = throttlingLifeTime - System.currentTimeMillis();
+                        OFHelper.v("OneFlow", "OneFlow checking called remaining time ["+throttlingFinishTime+"]");
+                        OFMyCountDownTimerThrottling.getInstance(mContext, throttlingFinishTime, (throttlingFinishTime / 2)).start();
+                    } else {
+                        OFHelper.v("OneFlow", "OneFlow checking throttling time over no need to start timer");
+                    }
+                } else {
+                    config.setActivated(false);
+                    config.setActivatedById(null);
+                    new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+                }
             } else {
                 config.setActivated(false);
                 config.setActivatedById(null);
                 new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+                OFHelper.v("OneFlow", "OneFlow checking called no throttling found after survey received");
             }
         }
-
         /*if (config != null) {
 
             if (config.getGlobalTime() != null) {
@@ -223,15 +242,17 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
             }
         }*/
     }
+
     /**
      * This method will return survey and its event name
+     *
      * @param type
      * @return [0] = event name [1] = Survey data
      */
     private Object[] checkSurveyTitleAndScreens(List<String> type) {
-        Object []ret = new Object[2];
+        Object[] ret = new Object[2];
         OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
-        if (ofs.getBooleanValue(OFConstants.SHP_SHOULD_SHOW_SURVEY,true)) {
+        if (ofs.getBooleanValue(OFConstants.SHP_SHOULD_SHOW_SURVEY, true)) {
             ArrayList<OFGetSurveyListResponse> slr = ofs.getSurveyList();
             //OFGetSurveyListResponse gslr = null;
             //ArrayList<SurveyScreens> surveyScreens = null;
@@ -248,11 +269,11 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                     for (String name : type) {
 
                         if (item.getTrigger_event_name().contains(name)) {
-                          //  gslr = item;
+                            //  gslr = item;
                             recordFound = true;
                             OFHelper.v("SurveyController", "OneFlow survey from against[" + name + "]");
-                            ret[0]=name;
-                            ret[1]=item;
+                            ret[0] = name;
+                            ret[1] = item;
                             break;
                         }
                     }
@@ -266,7 +287,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
             //retake survey check not required
 
             return ret;
-        }else{
+        } else {
             return null;
         }
     }

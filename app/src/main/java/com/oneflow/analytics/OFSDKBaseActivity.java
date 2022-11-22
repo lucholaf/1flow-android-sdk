@@ -804,7 +804,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 //if internet available then only send to api else already stored locally
                 if (OFHelper.isConnected(this)) {
                     OFSurveyUserInput sur = (OFSurveyUserInput) obj;
-                    OFHelper.v(tag, "OneFlow calling submit user Resposne [" + sur.getAnswers() + "]");
+                    OFHelper.v(tag, "OneFlow calling submit user surID["+sur.get_id()+"] Resposne [" + sur.getAnswers() + "]");
                     if (sur.getAnswers() != null) {
                         if (sur.getAnswers().size() > 0) {
                             OFSurvey.submitUserResponse(new OFOneFlowSHP(this).getStringValue(OFConstants.APPIDSHP), sur, OFConstants.ApiHitType.surveySubmited, this);
@@ -819,6 +819,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 OFHelper.v(tag, "OneFlow survey submitted successfully");
                 if (obj != null) {
                     OFSurveyUserInput sur = (OFSurveyUserInput) obj;
+                    OFHelper.v(tag, "OneFlow survey submitted successfully ["+sur.get_id()+"]surveyId["+sur.getSurvey_id()+"]");
                     //Updating survey once data is sent to server, Sending type null as return is not required
                     //OFLogUserDBRepo.updateSurveyInput(this, null, null, true, sur.get_id());
                     new OFMyDBAsyncTask(this,this,OFConstants.ApiHitType.updateSubmittedSurveyLocally,false).execute(true,sur.get_id());

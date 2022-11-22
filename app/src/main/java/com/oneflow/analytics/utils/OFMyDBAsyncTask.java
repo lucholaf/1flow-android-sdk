@@ -113,6 +113,7 @@ public class OFMyDBAsyncTask extends android.os.AsyncTask<Object, Integer, Objec
 
             if (action == OFConstants.ApiHitType.lastSubmittedSurvey) {
                 object[0] = db.logDAO().getLastSyncedSurveyId();
+                OFHelper.v(tag, "OneFlow global[" + object[0] + "]");
             } else if (action == OFConstants.ApiHitType.fetchSurveysFromDB) {
                 object[0] = db.logDAO().getOfflineUserInput();
             }else if (action == OFConstants.ApiHitType.fetchEventsBeforSurveyFetched) {
@@ -128,6 +129,7 @@ public class OFMyDBAsyncTask extends android.os.AsyncTask<Object, Integer, Objec
                 Boolean syncNew = (Boolean)requestJSON[0] ;
                 Integer id = (Integer) requestJSON[1];
                 object[0] = db.logDAO().updateUserInput(syncNew,id);
+                OFHelper.v(tag,"OneFlow updated synced ["+object[0]+"]");
             }else if (action == OFConstants.ApiHitType.updateSurveyIds) {
                 //update user id for surveys before log
                 String userId = (String)requestJSON[0];
@@ -136,9 +138,11 @@ public class OFMyDBAsyncTask extends android.os.AsyncTask<Object, Integer, Objec
             } else if (action == OFConstants.ApiHitType.insertSurveyInDB) {
 
                 OFSurveyUserInput sur = (OFSurveyUserInput) requestJSON[0];
-                db.logDAO().insertUserInput(sur);
+                Long id = db.logDAO().insertUserInput(sur);
+
+                sur.set_id(id.intValue());
                 object[0] = sur;
-                OFHelper.v(tag,"OneFlow Response handler["+mrh+"]");
+                OFHelper.v(tag,"OneFlow inserted id ["+id+"]inObject["+sur.get_id()+"]");
             } else if (action == OFConstants.ApiHitType.fetchSubmittedSurvey) {
 
                 OFGetSurveyListResponse gslr = (OFGetSurveyListResponse) requestJSON[0];

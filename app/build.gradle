@@ -19,7 +19,7 @@
 
 plugins {
     id 'com.android.library'
-   // id 'com.android.application'
+    //id 'com.android.application'
 
 }
 
@@ -28,11 +28,11 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-      //applicationId "com.circo.oneflow"
+     // applicationId "com.circo.oneflow"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 14
-        versionName "2022.11.17"
+        versionName "2022.11.20"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

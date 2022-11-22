@@ -699,6 +699,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             OFHelper.v("OneFlow", "OneFlow counter value after["+counter+"]size["+slr.size()+"]");
             if(counter<slr.size()) {
                 ofs.storeValue(OFConstants.SHP_SURVEY_SEARCH_POSITION, counter);
+            }else{
+                ofs.storeValue(OFConstants.SHP_SURVEY_SEARCH_POSITION, 0);
             }
             //Resurvey login
             if (gslr == null) {
@@ -955,6 +957,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                         OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
 
+                        // resetting counter for similar type of event name
+                        ofs.storeValue(OFConstants.SHP_SURVEY_SEARCH_POSITION, 0);
                         if (gslr.getScreens() != null) {
 
                             if (gslr.getScreens().size() > 0) {
@@ -1005,7 +1009,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                                     }else{
                                         OFHelper.v("OneFlow", "OneFlow resurvey this survey already submitted searching again");
                                         // as this survey not fired, going to check again if any other survey available with same event name
-                                        checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission,reserved);//reserved is event name
+                                      //  checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission,reserved);//reserved is event name
                                     }
                                 }
                             }
@@ -1016,7 +1020,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 }
                 break;
             case lastSubmittedSurvey:
-                OFHelper.v("OneFlow", "OneFlow globalThrottling[]");
+                OFHelper.v("OneFlow", "OneFlow globalThrottling received["+obj+"]");
 
                 OFGetSurveyListResponse gslr = gslrGlobal;
                 if (obj == null) {
@@ -1130,13 +1134,11 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         ofs1.storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
 
 
-
-
         OFThrottlingConfig config = ofs1.getThrottlingConfig();
         //flow correction and time should be in second
         if (config != null) {
 
-
+            OFHelper.v("OneFlow","OneFlow throttling config not null");
             config.setActivated(true);
             config.setActivatedById(gslr.get_id());
             config.setActivatedAt(System.currentTimeMillis());
@@ -1144,10 +1146,12 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             new OFOneFlowSHP(mContext).setThrottlingConfig(config);
 
             setupGlobalTimerToDeactivateThrottlingLocally();
+        } else{
+            OFHelper.v("OneFlow","OneFlow throttling config null");
         }
 
         // resetting counter for similar type of event name
-        ofs1.storeValue(OFConstants.SHP_SURVEY_SEARCH_POSITION, 0);
+        //ofs1.storeValue(OFConstants.SHP_SURVEY_SEARCH_POSITION, 0);
 
         surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         surveyIntent.putExtra("SurveyType", gslr);
@@ -1162,7 +1166,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         OFHelper.v("OneFlow", "OneFlow deactivate called ");
         OFThrottlingConfig config = new OFOneFlowSHP(mContext).getThrottlingConfig();
         OFHelper.v("OneFlow", "OneFlow deactivate called config activated[" + config.isActivated() + "]globalTime["+config.getGlobalTime()+"]activatedBy["+config.getActivatedById()+"]");
-        OFMyCountDownTimerThrottling.getInstance(mContext,0l,0l).cancel();
+        //OFMyCountDownTimerThrottling.getInstance(mContext,0l,0l).cancel();
         if(config.getGlobalTime()!=null && config.getGlobalTime()>0) {
             OFMyCountDownTimerThrottling.getInstance(mContext, config.getGlobalTime() * 1000, ((Long) (config.getGlobalTime() * 1000) / 2)).start();
         } else {

@@ -55,22 +55,22 @@ public class OFMyCountDownTimerThrottling extends CountDownTimer {
 
     @Override
     public void onTick(long millisUntilFinished) {
-
+        OFHelper.v("MyCountDownTimerThrottling", "OneFlow Throttling tick called");
     }
 
     @Override
     public void onFinish() {
-        OFHelper.v("MyCountDownTimerThrottling", "OneFlow Throttling finish called");
-        OFHelper.v("MyCountDownTimerThrottling", "OneFlow deactivate called ");
+
+        OFHelper.v("MyCountDownTimerThrottling", "OneFlow Throttling finish called ");
         OFThrottlingConfig config = new OFOneFlowSHP(mContext).getThrottlingConfig();
-        OFHelper.v("MyCountDownTimerThrottling", "OneFlow deactivate called config[" + new Gson().toJson(config) + "]");
+        OFHelper.v("MyCountDownTimerThrottling", "OneFlow Throttling deactivate called config[" + new Gson().toJson(config) + "]");
         if (config != null) {
 
 
-            OFHelper.v("MyCountDownTimerThrottling", "OneFlow deactivate called config global time not null");
+            OFHelper.v("MyCountDownTimerThrottling", "OneFlow Throttling deactivate called config global time not null");
             if (config.isActivated()) {
 
-                OFHelper.v("MyCountDownTimerThrottling", "OneFlow deactivate called time finished");
+                OFHelper.v("MyCountDownTimerThrottling", "OneFlow Throttling deactivate called time finished");
                 config.setActivated(false);
                 config.setActivatedById(null);
                 new OFOneFlowSHP(mContext).setThrottlingConfig(config);
