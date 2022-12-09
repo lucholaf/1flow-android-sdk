@@ -230,7 +230,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         ratingsNotLike.setTextColor(colorlike);
         ratingsFullLike.setTextColor(colorlike);
         starRatingLabel.setTextColor(colorlike);
-        //((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
+        //((TextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
 
 
         handleWaterMarkStyle(sdkTheme);

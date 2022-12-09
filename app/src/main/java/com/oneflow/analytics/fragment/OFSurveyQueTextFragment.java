@@ -34,6 +34,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -185,7 +186,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.6f);
         surveyDescription.setTextColor(colorAlpha);
         skipBtn.setTextColor(colorlike);
-        ((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
+        ((TextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
 
 
         skipBtn.setOnClickListener(this);

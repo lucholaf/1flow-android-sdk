@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -260,6 +261,23 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+
+        Typeface typeface;
+        if(OFHelper.validateString(OneFlow.fontNameStr).equalsIgnoreCase("NA")){
+             typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/Lato-Regular.ttf");
+
+        }else{
+            try {
+                typeface = Typeface.createFromAsset(mContext.getAssets(), OneFlow.fontNameStr);
+
+            }catch (Exception e){
+                typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/Lato-Regular.ttf");
+
+            }
+        }
+
+
+
         //OFHelper.v(tag, "OneFlow viewtype [" + viewType + "]5["+OFHelper.getAlphaNumber(5)+"]");
         int colorAlpha = OFHelper.manipulateColor(Color.parseColor(themeTextColor),0.5f);//ColorUtils.setAlphaComponent(Color.parseColor(themeColor), OFHelper.getAlphaNumber(0.));
         int colorAlpha5 = OFHelper.manipulateColor(Color.parseColor(themeTextColor),0.05f);//ColorUtils.setAlphaComponent(Color.parseColor(themeTextColor), OFHelper.getAlphaNumber(25));
@@ -343,15 +361,8 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                      surveyInputs.setOtherOption("0db4b95a7f8e192867e3630a");
                     }*/
 
-                    if (OneFlow.optionsFace != null) {
-                        if (OneFlow.optionsFace.getTypeface() != null) {
-                            ((MCQRadioViewHolder) holder).title.setTypeface(OneFlow.optionsFace.getTypeface());
-                        }
-                        if (OneFlow.optionsFace.getFontSize() != null) {
-             //               OFHelper.v(tag, "OneFlow changing font size");
-                            ((MCQRadioViewHolder) holder).title.setTextSize(OneFlow.optionsFace.getFontSize());
-                        }
-                    }
+                    ((MCQRadioViewHolder) holder).title.setTypeface(typeface);
+
                     ((MCQRadioViewHolder) holder).title.setText(surveyInputs.getChoices().get(position).getTitle());
                     ((MCQRadioViewHolder) holder).title.setTextColor(Color.parseColor(themeTextColor));
 
@@ -495,14 +506,9 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     break;
                 case 3:
                 //    OFHelper.v(tag, "OneFlow title [" + surveyInputs.getChoices().get(position).getTitle() + "]tag[" + surveyInputs.getChoices().get(position).getId() + "]");
-                    if (OneFlow.optionsFace != null) {
-                        if (OneFlow.optionsFace.getTypeface() != null) {
-                            ((MCQCheckBoxViewHolder) holder).title.setTypeface(OneFlow.optionsFace.getTypeface());
-                        }
-                        if (OneFlow.optionsFace.getFontSize() != null) {
-                            ((MCQCheckBoxViewHolder) holder).title.setTextSize(OneFlow.optionsFace.getFontSize());
-                        }
-                    }
+
+                    ((MCQCheckBoxViewHolder) holder).title.setTypeface(typeface);
+
                     ((MCQCheckBoxViewHolder) holder).title.setText(surveyInputs.getChoices().get(position).getTitle());
                     ((MCQCheckBoxViewHolder) holder).title.setTextColor(Color.parseColor(themeTextColor));
                     ((MCQCheckBoxViewHolder) holder).othersEditText.setHintTextColor(OFHelper.manipulateColor(Color.parseColor(themeTextColor),0.3f));

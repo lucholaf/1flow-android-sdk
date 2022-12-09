@@ -21,8 +21,8 @@ package com.oneflow.analytics.utils;
 public interface OFConstants {
 
 
-    String currentVersion = "2022.11.20";
-    String MODE = "prod";
+    String currentVersion = "2022.12.05";//""2022.11.20";
+    String MODE = "prod";//"dev";//"
     String DBNAME = "one_flow_db";
     String APPKEYSHP = "one_flow_config_key";
     String APPIDSHP = "one_flow_app_id_key";

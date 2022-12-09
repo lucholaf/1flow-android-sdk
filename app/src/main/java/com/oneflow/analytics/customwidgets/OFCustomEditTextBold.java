@@ -28,7 +28,9 @@ import android.view.MenuItem;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
+import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
+import com.oneflow.analytics.utils.OFHelper;
 
 public class OFCustomEditTextBold extends AppCompatEditText {
     public OFCustomEditTextBold(Context context) {
@@ -54,9 +56,19 @@ public class OFCustomEditTextBold extends AppCompatEditText {
 
     private void init() {
 
-        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Lato-Bold.ttf");
-        setTypeface(typeface);
-
+        OFHelper.v(this.getClass().getName(),"OneFlow font Name["+OneFlow.fontNameStr+"]");
+        if(OFHelper.validateString(OneFlow.fontNameStr).equalsIgnoreCase("NA")){
+            Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Lato-Regular.ttf");
+            setTypeface(typeface);
+        }else{
+            try {
+                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), OneFlow.fontNameStr);
+                setTypeface(typeface);
+            }catch (Exception e){
+                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Lato-Regular.ttf");
+                setTypeface(typeface);
+            }
+        }
 
         getSelectionStart();
 

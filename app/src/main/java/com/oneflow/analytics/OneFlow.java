@@ -201,6 +201,22 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             OFHelper.e("1Flow", "Empty project given");
         }
     }
+    public static String fontNameStr = "";
+    public static void configure(Context mContext, String projectKey, String fontName) {
+        OFHelper.v("1Flow", "OneFlow configure called project Key [" + projectKey + "]strName["+fontName+"]");
+        if (!OFHelper.validateString(projectKey).equalsIgnoreCase("NA")) {
+            OFOneFlowSHP fc = new OFOneFlowSHP(mContext);
+            if (OFHelper.validateString(OFHelper.headerKey).equalsIgnoreCase("NA")) {// && !fc.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN,false)) {
+                //if(!fc.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN,false)) {
+                fontNameStr = fontName;
+                configureLocal(mContext, projectKey);
+            } else {
+                OFHelper.e("1Flow", "Re-register called, Nothing happen");
+            }
+        } else {
+            OFHelper.e("1Flow", "Empty project given");
+        }
+    }
 
 
     public void setUpHashForActivity() {
