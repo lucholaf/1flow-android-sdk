@@ -127,7 +127,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         ((Application) mContext.getApplicationContext()).registerActivityLifecycleCallbacks(new OFActivityCallbacks());
     }
 
-    public static void configure(Context mContext, String projectKey, OFFontSetup titleFont) {
+   /* public static void configure(Context mContext, String projectKey, OFFontSetup titleFont) {
         if (!OFHelper.validateString(projectKey).equalsIgnoreCase("NA")) {
             if (OFHelper.validateString(OFHelper.headerKey).equalsIgnoreCase("NA")) {
                 configureLocal(mContext, projectKey);
@@ -139,7 +139,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         } else {
             OFHelper.e("1Flow", "Empty project given");
         }
-    }
+    }*/
    /* public static void configure(Context mContext, String projectKey, OFFontSetup titleFont,Boolean trackScreens) {
         if (!OFHelper.validateString(projectKey).equalsIgnoreCase("NA")) {
             if (OFHelper.validateString(OFHelper.headerKey).equalsIgnoreCase("NA")) {
