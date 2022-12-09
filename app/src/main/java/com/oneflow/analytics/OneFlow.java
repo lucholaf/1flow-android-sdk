@@ -157,7 +157,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         }
     }*/
 
-    public static void configure(Context mContext, String projectKey, OFFontSetup titleFont, OFFontSetup descriptionFont) {
+   /* public static void configure(Context mContext, String projectKey, OFFontSetup titleFont, OFFontSetup descriptionFont) {
         if (!OFHelper.validateString(projectKey).equalsIgnoreCase("NA")) {
             if (OFHelper.validateString(OFHelper.headerKey).equalsIgnoreCase("NA")) {
                 configureLocal(mContext, projectKey);
@@ -185,7 +185,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             OFHelper.e("1Flow", "Empty project given");
         }
 
-    }
+    }*/
 
     public static void configure(Context mContext, String projectKey) {
         OFHelper.v("1Flow", "OneFlow configure called project Key[" + projectKey + "]");

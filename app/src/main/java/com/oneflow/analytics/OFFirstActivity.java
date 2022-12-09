@@ -126,7 +126,8 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         //String projectKey = "oneflow_prod_rjz2cV390BlTDSHQi1zHeL8w09+/ZQOJe7mpXJ1SY05sA2UapiKIZl+BwOq0JFoXJIxaXm87TQVo9MQnokf4fQ==";//WelcomeEndScreen
         //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
 
-        OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);
+        //OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);
+        OneFlow.configure(getApplicationContext(), projectKey,"");//"fonts/pacifico1.ttf");//,titleSetup,descriptionFont,optionsFont);
         OneFlow.shouldShowSurvey(true);
         OneFlow.shouldPrintLog(true);
 
@@ -245,8 +246,8 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
             mapvalues.put("testKey3_" + localTag, 23);
             OneFlow.recordEvents(localTag, mapvalues);
         } else if (v.getId() == R.id.configure_project) {
-            //  Helper.makeText(FirstActivity.this, "Clicked on button conf", 1);
-            OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=", null);
+
+            OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=", "font/greatvibes-regular.otf");
         } else if (v.getId() == R.id.log_user) {
 
             String emailId = "";
