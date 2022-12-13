@@ -187,7 +187,6 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
 
         OFHelper.v("OneFlow", "OneFlow checking throttling after survey received");
         OFThrottlingConfig config = new OFOneFlowSHP(mContext).getThrottlingConfig();
-        OFHelper.v("OneFlow", "OneFlow checking called config[" + new Gson().toJson(config) + "]");
         //OFMyCountDownTimerThrottling.getInstance(mContext,0l,0l).cancel();
         if (config != null) {
             OFHelper.v("OneFlow", "OneFlow checking called config[" + config.getActivatedById() + "][" + config.getActivatedAt() + "]");

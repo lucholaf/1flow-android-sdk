@@ -86,7 +86,7 @@ public class OFSurvey {
 
                             mrh.onResponseReceived(type, response.body().getResult(), 0l, throttling,null,null);
                         } catch (Exception ex) {
-                           // ex.printStackTrace();
+                            ex.printStackTrace();
                             mrh.onResponseReceived(type, "", 0l, "",null,null);
                         }
 
@@ -149,6 +149,7 @@ public class OFSurvey {
                         // OFHelper.v(tag, "OneFlow response 0[" + response.body() + "]");
                         /*Helper.v(tag, "OneFlow response 1[" + response.body().getMessage() + "]");
                         Helper.v(tag, "OneFlow response 2[" + response.body().getSuccess() + "]");*/
+                        handler.onResponseReceived(type, null, 0l, "",null,null);
                     }
 
                 }
@@ -158,7 +159,7 @@ public class OFSurvey {
 
                     OFHelper.e(tag, "OneFlow error[" + t.toString() + "]");
                     OFHelper.e(tag, "OneFlow errorMsg[" + t.getMessage() + "]");
-
+                    handler.onResponseReceived(type, null, 0l, "",null,null);
                 }
             });
         } catch (Exception ex) {
