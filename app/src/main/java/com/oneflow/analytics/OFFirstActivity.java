@@ -127,7 +127,8 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
 
         //OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);
-        OneFlow.configure(getApplicationContext(), projectKey,"");//"fonts/pacifico1.ttf");//,titleSetup,descriptionFont,optionsFont);
+        OneFlow.configure(getApplicationContext(), projectKey);//"fonts/pacifico1.ttf");//,titleSetup,descriptionFont,optionsFont);
+        OneFlow.useFont("fonts/pacifico.ttf");
         OneFlow.shouldShowSurvey(true);
         OneFlow.shouldPrintLog(true);
 
@@ -247,7 +248,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
             OneFlow.recordEvents(localTag, mapvalues);
         } else if (v.getId() == R.id.configure_project) {
 
-            OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=", "font/greatvibes-regular.otf");
+            OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");
         } else if (v.getId() == R.id.log_user) {
 
             String emailId = "";
