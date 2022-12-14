@@ -26,12 +26,33 @@ public class OFAddUserRequest extends OFBaseModel {
     private String system_id;
     @SerializedName("language")
     private String language;
+    @SerializedName("name")
+    private String name;
+    @SerializedName("email")
+    private String email;
     @SerializedName("device")
     private OFDeviceDetails OFDeviceDetails;
-    @SerializedName("location_check")
+   /* @SerializedName("location_check")
     private Boolean locationCheck;
     @SerializedName("location")
-    private OFLocationDetails OFLocationDetails;
+    private OFLocationDetails OFLocationDetails;*/
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getLanguage() {
         return language;
@@ -41,13 +62,13 @@ public class OFAddUserRequest extends OFBaseModel {
         this.language = language;
     }
 
-    public Boolean getLocationCheck() {
+    /*public Boolean getLocationCheck() {
         return locationCheck;
     }
 
     public void setLocationCheck(Boolean locationCheck) {
         this.locationCheck = locationCheck;
-    }
+    }*/
 
     public String getSystem_id() {
         return system_id;
@@ -65,11 +86,11 @@ public class OFAddUserRequest extends OFBaseModel {
         this.OFDeviceDetails = OFDeviceDetails;
     }
 
-    public OFLocationDetails getOFLocationDetails() {
+    /*public OFLocationDetails getOFLocationDetails() {
         return OFLocationDetails;
     }
 
     public void setOFLocationDetails(OFLocationDetails OFLocationDetails) {
         this.OFLocationDetails = OFLocationDetails;
-    }
+    }*/
 }

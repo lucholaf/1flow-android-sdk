@@ -202,7 +202,13 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         }
     }
     public static String fontNameStr = "";
-    public static void configure(Context mContext, String projectKey, String fontName) {
+
+    public static void useFont(String fontFileName){
+        fontNameStr = fontFileName;
+    }
+
+
+    /*public static void configure(Context mContext, String projectKey, String fontName) {
         OFHelper.v("1Flow", "OneFlow configure called project Key [" + projectKey + "]strName["+fontName+"]");
         if (!OFHelper.validateString(projectKey).equalsIgnoreCase("NA")) {
             OFOneFlowSHP fc = new OFOneFlowSHP(mContext);
@@ -216,7 +222,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         } else {
             OFHelper.e("1Flow", "Empty project given");
         }
-    }
+    }*/
 
 
     public void setUpHashForActivity() {
@@ -440,8 +446,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         }
         aur.setLanguage(new Locale(Locale.getDefault().getLanguage()).getDisplayName(Locale.US));
         aur.setOFDeviceDetails(dd);
-        aur.setOFLocationDetails(null);
-        aur.setLocationCheck(true);
+        /*aur.setOFLocationDetails(null);
+        aur.setLocationCheck(true);*/
         /*aur.setName("Amit");
         aur.setEmail("amit@tryskybox.com");*/
         return aur;
