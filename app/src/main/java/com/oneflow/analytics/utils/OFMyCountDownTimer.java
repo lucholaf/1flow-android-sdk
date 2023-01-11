@@ -23,10 +23,10 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 
 import com.oneflow.analytics.model.events.OFEventAPIRequest;
-import com.oneflow.analytics.model.events.OFRecordEventsTab;
+import com.oneflow.analytics.model.events.OFRecordEventsTabKT;
 import com.oneflow.analytics.model.events.OFRecordEventsTabToAPI;
 import com.oneflow.analytics.repositories.OFEventAPIRepo;
-import com.oneflow.analytics.repositories.OFEventDBRepo;
+import com.oneflow.analytics.repositories.OFEventDBRepoKT;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 
 import java.util.ArrayList;
@@ -53,7 +53,9 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
     public void onTick(long millisUntilFinished) {
         OFHelper.v("MyCountDownTimer", "OneFlow tick called");
         if (OFHelper.isConnected(mContext)) {
-            OFEventDBRepo.fetchEvents(mContext, this, OFConstants.ApiHitType.fetchEventsFromDB);
+            //OFEventDBRepo.fetchEvents(mContext, this, OFConstants.ApiHitType.fetchEventsFromDB);
+            new OFEventDBRepoKT().fetchEvents(mContext,this,OFConstants.ApiHitType.fetchEventsFromDB);
+
         }
     }
 
@@ -72,7 +74,7 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
                 OFHelper.v("FeedbackController", "OneFlow fetchEventsFromDB came back");
 
                 if(obj!=null) {
-                    ArrayList<OFRecordEventsTab> list = (ArrayList<OFRecordEventsTab>) obj;
+                    ArrayList<OFRecordEventsTabKT> list = (ArrayList<OFRecordEventsTabKT>) obj;
                     OFHelper.v("FeedbackController", "OneFlow fetchEventsFromDB list received size[" + list.size() + "]");
                     //Preparing list to send api
                     if (list.size() > 0) {
@@ -80,7 +82,7 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
                         int i = 0;
                         ArrayList<OFRecordEventsTabToAPI> retListToAPI = new ArrayList<>();
                         OFRecordEventsTabToAPI retMain;
-                        for (OFRecordEventsTab ret : list) {
+                        for (OFRecordEventsTabKT ret : list) {
                             retMain = new OFRecordEventsTabToAPI();
                             retMain.setPlatform("a");
                             retMain.setEventName(ret.getEventName());
@@ -98,7 +100,6 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
                             OFHelper.v("FeedbackController", "OneFlow fetchEventsFromDB request prepared");
                             OFEventAPIRepo.sendLogsToApi(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), ear, this, OFConstants.ApiHitType.sendEventsToAPI, ids);
                         }
-
                     }
                 }
                 break;
@@ -106,7 +107,8 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
                 if(obj!=null) {
                     //Events has been sent to api not deleting local records
                     Integer[] ids1 = (Integer[]) obj;
-                    OFEventDBRepo.deleteEvents(mContext, ids1, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                    //OFEventDBRepo.deleteEvents(mContext, ids1, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                    new OFEventDBRepoKT().deleteEvents(mContext, ids1, this, OFConstants.ApiHitType.deleteEventsFromDB);
                 }
                 break;
             case deleteEventsFromDB:

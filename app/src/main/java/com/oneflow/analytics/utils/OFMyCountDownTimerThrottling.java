@@ -19,19 +19,11 @@
 package com.oneflow.analytics.utils;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.CountDownTimer;
 
 import com.google.gson.Gson;
-import com.oneflow.analytics.model.events.OFEventAPIRequest;
-import com.oneflow.analytics.model.events.OFRecordEventsTab;
-import com.oneflow.analytics.model.events.OFRecordEventsTabToAPI;
 import com.oneflow.analytics.model.survey.OFThrottlingConfig;
-import com.oneflow.analytics.repositories.OFEventAPIRepo;
-import com.oneflow.analytics.repositories.OFEventDBRepo;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
-
-import java.util.ArrayList;
 
 public class OFMyCountDownTimerThrottling extends CountDownTimer {
     Context mContext;

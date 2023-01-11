@@ -23,8 +23,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -80,41 +78,6 @@ public class OFHelper {
     public static String headerKey = "";
 
     public static String gpsProviderInfo;
-
-
-   /* *//**
-     * This method will return current app version
-     *
-     * @param context
-     * @return
-     *//*
-    public static String getAppVersion(Context context) {
-        String version = "";
-        try {
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            version = String.valueOf(pInfo.versionCode);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return version;
-    }
-    *//**
-     * This method will return current app version
-     *
-     * @param context
-     * @return
-     *//*
-    public static String getAppVersionName(Context context) {
-        String version = "";
-        try {
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            version = String.valueOf(pInfo.versionName);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return version;
-    }*/
-
 
 
     public static <T> ArrayList<T> fromJsonToArrayList(String rawData, Class<T> model) {

@@ -21,7 +21,6 @@ package com.oneflow.analytics.fragment;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,12 +37,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
-import com.bumptech.glide.request.target.DrawableImageViewTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.google.gson.Gson;
 import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
@@ -51,7 +45,6 @@ import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
-import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFHelper;
 
 public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClickListener{

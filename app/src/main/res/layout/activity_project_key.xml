@@ -22,7 +22,6 @@
         android:layout_margin="40dp"
         android:background="@color/purple_500"
         android:gravity="center"
-        android:onClick="registerProject"
         android:padding="10dp"
         android:text="Register Project"
         android:textAllCaps="true"

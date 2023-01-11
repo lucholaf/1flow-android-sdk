@@ -13,11 +13,9 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -28,7 +26,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.play.core.review.ReviewInfo;
@@ -37,7 +34,6 @@ import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
 import com.google.gson.Gson;
-import com.oneflow.analytics.OFSDKBaseActivity;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.controller.OFEventController;
 import com.oneflow.analytics.model.survey.OFDataLogic;
@@ -233,8 +229,8 @@ public class CustomFrag extends Fragment {
     /**
      * Record User inputs
      *
-     * @param screenID
-     * @param answerIndex
+     * @param screenID screenId is required to map with question
+     * @param answerIndex to check answer position
      * @param answerValue
      */
     public void addUserResponseToList(String screenID, String answerIndex, String answerValue) {

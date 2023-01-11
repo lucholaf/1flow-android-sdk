@@ -18,22 +18,15 @@
 
 package com.oneflow.analytics.repositories;
 
-import android.content.Context;
-
-import com.google.gson.Gson;
 import com.oneflow.analytics.model.OFApiInterface;
 import com.oneflow.analytics.model.OFGenericResponse;
 import com.oneflow.analytics.model.OFRetroBaseService;
 import com.oneflow.analytics.model.adduser.OFAddUserRequest;
 import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
-import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;

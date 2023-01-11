@@ -23,9 +23,12 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.oneflow.analytics.OneFlow;
-import com.oneflow.analytics.model.survey.OFSurveyUserInput;
+import com.oneflow.analytics.model.survey.OFSurveyUserInputKT;
+import com.oneflow.analytics.repositories.OFLogUserDBRepoKT;
 import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
+
+
 
 public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyResponseHandlerOneFlow {
 
@@ -36,8 +39,7 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
     public void onReceive(final Context context, final Intent intent) {
 
         this.context = context;
-        // int status = NetworkUtil.getConnectivityStatusString(context);
-        //Helper.makeText(context,"OneFlow Receiver called ["+intent.getAction()+"]",1);
+
 
         if (OFHelper.isConnected(context)) {
             // Helper.makeText(context,"Network available",1);
@@ -55,10 +57,10 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
 
 
 
-
     public void checkOffLineSurvey() {
-        //OFLogUserDBRepo.fetchSurveyInput(context, this, OFConstants.ApiHitType.fetchSurveysFromDB);
-        new OFMyDBAsyncTask(context,this,OFConstants.ApiHitType.fetchSurveysFromDB).execute();
+        new OFLogUserDBRepoKT().fetchSurveyInput(context, this, OFConstants.ApiHitType.fetchSurveysFromDB);
+        //new OFMyDBAsyncTask(context,this,OFConstants.ApiHitType.fetchSurveysFromDB).execute();
+
     }
 
     @Override
@@ -68,7 +70,7 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
 
             case fetchSurveysFromDB:
                 if(obj!=null) {
-                    OFSurveyUserInput survey = (OFSurveyUserInput) obj;
+                    OFSurveyUserInputKT survey = (OFSurveyUserInputKT) obj;
                     if (survey != null) {
                         OFSurvey.submitUserResponseOffline(context, survey, this, OFConstants.ApiHitType.logUser);
                     }
@@ -76,9 +78,9 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
                 break;
             case logUser:
                 if(obj!=null) {
-                    OFSurveyUserInput survey1 = (OFSurveyUserInput) obj;
-                    //OFLogUserDBRepo.deleteSentSurveyFromDB(context, new Integer[]{survey1.get_id()}, this, OFConstants.ApiHitType.deleteEventsFromDB);
-                    new OFMyDBAsyncTask(context,this,OFConstants.ApiHitType.deleteEventsFromDB).execute(new Integer[]{survey1.get_id()});
+                    OFSurveyUserInputKT survey1 = (OFSurveyUserInputKT) obj;
+                    new OFLogUserDBRepoKT().deleteSentSurveyFromDB(context, new Integer[]{survey1.get_id()}, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                    //new OFMyDBAsyncTask(context,this,OFConstants.ApiHitType.deleteEventsFromDB).execute(new Integer[]{survey1.get_id()});
                 }
                 break;
             //case deleteSurveyFromDB:
@@ -87,4 +89,6 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
                 break;
         }
     }
+
+
 }

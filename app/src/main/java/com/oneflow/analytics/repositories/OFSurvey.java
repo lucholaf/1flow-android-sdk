@@ -19,7 +19,6 @@
 package com.oneflow.analytics.repositories;
 
 import android.content.Context;
-import android.content.Intent;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,15 +26,13 @@ import com.oneflow.analytics.model.OFApiInterface;
 import com.oneflow.analytics.model.OFGenericResponse;
 import com.oneflow.analytics.model.OFRetroBaseService;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
-import com.oneflow.analytics.model.survey.OFSurveyUserInput;
+import com.oneflow.analytics.model.survey.OFSurveyUserInputKT;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
-import com.oneflow.analytics.utils.OFMyResponseHandler;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -111,7 +108,7 @@ public class OFSurvey {
         }
     }
 
-    public static void submitUserResponse(String headerKey, OFSurveyUserInput sur, OFConstants.ApiHitType type, OFMyResponseHandlerOneFlow handler) {
+    public static void submitUserResponse(String headerKey, OFSurveyUserInputKT sur, OFConstants.ApiHitType type, OFMyResponseHandlerOneFlow handler) {
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
             Call<OFGenericResponse> responseCall = null;
@@ -167,7 +164,7 @@ public class OFSurvey {
         }
     }
 
-    public static void submitUserResponseOffline(Context context, OFSurveyUserInput sur, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType type) {
+    public static void submitUserResponseOffline(Context context, OFSurveyUserInputKT sur, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType type) {
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
             Call<OFGenericResponse> responseCall = null;
