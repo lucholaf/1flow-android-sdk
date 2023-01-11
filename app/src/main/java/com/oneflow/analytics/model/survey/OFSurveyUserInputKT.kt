@@ -14,7 +14,7 @@ class OFSurveyUserInputKT {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
     @SerializedName("_id")
-    var _id: Int? = null
+    var id = 0
 
     @ColumnInfo(name = "analytic_user_id")
     @SerializedName("analytic_user_id")

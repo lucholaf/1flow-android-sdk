@@ -27,6 +27,7 @@ import com.oneflow.analytics.model.location.OFLocationResponse;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
 import com.oneflow.analytics.model.loguser.OFLogUserResponse;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
+import com.oneflow.analytics.model.survey.OFSurveyUserInput;
 import com.oneflow.analytics.model.survey.OFSurveyUserInputKT;
 
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public interface OFApiInterface {
     Call<OFLocationResponse> getLocation(@Header("one_flow_key") String headerKey);
 
     @POST("add-responses")
-    Call<OFGenericResponse> submitSurveyUserResponse(@Header("one_flow_key") String headerKey, @Body OFSurveyUserInputKT aur);//, @Url String url);
+    Call<OFGenericResponse> submitSurveyUserResponse(@Header("one_flow_key") String headerKey, @Body OFSurveyUserInput aur);//, @Url String url);
 
     ///@POST("v1/2021-06-15/events/bulk")
     @POST("events")

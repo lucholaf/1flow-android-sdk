@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.oneflow.analytics.OneFlow;
+import com.oneflow.analytics.model.survey.OFSurveyUserInput;
 import com.oneflow.analytics.model.survey.OFSurveyUserInputKT;
 import com.oneflow.analytics.repositories.OFLogUserDBRepoKT;
 import com.oneflow.analytics.repositories.OFSurvey;
@@ -70,7 +71,7 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
 
             case fetchSurveysFromDB:
                 if(obj!=null) {
-                    OFSurveyUserInputKT survey = (OFSurveyUserInputKT) obj;
+                    OFSurveyUserInput survey = (OFSurveyUserInput) obj;
                     if (survey != null) {
                         OFSurvey.submitUserResponseOffline(context, survey, this, OFConstants.ApiHitType.logUser);
                     }
@@ -78,7 +79,7 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
                 break;
             case logUser:
                 if(obj!=null) {
-                    OFSurveyUserInputKT survey1 = (OFSurveyUserInputKT) obj;
+                    OFSurveyUserInput survey1 = (OFSurveyUserInput) obj;
                     new OFLogUserDBRepoKT().deleteSentSurveyFromDB(context, new Integer[]{survey1.get_id()}, this, OFConstants.ApiHitType.deleteEventsFromDB);
                     //new OFMyDBAsyncTask(context,this,OFConstants.ApiHitType.deleteEventsFromDB).execute(new Integer[]{survey1.get_id()});
                 }

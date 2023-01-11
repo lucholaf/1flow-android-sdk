@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 
 import com.oneflow.analytics.model.events.OFEventAPIRequest;
+import com.oneflow.analytics.model.events.OFRecordEventsTab;
 import com.oneflow.analytics.model.events.OFRecordEventsTabKT;
 import com.oneflow.analytics.model.events.OFRecordEventsTabToAPI;
 import com.oneflow.analytics.repositories.OFEventAPIRepo;
@@ -74,7 +75,7 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
                 OFHelper.v("FeedbackController", "OneFlow fetchEventsFromDB came back");
 
                 if(obj!=null) {
-                    ArrayList<OFRecordEventsTabKT> list = (ArrayList<OFRecordEventsTabKT>) obj;
+                    ArrayList<OFRecordEventsTab> list = (ArrayList<OFRecordEventsTab>) obj;
                     OFHelper.v("FeedbackController", "OneFlow fetchEventsFromDB list received size[" + list.size() + "]");
                     //Preparing list to send api
                     if (list.size() > 0) {
@@ -82,7 +83,7 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
                         int i = 0;
                         ArrayList<OFRecordEventsTabToAPI> retListToAPI = new ArrayList<>();
                         OFRecordEventsTabToAPI retMain;
-                        for (OFRecordEventsTabKT ret : list) {
+                        for (OFRecordEventsTab ret : list) {
                             retMain = new OFRecordEventsTabToAPI();
                             retMain.setPlatform("a");
                             retMain.setEventName(ret.getEventName());

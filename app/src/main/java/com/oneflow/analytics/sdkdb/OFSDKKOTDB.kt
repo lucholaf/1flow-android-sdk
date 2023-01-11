@@ -45,7 +45,7 @@ public abstract class OFSDKKOTDB: RoomDatabase()
                         context.applicationContext,
                         OFSDKKOTDB::class.java,
                         "ofsdkkotdb_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
 
                 INSTANCE = instance
 

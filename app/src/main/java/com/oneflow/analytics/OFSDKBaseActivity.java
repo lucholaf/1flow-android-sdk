@@ -69,6 +69,7 @@ import com.oneflow.analytics.model.survey.OFSurveyChoises;
 import com.oneflow.analytics.model.survey.OFSurveyFinishChild;
 import com.oneflow.analytics.model.survey.OFSurveyFinishModel;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
+import com.oneflow.analytics.model.survey.OFSurveyUserInput;
 import com.oneflow.analytics.model.survey.OFSurveyUserInputKT;
 import com.oneflow.analytics.model.survey.OFSurveyUserResponseChild;
 import com.oneflow.analytics.repositories.OFLogUserDBRepoKT;
@@ -146,6 +147,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         // Helper.makeText(getApplicationContext(),"Size ["+screens.size()+"]",1);
         setProgressMax(surveyItem.getScreens().size()); // -1 for excluding thankyou page from progress bar; 2-sept-2022 showing progressbar at thankyou page
         selectedSurveyId = surveyItem.get_id();
+        OFHelper.v(this.getClass().getName(),"OneFlow surveyId["+selectedSurveyId+"]");
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -629,12 +631,12 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     }*/
 
     public void prepareAndSubmitUserResposneNew() {
-        OFHelper.v(tag, "OneFlow checking value prepareAndSubmitUserResposneNew called " + surveyResponseChildren.size());
+        OFHelper.v(tag, "OneFlow checking value prepareAndSubmitUserResposneNew called [" + surveyResponseChildren.size()+"]surveyId["+selectedSurveyId+"]");
         //setupGlobalTimerToDeactivateThrottlingLocally();
         OFOneFlowSHP ofs = new OFOneFlowSHP(this);
         ofs.storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
-        OFHelper.v(tag, "OneFlow checking value prepareAndSubmitUserResposneNew called " + ofs.getBooleanValue(OFConstants.SHP_SURVEY_RUNNING,false));
-        OFSurveyUserInputKT sur = new OFSurveyUserInputKT();
+        OFHelper.v(tag, "OneFlow checking value prepareAndSubmitUserResposneNew called [" + ofs.getBooleanValue(OFConstants.SHP_SURVEY_RUNNING,false));
+        OFSurveyUserInput sur = new OFSurveyUserInput();
         sur.setTotDuration(totalTimeSpentInSec());
         sur.setMode(OFConstants.MODE);
         sur.setTrigger_event(triggerEventName);
@@ -803,8 +805,8 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
                 //if internet available then only send to api else already stored locally
                 if (OFHelper.isConnected(this)) {
-                    OFSurveyUserInputKT sur = (OFSurveyUserInputKT) obj;
-                    OFHelper.v(tag, "OneFlow calling submit user surID["+sur.get_id()+"] Resposne [" + sur.getAnswers() + "]");
+                    OFSurveyUserInput sur = (OFSurveyUserInput) obj;
+                    OFHelper.v(tag, "OneFlow calling submit user surveyId["+sur.getSurvey_id()+"]surID["+sur.get_id()+"] Resposne [" + sur.getAnswers() + "]");
                     if (sur.getAnswers() != null) {
                         if (sur.getAnswers().size() > 0) {
                             OFSurvey.submitUserResponse(new OFOneFlowSHP(this).getStringValue(OFConstants.APPIDSHP), sur, OFConstants.ApiHitType.surveySubmited, this);
@@ -819,10 +821,10 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
                 OFHelper.v(tag, "OneFlow survey submitted successfully");
                 if (obj != null) {
-                    OFSurveyUserInputKT sur = (OFSurveyUserInputKT) obj;
+                    OFSurveyUserInput sur = (OFSurveyUserInput) obj;
                     OFHelper.v(tag, "OneFlow survey submitted successfully ["+sur.get_id()+"]surveyId["+sur.getSurvey_id()+"]");
                     //Updating survey once data is sent to server, Sending type null as return is not required
-                    new OFLogUserDBRepoKT().updateSurveyInput(this, null, null, true, sur.get_id());
+                    new OFLogUserDBRepoKT().updateSurveyInput(this, null, null, true, sur.getSurvey_id());
                     //new OFMyDBAsyncTask(this,this,OFConstants.ApiHitType.updateSubmittedSurveyLocally,false).execute(true,sur.get_id());
 
                     new OFOneFlowSHP(this).storeValue(sur.getSurvey_id(), Calendar.getInstance().getTimeInMillis());

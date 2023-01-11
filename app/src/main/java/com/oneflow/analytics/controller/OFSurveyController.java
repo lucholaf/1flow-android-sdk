@@ -36,7 +36,6 @@ import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
-import com.oneflow.analytics.utils.OFMyCountDownTimerThrottling;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import java.util.ArrayList;
@@ -108,6 +107,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
             case fetchSurveysFromAPI:
                 OFHelper.v("SurveyController", "OneFlow survey received throttling[" + reserved + "]");
                 if (obj != null) {
+
                     ArrayList<OFGetSurveyListResponse> surveyListResponse = (ArrayList<OFGetSurveyListResponse>) obj;
                     OFOneFlowSHP shp = new OFOneFlowSHP(mContext);
                     if (!OFHelper.validateString(reserved).equalsIgnoreCase("NA")) {
@@ -200,7 +200,8 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                     if (System.currentTimeMillis() < throttlingLifeTime) {
                         long throttlingFinishTime = throttlingLifeTime - System.currentTimeMillis();
                         OFHelper.v("OneFlow", "OneFlow checking called remaining time ["+throttlingFinishTime+"]");
-                        OFMyCountDownTimerThrottling.getInstance(mContext, throttlingFinishTime, (throttlingFinishTime / 2)).start();
+                        //OFMyCountDownTimerThrottling.getInstance(mContext, throttlingFinishTime, (throttlingFinishTime / 2)).start();
+                        setThrottlingAlarm(throttlingFinishTime);
                     } else {
                         OFHelper.v("OneFlow", "OneFlow checking throttling time over no need to start timer");
                     }
@@ -241,7 +242,19 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
             }
         }*/
     }
+    public void setThrottlingAlarm(long throttlingLifeTime) {
 
+
+        /*AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(mContext, OFThrottlingAlarm.class);
+        PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, (config.getGlobalTime() * 1000)+System.currentTimeMillis(), pi);*/
+
+        OFOneFlowSHP shp = new OFOneFlowSHP(mContext);
+        shp.storeValue(OFConstants.SHP_THROTTLING_TIME, throttlingLifeTime);
+
+
+    }
     /**
      * This method will return survey and its event name
      *
