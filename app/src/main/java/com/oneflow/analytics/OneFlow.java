@@ -53,6 +53,7 @@ import com.oneflow.analytics.model.adduser.OFDeviceDetails;
 import com.oneflow.analytics.model.createsession.OFCreateSessionRequest;
 import com.oneflow.analytics.model.createsession.OFCreateSessionResponse;
 import com.oneflow.analytics.model.events.OFEventAPIRequest;
+import com.oneflow.analytics.model.events.OFRecordEventsTab;
 import com.oneflow.analytics.model.events.OFRecordEventsTabKT;
 import com.oneflow.analytics.model.events.OFRecordEventsTabToAPI;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
@@ -852,7 +853,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 OneFlow fc = new OneFlow(mContext);
                 OFOneFlowSHP ofshp = new OFOneFlowSHP(mContext);
                 if (obj != null) {
-                    ArrayList<OFRecordEventsTabKT> list = (ArrayList<OFRecordEventsTabKT>) obj;
+                    ArrayList<OFRecordEventsTab> list = (ArrayList<OFRecordEventsTab>) obj;
                     OFHelper.v("FeedbackController", "OneFlow checking before log fetchEventsFromDB list received size[" + list.size() + "]");
                     //Preparing list to send api
                     if (list.size() > 0) {
@@ -860,7 +861,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                         int i = 0;
                         ArrayList<OFRecordEventsTabToAPI> retListToAPI = new ArrayList<>();
                         OFRecordEventsTabToAPI retMain;
-                        for (OFRecordEventsTabKT ret : list) {
+                        for (OFRecordEventsTab ret : list) {
                             retMain = new OFRecordEventsTabToAPI();
                             retMain.setEventName(ret.getEventName());
                             retMain.setTime(ret.getTime());
