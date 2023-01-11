@@ -26,7 +26,6 @@ import com.oneflow.analytics.model.location.OFLocationResponse;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
-import com.oneflow.analytics.utils.OFMyResponseHandler;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import retrofit2.Call;

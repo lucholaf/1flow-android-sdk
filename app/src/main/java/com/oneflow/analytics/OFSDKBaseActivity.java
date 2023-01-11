@@ -69,11 +69,11 @@ import com.oneflow.analytics.model.survey.OFSurveyChoises;
 import com.oneflow.analytics.model.survey.OFSurveyFinishChild;
 import com.oneflow.analytics.model.survey.OFSurveyFinishModel;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
-import com.oneflow.analytics.model.survey.OFSurveyUserInput;
+import com.oneflow.analytics.model.survey.OFSurveyUserInputKT;
 import com.oneflow.analytics.model.survey.OFSurveyUserResponseChild;
+import com.oneflow.analytics.repositories.OFLogUserDBRepoKT;
 import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
-import com.oneflow.analytics.utils.OFMyDBAsyncTask;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
@@ -634,7 +634,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         OFOneFlowSHP ofs = new OFOneFlowSHP(this);
         ofs.storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
         OFHelper.v(tag, "OneFlow checking value prepareAndSubmitUserResposneNew called " + ofs.getBooleanValue(OFConstants.SHP_SURVEY_RUNNING,false));
-        OFSurveyUserInput sur = new OFSurveyUserInput();
+        OFSurveyUserInputKT sur = new OFSurveyUserInputKT();
         sur.setTotDuration(totalTimeSpentInSec());
         sur.setMode(OFConstants.MODE);
         sur.setTrigger_event(triggerEventName);
@@ -645,8 +645,8 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         sur.setSession_id(ofs.getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
         sur.setUser_id(ofs.getStringValue(OFConstants.USERUNIQUEIDSHP));
         sur.setCreatedOn(System.currentTimeMillis());
-        //OFLogUserDBRepo.insertUserInputs(this, sur, this, OFConstants.ApiHitType.insertSurveyInDB);
-        new OFMyDBAsyncTask(this,this, OFConstants.ApiHitType.insertSurveyInDB,false).execute(sur);
+        new OFLogUserDBRepoKT().insertUserInputs(this, sur, this, OFConstants.ApiHitType.insertSurveyInDB);
+        //new OFMyDBAsyncTask(this,this, OFConstants.ApiHitType.insertSurveyInDB,false).execute(sur);
         /*if (!(screens.get(screens.size() - 1).getInput().getInput_type().equalsIgnoreCase("thank_you") ||
                 screens.get(screens.size() - 1).getInput().getInput_type().equalsIgnoreCase("end-screen")
         )) {
@@ -803,7 +803,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
                 //if internet available then only send to api else already stored locally
                 if (OFHelper.isConnected(this)) {
-                    OFSurveyUserInput sur = (OFSurveyUserInput) obj;
+                    OFSurveyUserInputKT sur = (OFSurveyUserInputKT) obj;
                     OFHelper.v(tag, "OneFlow calling submit user surID["+sur.get_id()+"] Resposne [" + sur.getAnswers() + "]");
                     if (sur.getAnswers() != null) {
                         if (sur.getAnswers().size() > 0) {
@@ -819,11 +819,11 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
                 OFHelper.v(tag, "OneFlow survey submitted successfully");
                 if (obj != null) {
-                    OFSurveyUserInput sur = (OFSurveyUserInput) obj;
+                    OFSurveyUserInputKT sur = (OFSurveyUserInputKT) obj;
                     OFHelper.v(tag, "OneFlow survey submitted successfully ["+sur.get_id()+"]surveyId["+sur.getSurvey_id()+"]");
                     //Updating survey once data is sent to server, Sending type null as return is not required
-                    //OFLogUserDBRepo.updateSurveyInput(this, null, null, true, sur.get_id());
-                    new OFMyDBAsyncTask(this,this,OFConstants.ApiHitType.updateSubmittedSurveyLocally,false).execute(true,sur.get_id());
+                    new OFLogUserDBRepoKT().updateSurveyInput(this, null, null, true, sur.get_id());
+                    //new OFMyDBAsyncTask(this,this,OFConstants.ApiHitType.updateSubmittedSurveyLocally,false).execute(true,sur.get_id());
 
                     new OFOneFlowSHP(this).storeValue(sur.getSurvey_id(), Calendar.getInstance().getTimeInMillis());
 

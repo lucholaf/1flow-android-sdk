@@ -53,26 +53,25 @@ import com.oneflow.analytics.model.adduser.OFDeviceDetails;
 import com.oneflow.analytics.model.createsession.OFCreateSessionRequest;
 import com.oneflow.analytics.model.createsession.OFCreateSessionResponse;
 import com.oneflow.analytics.model.events.OFEventAPIRequest;
-import com.oneflow.analytics.model.events.OFRecordEventsTab;
+import com.oneflow.analytics.model.events.OFRecordEventsTabKT;
 import com.oneflow.analytics.model.events.OFRecordEventsTabToAPI;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
 import com.oneflow.analytics.model.loguser.OFLogUserResponse;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
-import com.oneflow.analytics.model.survey.OFSurveyUserInput;
+import com.oneflow.analytics.model.survey.OFSurveyUserInputKT;
 import com.oneflow.analytics.model.survey.OFThrottlingConfig;
 import com.oneflow.analytics.repositories.OFAddUserRepo;
 import com.oneflow.analytics.repositories.OFCreateSession;
 import com.oneflow.analytics.repositories.OFCurrentLocation;
 import com.oneflow.analytics.repositories.OFEventAPIRepo;
-import com.oneflow.analytics.repositories.OFEventDBRepo;
+import com.oneflow.analytics.repositories.OFEventDBRepoKT;
+import com.oneflow.analytics.repositories.OFLogUserDBRepoKT;
 import com.oneflow.analytics.repositories.OFLogUserRepo;
 import com.oneflow.analytics.repositories.OFProjectDetails;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
-import com.oneflow.analytics.utils.OFMyDBAsyncTask;
 import com.oneflow.analytics.utils.OFActivityCallbacks;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
-//import com.oneflow.analytics.utils.OFLogCountdownTimer;
 import com.oneflow.analytics.utils.OFLogCountdownTimer;
 import com.oneflow.analytics.utils.OFMyCountDownTimer;
 import com.oneflow.analytics.utils.OFMyCountDownTimerThrottling;
@@ -84,6 +83,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+//import com.oneflow.analytics.utils.OFLogCountdownTimer;
 
 public class OneFlow implements OFMyResponseHandlerOneFlow {
 
@@ -416,24 +417,6 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         dd.setDevice_id(OFHelper.getDeviceId(mContext));
         dd.setOs("android");
 
-
-        //OFLocationResponse lr = new OFOneFlowSHP(mContext).getUserLocationDetails();
-       /* OFLocationDetails ld = new OFLocationDetails();
-        ld.setCity(lr.getCity());
-        ld.setRegion(lr.getRegion());
-        ld.setCountry(lr.getCountry());
-
-        try {
-            ld.setLatitude(Double.parseDouble(lr.getLat()));
-        } catch (Exception ex) {
-            ld.setLatitude(0d);
-        }
-
-        try {
-            ld.setLongitude(Double.parseDouble(lr.getLon()));
-        } catch (Exception ex) {
-            ld.setLongitude(0d);
-        }*/
         final OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
         OFAddUserRequest aur = new OFAddUserRequest();
 
@@ -555,7 +538,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     /**
      * This method will check all aspects of re-survey
      *
-     * @return
+     * @return SurveyList to check
      */
     private OFGetSurveyListResponse shouldReturnSurvey(OFGetSurveyListResponse gslr) {
 
@@ -668,7 +651,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     /**
      * This method will check if trigger name is available in the list or not
      *
-     * @param type
+     * @param hitType
      * @return
      */
 
@@ -728,8 +711,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             if (gslr == null) {
                 onResponseReceived(hitType, null, 0l, "", null, null);
             } else {
-               // OFLogUserDBRepo.findSurveyForID(mContext, this, OFConstants.ApiHitType.fetchSubmittedSurvey, gslr, gslr.get_id(), new OFOneFlowSHP(mContext).getStringValue(OFConstants.USERUNIQUEIDSHP), firedEventName);
-                new OFMyDBAsyncTask(mContext,this,OFConstants.ApiHitType.fetchSubmittedSurvey,false).execute(gslr, new OFOneFlowSHP(mContext).getStringValue(OFConstants.USERUNIQUEIDSHP), firedEventName);
+                new OFLogUserDBRepoKT().findSurveyForID(mContext, this, OFConstants.ApiHitType.fetchSubmittedSurvey, gslr, gslr.get_id(), new OFOneFlowSHP(mContext).getStringValue(OFConstants.USERUNIQUEIDSHP), firedEventName);
+                //new OFMyDBAsyncTask(mContext,this,OFConstants.ApiHitType.fetchSubmittedSurvey,false).execute(gslr, new OFOneFlowSHP(mContext).getStringValue(OFConstants.USERUNIQUEIDSHP), firedEventName);
             }
 
 
@@ -743,7 +726,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
     public static void sendEventsToApi(Context contex) {
         OneFlow fc = new OneFlow(contex);
-        OFEventDBRepo.fetchEvents(mContext, fc, OFConstants.ApiHitType.fetchEventsFromDB);
+        //OFEventDBRepo.fetchEvents(mContext, fc, OFConstants.ApiHitType.fetchEventsFromDB);
+        new OFEventDBRepoKT().fetchEvents(mContext, fc, OFConstants.ApiHitType.fetchEventsFromDB);
     }
 
     public void getLocation() {
@@ -864,7 +848,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 OneFlow fc = new OneFlow(mContext);
                 OFOneFlowSHP ofshp = new OFOneFlowSHP(mContext);
                 if (obj != null) {
-                    ArrayList<OFRecordEventsTab> list = (ArrayList<OFRecordEventsTab>) obj;
+                    ArrayList<OFRecordEventsTabKT> list = (ArrayList<OFRecordEventsTabKT>) obj;
                     OFHelper.v("FeedbackController", "OneFlow checking before log fetchEventsFromDB list received size[" + list.size() + "]");
                     //Preparing list to send api
                     if (list.size() > 0) {
@@ -872,7 +856,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                         int i = 0;
                         ArrayList<OFRecordEventsTabToAPI> retListToAPI = new ArrayList<>();
                         OFRecordEventsTabToAPI retMain;
-                        for (OFRecordEventsTab ret : list) {
+                        for (OFRecordEventsTabKT ret : list) {
                             retMain = new OFRecordEventsTabToAPI();
                             retMain.setEventName(ret.getEventName());
                             retMain.setTime(ret.getTime());
@@ -905,7 +889,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             case sendEventsToAPI:
                 //Events has been sent to api not deleting local records
                 Integer[] ids1 = (Integer[]) obj;
-                OFEventDBRepo.deleteEvents(mContext, ids1, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                //OFEventDBRepo.deleteEvents(mContext, ids1, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                new OFEventDBRepoKT().deleteEvents(mContext, ids1, this, OFConstants.ApiHitType.deleteEventsFromDB);
 
                 break;
             case deleteEventsFromDB:
@@ -1016,9 +1001,10 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                                                         OFHelper.v("OneFlow", "OneFlow globalThrottling id matched ");
                                                         gslrGlobal = gslr;
-                                                        //OFLogUserDBRepo.findLastSubmittedSurveyID(mContext, this, OFConstants.ApiHitType.lastSubmittedSurvey, null, reserved);
                                                         // check in submitted survey list locally if this survey has been submitted then false
-                                                        new OFMyDBAsyncTask(mContext,this, OFConstants.ApiHitType.lastSubmittedSurvey,false).execute();
+                                                        new OFLogUserDBRepoKT().findLastSubmittedSurveyID(mContext, this, OFConstants.ApiHitType.lastSubmittedSurvey, reserved);
+
+//                                                        new OFMyDBAsyncTask(mContext,this, OFConstants.ApiHitType.lastSubmittedSurvey,false).execute();
 
                                                     }
                                                     //else nothing to do
@@ -1048,7 +1034,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 if (obj == null) {
                     triggerSurvey(gslr, reserved);
                 } else {
-                    OFSurveyUserInput ofSurveyUserInput = (OFSurveyUserInput) obj;
+                    OFSurveyUserInputKT ofSurveyUserInput = (OFSurveyUserInputKT) obj;
                     OFOneFlowSHP ofs1 = new OFOneFlowSHP(mContext);
                     OFThrottlingConfig config = ofs1.getThrottlingConfig();
                     OFHelper.v("OneFlow", "OneFlow globalThrottling inside else ["+(ofSurveyUserInput.getCreatedOn() < config.getActivatedAt())+"]");
@@ -1081,8 +1067,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                         OFHelper.v("OneFlow", "OneFlow Log record inserted...");
 
                         //Updating old submitted surveys with logged user id.
-                        //OFLogUserDBRepo.updateSurveyUserId(mContext, this, reserved, OFConstants.ApiHitType.updateSurveyIds);
-                        new OFMyDBAsyncTask(mContext,this,OFConstants.ApiHitType.updateSurveyIds,false).execute(reserved);
+                        new OFLogUserDBRepoKT().updateSurveyUserId(mContext, this, reserved, OFConstants.ApiHitType.updateSurveyIds);
+                        //new OFMyDBAsyncTask(mContext,this,OFConstants.ApiHitType.updateSurveyIds,false).execute(reserved);
                     } else {
                         // OFHelper.e("OneFlow", "OneFlow LogApi subimission failed logUser");
                         OFLogCountdownTimer.getInstance(mContext, 15000l, 5000l).start();

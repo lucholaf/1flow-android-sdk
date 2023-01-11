@@ -38,15 +38,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.oneflow.analytics.adapter.OFSurveyListAdapter;
 import com.oneflow.analytics.customwidgets.OFCustomEditText;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
-import com.oneflow.analytics.model.OFFontSetup;
-import com.oneflow.analytics.model.events.OFRecordEventsTab;
+import com.oneflow.analytics.model.events.OFRecordEventsTabKT;
 import com.oneflow.analytics.model.survey.OFDataLogic;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
-import com.oneflow.analytics.repositories.OFEventDBRepo;
+import com.oneflow.analytics.repositories.OFEventDBRepoKT;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
-import com.oneflow.analytics.utils.OFMyResponseHandler;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import java.util.ArrayList;
@@ -128,7 +126,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         //OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);
         OneFlow.configure(getApplicationContext(), projectKey);//"fonts/pacifico1.ttf");//,titleSetup,descriptionFont,optionsFont);
-        OneFlow.useFont("fonts/pacifico.ttf");
+        //OneFlow.useFont("fonts/pacifico.ttf");
         OneFlow.shouldShowSurvey(true);
         OneFlow.shouldPrintLog(true);
 
@@ -162,7 +160,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
                     noSurvey.setVisibility(View.VISIBLE);
                 }
             } else if (intent.getAction().equalsIgnoreCase("events_submitted")) {
-                OFEventDBRepo.fetchEvents(OFFirstActivity.this, OFFirstActivity.this, OFConstants.ApiHitType.fetchEventsFromDB);
+                new OFEventDBRepoKT().fetchEvents(OFFirstActivity.this, OFFirstActivity.this, OFConstants.ApiHitType.fetchEventsFromDB);
 
             }else if(intent.getAction().equalsIgnoreCase("survey_finished")){
                 String triggerName = intent.getStringExtra("surveyDetail");
@@ -200,7 +198,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
             addb.notifyMyList(slr);
         }
 
-        OFEventDBRepo.fetchEvents(this, this, OFConstants.ApiHitType.fetchEventsFromDB);
+        new OFEventDBRepoKT().fetchEvents(this, this, OFConstants.ApiHitType.fetchEventsFromDB);
     }
 
     public void clickHandler(View v) {
@@ -312,11 +310,19 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         switch (hitType) {
             case fetchEventsFromDB:
                 if(obj!=null) {
-                    List<OFRecordEventsTab> list = (List<OFRecordEventsTab>) obj;
-                    sendLogsToAPI.setText("Send Events to API (" + list.size() + ")");
+                    List<OFRecordEventsTabKT> list = (List<OFRecordEventsTabKT>) obj;
+                    OFHelper.v(tag,"OneFlow Events size["+list.size()+"]");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            sendLogsToAPI.setText("Send Events to API (" + list.size() + ")");
+                        }
+                    });
+
                 }
                 break;
 
         }
     }
+
 }

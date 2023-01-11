@@ -96,7 +96,8 @@ public class OFOneFlowSHP {
         } else if (value instanceof Long) {
             editor.putLong(key, (Long) value);
         }
-        editor.commit();
+        //editor.commit();
+        editor.apply();
     }
 
 

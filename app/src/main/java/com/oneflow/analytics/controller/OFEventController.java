@@ -22,15 +22,13 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.oneflow.analytics.model.events.OFEventAPIRequest;
-import com.oneflow.analytics.model.events.OFRecordEventsTab;
+import com.oneflow.analytics.model.events.OFRecordEventsTabKT;
 import com.oneflow.analytics.model.events.OFRecordEventsTabToAPI;
 import com.oneflow.analytics.repositories.OFEventAPIRepo;
-import com.oneflow.analytics.repositories.OFEventDBRepo;
+import com.oneflow.analytics.repositories.OFEventDBRepoKT;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
-import com.oneflow.analytics.sdkdb.OFSDKDB;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
-import com.oneflow.analytics.utils.OFMyResponseHandler;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import java.util.ArrayList;
@@ -39,7 +37,7 @@ import java.util.HashMap;
 public class OFEventController implements OFMyResponseHandlerOneFlow {
 
     Context mContext;
-    OFSDKDB sdkdb;
+    //OFSDKDB sdkdb;
     String tag = this.getClass().getName();
 
     private static OFEventController ec;
@@ -52,7 +50,7 @@ public class OFEventController implements OFMyResponseHandlerOneFlow {
     }
     private OFEventController(Context mContext){
         this.mContext = mContext;
-        sdkdb = OFSDKDB.getInstance(mContext);
+        //sdkdb = OFSDKDB.getInstance(mContext);
 
     }
 
@@ -60,7 +58,8 @@ public class OFEventController implements OFMyResponseHandlerOneFlow {
 
         //String data = new Gson().toJson(eventValue);
         OFHelper.v(tag,"Oneflow records inserted ["+eventName+"]value["+eventValue+"]");
-        OFEventDBRepo.insertEvents(mContext,eventName,eventValue,value,this, OFConstants.ApiHitType.insertEventsInDB);
+        //OFEventDBRepo.insertEvents(mContext,eventName,eventValue,value,this, OFConstants.ApiHitType.insertEventsInDB);
+        new OFEventDBRepoKT().insertEvents(mContext,eventName,eventValue,value,this,OFConstants.ApiHitType.insertEventsInDB);
 
     }
 
@@ -69,10 +68,11 @@ public class OFEventController implements OFMyResponseHandlerOneFlow {
 
         switch(hitType){
             case insertEventsInDB:
-                OFHelper.v(tag,"Oneflow records inserted ["+((Integer)obj)+"]");
+                OFHelper.v(tag,"Oneflow records inserted ["+((Long)obj)+"]");
                 if(reserved.equalsIgnoreCase(OFConstants.AUTOEVENT_SURVEYIMPRESSION)){
-                    OFHelper.v(tag,"Oneflow found survey impression["+((Integer)obj)+"]");
-                        OFEventDBRepo.fetchEvents(mContext, this, OFConstants.ApiHitType.fetchEventsFromDB);
+                    OFHelper.v(tag,"Oneflow found survey impression["+((Long)obj)+"]");
+                        //OFEventDBRepo.fetchEvents(mContext, this, OFConstants.ApiHitType.fetchEventsFromDB);
+                        new OFEventDBRepoKT().fetchEvents(mContext, this, OFConstants.ApiHitType.fetchEventsFromDB);
 
                 }
                 break;
@@ -81,7 +81,7 @@ public class OFEventController implements OFMyResponseHandlerOneFlow {
                 OFHelper.v(this.getClass().getName(), "OneFlow fetchEventsFromDB came back");
 
                 if(obj!=null) {
-                    ArrayList<OFRecordEventsTab> list = (ArrayList<OFRecordEventsTab>) obj;
+                    ArrayList<OFRecordEventsTabKT> list = (ArrayList<OFRecordEventsTabKT>) obj;
                     OFHelper.v(this.getClass().getName(), "OneFlow fetchEventsFromDB list received size[" + list.size() + "]");
                     //Preparing list to send api
                     if (list.size() > 0) {
@@ -89,7 +89,7 @@ public class OFEventController implements OFMyResponseHandlerOneFlow {
                         int i = 0;
                         ArrayList<OFRecordEventsTabToAPI> retListToAPI = new ArrayList<>();
                         OFRecordEventsTabToAPI retMain;
-                        for (OFRecordEventsTab ret : list) {
+                        for (OFRecordEventsTabKT ret : list) {
                             retMain = new OFRecordEventsTabToAPI();
                             retMain.setPlatform("a");
                             retMain.setEventName(ret.getEventName());
@@ -117,7 +117,8 @@ public class OFEventController implements OFMyResponseHandlerOneFlow {
                 if(obj!=null) {
                     //Events has been sent to api not deleting local records
                     Integer[] ids1 = (Integer[]) obj;
-                    OFEventDBRepo.deleteEvents(mContext, ids1, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                    //OFEventDBRepo.deleteEvents(mContext, ids1, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                    new OFEventDBRepoKT().deleteEvents(mContext, ids1, this, OFConstants.ApiHitType.deleteEventsFromDB);
                 }
                 break;
             case deleteEventsFromDB:

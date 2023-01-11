@@ -18,9 +18,6 @@
 
 package com.oneflow.analytics.model;
 
-import com.google.gson.annotations.SerializedName;
-import com.oneflow.analytics.utils.OFConstants;
-
 import java.io.Serializable;
 
 public class OFBaseModel implements Serializable {

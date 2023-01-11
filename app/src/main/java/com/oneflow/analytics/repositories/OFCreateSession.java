@@ -18,17 +18,13 @@
 
 package com.oneflow.analytics.repositories;
 
-import android.content.Context;
-
 import com.oneflow.analytics.model.OFApiInterface;
 import com.oneflow.analytics.model.OFGenericResponse;
 import com.oneflow.analytics.model.OFRetroBaseService;
 import com.oneflow.analytics.model.createsession.OFCreateSessionRequest;
 import com.oneflow.analytics.model.createsession.OFCreateSessionResponse;
-import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
-import com.oneflow.analytics.utils.OFMyResponseHandler;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
 import retrofit2.Call;
