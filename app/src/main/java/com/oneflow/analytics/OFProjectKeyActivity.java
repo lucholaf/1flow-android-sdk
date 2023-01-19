@@ -19,6 +19,7 @@ public class OFProjectKeyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_key);
+
         registerProject = (OFCustomTextView) findViewById(R.id.register_project);
         registerProject.setOnClickListener(listener);
         //String projectKy = "oneflow_prod_lVyNe+aHpwN3sC9MCjgvakChZopOXRNcQHsiRf+D9uMMrFhSawcw+3kIGWZSrqG+r2coTBkYSFPlKkgu3bISPA=="; //rohan's project
@@ -32,6 +33,7 @@ public class OFProjectKeyActivity extends AppCompatActivity {
         //String projectKy = "oneflow_prod_6rAmoIlFw2c8/rMAPoD2TLCfWTM2Zc6aHyQKRfDofwNrgPdJOUX2HSEOxDMUf+8VJwLWnKIaARfj/i3Ktk1EHA=="; //Thao project
         projectKey = (OFCustomEditText) findViewById(R.id.project_key);
         projectKey.setText(projectKy);
+        //OFHelper.v(this.getClass().getName(),"OneFlow shp["+new SHPRepo().getStringShp(this, OFConstants.SHP_THROTTLING_TIME)+"]");
     }
 
     View.OnClickListener listener = new View.OnClickListener() {

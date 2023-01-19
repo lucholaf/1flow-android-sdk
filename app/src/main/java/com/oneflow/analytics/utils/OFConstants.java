@@ -21,7 +21,7 @@ package com.oneflow.analytics.utils;
 public interface OFConstants {
 
 
-    String currentVersion = "2023.01.12";//""2022.11.20";
+    String currentVersion = "2023.01.18";//2023.01.12";//""2022.11.20";
     String MODE = "prod";//"dev";//"
     String DBNAME = "one_flow_db";
     String APPKEYSHP = "one_flow_config_key";
@@ -30,8 +30,8 @@ public interface OFConstants {
     String USERUNIQUEIDSHP = "one_flow_user_unique_id_key";
     String LOGUSERREQUESTSHP = "one_flow_log_user_detail_key";
     String USERLOCATIONDETAILSHP = "one_flow_user_location_detail_key";
-    String SESSIONDETAIL_IDSHP = "one_flow_session_detail_id_key";
-    String SESSIONDETAIL_SYSTEM_IDSHP = "one_flow_session_detail_system_key";
+    //String SESSIONDETAIL_IDSHP = "one_flow_session_detail_id_key";
+    //String SESSIONDETAIL_SYSTEM_IDSHP = "one_flow_session_detail_system_key";
     String SURVEYLISTSHP = "one_flow_survey_list_key";
     String SURVEYCLOSEDLISTSHP = "one_flow_survey_closed_list_key";
     String SDKVERSIONSHP = "sdk_version_key";

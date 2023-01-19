@@ -75,6 +75,10 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         fakeEditText = (OFCustomEditText) findViewById(R.id.fake_edit_text);
         progressBar = (ProgressBar) findViewById(R.id.progress_circular);
 
+        /*Long lastHit = new SHPRepo().getLongShp(this,OFConstants.SHP_ONEFLOW_CONFTIMING);
+        OFHelper.v(tag,"StrictMode ["+lastHit+"]");
+
+        new SHPRepo().storeValue(this,OFConstants.SHP_THROTTLING_TIME,"Circo.OneFlow");*/
 
         OFOneFlowSHP ofs = new OFOneFlowSHP(this);
 

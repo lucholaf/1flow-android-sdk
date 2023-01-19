@@ -644,7 +644,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         sur.setOs(OFConstants.os);
         sur.setAnalytic_user_id(OFHelper.validateString(ofs.getUserDetails().getAnalytic_user_id()));
         sur.setSurvey_id(selectedSurveyId);
-        sur.setSession_id(ofs.getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
+        //sur.setSession_id(ofs.getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
         sur.setUser_id(ofs.getStringValue(OFConstants.USERUNIQUEIDSHP));
         sur.setCreatedOn(System.currentTimeMillis());
         new OFLogUserDBRepoKT().insertUserInputs(this, sur, this, OFConstants.ApiHitType.insertSurveyInDB);

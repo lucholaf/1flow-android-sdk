@@ -51,7 +51,7 @@ public class OFLogUserRepo {
                     OFHelper.v(tag,"OneFlow Loguser response["+response.isSuccessful()+"]");
                     if (response.isSuccessful()) {
                         if(response.body()!=null) {
-                            mrh.onResponseReceived(hitType, response.body().getResult(), 0l, lur.getSystem_id(),null,null);
+                            mrh.onResponseReceived(hitType, response.body().getResult(), 0l, lur.getUser_id(),null,null);
                         }else{
                             OFHelper.v(tag,"OneFlow Loguser response body is empty");
                         }

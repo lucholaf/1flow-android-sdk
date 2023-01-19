@@ -58,7 +58,7 @@ public class OFLogCountdownTimer extends CountDownTimer implements OFMyResponseH
 
                         aurr.setAnalytic_user_id(logUserResponse.getAnalytic_user_id());
                         ofs.setUserDetails(aurr);
-                        ofs.storeValue(OFConstants.SESSIONDETAIL_IDSHP, logUserResponse.getSessionId());
+                        //ofs.storeValue(OFConstants.SESSIONDETAIL_IDSHP, logUserResponse.getSessionId());
 
                         //storing this to support multi user survey
                         ofs.storeValue(OFConstants.USERUNIQUEIDSHP, reserved);

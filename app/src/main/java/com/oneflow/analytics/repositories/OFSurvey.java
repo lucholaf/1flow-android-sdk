@@ -44,7 +44,7 @@ public class OFSurvey {
 
     static String tag = "Survey";
 
-    public static void getSurvey(String headerKey, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType type, String userId, String sessionId, String versionName) {
+    public static void getSurvey(String headerKey, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType type, String userId, String versionName) {
 
         String language = Locale.getDefault().toString();
         if (OFHelper.validateString(language).equalsIgnoreCase("NA")) {
@@ -57,7 +57,7 @@ public class OFSurvey {
             Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> responseCall = null;
             //String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys";
 
-            responseCall = connectAPI.getSurvey(headerKey, "android", userId, sessionId, language, versionName);//,OFConstants.MODE);
+            responseCall = connectAPI.getSurvey(headerKey,  userId,  language, versionName);//,OFConstants.MODE);
 
             responseCall.enqueue(new Callback<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>>() {
                 @Override

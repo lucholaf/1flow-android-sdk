@@ -29,12 +29,10 @@ public class OFLogUserRequest extends OFBaseModel {
     private HashMap<String,Object> parameters;
     @SerializedName("anonymous_user_id")
     private String anonymous_user_id;
-    @SerializedName("system_id")
-    private String system_id;
+    @SerializedName("user_id")
+    private String user_id;
     @SerializedName("log_user")
     private Boolean log_user = true;
-    @SerializedName("session_id")
-    private String session_id;
 
     public Boolean getLog_user() {
         return log_user;
@@ -60,19 +58,11 @@ public class OFLogUserRequest extends OFBaseModel {
         this.anonymous_user_id = anonymous_user_id;
     }
 
-    public String getSystem_id() {
-        return system_id;
+    public String getUser_id() {
+        return user_id;
     }
 
-    public void setSystem_id(String system_id) {
-        this.system_id = system_id;
-    }
-
-    public String getSession_id() {
-        return session_id;
-    }
-
-    public void setSession_id(String session_id) {
-        this.session_id = session_id;
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }
