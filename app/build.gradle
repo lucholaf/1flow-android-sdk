@@ -33,7 +33,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 14
-        versionName "2023.01.12"
+        versionName "2023.01.18"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
