@@ -22,6 +22,7 @@ import com.oneflow.analytics.model.OFApiInterface;
 import com.oneflow.analytics.model.OFGenericResponse;
 import com.oneflow.analytics.model.OFRetroBaseService;
 import com.oneflow.analytics.model.adduser.OFAddUserRequest;
+import com.oneflow.analytics.model.adduser.OFAddUserRequestNew;
 import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
@@ -36,7 +37,7 @@ public class OFAddUserRepo {
 
     static String tag = "OFAddUserRepo";
     OFMyResponseHandler myResponseHandler;
-    public static void addUser(String headerKey, OFAddUserRequest aur, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType hitType){
+    public static void addUser(String headerKey, OFAddUserRequestNew aur, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType hitType){
 
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
