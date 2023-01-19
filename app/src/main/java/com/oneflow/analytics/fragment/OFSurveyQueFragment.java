@@ -18,7 +18,6 @@
 
 package com.oneflow.analytics.fragment;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -41,9 +40,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.oneflow.analytics.OFSDKBaseActivity;
-import com.oneflow.analytics.OFSurveyActivityBottom;
-import com.oneflow.analytics.OFSurveyActivityFullScreen;
 import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.adapter.OFSurveyOptionsAdapter;
@@ -53,7 +49,6 @@ import com.oneflow.analytics.model.survey.OFRatingsModel;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyChoises;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
-import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.utils.OFGenericClickHandler;
 import com.oneflow.analytics.utils.OFHelper;
 
@@ -230,7 +225,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         ratingsNotLike.setTextColor(colorlike);
         ratingsFullLike.setTextColor(colorlike);
         starRatingLabel.setTextColor(colorlike);
-        //((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
+        //((TextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
 
 
         handleWaterMarkStyle(sdkTheme);
@@ -505,7 +500,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
                             public void run() {
                                 sa.addUserResponseToList(surveyScreens.get_id(), position, null);
                             }
-                        }, 1000);
+                        }, 5);
                     }
                 } else {
 
@@ -514,7 +509,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
                         public void run() {
                             sa.addUserResponseToList(surveyScreens.get_id(), position, (String) obj);
                         }
-                    }, 1000);
+                    }, 5);
                 }
 
             } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {

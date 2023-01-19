@@ -18,7 +18,6 @@
 
 package com.oneflow.analytics.fragment;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -34,12 +33,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.oneflow.analytics.OFSDKBaseActivity;
-import com.oneflow.analytics.OFSurveyActivityBottom;
 import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.customwidgets.OFCustomEditText;
@@ -48,7 +46,6 @@ import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
-import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 
 
@@ -128,12 +125,12 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation START [" + i + "]");
+                    //OFHelper.v(tag, "OneFlow animation START [" + i + "]");
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation END[" + i + "]");
+                   // OFHelper.v(tag, "OneFlow animation END[" + i + "]");
                     if (i < animateViews.length) {
                         animateViews[i++].startAnimation(animation);
                     }
@@ -185,7 +182,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.6f);
         surveyDescription.setTextColor(colorAlpha);
         skipBtn.setTextColor(colorlike);
-        ((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
+        ((TextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
 
 
         skipBtn.setOnClickListener(this);

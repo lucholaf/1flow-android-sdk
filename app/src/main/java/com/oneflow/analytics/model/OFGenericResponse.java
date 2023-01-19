@@ -19,6 +19,7 @@
 package com.oneflow.analytics.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.oneflow.analytics.model.survey.OFThrottlingConfig;
 
 import java.io.Serializable;
 
@@ -34,7 +35,16 @@ public class OFGenericResponse<T> implements Serializable {// extends BaseRespon
     @SerializedName("message")
     private String message = "Something went wrong";
 
+    @SerializedName("throttlingMobileSDKConfig")
+    OFThrottlingConfig throttlingConfig;
 
+    public OFThrottlingConfig getThrottlingConfig() {
+        return throttlingConfig;
+    }
+
+    public void setThrottlingConfig(OFThrottlingConfig throttlingConfig) {
+        this.throttlingConfig = throttlingConfig;
+    }
 
     public int getSuccess() {
         return success;

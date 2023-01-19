@@ -19,16 +19,17 @@
 package com.oneflow.analytics.model;
 
 import com.oneflow.analytics.model.adduser.OFAddUserRequest;
+import com.oneflow.analytics.model.adduser.OFAddUserRequestNew;
 import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
 import com.oneflow.analytics.model.createsession.OFCreateSessionRequest;
 import com.oneflow.analytics.model.createsession.OFCreateSessionResponse;
 import com.oneflow.analytics.model.events.OFEventAPIRequest;
-import com.oneflow.analytics.model.events.OFEventSubmitResponse;
 import com.oneflow.analytics.model.location.OFLocationResponse;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
 import com.oneflow.analytics.model.loguser.OFLogUserResponse;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.model.survey.OFSurveyUserInput;
+import com.oneflow.analytics.model.survey.OFSurveyUserInputKT;
 
 import java.util.ArrayList;
 
@@ -39,28 +40,35 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
 
 
 public interface OFApiInterface {
 
-    @POST("add-user")
-    Call<OFGenericResponse<OFAddUserResultResponse>> addUserComman(@Header("one_flow_key") String headerKey, @Body OFAddUserRequest aur);//, @Url String url);
+   // @POST("add-user")
+    @POST("v3/user")
+    Call<OFGenericResponse<OFAddUserResultResponse>> addUserComman(@Header("one_flow_key") String headerKey, @Body OFAddUserRequestNew aur);//, @Url String url);
 
-    @POST("add-session")
+   /* @POST("add-session")
     Call<OFGenericResponse<OFCreateSessionResponse>> createSession(@Header("one_flow_key") String headerKey, @Body OFCreateSessionRequest aur);//, @Url String url);
-
+*/
 /*
 @Url String url,
  @Query("mode") String mode
 *
 * */
-    @GET("surveys")
-    Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> getSurvey(@Header("one_flow_key") String headerKey,
+   // @GET("surveys")
 
-                                                                          @Query("platform") String platform,
+//    @Header("one_flow_key") String headerKey,
+//
+//    @Query("platform") String platform,
+//    @Query("user_id") String userId,
+//    @Query("session_id") String sessionId,
+//    @Query("language_code") String languageCode,
+//    @Query("min_version") String minVersion
+    @GET("v3/survey")
+    Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> getSurvey(@Header("one_flow_key") String headerKey,
                                                                           @Query("user_id") String userId,
-                                                                          @Query("session_id") String sessionId,
+                                                                          @Query("language_code") String languageCode,
                                                                           @Query("min_version") String minVersion
 
 
@@ -68,20 +76,22 @@ public interface OFApiInterface {
 
     );
 
-    @GET("v1/2021-06-15/location")
-    Call<OFLocationResponse> getLocation(@Header("one_flow_key") String headerKey);
 
-    @POST("add-responses")
+
+   // @POST("add-responses")
+    @POST("v3/response")
     Call<OFGenericResponse> submitSurveyUserResponse(@Header("one_flow_key") String headerKey, @Body OFSurveyUserInput aur);//, @Url String url);
 
     ///@POST("v1/2021-06-15/events/bulk")
-    @POST("events")
+    //@POST("events")
+    @POST("v3/track")
     Call<OFGenericResponse> uploadAllUnSyncedEvents(@Header("one_flow_key") String headerKey, @Body OFEventAPIRequest ear);//, @Url String url);
 
-    @GET("v1/2021-06-15/keys/{project_id}")
-    Call<String> fetchProjectDetails(@Header("one_flow_key") String headerKey,@Path("project_id") String projectKey);
+    /*@GET("v1/2021-06-15/keys/{project_id}")
+    Call<String> fetchProjectDetails(@Header("one_flow_key") String headerKey,@Path("project_id") String projectKey);*/
 
-    @POST("log-user")
+   // @POST("log-user")
+    @POST("v3/identify")
     Call<OFGenericResponse<OFLogUserResponse>> logUser(@Header("one_flow_key") String headerKey, @Body OFLogUserRequest request);//, @Url String url);
 
 

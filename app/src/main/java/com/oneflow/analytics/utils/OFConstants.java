@@ -21,8 +21,8 @@ package com.oneflow.analytics.utils;
 public interface OFConstants {
 
 
-    String currentVersion = "2022.09.10";
-    String MODE = "prod";
+    String currentVersion = "2023.01.18";//2023.01.12";//""2022.11.20";
+    String MODE = "prod";//"dev";//"
     String DBNAME = "one_flow_db";
     String APPKEYSHP = "one_flow_config_key";
     String APPIDSHP = "one_flow_app_id_key";
@@ -30,8 +30,8 @@ public interface OFConstants {
     String USERUNIQUEIDSHP = "one_flow_user_unique_id_key";
     String LOGUSERREQUESTSHP = "one_flow_log_user_detail_key";
     String USERLOCATIONDETAILSHP = "one_flow_user_location_detail_key";
-    String SESSIONDETAIL_IDSHP = "one_flow_session_detail_id_key";
-    String SESSIONDETAIL_SYSTEM_IDSHP = "one_flow_session_detail_system_key";
+    //String SESSIONDETAIL_IDSHP = "one_flow_session_detail_id_key";
+    //String SESSIONDETAIL_SYSTEM_IDSHP = "one_flow_session_detail_system_key";
     String SURVEYLISTSHP = "one_flow_survey_list_key";
     String SURVEYCLOSEDLISTSHP = "one_flow_survey_closed_list_key";
     String SDKVERSIONSHP = "sdk_version_key";
@@ -53,6 +53,10 @@ public interface OFConstants {
     String SHP_LOG_USER_KEY = "log_user_key";
     String SHP_NETWORK_LISTENER = "network_listener";
     String SHP_TIMER_LISTENER = "timer_listener";
+    String SHP_THROTTLING_KEY = "throttling_key";
+    String SHP_THROTTLING_RECEIVER = "throttling_receiver";
+    String SHP_THROTTLING_TIME = "throttling_receiver_time";
+    String SHP_SURVEY_SEARCH_POSITION = "survey_search_position";
 
 
     String surveyDetail = "surveyDetail";
@@ -65,7 +69,7 @@ public interface OFConstants {
         Config, FirstOpen, CreateUser, CreateSession, RecordLogs, fetchEventsFromDB, sendEventsToAPI, insertEventsInDB,
         deleteEventsFromDB, logUser, insertSurveyInDB, fetchSurveysFromDB, deleteSurveyFromDB, fetchLocation,
         fetchSurveysFromAPI,fetchEventsBeforSurveyFetched,fetchSubmittedSurvey,checkResurveyNSubmission,updateSurveyIds,
-        surveySubmited
+        surveySubmited,lastSubmittedSurvey,updateSubmittedSurveyLocally
     }
     enum BRActionType{
         submitEvents,submitSurveys

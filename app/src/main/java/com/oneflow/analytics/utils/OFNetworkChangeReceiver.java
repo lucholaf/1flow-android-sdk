@@ -23,13 +23,15 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.oneflow.analytics.OneFlow;
-import com.oneflow.analytics.model.location.OFLocationResponse;
 import com.oneflow.analytics.model.survey.OFSurveyUserInput;
-import com.oneflow.analytics.repositories.OFLogUserDBRepo;
+import com.oneflow.analytics.model.survey.OFSurveyUserInputKT;
+import com.oneflow.analytics.repositories.OFLogUserDBRepoKT;
 import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 
-public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyResponseHandler {
+
+
+public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyResponseHandlerOneFlow {
 
     public Context context;
 
@@ -38,8 +40,7 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
     public void onReceive(final Context context, final Intent intent) {
 
         this.context = context;
-        // int status = NetworkUtil.getConnectivityStatusString(context);
-        //Helper.makeText(context,"OneFlow Receiver called ["+intent.getAction()+"]",1);
+
 
         if (OFHelper.isConnected(context)) {
             // Helper.makeText(context,"Network available",1);
@@ -57,13 +58,14 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
 
 
 
-
     public void checkOffLineSurvey() {
-        OFLogUserDBRepo.fetchSurveyInput(context, this, OFConstants.ApiHitType.fetchSurveysFromDB);
+        new OFLogUserDBRepoKT().fetchSurveyInput(context, this, OFConstants.ApiHitType.fetchSurveysFromDB);
+        //new OFMyDBAsyncTask(context,this,OFConstants.ApiHitType.fetchSurveysFromDB).execute();
+
     }
 
     @Override
-    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
+    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved, Object obj2, Object obj3) {
 
         switch (hitType) {
 
@@ -78,12 +80,16 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
             case logUser:
                 if(obj!=null) {
                     OFSurveyUserInput survey1 = (OFSurveyUserInput) obj;
-                    OFLogUserDBRepo.deleteSentSurveyFromDB(context, new Integer[]{survey1.get_id()}, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                    new OFLogUserDBRepoKT().deleteSentSurveyFromDB(context, new Integer[]{survey1.get_id()}, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                    //new OFMyDBAsyncTask(context,this,OFConstants.ApiHitType.deleteEventsFromDB).execute(new Integer[]{survey1.get_id()});
                 }
                 break;
-            case deleteSurveyFromDB:
+            //case deleteSurveyFromDB:
+            case deleteEventsFromDB:
                 checkOffLineSurvey();
                 break;
         }
     }
+
+
 }

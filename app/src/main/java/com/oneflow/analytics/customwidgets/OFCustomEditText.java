@@ -28,7 +28,9 @@ import android.view.MenuItem;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
+import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
+import com.oneflow.analytics.utils.OFHelper;
 
 /**
  * Created by Mohini on 20-07-2016.
@@ -57,8 +59,19 @@ public class OFCustomEditText extends AppCompatEditText {
 
     private void init() {
 
-        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Lato-Regular.ttf");
-        setTypeface(typeface);
+        OFHelper.v(this.getClass().getName(),"OneFlow font Name["+OneFlow.fontNameStr+"]");
+        if(OFHelper.validateString(OneFlow.fontNameStr).equalsIgnoreCase("NA")){
+            Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Lato-Regular.ttf");
+            setTypeface(typeface);
+        }else{
+            try {
+                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), OneFlow.fontNameStr);
+                setTypeface(typeface);
+            }catch (Exception e){
+                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Lato-Regular.ttf");
+                setTypeface(typeface);
+            }
+        }
 
 
         //getSelectionStart();
@@ -94,13 +107,13 @@ public class OFCustomEditText extends AppCompatEditText {
     @Override
     public int getSelectionStart() {
 
-        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+       /* for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
 
 
             if (element.getMethodName().equals("canPaste") || element.getMethodName().equals("canCopy") || element.getMethodName().equals("canCut") || element.getMethodName().equalsIgnoreCase("canSelectAll") || element.getMethodName().equalsIgnoreCase("canClipboard")) {
                 return -1;
             }
-        }
+        }*/
 
         return super.getSelectionStart();
 

@@ -36,10 +36,12 @@ public class OFRetroBaseService {
 
 
     public static String baseDomainDev = "ez37ppkkcs.eu-west-1.awsapprunner.com/api/2021-06-15/";
+    //public static String baseDomainDev = "api-sdk.1flow.app";
    // public static String baseDomainProd = "1flow.app/api/";
     //public static String baseDomainProd = "api.1flow.app/";
     //public static String baseDomainProd = "api.1flow.app/";
-    public static String baseDomainProd = "y33xx6sddf.eu-west-1.awsapprunner.com/api/2021-06-15/";
+    //public static String baseDomainProd = "y33xx6sddf.eu-west-1.awsapprunner.com/api/2021-06-15/";
+    public static String baseDomainProd = "api-sdk.1flow.app/api/2021-06-15/";
 
     public static final String BASE_URL = urlPrefix+ (OFConstants.MODE.equalsIgnoreCase("dev") ?baseDomainDev:baseDomainProd);
 

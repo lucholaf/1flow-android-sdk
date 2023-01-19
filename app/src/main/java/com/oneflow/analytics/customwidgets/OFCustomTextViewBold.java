@@ -20,11 +20,15 @@ package com.oneflow.analytics.customwidgets;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
+
+import com.oneflow.analytics.OneFlow;
+import com.oneflow.analytics.utils.OFHelper;
 
 
 /**
@@ -56,7 +60,17 @@ public class OFCustomTextViewBold extends AppCompatTextView {
 
     private void init()
     {
-        /*Typeface typeface = Typeface.createFromAsset(getContext().getAssets(),"fonts/Lato-Bold.ttf");
-        setTypeface(typeface);*/
+        if(OFHelper.validateString(OneFlow.fontNameStr).equalsIgnoreCase("NA")){
+            Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Lato-Regular.ttf");
+            setTypeface(typeface);
+        }else{
+            try {
+                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), OneFlow.fontNameStr);
+                setTypeface(typeface);
+            }catch (Exception e){
+                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Lato-Regular.ttf");
+                setTypeface(typeface);
+            }
+        }
     }
 }

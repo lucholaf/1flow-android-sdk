@@ -29,6 +29,8 @@ public class OFSurveySettings extends OFBaseModel {
     private Boolean resurvey_option;
     @SerializedName("closed_as_finished")
     private Boolean closedAsFinished = false;
+    @SerializedName("override_global_throttling")
+    private Boolean overrideGlobalThrottling = false;
     @SerializedName("_id")
     private String _id;
     @SerializedName("frequency_capping")
@@ -38,6 +40,13 @@ public class OFSurveySettings extends OFBaseModel {
     @SerializedName("sdk_theme")
     private OFSDKSettingsTheme sdkTheme = new OFSDKSettingsTheme() ;
 
+    public Boolean getOverrideGlobalThrottling() {
+        return overrideGlobalThrottling;
+    }
+
+    public void setOverrideGlobalThrottling(Boolean overrideGlobalThrottling) {
+        this.overrideGlobalThrottling = overrideGlobalThrottling;
+    }
 
     public OFSDKSettingsTheme getSdkTheme() {
         return sdkTheme;

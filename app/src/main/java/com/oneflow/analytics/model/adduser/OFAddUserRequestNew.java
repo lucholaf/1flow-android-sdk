@@ -16,33 +16,30 @@
  *
  */
 
-package com.oneflow.analytics.model.events;
+package com.oneflow.analytics.model.adduser;
 
 import com.google.gson.annotations.SerializedName;
 import com.oneflow.analytics.model.OFBaseModel;
 
-import java.util.ArrayList;
+public class OFAddUserRequestNew extends OFBaseModel {
+    @SerializedName("user_id")
+    private String user_id;
+    @SerializedName("context")
+    private AddUserContext addUserContext;
 
-public class OFEventAPIRequest extends OFBaseModel {
-
-    @SerializedName("events")
-    ArrayList<OFRecordEventsTabToAPI> events;
-    @SerializedName("user_id") String userId;
-
-
-    public ArrayList<OFRecordEventsTabToAPI> getEvents() {
-        return events;
+    public String getUser_id() {
+        return user_id;
     }
 
-    public void setEvents(ArrayList<OFRecordEventsTabToAPI> events) {
-        this.events = events;
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
-    public String getUserId() {
-        return userId;
+    public AddUserContext getAddUserContext() {
+        return addUserContext;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setAddUserContext(AddUserContext addUserContext) {
+        this.addUserContext = addUserContext;
     }
 }

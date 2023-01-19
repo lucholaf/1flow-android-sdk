@@ -24,14 +24,15 @@ import android.os.CountDownTimer;
 
 import com.oneflow.analytics.model.events.OFEventAPIRequest;
 import com.oneflow.analytics.model.events.OFRecordEventsTab;
+import com.oneflow.analytics.model.events.OFRecordEventsTabKT;
 import com.oneflow.analytics.model.events.OFRecordEventsTabToAPI;
 import com.oneflow.analytics.repositories.OFEventAPIRepo;
-import com.oneflow.analytics.repositories.OFEventDBRepo;
+import com.oneflow.analytics.repositories.OFEventDBRepoKT;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 
 import java.util.ArrayList;
 
-public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHandler {
+public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHandlerOneFlow {
     Context mContext;
     static OFMyCountDownTimer cdt;
 
@@ -53,7 +54,9 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
     public void onTick(long millisUntilFinished) {
         OFHelper.v("MyCountDownTimer", "OneFlow tick called");
         if (OFHelper.isConnected(mContext)) {
-            OFEventDBRepo.fetchEvents(mContext, this, OFConstants.ApiHitType.fetchEventsFromDB);
+            //OFEventDBRepo.fetchEvents(mContext, this, OFConstants.ApiHitType.fetchEventsFromDB);
+            new OFEventDBRepoKT().fetchEvents(mContext,this,OFConstants.ApiHitType.fetchEventsFromDB);
+
         }
     }
 
@@ -63,7 +66,7 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
     }
 
     @Override
-    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved) {
+    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved,Object obj2, Object obj3) {
         OFHelper.v("OneFlow", "OneFlow onReceived type[" + hitType + "]");
         switch (hitType) {
 
@@ -90,15 +93,16 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
 
                             ids[i++] = ret.getId();
                         }
-
-                        if (!new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP).equalsIgnoreCase("NA")) {
-                            OFEventAPIRequest ear = new OFEventAPIRequest();
-                            ear.setSessionId(new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
-                            ear.setEvents(retListToAPI);
-                            OFHelper.v("FeedbackController", "OneFlow fetchEventsFromDB request prepared");
-                            OFEventAPIRepo.sendLogsToApi(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), ear, this, OFConstants.ApiHitType.sendEventsToAPI, ids);
+                        OFOneFlowSHP shp = new OFOneFlowSHP(mContext);
+                        if (shp.getUserDetails() != null) {
+                            if (!OFHelper.validateString(shp.getUserDetails().getAnalytic_user_id()).equalsIgnoreCase("NA")) {
+                                OFEventAPIRequest ear = new OFEventAPIRequest();
+                                ear.setUserId(shp.getUserDetails().getAnalytic_user_id());
+                                ear.setEvents(retListToAPI);
+                                OFHelper.v("FeedbackController", "OneFlow fetchEventsFromDB request prepared");
+                                OFEventAPIRepo.sendLogsToApi(shp.getStringValue(OFConstants.APPIDSHP), ear, this, OFConstants.ApiHitType.sendEventsToAPI, ids);
+                            }
                         }
-
                     }
                 }
                 break;
@@ -106,7 +110,8 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
                 if(obj!=null) {
                     //Events has been sent to api not deleting local records
                     Integer[] ids1 = (Integer[]) obj;
-                    OFEventDBRepo.deleteEvents(mContext, ids1, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                    //OFEventDBRepo.deleteEvents(mContext, ids1, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                    new OFEventDBRepoKT().deleteEvents(mContext, ids1, this, OFConstants.ApiHitType.deleteEventsFromDB);
                 }
                 break;
             case deleteEventsFromDB:

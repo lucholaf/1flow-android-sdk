@@ -16,18 +16,8 @@
  *
  */
 
-package com.oneflow.analytics.model;
+package com.oneflow.analytics.utils;
 
-import java.io.Serializable;
-
-public class OFBaseModel implements Serializable {
-   /* @SerializedName("mode") String mode = OFConstants.MODE;//"dev";//""prod" ;
-
-    public String getMode() {
-        return mode;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
-    }*/
+public interface OFMyResponseHandlerOneFlow {
+    public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj1, Long reserve,String reserved, Object obj2, Object obj3);
 }

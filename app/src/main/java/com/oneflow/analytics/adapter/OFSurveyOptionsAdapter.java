@@ -22,9 +22,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,11 +34,9 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 
-import androidx.core.graphics.ColorUtils;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
 import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.customwidgets.OFCustomEditText;
@@ -260,6 +257,23 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+
+        Typeface typeface;
+        if(OFHelper.validateString(OneFlow.fontNameStr).equalsIgnoreCase("NA")){
+             typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/Lato-Regular.ttf");
+
+        }else{
+            try {
+                typeface = Typeface.createFromAsset(mContext.getAssets(), OneFlow.fontNameStr);
+
+            }catch (Exception e){
+                typeface = Typeface.createFromAsset(mContext.getAssets(), "fonts/Lato-Regular.ttf");
+
+            }
+        }
+
+
+
         //OFHelper.v(tag, "OneFlow viewtype [" + viewType + "]5["+OFHelper.getAlphaNumber(5)+"]");
         int colorAlpha = OFHelper.manipulateColor(Color.parseColor(themeTextColor),0.5f);//ColorUtils.setAlphaComponent(Color.parseColor(themeColor), OFHelper.getAlphaNumber(0.));
         int colorAlpha5 = OFHelper.manipulateColor(Color.parseColor(themeTextColor),0.05f);//ColorUtils.setAlphaComponent(Color.parseColor(themeTextColor), OFHelper.getAlphaNumber(25));
@@ -338,15 +352,13 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     //Radio
             //        OFHelper.v(tag, "OneFlow title [" + surveyInputs.getChoices().get(position).getTitle() + "]tag[" + surveyInputs.getChoices().get(position).getId() + "]");
 
-                    if (OneFlow.optionsFace != null) {
-                        if (OneFlow.optionsFace.getTypeface() != null) {
-                            ((MCQRadioViewHolder) holder).title.setTypeface(OneFlow.optionsFace.getTypeface());
-                        }
-                        if (OneFlow.optionsFace.getFontSize() != null) {
-             //               OFHelper.v(tag, "OneFlow changing font size");
-                            ((MCQRadioViewHolder) holder).title.setTextSize(OneFlow.optionsFace.getFontSize());
-                        }
-                    }
+                    //below block was used to check others option as it was not coming from api
+                    /*if(surveyInputs.getChoices().get(position).getTitle().equalsIgnoreCase("Others") || surveyInputs.getChoices().get(position).getTitle().equalsIgnoreCase("Other")) {
+                     surveyInputs.setOtherOption("0db4b95a7f8e192867e3630a");
+                    }*/
+
+                    ((MCQRadioViewHolder) holder).title.setTypeface(typeface);
+
                     ((MCQRadioViewHolder) holder).title.setText(surveyInputs.getChoices().get(position).getTitle());
                     ((MCQRadioViewHolder) holder).title.setTextColor(Color.parseColor(themeTextColor));
 
@@ -448,7 +460,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                                     }
 
-                                    // touch up code
+                                    // touch release code
                                     CompoundButtonCompat.setButtonTintList(((MCQRadioViewHolder) holder).title, new ColorStateList(statesRadio, colorsRadio));//ColorStateList.valueOf(Color.parseColor(themeColor)));
                                     if (!rb.isChecked()) {
 
@@ -490,14 +502,9 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     break;
                 case 3:
                 //    OFHelper.v(tag, "OneFlow title [" + surveyInputs.getChoices().get(position).getTitle() + "]tag[" + surveyInputs.getChoices().get(position).getId() + "]");
-                    if (OneFlow.optionsFace != null) {
-                        if (OneFlow.optionsFace.getTypeface() != null) {
-                            ((MCQCheckBoxViewHolder) holder).title.setTypeface(OneFlow.optionsFace.getTypeface());
-                        }
-                        if (OneFlow.optionsFace.getFontSize() != null) {
-                            ((MCQCheckBoxViewHolder) holder).title.setTextSize(OneFlow.optionsFace.getFontSize());
-                        }
-                    }
+
+                    ((MCQCheckBoxViewHolder) holder).title.setTypeface(typeface);
+
                     ((MCQCheckBoxViewHolder) holder).title.setText(surveyInputs.getChoices().get(position).getTitle());
                     ((MCQCheckBoxViewHolder) holder).title.setTextColor(Color.parseColor(themeTextColor));
                     ((MCQCheckBoxViewHolder) holder).othersEditText.setHintTextColor(OFHelper.manipulateColor(Color.parseColor(themeTextColor),0.3f));

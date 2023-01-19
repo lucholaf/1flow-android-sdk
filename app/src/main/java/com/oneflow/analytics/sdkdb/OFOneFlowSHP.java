@@ -20,14 +20,17 @@ package com.oneflow.analytics.sdkdb;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.StrictMode;
 import android.util.Base64;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
 import com.oneflow.analytics.model.location.OFLocationResponse;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
+import com.oneflow.analytics.model.survey.OFThrottlingConfig;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 
@@ -44,6 +47,8 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import io.reactivex.schedulers.Schedulers;
+
 public class OFOneFlowSHP {
     String keyName = "one_flow_temp.db";
     SharedPreferences pref;
@@ -56,25 +61,16 @@ public class OFOneFlowSHP {
 
         pref = context.getSharedPreferences(keyName, 0); // 0 - for private mode
         editor = pref.edit();
-        //Resources res = context.getResources();
-        /*key = res.getString(R.string.encrypt1);
-        iv = res.getString(R.string.encrypt2);*/
-        gson = new Gson();
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.serializeNulls();
+        gson = builder.setPrettyPrinting().create();
     }
 
     private static final String characterEncoding = "UTF-8";
     private static final String cipherTransformation = "AES/CBC/PKCS7Padding";
     private static final String aesEncryptionAlgorithm = "AES";
 
-    private static String encryptString(String s) {
-        try {
-            byte[] plainTextbytes = s.getBytes(characterEncoding);
-            return Base64.encodeToString(encrypt(plainTextbytes, hexStringToByteArray(key), hexStringToByteArray(iv)), Base64.DEFAULT);
-        } catch (Exception e) {
-            OFHelper.e("OneFlow", e.getMessage());
-        }
-        return s;
-    }
 
     public void storeValue(String key, Object value) {
         OFHelper.v(this.getClass().getName(), "OneFlow key[" + key + "]value[" + (value) + "]");
@@ -92,46 +88,10 @@ public class OFOneFlowSHP {
         } else if (value instanceof Long) {
             editor.putLong(key, (Long) value);
         }
-        editor.commit();
+        //editor.commit();
+        editor.apply();
     }
 
-
-
-
-
-    /*public ArrayList<LeaveRecords> getApplyLeaveApiData(String key) {
-        String json = pref.getString(key, null);
-        Type type = new TypeToken<ArrayList<LeaveRecords>>() {
-        }.getType();
-        return gson.fromJson(json, type);
-    }*/
-
-
-
-
-
-
-		/*public UserDataReimbursement retrieveUserReimbursementData(String key){
-			String json = pref.getString(key, null);
-			UserDataReimbursement obj = gson.fromJson(json, UserDataReimbursement.class);
-			return obj;
-		}*/
-
-
-    public OFLocationResponse getUserLocationDetails() {
-        String json = pref.getString(OFConstants.USERLOCATIONDETAILSHP, null);
-        OFHelper.v("json", "[" + json + "]");
-        OFLocationResponse obj = gson.fromJson(json, OFLocationResponse.class);
-        return obj;
-    }
-
-    public void setUserLocationDetails(OFLocationResponse arr) {
-        SharedPreferences.Editor prefsEditor = pref.edit();
-        String json = gson.toJson(arr);
-        OFHelper.v("json", "[" + json + "]");
-        prefsEditor.putString(OFConstants.USERLOCATIONDETAILSHP, json);
-        prefsEditor.apply();
-    }
 
     public OFAddUserResultResponse getUserDetails() {
         String json = pref.getString(OFConstants.USERDETAILSHP, null);
@@ -153,9 +113,9 @@ public class OFOneFlowSHP {
         String json = pref.getString(OFConstants.LOGUSERREQUESTSHP, null);
         OFHelper.v("json", "[" + json + "]");
         OFLogUserRequest obj;
-        if(json!=null) {
+        if (json != null) {
             obj = gson.fromJson(json, OFLogUserRequest.class);
-        }else{
+        } else {
             return null;
         }
         return obj;
@@ -168,7 +128,28 @@ public class OFOneFlowSHP {
         prefsEditor.putString(OFConstants.LOGUSERREQUESTSHP, json);
         prefsEditor.apply();
     }
-    public void clearLogUserRequest(){
+
+    public OFThrottlingConfig getThrottlingConfig() {
+        String json = pref.getString(OFConstants.SHP_THROTTLING_KEY, null);
+        OFHelper.v("json", "[" + json + "]");
+        OFThrottlingConfig obj;
+        if (json != null) {
+            obj = gson.fromJson(json, OFThrottlingConfig.class);
+        } else {
+            return null;
+        }
+        return obj;
+    }
+
+    public void setThrottlingConfig(OFThrottlingConfig arr) {
+        SharedPreferences.Editor prefsEditor = pref.edit();
+        String json = gson.toJson(arr);
+        OFHelper.v("json", "[" + json + "]");
+        prefsEditor.putString(OFConstants.SHP_THROTTLING_KEY, json);
+        prefsEditor.apply();
+    }
+
+    public void clearLogUserRequest() {
         SharedPreferences.Editor prefsEditor = pref.edit();
         prefsEditor.remove(OFConstants.LOGUSERREQUESTSHP).commit();
     }
@@ -195,6 +176,7 @@ public class OFOneFlowSHP {
         editor.putString(OFConstants.SURVEYCLOSEDLISTSHP, json);
         editor.apply();     // This line is IMPORTANT !!!
     }
+
     public ArrayList<String> getClosedSurveyList() {
         String json = pref.getString(OFConstants.SURVEYCLOSEDLISTSHP, null);
         Type type = new TypeToken<ArrayList<String>>() {

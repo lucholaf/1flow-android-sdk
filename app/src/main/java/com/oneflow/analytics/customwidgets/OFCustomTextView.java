@@ -19,9 +19,13 @@
 package com.oneflow.analytics.customwidgets;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 
 import androidx.appcompat.widget.AppCompatTextView;
+
+import com.oneflow.analytics.OneFlow;
+import com.oneflow.analytics.utils.OFHelper;
 
 /**
  * Created by Mohini on 20-07-2016.
@@ -45,7 +49,17 @@ public class OFCustomTextView extends AppCompatTextView {
 
     private void init()
     {
-        /*Typeface typeface = Typeface.createFromAsset(getContext().getAssets(),"fonts/Lato-Regular.ttf");
-        setTypeface(typeface);*/
+        if(OFHelper.validateString(OneFlow.fontNameStr).equalsIgnoreCase("NA")){
+            Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Lato-Regular.ttf");
+            setTypeface(typeface);
+        }else{
+            try {
+                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), OneFlow.fontNameStr);
+                setTypeface(typeface);
+            }catch (Exception e){
+                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/Lato-Regular.ttf");
+                setTypeface(typeface);
+            }
+        }
     }
 }

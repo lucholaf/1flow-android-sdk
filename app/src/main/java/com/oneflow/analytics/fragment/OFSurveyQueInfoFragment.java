@@ -21,7 +21,6 @@ package com.oneflow.analytics.fragment;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,15 +33,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
-import com.bumptech.glide.request.target.DrawableImageViewTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.google.gson.Gson;
 import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
@@ -50,7 +45,6 @@ import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
-import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFHelper;
 
 public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClickListener{
@@ -105,7 +99,7 @@ public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClic
 
         int colorAlpha = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.8f);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 80);//ColorUtils.setAlphaComponent(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 80);
         int colorlike = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.6f);
-        ((OFCustomTextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
+        ((TextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
         surveyDescription.setTextColor(colorAlpha);
 
 
@@ -260,12 +254,12 @@ public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClic
             animation1.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation START [" + i + "]");
+                    //OFHelper.v(tag, "OneFlow animation START [" + i + "]");
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation END[" + i + "]");
+                   // OFHelper.v(tag, "OneFlow animation END[" + i + "]");
                     //
                     i++;
                     if (i < animateViews.length) {

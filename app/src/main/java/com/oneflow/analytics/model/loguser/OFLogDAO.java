@@ -28,7 +28,7 @@ import com.oneflow.analytics.model.survey.OFSurveyUserInput;
 public interface OFLogDAO {
 
     @Insert
-    public void insertUserInput(OFSurveyUserInput sur);
+    public long insertUserInput(OFSurveyUserInput sur);
 
     @Query("select * from SurveyUserInput LIMIT 1")
     OFSurveyUserInput getOfflineUserInput();
@@ -36,8 +36,12 @@ public interface OFLogDAO {
     @Query("select * from SurveyUserInput where survey_id = :surveyId and user_id = :userId order by created_on desc limit 1")
     OFSurveyUserInput getSurveyForID(String surveyId, String userId);
 
-    @Query("update SurveyUserInput set synced = :syncNew where _id = :id")
-    int updateUserInput(Boolean syncNew,Integer id);
+    //@Query("select * from SurveyUserInput where synced = 1 order by created_on desc limit 1")
+    @Query("select * from SurveyUserInput where synced = 1 order by created_on desc limit 1")
+    OFSurveyUserInput getLastSyncedSurveyId();
+
+    @Query("update SurveyUserInput set synced = :syncNew where survey_id = :id")
+    int updateUserInput(Boolean syncNew,String id);
 
     @Query("update SurveyUserInput set user_id = (:userId) where user_id = 'NA'")
     int updateUserID(String userId);
