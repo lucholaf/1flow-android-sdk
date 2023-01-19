@@ -93,13 +93,15 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
 
                             ids[i++] = ret.getId();
                         }
-
-                        if (!new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP).equalsIgnoreCase("NA")) {
-                            OFEventAPIRequest ear = new OFEventAPIRequest();
-                            ear.setSessionId(new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
-                            ear.setEvents(retListToAPI);
-                            OFHelper.v("FeedbackController", "OneFlow fetchEventsFromDB request prepared");
-                            OFEventAPIRepo.sendLogsToApi(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), ear, this, OFConstants.ApiHitType.sendEventsToAPI, ids);
+                        OFOneFlowSHP shp = new OFOneFlowSHP(mContext);
+                        if (shp.getUserDetails() != null) {
+                            if (!OFHelper.validateString(shp.getUserDetails().getAnalytic_user_id()).equalsIgnoreCase("NA")) {
+                                OFEventAPIRequest ear = new OFEventAPIRequest();
+                                ear.setUserId(shp.getUserDetails().getAnalytic_user_id());
+                                ear.setEvents(retListToAPI);
+                                OFHelper.v("FeedbackController", "OneFlow fetchEventsFromDB request prepared");
+                                OFEventAPIRepo.sendLogsToApi(shp.getStringValue(OFConstants.APPIDSHP), ear, this, OFConstants.ApiHitType.sendEventsToAPI, ids);
+                            }
                         }
                     }
                 }

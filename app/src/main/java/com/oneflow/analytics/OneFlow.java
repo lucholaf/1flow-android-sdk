@@ -24,6 +24,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -47,14 +49,14 @@ import com.oneflow.analytics.controller.OFEventController;
 import com.oneflow.analytics.controller.OFSurveyController;
 import com.oneflow.analytics.model.OFConnectivity;
 import com.oneflow.analytics.model.OFFontSetup;
+import com.oneflow.analytics.model.adduser.AddUserContext;
 import com.oneflow.analytics.model.adduser.OFAddUserRequest;
+import com.oneflow.analytics.model.adduser.OFAddUserRequestNew;
 import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
 import com.oneflow.analytics.model.adduser.OFDeviceDetails;
-import com.oneflow.analytics.model.createsession.OFCreateSessionRequest;
 import com.oneflow.analytics.model.createsession.OFCreateSessionResponse;
 import com.oneflow.analytics.model.events.OFEventAPIRequest;
 import com.oneflow.analytics.model.events.OFRecordEventsTab;
-import com.oneflow.analytics.model.events.OFRecordEventsTabKT;
 import com.oneflow.analytics.model.events.OFRecordEventsTabToAPI;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
 import com.oneflow.analytics.model.loguser.OFLogUserResponse;
@@ -62,13 +64,10 @@ import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.model.survey.OFSurveyUserInput;
 import com.oneflow.analytics.model.survey.OFThrottlingConfig;
 import com.oneflow.analytics.repositories.OFAddUserRepo;
-import com.oneflow.analytics.repositories.OFCreateSession;
-import com.oneflow.analytics.repositories.OFCurrentLocation;
 import com.oneflow.analytics.repositories.OFEventAPIRepo;
 import com.oneflow.analytics.repositories.OFEventDBRepoKT;
 import com.oneflow.analytics.repositories.OFLogUserDBRepoKT;
 import com.oneflow.analytics.repositories.OFLogUserRepo;
-import com.oneflow.analytics.repositories.OFProjectDetails;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFActivityCallbacks;
 import com.oneflow.analytics.utils.OFConstants;
@@ -414,7 +413,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             }
         }
     };*/
-    private OFAddUserRequest createRequest() {
+    private OFAddUserRequest createRequestOld() {
         OFDeviceDetails dd = new OFDeviceDetails();
         dd.setUnique_id(OFHelper.getDeviceId(mContext));
         dd.setDevice_id(OFHelper.getDeviceId(mContext));
@@ -438,16 +437,101 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         aur.setEmail("amit@tryskybox.com");*/
         return aur;
     }
+    private OFAddUserRequestNew createRequest() {
+        OFDeviceDetails dd = new OFDeviceDetails();
+        dd.setUnique_id(OFHelper.getDeviceId(mContext));
+        dd.setDevice_id(OFHelper.getDeviceId(mContext));
+        dd.setOs("android");
 
-    private void registerUser(OFAddUserRequest aur) {
+        final OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
+        OFAddUserRequestNew aur = new OFAddUserRequestNew();
+
+        aur.setUser_id(OFHelper.getDeviceId(mContext));
+
+        HashMap<String,String> device = new HashMap<>();
+        device.put("manufacturer", Build.MANUFACTURER);
+        device.put("model",Build.DEVICE);
+
+        String app_ver = "";
+        try {
+            app_ver = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
+
+        } catch (PackageManager.NameNotFoundException e) {
+
+            app_ver = "";
+        }
+        String app_ver_code = "";
+        try {
+            app_ver_code = String.valueOf(mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode);
+
+        } catch (PackageManager.NameNotFoundException e) {
+
+            app_ver_code = "";
+        }
+
+        HashMap<String,String> app = new HashMap<>();
+        app.put("version", app_ver);
+        app.put("build",app_ver_code);
+
+        HashMap<String,String> library = new HashMap<>();
+        library.put("version", Build.MANUFACTURER);
+        library.put("name",Build.DEVICE);
+
+
+
+        OFConnectivity connectivity = getConnectivityData();
+
+        HashMap<String,Object> network = new HashMap<>();
+        network.put("carrier", connectivity.getCarrier());
+        network.put("wifi",connectivity.getRadio()!=null?connectivity.getRadio():false);
+
+        HashMap<String,String> os = new HashMap<>();
+        os.put("name", "android");
+        os.put("version",String.valueOf(Build.VERSION.SDK_INT));
+
+
+        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+
+        HashMap<String,String> screen = new HashMap<>();
+        screen.put("width", String.valueOf(metrics.widthPixels));
+        screen.put("height",String.valueOf(metrics.heightPixels));
+        screen.put("type",isTablet(mContext));
+
+
+
+
+        AddUserContext auc = new AddUserContext();
+
+        auc.setDevice(device);
+        auc.setApp(app);
+        auc.setLibrary(library);
+        auc.setNetwork(network);
+        auc.setOs(os);
+        auc.setScreen(screen);
+
+
+       aur.setAddUserContext(auc);
+
+        return aur;
+    }
+
+    public String isTablet(Context context) {
+        boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
+        boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
+        return (xlarge || large)?"Tablet":"Mobile";
+    }
+    private void registerUser(OFAddUserRequestNew aur) {
 
         OFAddUserRepo.addUser(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), aur, this, OFConstants.ApiHitType.CreateUser);
     }
 
-    private void createSession(OFCreateSessionRequest csr) {
+   /* private void createSession(OFCreateSessionRequest csr) {
         //sdkdb = Room.databaseBuilder(context, SDKDB.class,"one-flow-db").build();
         OFCreateSession.createSession(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), csr, this, OFConstants.ApiHitType.CreateSession);
-    }
+    }*/
 
     /**
      * Record events on any user action. This method will recognize if any survey is available against this event name
@@ -528,10 +612,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 if (aurr != null) {
                     OFHelper.v("OneFlow", "OneFlow logUser data stored 2");
                     OFLogUserRequest lur = new OFLogUserRequest();
-                    lur.setSystem_id(uniqueId);
+                    lur.setUser_id(aurr.getAnalytic_user_id());
                     lur.setAnonymous_user_id(new OFOneFlowSHP(mContext).getUserDetails().getAnalytic_user_id());
                     lur.setParameters(userDetail);
-                    lur.setSession_id(new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
                     new OFOneFlowSHP(mContext).setLogUserRequest(lur);
                     // this api calling shifted to send Event api response
                 }
@@ -725,9 +808,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     }
 
 
-    public void getProjectDetails() {
+   /* public void getProjectDetails() {
         OFProjectDetails.getProject(mContext);
-    }
+    }*/
 
     public static void sendEventsToApi(Context contex) {
         OneFlow fc = new OneFlow(contex);
@@ -735,9 +818,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         new OFEventDBRepoKT().fetchEvents(mContext, fc, OFConstants.ApiHitType.fetchEventsFromDB);
     }
 
-    public void getLocation() {
-        OFCurrentLocation.getCurrentLocation(mContext, this, OFConstants.ApiHitType.fetchLocation);
-    }
+
 
 
     OFGetSurveyListResponse gslrGlobal;
@@ -752,19 +833,20 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                 if (obj != null) {
                     OFAddUserResultResponse userResponse = (OFAddUserResultResponse) obj;
-                    new OFOneFlowSHP(mContext).setUserDetails(userResponse);
-                    TelephonyManager telephonyManager = ((TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE));
+                    OFOneFlowSHP oneFlowSHP = new OFOneFlowSHP(mContext);
+                    oneFlowSHP.setUserDetails(userResponse);
+                    /*TelephonyManager telephonyManager = ((TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE));
                     String operatorName = telephonyManager.getNetworkOperatorName().isEmpty() ? null : telephonyManager.getNetworkOperatorName();
 
                     WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
                     Display display = wm.getDefaultDisplay();
                     DisplayMetrics metrics = new DisplayMetrics();
-                    display.getMetrics(metrics);
+                    display.getMetrics(metrics);*/
 
-                    OFCreateSessionRequest csr = new OFCreateSessionRequest();
+                    //OFCreateSessionRequest csr = new OFCreateSessionRequest();
 
 
-                    OFDeviceDetails ddc = new OFDeviceDetails();
+                   /* OFDeviceDetails ddc = new OFDeviceDetails();
                     ddc.setUnique_id(OFHelper.getDeviceId(mContext));
                     ddc.setDevice_id(OFHelper.getDeviceId(mContext));
                     ddc.setOs("android");
@@ -778,8 +860,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                     if (userResponse != null) {
                         userId = userResponse.getAnalytic_user_id();
-                    }
-                    csr.setAnalytic_user_id(userId);
+                    }*/
+                    /*csr.setAnalytic_user_id(userId);
                     csr.setSystem_id(OFHelper.getDeviceId(mContext));
                     csr.setDevice(ddc);
                     csr.setLocation_check(true);
@@ -793,11 +875,22 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     csr.setApi_endpoint("session");
 
 
-                    csr.setApp_version(OFConstants.currentVersion);
+                    csr.setApp_version(OFConstants.currentVersion);*/
 
-                    recordEvents(OFConstants.AUTOEVENT_SESSIONSTART, null);
+                    //recordEvents(OFConstants.AUTOEVENT_SESSIONSTART, null);
 
-                    createSession(csr);
+                    //createSession(csr);
+                    if (!oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN, false)) {
+
+                        HashMap<String, Object> mapValue = new HashMap<>();
+                        mapValue.put("app_version", OFConstants.currentVersion);
+                        recordEvents(OFConstants.AUTOEVENT_FIRSTOPEN, mapValue);
+                        oneFlowSHP.storeValue(OFConstants.AUTOEVENT_FIRSTOPEN, true);
+                    }
+
+                    //calling fetch survey api on ADD USER success changed on 17-01-23
+                    OFSurveyController.getInstance(mContext).getSurveyFromAPI();
+
                 } else {
                     OFHelper.headerKey = "";
                     Intent intent = new Intent("survey_list_fetched");
@@ -825,8 +918,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                         }
 
 
-                        oneFlowSHP.storeValue(OFConstants.SESSIONDETAIL_IDSHP, createSession.get_id());
-                        oneFlowSHP.storeValue(OFConstants.SESSIONDETAIL_SYSTEM_IDSHP, createSession.getSystem_id());
+                       /* oneFlowSHP.storeValue(OFConstants.SESSIONDETAIL_IDSHP, createSession.get_id());
+                        oneFlowSHP.storeValue(OFConstants.SESSIONDETAIL_SYSTEM_IDSHP, createSession.getSystem_id());*/
 
                         //calling fetch survey api on create session success
                         OFSurveyController.getInstance(mContext).getSurveyFromAPI();
@@ -841,12 +934,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 }
 
                 break;
-            case fetchLocation:
 
-                if (OFHelper.isConnected(mContext)) {
-                    registerUser(createRequest());
-                }
-                break;
             case fetchEventsFromDB:
 
                 OFHelper.v("FeedbackController", "OneFlow checking before log fetchEventsFromDB came back");
@@ -871,9 +959,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                             ids[i++] = ret.getId();
                         }
 
-                        if (!ofshp.getStringValue(OFConstants.SESSIONDETAIL_IDSHP).equalsIgnoreCase("NA")) {
+                        if (!OFHelper.validateString(ofshp.getUserDetails().getAnalytic_user_id()).equalsIgnoreCase("NA")) {
                             OFEventAPIRequest ear = new OFEventAPIRequest();
-                            ear.setSessionId(ofshp.getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
+                            ear.setUserId(ofshp.getUserDetails().getAnalytic_user_id());
                             ear.setEvents(retListToAPI);
 
                             OFHelper.v("OneFlow", "OneFlow checking before log fetchEventsFromDB request prepared");
@@ -1056,14 +1144,14 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     if (logUserResponse != null) {
                         // replacing current session id and user analytical id
                         OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
-                        ofs.storeValue(OFConstants.SHP_LOG_USER_KEY, reserved);//ofs.getLogUserRequest().getSystem_id()); // system id stored for sending next app launch
+                        //ofs.storeValue(OFConstants.SHP_LOG_USER_KEY, reserved);//ofs.getLogUserRequest().getSystem_id()); // system id stored for sending next app launch
                         ofs.clearLogUserRequest();
                         OFAddUserResultResponse aurr = ofs.getUserDetails();
                         //setting up new user analytical id
 
                         aurr.setAnalytic_user_id(logUserResponse.getAnalytic_user_id());
                         ofs.setUserDetails(aurr);
-                        ofs.storeValue(OFConstants.SESSIONDETAIL_IDSHP, logUserResponse.getSessionId());
+                        //ofs.storeValue(OFConstants.SESSIONDETAIL_IDSHP, logUserResponse.getSessionId());
 
                         //storing this to support multi user survey
                         ofs.storeValue(OFConstants.USERUNIQUEIDSHP, reserved);
