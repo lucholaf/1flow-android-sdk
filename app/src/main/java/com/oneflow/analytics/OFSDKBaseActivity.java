@@ -153,7 +153,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
             public void onClick(View v) {
 
                 //closed survey logic for storage.
-                OFOneFlowSHP ofs = new OFOneFlowSHP(OFSDKBaseActivity.this);
+                OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(OFSDKBaseActivity.this);
                 ArrayList<String> closedSurveyList = ofs.getClosedSurveyList();
                 if (closedSurveyList == null) {
                     closedSurveyList = new ArrayList<>();
@@ -306,7 +306,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
     public void finishSurveyNow() {
         OFHelper.v(tag, "OneFlow answer position after finishSurveyNow called");
-        new OFOneFlowSHP(this).storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
+        OFOneFlowSHP.getInstance(this).storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
         //on close of this page considering survey is over, so submit the respones to api
         if (surveyResponseChildren != null) {
             if (surveyResponseChildren.size() > 0) {
@@ -633,7 +633,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     public void prepareAndSubmitUserResposneNew() {
         OFHelper.v(tag, "OneFlow checking value prepareAndSubmitUserResposneNew called [" + surveyResponseChildren.size()+"]surveyId["+selectedSurveyId+"]");
         //setupGlobalTimerToDeactivateThrottlingLocally();
-        OFOneFlowSHP ofs = new OFOneFlowSHP(this);
+        OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(this);
         ofs.storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
         OFHelper.v(tag, "OneFlow checking value prepareAndSubmitUserResposneNew called [" + ofs.getBooleanValue(OFConstants.SHP_SURVEY_RUNNING,false));
         OFSurveyUserInput sur = new OFSurveyUserInput();
@@ -765,7 +765,8 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 }
             }
         } catch (Exception ex) {
-            OFHelper.e(tag, "OneFlow ERROR [" + ex.getMessage() + "]");
+          //  ex.printStackTrace();
+          //  OFHelper.e(tag, "OneFlow ERROR [" + ex.getMessage() + "]");
             //frag = SurveyQueThankyouFragment.newInstance(screen);
         }
         return frag;
@@ -809,7 +810,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                     OFHelper.v(tag, "OneFlow calling submit user surveyId["+sur.getSurvey_id()+"]surID["+sur.get_id()+"] Resposne [" + sur.getAnswers() + "]");
                     if (sur.getAnswers() != null) {
                         if (sur.getAnswers().size() > 0) {
-                            OFSurvey.submitUserResponse(new OFOneFlowSHP(this).getStringValue(OFConstants.APPIDSHP), sur, OFConstants.ApiHitType.surveySubmited, this);
+                            OFSurvey.submitUserResponse(OFOneFlowSHP.getInstance(this).getStringValue(OFConstants.APPIDSHP), sur, OFConstants.ApiHitType.surveySubmited, this);
                         }
                     }
                 } else {
@@ -827,7 +828,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                     new OFLogUserDBRepoKT().updateSurveyInput(this, null, null, true, sur.getSurvey_id());
                     //new OFMyDBAsyncTask(this,this,OFConstants.ApiHitType.updateSubmittedSurveyLocally,false).execute(true,sur.get_id());
 
-                    new OFOneFlowSHP(this).storeValue(sur.getSurvey_id(), Calendar.getInstance().getTimeInMillis());
+                    OFOneFlowSHP.getInstance(this).storeValue(sur.getSurvey_id(), Calendar.getInstance().getTimeInMillis());
 
                     Intent intent = new Intent("survey_finished");
 

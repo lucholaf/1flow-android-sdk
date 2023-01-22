@@ -26,6 +26,7 @@ import android.util.Base64;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
 import com.oneflow.analytics.model.location.OFLocationResponse;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
@@ -52,15 +53,28 @@ import io.reactivex.schedulers.Schedulers;
 public class OFOneFlowSHP {
     String keyName = "one_flow_temp.db";
     SharedPreferences pref;
-    private static SharedPreferences.Editor editor;
+    //private static SharedPreferences.Editor editor;
     private static String key = "";
     private static String iv = "";
     Gson gson;
+    private static OFOneFlowSHP shp = null;
 
-    public OFOneFlowSHP(Context context) {
+    public static OFOneFlowSHP getInstance(Context context) {
+
+        if (shp == null) {
+            synchronized (OFOneFlowSHP.class) {
+                shp = new OFOneFlowSHP(context);
+            }
+        }
+        return shp;
+
+
+    }
+
+    private OFOneFlowSHP(Context context) {
 
         pref = context.getSharedPreferences(keyName, 0); // 0 - for private mode
-        editor = pref.edit();
+       // editor = pref.edit();
 
         GsonBuilder builder = new GsonBuilder();
         builder.serializeNulls();
@@ -151,7 +165,7 @@ public class OFOneFlowSHP {
 
     public void clearLogUserRequest() {
         SharedPreferences.Editor prefsEditor = pref.edit();
-        prefsEditor.remove(OFConstants.LOGUSERREQUESTSHP).commit();
+        prefsEditor.remove(OFConstants.LOGUSERREQUESTSHP).apply();
     }
 
 

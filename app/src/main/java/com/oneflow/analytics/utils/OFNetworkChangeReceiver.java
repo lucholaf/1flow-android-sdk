@@ -44,12 +44,12 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
 
         if (OFHelper.isConnected(context)) {
             // Helper.makeText(context,"Network available",1);
-            OFOneFlowSHP shp = new OFOneFlowSHP(context);
-           // OFLocationResponse lr = new OFOneFlowSHP(context).getUserLocationDetails();
+            OFOneFlowSHP shp = OFOneFlowSHP.getInstance(context);
+           // OFLocationResponse lr = OFOneFlowSHP.getInstance(context).getUserLocationDetails();
             if (shp.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN,false)) {
                 checkOffLineSurvey();
             } else {
-                String projectKey = new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP);
+                String projectKey = OFOneFlowSHP.getInstance(context).getStringValue(OFConstants.APPIDSHP);
                 OneFlow.configure(context, projectKey);
                 // CurrentLocation.getCurrentLocation(context,this,Constants.ApiHitType.fetchLocation);
             }

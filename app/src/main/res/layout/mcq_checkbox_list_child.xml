@@ -76,7 +76,6 @@
                 android:id="@+id/other_submit_btn"
                 style="@style/comman_positive_button_style"
                 android:layout_width="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_marginRight="6dp"
                 android:background="@drawable/btn_rounded_rectangle_normal_internal"
                 android:drawableRight="@drawable/ic_baseline_keyboard_return_18"

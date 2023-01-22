@@ -243,7 +243,7 @@ public class OFHelper {
 
         // KAI suggested to use random key 19-feb-2022
 
-        OFOneFlowSHP shp = new OFOneFlowSHP(context);
+        OFOneFlowSHP shp = OFOneFlowSHP.getInstance(context);
         deviceId = shp.getStringValue(OFConstants.SHP_DEVICE_UNIQUE_ID);
 
        // v("Helper", "OneFlow DeviceId 0[" + deviceId + "]");
@@ -726,7 +726,7 @@ public class OFHelper {
         return body;
     }
 
-    private String SD_CARD_PATH = "/sdcard/OneFlow/";
+
 
     public static double[] getScreenSize(Activity context) {
 

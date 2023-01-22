@@ -64,7 +64,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
 
     public void getSurveyFromAPI() {
         OFHelper.v("SurveyController", "OneFlow reached SurveyController 0");
-        OFOneFlowSHP shp = new OFOneFlowSHP(mContext);
+        OFOneFlowSHP shp = OFOneFlowSHP.getInstance(mContext);
         OFSurvey.getSurvey(shp.getStringValue(OFConstants.APPIDSHP), this, OFConstants.ApiHitType.fetchSurveysFromAPI,shp.getUserDetails().getAnalytic_user_id(),OFConstants.currentVersion);
     }
 
@@ -109,7 +109,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                 if (obj != null) {
 
                     ArrayList<OFGetSurveyListResponse> surveyListResponse = (ArrayList<OFGetSurveyListResponse>) obj;
-                    OFOneFlowSHP shp = new OFOneFlowSHP(mContext);
+                    OFOneFlowSHP shp = OFOneFlowSHP.getInstance(mContext);
                     if (!OFHelper.validateString(reserved).equalsIgnoreCase("NA")) {
                         GsonBuilder builder = new GsonBuilder();
                         builder.serializeNulls();
@@ -124,7 +124,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                     if (surveyListResponse != null) {
 
                         shp.setSurveyList(surveyListResponse);
-
+                        shp.storeValue(OFConstants.SHP_SURVEY_FETCH_TIME,System.currentTimeMillis());
                         Intent intent = new Intent("survey_list_fetched");
                         mContext.sendBroadcast(intent);
 
@@ -156,7 +156,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
 
                                 if (surveyItem.getScreens().size() > 0) {
                                     setUpHashForActivity();
-                                    new OFOneFlowSHP(mContext).storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
+                                    OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
                                     Intent surveyIntent = null;
                                     if (surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
                                         surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get("bottom-center"));
@@ -186,7 +186,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
 
 
         OFHelper.v("OneFlow", "OneFlow checking throttling after survey received");
-        OFThrottlingConfig config = new OFOneFlowSHP(mContext).getThrottlingConfig();
+        OFThrottlingConfig config = OFOneFlowSHP.getInstance(mContext).getThrottlingConfig();
         //OFMyCountDownTimerThrottling.getInstance(mContext,0l,0l).cancel();
         if (config != null) {
             OFHelper.v("OneFlow", "OneFlow checking called config[" + config.getActivatedById() + "][" + config.getActivatedAt() + "]");
@@ -208,12 +208,12 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                 } else {
                     config.setActivated(false);
                     config.setActivatedById(null);
-                    new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+                    OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
                 }
             } else {
                 config.setActivated(false);
                 config.setActivatedById(null);
-                new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+                OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
                 OFHelper.v("OneFlow", "OneFlow checking called no throttling found after survey received");
             }
         }
@@ -230,14 +230,14 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                             OFHelper.v("OneFlow", "OneFlow deactivate called time finished");
                             config.setActivated(false);
                             config.setActivatedById(null);
-                            new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+                            OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
                         }
 
                     }
                 } else {
                     config.setActivated(false);
                     config.setActivatedById(null);
-                    new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+                    OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
                 }
             }
         }*/
@@ -250,7 +250,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
         PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.set(AlarmManager.RTC_WAKEUP, (config.getGlobalTime() * 1000)+System.currentTimeMillis(), pi);*/
 
-        OFOneFlowSHP shp = new OFOneFlowSHP(mContext);
+        OFOneFlowSHP shp = OFOneFlowSHP.getInstance(mContext);
         shp.storeValue(OFConstants.SHP_THROTTLING_TIME, throttlingLifeTime);
 
 
@@ -263,7 +263,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
      */
     private Object[] checkSurveyTitleAndScreens(List<String> type) {
         Object[] ret = new Object[2];
-        OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
+        OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(mContext);
         if (ofs.getBooleanValue(OFConstants.SHP_SHOULD_SHOW_SURVEY, true)) {
             ArrayList<OFGetSurveyListResponse> slr = ofs.getSurveyList();
             //OFGetSurveyListResponse gslr = null;

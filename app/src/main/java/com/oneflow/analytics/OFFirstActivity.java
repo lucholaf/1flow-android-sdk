@@ -80,7 +80,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         new SHPRepo().storeValue(this,OFConstants.SHP_THROTTLING_TIME,"Circo.OneFlow");*/
 
-        OFOneFlowSHP ofs = new OFOneFlowSHP(this);
+        OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(this);
 
         Long lastHit = ofs.getLongValue(OFConstants.SHP_ONEFLOW_CONFTIMING);
 
@@ -146,7 +146,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
 
             if (intent.getAction().equalsIgnoreCase("survey_list_fetched")) {
-                slr = new OFOneFlowSHP(OFFirstActivity.this).getSurveyList();
+                slr = OFOneFlowSHP.getInstance(OFFirstActivity.this).getSurveyList();
                 progressBar.setVisibility(View.GONE);
 
                 if(slr!=null) {
@@ -197,7 +197,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         super.onResume();
         //Helper.makeText(this,"isConnected["+Helper.isInternetAvailable()+"]",1);
 
-        slr = new OFOneFlowSHP(OFFirstActivity.this).getSurveyList();
+        slr = OFOneFlowSHP.getInstance(OFFirstActivity.this).getSurveyList();
         if (slr != null) {
             addb.notifyMyList(slr);
         }

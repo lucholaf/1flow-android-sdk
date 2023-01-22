@@ -21,7 +21,7 @@ package com.oneflow.analytics.utils;
 public interface OFConstants {
 
 
-    String currentVersion = "2023.01.18";//2023.01.12";//""2022.11.20";
+    String currentVersion = "2023.01.22";//2023.01.12";//""2022.11.20";
     String MODE = "prod";//"dev";//"
     String DBNAME = "one_flow_db";
     String APPKEYSHP = "one_flow_config_key";
@@ -47,6 +47,7 @@ public interface OFConstants {
     String SHP_SURVEYSTART = "survey_starts";
     String SHP_ONEFLOW_CONFTIMING = "shp_conf_timing";
     String SHP_SURVEY_RUNNING = "survey_running";
+    String SHP_SURVEY_FETCH_TIME = "survey_fetch_time";
     String SHP_SHOULD_SHOW_SURVEY = "should_show_survey";
     String SHP_DEVICE_UNIQUE_ID = "device_unique_id";
     String SHP_SHOULD_PRINT_LOG = "should_print_log";
@@ -57,6 +58,7 @@ public interface OFConstants {
     String SHP_THROTTLING_RECEIVER = "throttling_receiver";
     String SHP_THROTTLING_TIME = "throttling_receiver_time";
     String SHP_SURVEY_SEARCH_POSITION = "survey_search_position";
+    String SHP_LAST_CLICK_TIME = "survey_last_click_time";
 
 
     String surveyDetail = "surveyDetail";

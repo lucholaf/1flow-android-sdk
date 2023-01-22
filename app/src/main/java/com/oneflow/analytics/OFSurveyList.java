@@ -44,7 +44,7 @@ public class OFSurveyList extends OFSDKBaseActivity {
 
         listOfSurvey = (RecyclerView) findViewById(R.id.list_of_survey);
 
-        ArrayList<OFGetSurveyListResponse> slr = new OFOneFlowSHP(this).getSurveyList();
+        ArrayList<OFGetSurveyListResponse> slr = OFOneFlowSHP.getInstance(this).getSurveyList();
         OFSurveyListAdapter addb = new OFSurveyListAdapter(this, slr, clickListener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         listOfSurvey.setLayoutManager(linearLayoutManager);

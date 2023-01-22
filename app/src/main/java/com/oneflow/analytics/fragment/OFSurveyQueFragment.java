@@ -49,6 +49,8 @@ import com.oneflow.analytics.model.survey.OFRatingsModel;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyChoises;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
+import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
+import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFGenericClickHandler;
 import com.oneflow.analytics.utils.OFHelper;
 
@@ -236,6 +238,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
                 itemClicked(v, null, "");
             }
         });
+
         submitButtonBeautification();
 
         OFHelper.v(tag, "OneFlow list title[" + surveyScreens.getTitle() + "]");
@@ -392,7 +395,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
             gdSubmit = (GradientDrawable) (submitButton).getBackground();
             gdSubmit.setColor(Color.parseColor(themeColor));
             int colorAlpha = OFHelper.manipulateColor(Color.parseColor(themeColor), 0.5f);
-            ;
+
             submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
             submitButton.setOnTouchListener(new View.OnTouchListener() {
 
@@ -451,80 +454,88 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
 
     @Override
     public void itemClicked(View v, Object obj, String reserve) {
-        OFHelper.v(tag, "OneFlow othervalue [" + obj + "]reserve[" + reserve + "]");
-        if (v.getId() == R.id.submit_btn) {
-            OFHelper.v(tag, "OneFlow othervalue submit btn");
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (checkBoxSelection != null) {
-                        if (checkBoxSelection.size() > 0) {
-                            String allSelections = checkBoxSelection.toString().replace("[", "");
-                            allSelections = allSelections.replace("]", "");
-                            allSelections = allSelections.replace(" ", "");
-                            OFHelper.v(tag, "OneFlow allselection[" + allSelections + "] str[" + reserve + "]");
 
-                            sa.addUserResponseToList(surveyScreens.get_id(), allSelections, reserve);
+        long lastHitGap = System.currentTimeMillis()-OFOneFlowSHP.getInstance(getActivity()).getLongValue(OFConstants.SHP_LAST_CLICK_TIME);
+        OFHelper.v(tag, "OneFlow lastHit[" + lastHitGap + "]");
+        if(lastHitGap>1000 || surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
+            OFOneFlowSHP.getInstance(getActivity()).storeValue(OFConstants.SHP_LAST_CLICK_TIME,System.currentTimeMillis());
+            OFHelper.v(tag, "OneFlow othervalue [" + obj + "]reserve[" + reserve + "]");
+            if (v.getId() == R.id.submit_btn) {
+                OFHelper.v(tag, "OneFlow othervalue submit btn");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (checkBoxSelection != null) {
+                            if (checkBoxSelection.size() > 0) {
+                                String allSelections = checkBoxSelection.toString().replace("[", "");
+                                allSelections = allSelections.replace("]", "");
+                                allSelections = allSelections.replace(" ", "");
+                                OFHelper.v(tag, "OneFlow allselection[" + allSelections + "] str[" + reserve + "]");
+
+                                sa.addUserResponseToList(surveyScreens.get_id(), allSelections, reserve);
+                            }
                         }
                     }
-                }
-            }, 1000);
-        } else {
+                }, 1000);
+            } else {
 
-            OFHelper.v(tag, "OneFlow inputtype[" + surveyScreens.getInput().getInput_type() + "]isCheckbox[" + surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox") + "]ratings[" + surveyScreens.getInput().getInput_type().contains("rating") + "]isStar[" + surveyScreens.getInput().getStars() + "]");
-            if (surveyScreens.getInput().getInput_type().contains("rating-emojis")) {
-                int position = (int) v.getTag();
-                OFHelper.v(tag, "OneFlow inputType[" + surveyScreens.getInput().getStars() + "]position[" + position + "]");
-                setSelected(position, true);
+                OFHelper.v(tag, "OneFlow inputtype[" + surveyScreens.getInput().getInput_type() + "]isCheckbox[" + surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox") + "]ratings[" + surveyScreens.getInput().getInput_type().contains("rating") + "]isStar[" + surveyScreens.getInput().getStars() + "]");
+                if (surveyScreens.getInput().getInput_type().contains("rating-emojis")) {
+                    int position = (int) v.getTag();
+                    OFHelper.v(tag, "OneFlow inputType[" + surveyScreens.getInput().getStars() + "]position[" + position + "]");
+                    setSelected(position, true);
 
-            } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating") ||
-                    surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")) {
-                int position = (int) v.getTag();
-                OFHelper.v(tag, "OneFlow inputType[" + surveyScreens.getInput().getStars() + "]position[" + position + "]rating text["+surveyScreens.getInput().getRating_text()+"]");
-                setSelected(position, false);
-                starRatingLabel.setText(surveyScreens.getInput().getRating_text().get(String.valueOf(position+1)));//ratingsLabel[position]);
-            } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("nps") ||
-                    surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical")) {
-                int position = (int) v.getTag();
-                setSelected(position, true);
-            } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("mcq")) {
-                String position = (String) v.getTag();
-                if (v instanceof RadioButton) { // added for handling other click
+                } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating") ||
+                        surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star")) {
+                    int position = (int) v.getTag();
+                    OFHelper.v(tag, "OneFlow inputType[" + surveyScreens.getInput().getStars() + "]position[" + position + "]rating text[" + surveyScreens.getInput().getRating_text() + "]");
+                    setSelected(position, false);
+                    starRatingLabel.setText(surveyScreens.getInput().getRating_text().get(String.valueOf(position + 1)));//ratingsLabel[position]);
+                } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("nps") ||
+                        surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical")) {
+                    int position = (int) v.getTag();
+                    setSelected(position, true);
+                } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("mcq")) {
+                    String position = (String) v.getTag();
+                    if (v instanceof RadioButton) { // added for handling other click
 
-                    OFHelper.v(tag, "OneFlow mcq clicked Position[" + position + "]");
-                    OFHelper.v(tag, "OneFlow mcq clicked choices radio id[]other id[" + surveyScreens.getInput().getOtherOption() + "]");
-                    if (!surveyScreens.getInput().getOtherOption().equalsIgnoreCase(position)) {
+                        OFHelper.v(tag, "OneFlow mcq clicked Position[" + position + "]");
+                        OFHelper.v(tag, "OneFlow mcq clicked choices radio id[]other id[" + surveyScreens.getInput().getOtherOption() + "]");
+                        if (!surveyScreens.getInput().getOtherOption().equalsIgnoreCase(position)) {
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    sa.addUserResponseToList(surveyScreens.get_id(), position, null);
+                                }
+                            }, 5);
+                        }
+                    } else {
 
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                sa.addUserResponseToList(surveyScreens.get_id(), position, null);
+                                sa.addUserResponseToList(surveyScreens.get_id(), position, (String) obj);
                             }
                         }, 5);
                     }
-                } else {
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            sa.addUserResponseToList(surveyScreens.get_id(), position, (String) obj);
-                        }
-                    }, 5);
-                }
-
-            } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
-                OFHelper.v(tag, "OneFlow inside checkbox reserve[" + reserve + "]");
-                if (v instanceof CheckBox) {
-                    CheckBox cb = (CheckBox) v;
-                    OFHelper.v(tag, "OneFlow inside checkbox 1");
-                    String viewTag = (String) cb.getTag();
-                    OFHelper.v(tag, "OneFlow inside checkbox tag[" + viewTag + "]isChecked[" + cb.isChecked() + "]");
-                    checkBoxSelectionStatus(viewTag, cb.isChecked(), (String) obj);
-                } else {
-                    String viewTag = (String) v.getTag();
-                    checkBoxSelectionStatus(viewTag, (boolean) obj, reserve);
+                } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("checkbox")) {
+                    OFHelper.v(tag, "OneFlow inside checkbox reserve[" + reserve + "]");
+                    if (v instanceof CheckBox) {
+                        CheckBox cb = (CheckBox) v;
+                        OFHelper.v(tag, "OneFlow inside checkbox 1");
+                        String viewTag = (String) cb.getTag();
+                        OFHelper.v(tag, "OneFlow inside checkbox tag[" + viewTag + "]isChecked[" + cb.isChecked() + "]");
+                        checkBoxSelectionStatus(viewTag, cb.isChecked(), (String) obj);
+                    } else {
+                        String viewTag = (String) v.getTag();
+                        checkBoxSelectionStatus(viewTag, (boolean) obj, reserve);
+                    }
                 }
             }
+        }else{
+            OFHelper.v(tag, "OneFlow double click not allowed");
         }
     }
 

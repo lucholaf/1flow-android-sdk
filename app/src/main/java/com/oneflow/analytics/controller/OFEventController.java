@@ -102,13 +102,13 @@ public class OFEventController implements OFMyResponseHandlerOneFlow {
                             ids[i++] = ret.getId();
                         }
 
-                        //if (!new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP).equalsIgnoreCase("NA")) {
+                        //if (!OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP).equalsIgnoreCase("NA")) {
                         if (OFHelper.isConnected(mContext)) {
                             OFEventAPIRequest ear = new OFEventAPIRequest();
-                            ear.setUserId(new OFOneFlowSHP(mContext).getUserDetails().getAnalytic_user_id());
+                            ear.setUserId(OFOneFlowSHP.getInstance(mContext).getUserDetails().getAnalytic_user_id());
                             ear.setEvents(retListToAPI);
                             OFHelper.v(this.getClass().getName(), "OneFlow fetchEventsFromDB request prepared");
-                            OFEventAPIRepo.sendLogsToApi(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), ear, this, OFConstants.ApiHitType.sendEventsToAPI, ids);
+                            OFEventAPIRepo.sendLogsToApi(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), ear, this, OFConstants.ApiHitType.sendEventsToAPI, ids);
                         }
                     }
 

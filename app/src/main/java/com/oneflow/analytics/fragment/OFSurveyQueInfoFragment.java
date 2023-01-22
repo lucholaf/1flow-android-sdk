@@ -370,10 +370,12 @@ public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClic
        /* if (v.getId() == R.id.skip_btn) {
             sa.addUserResponseToList(surveyScreens.get_id(), null, null);
         } else if (v.getId() == R.id.submit_btn) {*/
+        /*long lastHitGap = System.currentTimeMillis()- OFOneFlowSHP.getInstance(getActivity()).getLongValue(OFConstants.SHP_LAST_CLICK_TIME);
+        OFHelper.v(tag, "OneFlow lastHit[" + lastHitGap + "]");
+        if(lastHitGap>1500) {*/
+            sa.addUserResponseToList(surveyScreens.get_id(), null, null);
 
-                    sa.addUserResponseToList(surveyScreens.get_id(), null,  null);
-
-
+        //}
         /*} else if (v.getId() == R.id.cancel_btn) {
             //
         }*/

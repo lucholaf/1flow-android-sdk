@@ -106,7 +106,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     public static void shouldShowSurvey(Boolean shouldShow) {
         try {
             OFHelper.v("OneFlow", "OneFlow shouldShow1[" + shouldShow + "]");
-            new OFOneFlowSHP(mContext).storeValue(OFConstants.SHP_SHOULD_SHOW_SURVEY, shouldShow);
+            OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_SHOULD_SHOW_SURVEY, shouldShow);
         } catch (Exception ex) {
             OFHelper.e("OneFlow", "OneFlow error showSurvey1[" + ex.getMessage() + "]");
         }
@@ -115,7 +115,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     public static void shouldPrintLog(Boolean shouldShow) {
         try {
             OFHelper.v("OneFlow", "OneFlow shouldShowLog[" + shouldShow + "]");
-            new OFOneFlowSHP(mContext).storeValue(OFConstants.SHP_SHOULD_PRINT_LOG, shouldShow);
+            OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_SHOULD_PRINT_LOG, shouldShow);
             OFHelper.commanLogEnable = shouldShow;
         } catch (Exception ex) {
             OFHelper.e("OneFlow", "OneFlow error showSurvey[" + ex.getMessage() + "]");
@@ -123,9 +123,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     }
 
 
-    public static void registerActivityCallback() {
+   /* public static void registerActivityCallback() {
         ((Application) mContext.getApplicationContext()).registerActivityLifecycleCallbacks(new OFActivityCallbacks());
-    }
+    }*/
 
    /* public static void configure(Context mContext, String projectKey, OFFontSetup titleFont) {
         if (!OFHelper.validateString(projectKey).equalsIgnoreCase("NA")) {
@@ -190,7 +190,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     public static void configure(Context mContext, String projectKey) {
         OFHelper.v("1Flow", "OneFlow configure called project Key[" + projectKey + "]");
         if (!OFHelper.validateString(projectKey).equalsIgnoreCase("NA")) {
-            OFOneFlowSHP fc = new OFOneFlowSHP(mContext);
+            OFOneFlowSHP fc = OFOneFlowSHP.getInstance(mContext);
             if (OFHelper.validateString(OFHelper.headerKey).equalsIgnoreCase("NA")) {// && !fc.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN,false)) {
                 //if(!fc.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN,false)) {
                 configureLocal(mContext, projectKey);
@@ -212,7 +212,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     /*public static void configure(Context mContext, String projectKey, String fontName) {
         OFHelper.v("1Flow", "OneFlow configure called project Key [" + projectKey + "]strName["+fontName+"]");
         if (!OFHelper.validateString(projectKey).equalsIgnoreCase("NA")) {
-            OFOneFlowSHP fc = new OFOneFlowSHP(mContext);
+            OFOneFlowSHP fc = OFOneFlowSHP.getInstance(mContext);
             if (OFHelper.validateString(OFHelper.headerKey).equalsIgnoreCase("NA")) {// && !fc.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN,false)) {
                 //if(!fc.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN,false)) {
                 fontNameStr = fontName;
@@ -283,7 +283,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         fc.connectBillingClient();
 
 
-        final OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
+        final OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(mContext);
 
         // network listener and timer listener to make sure registered only once.
         if (!ofs.getBooleanValue(OFConstants.SHP_TIMER_LISTENER, false)) {
@@ -419,7 +419,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         dd.setDevice_id(OFHelper.getDeviceId(mContext));
         dd.setOs("android");
 
-        final OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
+        final OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(mContext);
         OFAddUserRequest aur = new OFAddUserRequest();
 
         // this flow added for recognizing user on server side to provide proper list of surveys
@@ -443,7 +443,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         dd.setDevice_id(OFHelper.getDeviceId(mContext));
         dd.setOs("android");
 
-        final OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
+        final OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(mContext);
         OFAddUserRequestNew aur = new OFAddUserRequestNew();
 
         aur.setUser_id(OFHelper.getDeviceId(mContext));
@@ -525,12 +525,12 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     }
     private void registerUser(OFAddUserRequestNew aur) {
 
-        OFAddUserRepo.addUser(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), aur, this, OFConstants.ApiHitType.CreateUser);
+        OFAddUserRepo.addUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), aur, this, OFConstants.ApiHitType.CreateUser);
     }
 
    /* private void createSession(OFCreateSessionRequest csr) {
         //sdkdb = Room.databaseBuilder(context, SDKDB.class,"one-flow-db").build();
-        OFCreateSession.createSession(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), csr, this, OFConstants.ApiHitType.CreateSession);
+        OFCreateSession.createSession(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), csr, this, OFConstants.ApiHitType.CreateSession);
     }*/
 
     /**
@@ -573,15 +573,15 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     /*public static void logUser(String uniqueId, HashMap<String, String> mapValue) {
         if (OFHelper.isConnected(mContext)) {
 
-            OFAddUserResultResponse aurr = new OFOneFlowSHP(mContext).getUserDetails();
+            OFAddUserResultResponse aurr = OFOneFlowSHP.getInstance(mContext).getUserDetails();
             if (aurr != null) {
                 OFHelper.v("OneFlow", "OneFlow logUser data stored");
                 OFLogUserRequest lur = new OFLogUserRequest();
                 lur.setSystem_id(uniqueId);
-                lur.setAnonymous_user_id(new OFOneFlowSHP(mContext).getUserDetails().getAnalytic_user_id());
+                lur.setAnonymous_user_id(OFOneFlowSHP.getInstance(mContext).getUserDetails().getAnalytic_user_id());
                 lur.setParameters(mapValue);
-                lur.setSession_id(new OFOneFlowSHP(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
-                new OFOneFlowSHP(mContext).setLogUserRequest(lur);
+                lur.setSession_id(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
+                OFOneFlowSHP.getInstance(mContext).setLogUserRequest(lur);
                 // this api calling shifted to send Event api response
             }
             sendEventsToApi(mContext);
@@ -608,14 +608,14 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     userDetail = OFHelper.checkDateInHashMap(userDetail);
                 }
                 OFHelper.v("OneFlow", "OneFlow logUser data stored 1");
-                OFAddUserResultResponse aurr = new OFOneFlowSHP(mContext).getUserDetails();
+                OFAddUserResultResponse aurr = OFOneFlowSHP.getInstance(mContext).getUserDetails();
                 if (aurr != null) {
                     OFHelper.v("OneFlow", "OneFlow logUser data stored 2");
                     OFLogUserRequest lur = new OFLogUserRequest();
                     lur.setUser_id(aurr.getAnalytic_user_id());
-                    lur.setAnonymous_user_id(new OFOneFlowSHP(mContext).getUserDetails().getAnalytic_user_id());
+                    lur.setAnonymous_user_id(aurr.getAnalytic_user_id());
                     lur.setParameters(userDetail);
-                    new OFOneFlowSHP(mContext).setLogUserRequest(lur);
+                    OFOneFlowSHP.getInstance(mContext).setLogUserRequest(lur);
                     // this api calling shifted to send Event api response
                 }
                 sendEventsToApi(mContext);
@@ -630,7 +630,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
      */
     private OFGetSurveyListResponse shouldReturnSurvey(OFGetSurveyListResponse gslr) {
 
-        Long submitTime = new OFOneFlowSHP(mContext).getLongValue(gslr.get_id());
+        Long submitTime = OFOneFlowSHP.getInstance(mContext).getLongValue(gslr.get_id());
         OFHelper.v("OneFlow", "OneFlow resurvey check[" + submitTime + "]");
         if (submitTime > 0) {
             //Checking offline storage of survey
@@ -691,7 +691,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
      */
     //private ArrayList<SurveyScreens> checkSurveyTitleAndScreens(String type){
     private OFGetSurveyListResponse checkSurveyTitleAndScreens(String type) {
-        OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
+        OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(mContext);
         OFHelper.v("OneFlow", "OneFlow checkSurveyTitleAndScreens[" + ofs.getBooleanValue(OFConstants.SHP_SHOULD_SHOW_SURVEY, true) + "]");
         if (ofs.getBooleanValue(OFConstants.SHP_SHOULD_SHOW_SURVEY, true)) {
             ArrayList<OFGetSurveyListResponse> slr = ofs.getSurveyList();
@@ -745,7 +745,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
 
     private void checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType hitType, String firedEventName) {
-        OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
+        OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(mContext);
         OFHelper.v("OneFlow", "OneFlow checkSurveyTitleAndScreens[" + ofs.getBooleanValue(OFConstants.SHP_SHOULD_SHOW_SURVEY, true) + "]");
         if (ofs.getBooleanValue(OFConstants.SHP_SHOULD_SHOW_SURVEY, true)) {
             ArrayList<OFGetSurveyListResponse> slr = ofs.getSurveyList();
@@ -799,8 +799,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             if (gslr == null) {
                 onResponseReceived(hitType, null, 0l, "", null, null);
             } else {
-                new OFLogUserDBRepoKT().findSurveyForID(mContext, this, OFConstants.ApiHitType.fetchSubmittedSurvey, gslr, gslr.get_id(), new OFOneFlowSHP(mContext).getStringValue(OFConstants.USERUNIQUEIDSHP), firedEventName);
-                //new OFMyDBAsyncTask(mContext,this,OFConstants.ApiHitType.fetchSubmittedSurvey,false).execute(gslr, new OFOneFlowSHP(mContext).getStringValue(OFConstants.USERUNIQUEIDSHP), firedEventName);
+                new OFLogUserDBRepoKT().findSurveyForID(mContext, this, OFConstants.ApiHitType.fetchSubmittedSurvey, gslr, gslr.get_id(), OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.USERUNIQUEIDSHP), firedEventName);
+                //new OFMyDBAsyncTask(mContext,this,OFConstants.ApiHitType.fetchSubmittedSurvey,false).execute(gslr, OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.USERUNIQUEIDSHP), firedEventName);
             }
 
 
@@ -833,7 +833,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                 if (obj != null) {
                     OFAddUserResultResponse userResponse = (OFAddUserResultResponse) obj;
-                    OFOneFlowSHP oneFlowSHP = new OFOneFlowSHP(mContext);
+                    OFOneFlowSHP oneFlowSHP = OFOneFlowSHP.getInstance(mContext);
                     oneFlowSHP.setUserDetails(userResponse);
                     /*TelephonyManager telephonyManager = ((TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE));
                     String operatorName = telephonyManager.getNetworkOperatorName().isEmpty() ? null : telephonyManager.getNetworkOperatorName();
@@ -906,7 +906,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     //Earlier calling parallel with create user. Flow changed now calling once session created
                     OFCreateSessionResponse createSession = (OFCreateSessionResponse) obj;
                     if (createSession != null) {
-                        OFOneFlowSHP oneFlowSHP = new OFOneFlowSHP(mContext);
+                        OFOneFlowSHP oneFlowSHP = OFOneFlowSHP.getInstance(mContext);
 
                         OFHelper.v("FeedbackController", "OneFlow checking firstOpen [" + oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN, false) + "]");
                         if (!oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN, false)) {
@@ -939,7 +939,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                 OFHelper.v("FeedbackController", "OneFlow checking before log fetchEventsFromDB came back");
                 OneFlow fc = new OneFlow(mContext);
-                OFOneFlowSHP ofshp = new OFOneFlowSHP(mContext);
+                OFOneFlowSHP ofshp = OFOneFlowSHP.getInstance(mContext);
                 if (obj != null) {
                     ArrayList<OFRecordEventsTab> list = (ArrayList<OFRecordEventsTab>) obj;
                     OFHelper.v("FeedbackController", "OneFlow checking before log fetchEventsFromDB list received size[" + list.size() + "]");
@@ -965,14 +965,14 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                             ear.setEvents(retListToAPI);
 
                             OFHelper.v("OneFlow", "OneFlow checking before log fetchEventsFromDB request prepared");
-                            OFEventAPIRepo.sendLogsToApi(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), ear, fc, OFConstants.ApiHitType.sendEventsToAPI, ids);
+                            OFEventAPIRepo.sendLogsToApi(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), ear, fc, OFConstants.ApiHitType.sendEventsToAPI, ids);
                         }
                     } else {
 
                         OFLogUserRequest lur = ofshp.getLogUserRequest();
                         OFHelper.e("OneFlow", "OneFlow checking No event available hitting log[" + lur + "]");
                         if (lur != null) {
-                            OFLogUserRepo.logUser(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), lur, this, OFConstants.ApiHitType.logUser);
+                            OFLogUserRepo.logUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), lur, this, OFConstants.ApiHitType.logUser);
                         }
                     }
                 } else {
@@ -987,13 +987,14 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                 break;
             case deleteEventsFromDB:
-                OFHelper.v("FeedbackControler", "OneFlow checking events submitted hitting logs delete count[" + ((Integer) obj) + "]");
+                OFHelper.v("1flow", "OneFlow checking events submitted hitting logs delete count[" + ((Integer) obj) + "]");
                 Intent intent = new Intent("events_submitted");
                 intent.putExtra("size", String.valueOf((Integer) obj));
                 mContext.sendBroadcast(intent);
-                OFLogUserRequest lur = new OFOneFlowSHP(mContext).getLogUserRequest();
+                OFLogUserRequest lur = OFOneFlowSHP.getInstance(mContext).getLogUserRequest();
+                OFHelper.v("1flow", "OneFlow checking events submitted hitting logUser["+lur+"]");
                 if (lur != null) {
-                    OFLogUserRepo.logUser(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), lur, this, OFConstants.ApiHitType.logUser);
+                    OFLogUserRepo.logUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), lur, this, OFConstants.ApiHitType.logUser);
                 }
                 break;
             case fetchSubmittedSurvey:
@@ -1053,9 +1054,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 if (obj != null) {
                     OFGetSurveyListResponse gslr = (OFGetSurveyListResponse) obj;
                     if (gslr != null) {
-                        OFHelper.v("FeedbackController", "OneFlow resurvey checked survey found surveyItem[" + new Gson().toJson(gslr) + "]event name[" + reserved + "]");
+                        OFHelper.v("1flow", "OneFlow resurvey checked survey found surveyItem[" + new Gson().toJson(gslr) + "]event name[" + reserved + "]");
 
-                        OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
+                        OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(mContext);
 
                         // resetting counter for similar type of event name
                         ofs.storeValue(OFConstants.SHP_SURVEY_SEARCH_POSITION, 0);
@@ -1128,7 +1129,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     triggerSurvey(gslr, reserved);
                 } else {
                     OFSurveyUserInput ofSurveyUserInput = (OFSurveyUserInput) obj;
-                    OFOneFlowSHP ofs1 = new OFOneFlowSHP(mContext);
+                    OFOneFlowSHP ofs1 = OFOneFlowSHP.getInstance(mContext);
                     OFThrottlingConfig config = ofs1.getThrottlingConfig();
                     OFHelper.v("OneFlow", "OneFlow globalThrottling inside else [" + (ofSurveyUserInput.getCreatedOn() < config.getActivatedAt()) + "]");
                     if (ofSurveyUserInput.getCreatedOn() < config.getActivatedAt()) {
@@ -1143,7 +1144,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     OFLogUserResponse logUserResponse = (OFLogUserResponse) obj;
                     if (logUserResponse != null) {
                         // replacing current session id and user analytical id
-                        OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
+                        OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(mContext);
                         //ofs.storeValue(OFConstants.SHP_LOG_USER_KEY, reserved);//ofs.getLogUserRequest().getSystem_id()); // system id stored for sending next app launch
                         ofs.clearLogUserRequest();
                         OFAddUserResultResponse aurr = ofs.getUserDetails();
@@ -1176,7 +1177,15 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                 break;
             case updateSurveyIds:
-                OFSurveyController.getInstance(mContext).getSurveyFromAPI();
+                if(OFOneFlowSHP.getInstance(mContext).getUserDetails()!=null) {
+                    long surveyFetchTimeDiff = (System.currentTimeMillis()-OFOneFlowSHP.getInstance(mContext).getLongValue(OFConstants.SHP_SURVEY_FETCH_TIME))/1000;
+                    OFHelper.v("OneFlow","OneFlow survey fetch time diff["+surveyFetchTimeDiff+"]");
+                    if(surveyFetchTimeDiff>60) {
+                        OFSurveyController.getInstance(mContext).getSurveyFromAPI();
+                    }
+                }else{
+                    OFHelper.v("OneFlow","OneFlow survey fetch not called as user id not present");
+                }
                 break;
 
         }
@@ -1224,7 +1233,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get(gslr.getSurveySettings().getSdkTheme().getWidgetPosition()));
         }
 
-        OFOneFlowSHP ofs1 = new OFOneFlowSHP(mContext);
+        OFOneFlowSHP ofs1 = OFOneFlowSHP.getInstance(mContext);
 
         HashMap<String, Object> mapValue = new HashMap<>();
         mapValue.put("survey_id", gslr.get_id());
@@ -1244,7 +1253,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             config.setActivatedById(gslr.get_id());
             config.setActivatedAt(System.currentTimeMillis());
 
-            new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+            OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
 
             setupGlobalTimerToDeactivateThrottlingLocally();
         } else {
@@ -1265,7 +1274,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
 
         OFHelper.v("OneFlow", "OneFlow deactivate called ");
-        OFThrottlingConfig config = new OFOneFlowSHP(mContext).getThrottlingConfig();
+        OFThrottlingConfig config = OFOneFlowSHP.getInstance(mContext).getThrottlingConfig();
         OFHelper.v("OneFlow", "OneFlow deactivate called config activated[" + config.isActivated() + "]globalTime[" + config.getGlobalTime() + "]activatedBy[" + config.getActivatedById() + "]");
         //OFMyCountDownTimerThrottling.getInstance(mContext,0l,0l).cancel();
         if (config.getGlobalTime() != null && config.getGlobalTime() > 0) {
@@ -1275,7 +1284,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             OFHelper.v("OneFlow", "OneFlow deactivate called at else");
             config.setActivated(false);
             config.setActivatedById(null);
-            new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+            OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
         }
 
 
@@ -1292,21 +1301,21 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                             OFHelper.v("OneFlow", "OneFlow deactivate called time finished");
                             config.setActivated(false);
                             config.setActivatedById(null);
-                            new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+                            OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
                         }
 
                     }
                 } else {
                     config.setActivated(false);
                     config.setActivatedById(null);
-                    new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+                    OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
                 }
             }
         }*/
     }
 
     public void checkThrottlingLife() {
-        OFOneFlowSHP shp = new OFOneFlowSHP(mContext);
+        OFOneFlowSHP shp = OFOneFlowSHP.getInstance(mContext);
         OFThrottlingConfig config = shp.getThrottlingConfig();
         if (config != null) {
 
@@ -1339,7 +1348,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.set(AlarmManager.RTC_WAKEUP, (config.getGlobalTime() * 1000)+System.currentTimeMillis(), pi);*/
 
-        OFOneFlowSHP shp = new OFOneFlowSHP(mContext);
+        OFOneFlowSHP shp = OFOneFlowSHP.getInstance(mContext);
         shp.storeValue(OFConstants.SHP_THROTTLING_TIME, config.getGlobalTime() * 1000 + System.currentTimeMillis());
 
 
