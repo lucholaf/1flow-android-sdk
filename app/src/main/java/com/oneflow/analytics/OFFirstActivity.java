@@ -84,14 +84,14 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         Long lastHit = ofs.getLongValue(OFConstants.SHP_ONEFLOW_CONFTIMING);
 
-        OFHelper.v(tag,"OneFlow lastHit["+lastHit+"]");
+        OFHelper.v(tag,"1Flow lastHit["+lastHit+"]");
 
-        OFHelper.v(tag,"OneFlow LanguageCodeTAG["+ Locale.getDefault().toLanguageTag()+"]");
-        OFHelper.v(tag,"OneFlow LanguageCodeLanguage["+ Locale.getDefault().getLanguage()+"]");
-        OFHelper.v(tag,"OneFlow LanguageCodeISO3["+ Locale.getDefault().getISO3Language()+"]");
-        OFHelper.v(tag,"OneFlow LanguageCodetoString["+ Locale.getDefault().toString() +"]");
-        OFHelper.v(tag,"OneFlow LanguageCodeDisplayLanguage["+ Locale.getDefault().getDisplayLanguage()+"]");
-        OFHelper.v(tag,"OneFlow LanguageCountry["+Locale.getDefault().getCountry()+"]");
+        OFHelper.v(tag,"1Flow LanguageCodeTAG["+ Locale.getDefault().toLanguageTag()+"]");
+        OFHelper.v(tag,"1Flow LanguageCodeLanguage["+ Locale.getDefault().getLanguage()+"]");
+        OFHelper.v(tag,"1Flow LanguageCodeISO3["+ Locale.getDefault().getISO3Language()+"]");
+        OFHelper.v(tag,"1Flow LanguageCodetoString["+ Locale.getDefault().toString() +"]");
+        OFHelper.v(tag,"1Flow LanguageCodeDisplayLanguage["+ Locale.getDefault().getDisplayLanguage()+"]");
+        OFHelper.v(tag,"1Flow LanguageCountry["+Locale.getDefault().getCountry()+"]");
 
         slr = new ArrayList<>();
         addb = new OFSurveyListAdapter(this, slr, clickListener);

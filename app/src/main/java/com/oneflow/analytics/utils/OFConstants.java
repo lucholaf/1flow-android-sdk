@@ -21,7 +21,7 @@ package com.oneflow.analytics.utils;
 public interface OFConstants {
 
 
-    String currentVersion = "2023.01.22";//2023.01.12";//""2022.11.20";
+    String currentVersion = "2023.01.26";//2023.01.12";//""2022.11.20";
     String MODE = "prod";//"dev";//"
     String DBNAME = "one_flow_db";
     String APPKEYSHP = "one_flow_config_key";
@@ -69,7 +69,7 @@ public interface OFConstants {
 
     enum ApiHitType{
         Config, FirstOpen, CreateUser, CreateSession, RecordLogs, fetchEventsFromDB, sendEventsToAPI, insertEventsInDB,
-        deleteEventsFromDB, logUser, insertSurveyInDB, fetchSurveysFromDB, deleteSurveyFromDB, fetchLocation,
+        deleteEventsFromDB, submittingOfflineSurvey, logUser, insertSurveyInDB, fetchSurveysFromDB, deleteSurveyFromDB, fetchLocation,
         fetchSurveysFromAPI,fetchEventsBeforSurveyFetched,fetchSubmittedSurvey,checkResurveyNSubmission,updateSurveyIds,
         surveySubmited,lastSubmittedSurvey,updateSubmittedSurveyLocally
     }

@@ -815,7 +815,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                     }
                 } else {
                     OFHelper.v(tag, "OneFlow no data connectivity available submit survey later");
-                    OFSDKBaseActivity.this.finish();
+                    //OFSDKBaseActivity.this.finish();
                 }
                 break;
             case surveySubmited:

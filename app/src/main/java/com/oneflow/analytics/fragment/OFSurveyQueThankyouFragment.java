@@ -143,8 +143,6 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                         public void onAnimationEnd(Drawable drawable) {
                             super.onAnimationEnd(drawable);
 
-                            //OFHelper.v(tag,"OneFlow rules["+new Gson().toJson(surveyScreens.getRules())+"]");
-
                             if (surveyScreens.getRules() != null) {
                                 if (surveyScreens.getRules().getDismissBehavior() != null) {
                                     if (surveyScreens.getRules().getDismissBehavior().getFadesAway()) {
@@ -290,7 +288,6 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
         }
     }*/
 
-    Dialog dialog;
 
 
 }

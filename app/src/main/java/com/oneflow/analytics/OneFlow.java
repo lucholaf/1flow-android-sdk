@@ -293,13 +293,13 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         }
 
         if (!ofs.getBooleanValue(OFConstants.SHP_NETWORK_LISTENER, false)) {
-            OFHelper.v("1Flow", "OneFlow network listener registered ");
+            OFHelper.v("1Flow", "1Flow network listener registered ");
             OFNetworkChangeReceiver ncr = new OFNetworkChangeReceiver();
             IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
             mContext.registerReceiver(ncr, intentFilter);
             ofs.storeValue(OFConstants.SHP_NETWORK_LISTENER, true);
         }
-        OFHelper.v("OneFlow", "OneFlow Throttling receiver[" + ofs.getBooleanValue(OFConstants.SHP_THROTTLING_RECEIVER, false) + "]");
+        OFHelper.v("OneFlow", "1Flow Throttling receiver[" + ofs.getBooleanValue(OFConstants.SHP_THROTTLING_RECEIVER, false) + "]");
 
 
 
@@ -310,7 +310,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 Looper.prepare();
 
 
-                OFHelper.v("OneFlow", "OneFlow configure called isConnected[" + OFHelper.isConnected(mContext) + "]");
+                OFHelper.v("OneFlow", "1Flow configure called isConnected[" + OFHelper.isConnected(mContext) + "]");
                 ofs.storeValue(OFConstants.APPIDSHP, projectKey);
 
                 if (OFHelper.isConnected(mContext)) {
@@ -338,7 +338,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 // checking for update, if version number has changed
                 String oldVersion = ofs.getStringValue(OFConstants.SDKVERSIONSHP);
 
-                OFHelper.v("FeedbackController", "OneFlow current version [" + OFConstants.currentVersion + "]old version [" + oldVersion + "]");
+                OFHelper.v("FeedbackController", "1Flow current version [" + OFConstants.currentVersion + "]old version [" + oldVersion + "]");
 
 
                 if (oldVersion.equalsIgnoreCase("NA")) {
@@ -354,7 +354,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 // Looper.loop();
             }
         };
-        OFHelper.v("OneFlow", "OneFlow confThread isAlive[" + confThread.isAlive() + "]");
+        OFHelper.v("OneFlow", "1Flow confThread isAlive[" + confThread.isAlive() + "]");
 
 
         // this logic is required because config was also being called from network change initially
@@ -365,12 +365,12 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             Long currentTime = Calendar.getInstance().getTimeInMillis();
             diff = (currentTime - lastHit) / 1000;
 
-            OFHelper.v("OneFlow", "OneFlow conf recordEvents diff [" + diff + "]currentTime[" + currentTime + "]lastHit[" + lastHit + "]readable[" + OFHelper.formatedDate(lastHit, "yyyy-MM-dd hh:mm:ss") + "]");
+            OFHelper.v("OneFlow", "1Flow conf recordEvents diff [" + diff + "]currentTime[" + currentTime + "]lastHit[" + lastHit + "]readable[" + OFHelper.formatedDate(lastHit, "yyyy-MM-dd hh:mm:ss") + "]");
             if (!ofs.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN, false)) {
                 ofs.storeValue(OFConstants.SHP_ONEFLOW_CONFTIMING, currentTime);
                 confThread.start();
             } else if (lastHit == 0 || diff > 60) {
-                OFHelper.v("OneFlow", "OneFlow conf inside if");
+                OFHelper.v("OneFlow", "1Flow conf inside if");
                 ofs.storeValue(OFConstants.SHP_ONEFLOW_CONFTIMING, currentTime);
                 confThread.start();
             }
@@ -393,7 +393,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             @Override
             public void onBillingServiceDisconnected() {
 
-                Log.v("FakeBillingClass", "Amit payment billing disconnected");
+                Log.v("FakeBillingClass", "1Flow payment billing disconnected");
             }
         });
 
@@ -767,13 +767,13 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     item = slr.get(i);
 
                     counter++;
-                    OFHelper.v(tag, "OneFlow list size 0 [" + item.getTrigger_event_name() + "]firedEventName[" + firedEventName + "]");
+                    OFHelper.v(tag, "1Flow list size 0 [" + item.getTrigger_event_name() + "]firedEventName[" + firedEventName + "]");
                     String[] eventName = item.getTrigger_event_name().split(",");
                     boolean recordFound = false;
                     for (String name : eventName) {
                         if (name.contains(firedEventName)) {
                             gslr = item;
-                            OFHelper.v(tag, "OneFlow survey found on event name[" + firedEventName + "]");
+                            OFHelper.v(tag, "1Flow survey found on event name[" + firedEventName + "]");
                             recordFound = true;
                             break;
                         }
@@ -782,7 +782,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     if (recordFound) {
                         break;
                     } else {
-                        OFHelper.v(tag, "OneFlow survey not found for [" + firedEventName + "] ");
+                        OFHelper.v(tag, "1Flow survey not found for [" + firedEventName + "] ");
                     }
                 }
             } /*else {
@@ -1032,9 +1032,10 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                                     onResponseReceived(OFConstants.ApiHitType.checkResurveyNSubmission, gslr, 0l, eventName, null, null);
                                 }
                             } else {
-                                // as this survey not fired, going to check again if any other survey available with same event name
-                                OFHelper.v("OneFlow", "OneFlow resurvey failed checking list again");
                                 String eventName = (String) obj3;
+                                // as this survey not fired, going to check again if any other survey available with same event name
+                                OFHelper.v("OneFlow", "OneFlow resurvey failed checking list again ["+eventName+"]");
+
                                 checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
                             }
                         } catch (Exception ex) {
