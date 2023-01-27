@@ -814,8 +814,20 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                         }
                     }
                 } else {
-                    OFHelper.v(tag, "OneFlow no data connectivity available submit survey later");
-                    //OFSDKBaseActivity.this.finish();
+                    OFHelper.v(tag, "OneFlow no data connectivity available submit survey later["+position+"]["+screens.size()+"]lastScreen["+screens.get(screens.size()-1).getInput().getInput_type()+"]");
+                    /*this logic is added to avoid wait on thankyou page after clicking close button,
+                     * Below logic will also help to close survey if there is no thankyou page
+                     * */
+                    // OFHelper.v(tag, "OneFlow input response current screen[" + screens.get(position - 1).getInput().getInput_type() + "]");
+                    try {
+                        if (!(screens.get(position - 1).getInput().getInput_type().equalsIgnoreCase("thank_you") ||
+                                screens.get(position - 1).getInput().getInput_type().equalsIgnoreCase("end-screen")
+                        )) {
+                            OFSDKBaseActivity.this.finish();
+                        }
+                    } catch (Exception ex) {
+                        OFSDKBaseActivity.this.finish();
+                    }
                 }
                 break;
             case surveySubmited:

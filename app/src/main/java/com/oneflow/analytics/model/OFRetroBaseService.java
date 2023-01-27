@@ -63,7 +63,7 @@ public class OFRetroBaseService {
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build();
 
-        OFHelper.v("APIClient","BaseUrl ["+BASE_URL+"]");
+
         //.client(OFConstants.MODE.equalsIgnoreCase("dev")?clientDev:clientProd)
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
