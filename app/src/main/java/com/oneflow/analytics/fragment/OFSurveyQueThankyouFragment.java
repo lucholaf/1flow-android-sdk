@@ -81,7 +81,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.survey_que_thankyou_fragment, container, false);
-        OFHelper.v(tag, "OneFlow list data[" + surveyScreens + "]");
+        OFHelper.v(tag, "1Flow list data[" + surveyScreens + "]");
 
 
         thankyouImage = (ImageView) view.findViewById(R.id.thankyou_img);
@@ -219,12 +219,12 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                 sa.closeBtn.setVisibility(View.VISIBLE);
             }
         } catch (Exception ex) {
-            OFHelper.e(tag, "OneFlow Error[" + ex.getMessage() + "]");
+            OFHelper.e(tag, "1Flow Error[" + ex.getMessage() + "]");
         }
     }
 
     private void ruleAction() {
-        //OFHelper.v(tag,"OneFlow thankyou page rule ["+new Gson().toJson(surveyScreens.getRules())+"]");
+        //OFHelper.v(tag,"1Flow thankyou page rule ["+new Gson().toJson(surveyScreens.getRules())+"]");
         if (surveyScreens.getRules() != null) {
             if (surveyScreens.getRules().getDataLogic() != null && surveyScreens.getRules().getDataLogic().size() > 0) {
                 OFDataLogic dl = surveyScreens.getRules().getDataLogic().get(0);
