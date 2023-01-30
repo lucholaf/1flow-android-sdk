@@ -38,6 +38,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
@@ -193,6 +194,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             OFOneFlowSHP fc = OFOneFlowSHP.getInstance(mContext);
             if (OFHelper.validateString(OFHelper.headerKey).equalsIgnoreCase("NA")) {// && !fc.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN,false)) {
                 //if(!fc.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN,false)) {
+                ProcessLifecycleOwner.get().getLifecycle().addObserver(new AppLifecycleListener());
                 configureLocal(mContext, projectKey);
             } else {
                 OFHelper.e("1Flow", "Re-register called, Nothing happen");

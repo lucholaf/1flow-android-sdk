@@ -68,7 +68,7 @@ import java.util.regex.Pattern;
 
 public class OFHelper {
 
-    public static boolean commanLogEnable = false;
+    public static boolean commanLogEnable = true;
     //static boolean verbose = commanEnable;
     //static boolean info = commanEnable;
     //static boolean debug = commanEnable;
