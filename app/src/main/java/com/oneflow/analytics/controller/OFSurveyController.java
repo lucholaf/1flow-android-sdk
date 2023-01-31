@@ -108,6 +108,14 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                 OFHelper.v("SurveyController", "OneFlow survey received throttling[" + reserved + "]");
                 if (obj != null) {
 
+
+                    HashMap<String, Object>  mapvalues = new HashMap<String, Object>();
+                    mapvalues.put("whenStarted",System.currentTimeMillis()/1000);
+
+                    OFEventController ec = OFEventController.getInstance(mContext);
+                    ec.storeEventsInDB(OFConstants.AUTOEVENT_SESSIONSTART, mapvalues, 0);
+
+
                     ArrayList<OFGetSurveyListResponse> surveyListResponse = (ArrayList<OFGetSurveyListResponse>) obj;
                     OFOneFlowSHP shp = OFOneFlowSHP.getInstance(mContext);
                     if (!OFHelper.validateString(reserved).equalsIgnoreCase("NA")) {
@@ -170,9 +178,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                                 } else {
                                     OFHelper.v("SurveyController", "OneFlow no older survey found");
                                 }
-
                             }
-
                         }
                     }
                 }

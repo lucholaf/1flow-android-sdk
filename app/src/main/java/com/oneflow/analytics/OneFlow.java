@@ -570,7 +570,34 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         }
     }
 
+    public static void recordEventsWithoutSurvey(String eventName, HashMap eventValues) {
 
+        OFHelper.v("1Flow", "1Flow recordEvents record called without firing survey with[" + eventName + "]at[" + OFHelper.formatedDate(System.currentTimeMillis(), "dd-MM-yyyy hh:mm:ss.SSS") + "]");
+        try {
+            OneFlow of = new OneFlow(mContext);
+            of.checkThrottlingLife(); //checking throttling life span if activated.
+            // this 'if' is for converting date object to second format(timestamp)
+            if (eventValues != null) {
+                eventValues = OFHelper.checkDateInHashMap(eventValues);
+            }
+            OFHelper.v("1Flow", "1Flow recordEvents record called without firing survey with[" + eventValues + "]");
+            if (mContext != null) {
+                // storage, api call and check survey if available.
+                //EventController.getInstance(mContext).storeEventsInDB(eventName, eventValues, 0);
+                OFEventController ec = OFEventController.getInstance(mContext);
+                ec.storeEventsInDB(eventName, eventValues, 0);
+
+
+                //Checking if any survey available under coming event.
+                //of.checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
+
+            } else {
+                OFHelper.v("1Flow", "1Flow null context for event");
+            }
+        } catch (Exception ex) {
+
+        }
+    }
 
     /*public static void logUser(String uniqueId, HashMap<String, String> mapValue) {
         if (OFHelper.isConnected(mContext)) {

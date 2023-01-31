@@ -50,6 +50,11 @@ public class OFRetroBaseService {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
+        if(!OFHelper.commanLogEnable) {
+            interceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+        }
+
+
         //.readTimeout(120, TimeUnit.SECONDS)
         //.addInterceptor(interceptor)
         OkHttpClient clientDev = new OkHttpClient.Builder()
@@ -58,10 +63,15 @@ public class OFRetroBaseService {
                 .addInterceptor(interceptor)
                 .build();
 
+
+
         OkHttpClient clientProd = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
+                .addInterceptor(interceptor)
                 .build();
+
+
 
 
         //.client(OFConstants.MODE.equalsIgnoreCase("dev")?clientDev:clientProd)
