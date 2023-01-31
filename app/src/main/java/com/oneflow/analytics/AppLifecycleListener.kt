@@ -1,3 +1,4 @@
+
 package com.oneflow.analytics
 
 import androidx.lifecycle.Lifecycle
@@ -15,7 +16,7 @@ class AppLifecycleListener : LifecycleObserver {
         //GetSurveyListResponse surveyItem = checkSurveyTitleAndScreens(tag);
         val mapvalues = HashMap<String, Long>()
         mapvalues.put("whenStarted",System.currentTimeMillis()/1000)
-        OneFlow.recordEventsWithoutSurvey(OFConstants.AUTOEVENT_SESSIONSTART, mapvalues);
+        OneFlow.recordEventsWithoutSurvey(OFConstants.AUTOEVENT_SESSIONSTART, null);
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)

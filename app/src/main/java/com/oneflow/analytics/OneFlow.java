@@ -917,6 +917,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                         oneFlowSHP.storeValue(OFConstants.AUTOEVENT_FIRSTOPEN, true);
                     }
 
+                    OFEventController ec = OFEventController.getInstance(mContext);
+                    ec.storeEventsInDB(OFConstants.AUTOEVENT_SESSIONSTART, null, 0);
+
                     //calling fetch survey api on ADD USER success changed on 17-01-23
                     OFSurveyController.getInstance(mContext).getSurveyFromAPI();
 

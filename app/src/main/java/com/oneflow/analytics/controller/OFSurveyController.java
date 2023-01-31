@@ -109,11 +109,10 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                 if (obj != null) {
 
 
-                    HashMap<String, Object>  mapvalues = new HashMap<String, Object>();
-                    mapvalues.put("whenStarted",System.currentTimeMillis()/1000);
+                    /*HashMap<String, Object>  mapvalues = new HashMap<String, Object>();
+                    mapvalues.put("whenStarted",System.currentTimeMillis()/1000);*/
 
-                    OFEventController ec = OFEventController.getInstance(mContext);
-                    ec.storeEventsInDB(OFConstants.AUTOEVENT_SESSIONSTART, mapvalues, 0);
+
 
 
                     ArrayList<OFGetSurveyListResponse> surveyListResponse = (ArrayList<OFGetSurveyListResponse>) obj;
