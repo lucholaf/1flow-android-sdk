@@ -34,7 +34,7 @@ public interface OFRecordEventDAO {
     OFRecordEventsTab getAllRecordedEvents();
 
     @Query("Select name from RecordEvents where created_on<:surveyTime")
-    String[] getEventBeforeSurvey(Long surveyTime);
+    String[] getEventBeforeSurveyFetched(Long surveyTime);
 
    /* @Query("Select * from RecordEvents")// where name like :eventName
     List<OFRecordEventsTab> findIfEventAlreadyLogged();//String eventName);*/
