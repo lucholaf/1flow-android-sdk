@@ -194,7 +194,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             OFOneFlowSHP fc = OFOneFlowSHP.getInstance(mContext);
             if (OFHelper.validateString(OFHelper.headerKey).equalsIgnoreCase("NA")) {// && !fc.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN,false)) {
                 //if(!fc.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN,false)) {
-                ProcessLifecycleOwner.get().getLifecycle().addObserver(new AppLifecycleListener());
+                //ProcessLifecycleOwner.get().getLifecycle().addObserver(new AppLifecycleListener(mContext));
                 configureLocal(mContext, projectKey);
             } else {
                 OFHelper.e("1Flow", "Re-register called, Nothing happen");
@@ -485,7 +485,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
         HashMap<String,Object> network = new HashMap<>();
         network.put("carrier", connectivity.getCarrier());
-        network.put("wifi",connectivity.getRadio()!=null?connectivity.getRadio():false);
+        //network.put("wifi",connectivity.getRadio()!=null?connectivity.getRadio():false);
+        network.put("wifi",connectivity.getRadio()!=null?true:false);
 
         HashMap<String,String> os = new HashMap<>();
         os.put("name", "android");
@@ -917,8 +918,15 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                         oneFlowSHP.storeValue(OFConstants.AUTOEVENT_FIRSTOPEN, true);
                     }
 
-                    OFEventController ec = OFEventController.getInstance(mContext);
-                    ec.storeEventsInDB(OFConstants.AUTOEVENT_SESSIONSTART, null, 0);
+                    if(!oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_SESSIONSTART,false)) {
+                        OFEventController ec = OFEventController.getInstance(mContext);
+                        ec.storeEventsInDB(OFConstants.AUTOEVENT_SESSIONSTART, null, 0);
+
+                        oneFlowSHP.storeValue(OFConstants.AUTOEVENT_SESSIONSTART, true);
+                        ProcessLifecycleOwner.get().getLifecycle().addObserver(new AppLifecycleListener(mContext));
+                    }else{
+                        OFHelper.v("1Flow", "1Flow app is in start_session already recorded.");
+                    }
 
                     //calling fetch survey api on ADD USER success changed on 17-01-23
                     OFSurveyController.getInstance(mContext).getSurveyFromAPI();
