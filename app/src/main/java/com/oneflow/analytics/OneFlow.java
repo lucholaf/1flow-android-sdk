@@ -476,8 +476,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         app.put("build",app_ver_code);
 
         HashMap<String,String> library = new HashMap<>();
-        library.put("version", Build.MANUFACTURER);
-        library.put("name",Build.DEVICE);
+        library.put("version", OFConstants.currentVersion);
+        library.put("name","1flow-android-sdk");
 
 
 
@@ -642,7 +642,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 if (aurr != null) {
                     OFHelper.v("OneFlow", "OneFlow logUser data stored 2");
                     OFLogUserRequest lur = new OFLogUserRequest();
-                    lur.setUser_id(aurr.getAnalytic_user_id());
+                    lur.setUser_id("rqqVmpdHc9QsKbZuz9P5YqPaEb23");//aurr.getAnalytic_user_id());
                     lur.setAnonymous_user_id(aurr.getAnalytic_user_id());
                     lur.setParameters(userDetail);
                     OFOneFlowSHP.getInstance(mContext).setLogUserRequest(lur);
@@ -1308,7 +1308,10 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         surveyIntent.putExtra("SurveyType", gslr);
         surveyIntent.putExtra("eventName", eventName);
 
-        mContext.getApplicationContext().startActivity(surveyIntent);
+        OFHelper.v("1Flow","1Flow activity running["+OFSDKBaseActivity.isActive+"]");
+        if(!OFSDKBaseActivity.isActive) {
+            mContext.getApplicationContext().startActivity(surveyIntent);
+        }
     }
 
     private void setupGlobalTimerToDeactivateThrottlingLocally() {

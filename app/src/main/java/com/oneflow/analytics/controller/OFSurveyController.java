@@ -23,6 +23,7 @@ import android.content.Intent;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.oneflow.analytics.OFSDKBaseActivity;
 import com.oneflow.analytics.OFSurveyActivityBannerBottom;
 import com.oneflow.analytics.OFSurveyActivityBannerTop;
 import com.oneflow.analytics.OFSurveyActivityBottom;
@@ -173,7 +174,11 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                                     surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     surveyIntent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
                                     surveyIntent.putExtra("eventName", (String) ret[0]);
-                                    mContext.getApplicationContext().startActivity(surveyIntent);
+
+                                    OFHelper.v("1Flow","1Flow activity running["+ OFSDKBaseActivity.isActive+"]");
+                                    if(!OFSDKBaseActivity.isActive) {
+                                        mContext.getApplicationContext().startActivity(surveyIntent);
+                                    }
                                 } else {
                                     OFHelper.v("SurveyController", "OneFlow no older survey found");
                                 }

@@ -271,6 +271,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
         }
 
+        isActive = true;
 
         if (sdkTheme.getDark_overlay()) {
             window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND); // This flag is required to set otherwise the setDimAmount method will not show any effect
@@ -282,6 +283,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         initFragment();
     }
 
+    public static boolean isActive;
     @Override
     public void onBackPressed() {
         if (false) {//!sdkTheme.getClose_button()) {
@@ -353,6 +355,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     @Override
     protected void onStop() {
         super.onStop();
+        isActive = false;
         OFHelper.v(tag, "1Flow onStop called");
         /*OFOneFlowSHP ofs1 = new OFOneFlowSHP(this);
         ofs1.storeValue(OFConstants.SHP_SURVEY_RUNNING, true);*/
