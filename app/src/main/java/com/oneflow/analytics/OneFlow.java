@@ -371,7 +371,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             if (!ofs.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN, false)) {
                 ofs.storeValue(OFConstants.SHP_ONEFLOW_CONFTIMING, currentTime);
                 confThread.start();
-            } else if (lastHit == 0 || diff > 60) {
+            } else if (lastHit == 0 || diff > 10) {//reduced to 10 sec as not hitting everytime
                 OFHelper.v("OneFlow", "1Flow conf inside if");
                 ofs.storeValue(OFConstants.SHP_ONEFLOW_CONFTIMING, currentTime);
                 confThread.start();
@@ -642,7 +642,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 if (aurr != null) {
                     OFHelper.v("OneFlow", "OneFlow logUser data stored 2");
                     OFLogUserRequest lur = new OFLogUserRequest();
-                    lur.setUser_id("rqqVmpdHc9QsKbZuz9P5YqPaEb23");//aurr.getAnalytic_user_id());
+                    lur.setUser_id(uniqueId);//"rqqVmpdHc9QsKbZuz9P5YqPaEb23");//aurr.getAnalytic_user_id());
                     lur.setAnonymous_user_id(aurr.getAnalytic_user_id());
                     lur.setParameters(userDetail);
                     OFOneFlowSHP.getInstance(mContext).setLogUserRequest(lur);
