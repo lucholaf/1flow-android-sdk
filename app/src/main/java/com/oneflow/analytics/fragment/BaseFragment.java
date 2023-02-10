@@ -10,13 +10,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.oneflow.analytics.OFSDKBaseActivity;
 import com.oneflow.analytics.OFSurveyActivityFullScreen;
+import com.oneflow.analytics.customwidgets.OFCustomeWebView;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.utils.OFHelper;
@@ -25,6 +29,9 @@ public class BaseFragment extends Fragment {
     public boolean isActive = false;
     public GradientDrawable gdSubmit;
     public OFSDKBaseActivity sa;
+    public View webLayout;
+    public ProgressBar pBar;
+    public OFCustomeWebView webContent;
     LinearLayout waterMarkLayout;
     public OFSurveyScreens surveyScreens;
     public OFSDKSettingsTheme sdkTheme;
@@ -61,6 +68,35 @@ public class BaseFragment extends Fragment {
 
     }
 
+    public void setupWeb(){
+        if(OFHelper.validateString(surveyScreens.getMediaEmbedHTML()).equalsIgnoreCase("NA")){
+            webLayout.setVisibility(View.GONE);
+        }else{
+            webLayout.setVisibility(View.VISIBLE);
+
+            webContent.setWebChromeClient(new WebChromeClient() {
+                                              @Override
+                                              public void onProgressChanged(WebView view, int newProgress) {
+
+                                                  super.onProgressChanged(view, newProgress);
+
+                                                  if (newProgress == 100) {
+                                                      pBar.setVisibility(View.GONE);
+                                                      //webContent.setVisibility(View.VISIBLE);
+
+                                                  } else {
+                                                      pBar.setProgress(newProgress);
+                                                  }
+                                              }
+                                          }
+                );
+
+
+            String webData = "<html><body style='margin:0;padding:0;'>"+surveyScreens.getMediaEmbedHTML()+"</body></html>";
+            webContent.loadData(webData,"text/html", "UTF-8");
+        }
+
+    }
     public void transitActive() {
         int colorFrom = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);//getResources().getColor(R.color.ratings_focused);
         int colorTo = Color.parseColor(sa.themeColor);

@@ -59,12 +59,12 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
     String tag = this.getClass().getName();
     OFCustomTextView  sendLogsToAPI,noSurvey;
-    // OFCustomEditText fakeEditText;
+   // OFCustomEditText fakeEditText;
     RecyclerView listOfSurvey;
     ProgressBar progressBar;
     ArrayList<OFGetSurveyListResponse> slr;
     OFSurveyListAdapter addb;
-    Boolean configureCalled = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +119,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         OFFontSetup optionsFont = new OFFontSetup(faceBold, 12f);*/
 
-        // String projectKey = "oneflow_sandbox_2Z9e492aa1qH22E2SnoSAT5broVR80RF9EXhQ0UcOTyZNgDRCsS4Y88hG4mL+IjPURFgrvCIsuNtUinVIr/ClQ==";
+       // String projectKey = "oneflow_sandbox_2Z9e492aa1qH22E2SnoSAT5broVR80RF9EXhQ0UcOTyZNgDRCsS4Y88hG4mL+IjPURFgrvCIsuNtUinVIr/ClQ==";
         //String projectKey = "oneflow_sandbox_9NtGc0TDDoOiq+c4z1OTaYpAsu6wUfZ+qECnLtbRYDKiSvMn+sbP+Y1UuSt3bu2RfOr+N4ZNk+84ZEyCeFgJGg==";
         //String projectKey = "oneflow_sandbox_hPz4Tfti7FgaKJ+yTdDGgf+OTNdW2czSmdAFMJL40tGbCqDWfswx+2Zy47zGdcax6zwdQRaYJugbfKglb2SLFA=="; //FakeProject
         //String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";
@@ -133,11 +133,9 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         //OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);
 
-        String projectKey = ofs.getStringValue(OFConstants.APPIDSHP);
+        String projectKey = ofs.getStringValue(OFConstants.SHP_PROJECT_KEY);
 
-        OFHelper.v(tag,"1Flow projectKey["+projectKey+"]");
         if(!OFHelper.validateString(projectKey).equalsIgnoreCase("na")) {
-            configureCalled = true;
             configureOneFlow(projectKey);
         }else{
             //OFHelper.makeText(this,"Project key not available, Won't call OneFlow config",1);
@@ -156,22 +154,12 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         //OneFlow.useFont("fonts/pacifico.ttf");
         OneFlow.shouldShowSurvey(true);
         OneFlow.shouldPrintLog(true);
-
-
-        HashMap<String, Object> mapValue = new HashMap<>();
-        mapValue.put("location", "MP");
-        mapValue.put("env", "Prod");
-        mapValue.put("name", "Amit kumar");
-
-        OneFlow.logUser("ImmediateUser", mapValue);
     }
     private void showCofigureDialog(){
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_project_key);
         OFCustomEditText projectKeyET = dialog.findViewById(R.id.project_key);
-        String projectKey = "oneflow_prod_UjlFunf96DxcEXXXgJKqm32q1RDIYXbmDkepkDmomBoDdlzXQM/U9qzEAKh6yj34xfQQT1Ejp0ltJnF9wGJU5Q==";// [TEST] All Screens
-        //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
-        //String projectKey = "oneflow_prod_yxwI14oGAEhYgOEJjo43IsoKuWbSPoXBcKD+Bj5UkiZtPXb1vuuBkRUm5YxfBCs6thcsxPWbxDeJHJZlSGzxkw==";//[TEST]Flutter/React Native SDKs
+        String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
         projectKeyET.setText(projectKey);
         OFCustomTextView registerButton = dialog.findViewById(R.id.register_project);
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -247,15 +235,13 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         super.onResume();
         //Helper.makeText(this,"isConnected["+Helper.isInternetAvailable()+"]",1);
 
-        if(!configureCalled) {
-            slr = OFOneFlowSHP.getInstance(OFFirstActivity.this).getSurveyList();
-            if (slr != null) {
-                addb.notifyMyList(slr);
-                noSurvey.setVisibility(View.GONE);
-            }
-
-            new OFEventDBRepoKT().fetchEvents(this, this, OFConstants.ApiHitType.fetchEventsFromDB);
+        slr = OFOneFlowSHP.getInstance(OFFirstActivity.this).getSurveyList();
+        if (slr != null) {
+            addb.notifyMyList(slr);
+            noSurvey.setVisibility(View.GONE);
         }
+
+        new OFEventDBRepoKT().fetchEvents(this, this, OFConstants.ApiHitType.fetchEventsFromDB);
     }
 
     public void clickHandler(View v) {
@@ -332,21 +318,21 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
                     OFDataLogic obj[] = new OFDataLogic[]{dl};
                     //if (!edittext.getText().toString().isEmpty()) {
-                    dialog.cancel();
-                    HashMap<String, Object> mapValue = new HashMap<>();
-                    mapValue.put("location", "Bihar");
-                    mapValue.put("env", null);
-                    mapValue.put("name", "Amit kumar");
-                    mapValue.put("age", 86);
-                    mapValue.put("isActive", true);
-                    mapValue.put("desitance", 25.16);
-                    mapValue.put("timestamp", System.currentTimeMillis());
-                    mapValue.put("DateObj", new Date());
-                    mapValue.put("StringArray", b);
-                    mapValue.put("IntArray", a);
-                    mapValue.put("pojo", dl);
-                    mapValue.put("pojoArray", obj);
-                    OneFlow.logUser(edittext.getText().toString(), mapValue);
+                        dialog.cancel();
+                        HashMap<String, Object> mapValue = new HashMap<>();
+                        mapValue.put("location", "Bihar");
+                        mapValue.put("env", null);
+                        mapValue.put("name", "Amit kumar");
+                        mapValue.put("age", 86);
+                        mapValue.put("isActive", true);
+                        mapValue.put("desitance", 25.16);
+                        mapValue.put("timestamp", System.currentTimeMillis());
+                        mapValue.put("DateObj", new Date());
+                        mapValue.put("StringArray", b);
+                        mapValue.put("IntArray", a);
+                        mapValue.put("pojo", dl);
+                        mapValue.put("pojoArray", obj);
+                        OneFlow.logUser(edittext.getText().toString(), mapValue);
                     /*} else {
                         OFHelper.makeText(OFFirstActivity.this, "Enter email id", 1);
                     }*/

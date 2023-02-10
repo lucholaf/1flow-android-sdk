@@ -40,6 +40,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.adapter.OFSurveyOptionsAdapter;
@@ -214,7 +215,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         optionLayout = (RelativeLayout) view.findViewById(R.id.option_layout);
         waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
 
-
+        OFHelper.v(tag, "1Flow list data[" + new Gson().toJson(surveyScreens) + "]");
         int colorTitle = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 1.0f);
 
         surveyTitle.setTextColor(colorTitle);
@@ -290,6 +291,14 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         }/*else{
             ratingsFullLike.setText("Extermely likely");
         }*/
+
+        webLayout = view.findViewById(R.id.weblayout);
+        webContent = view.findViewById(R.id.webview_contents);
+        pBar = view.findViewById(R.id.pbar);
+        webContent.getSettings().setJavaScriptEnabled(true);
+        webContent.getSettings().setMediaPlaybackRequiresUserGesture(false);
+        setupWeb();
+
 
         OFHelper.v(tag, "1Flow input type [" + surveyScreens.getInput().getInput_type() + "][" + surveyScreens.getInput().getStars() + "]min[" + surveyScreens.getInput().getMin_val() + "][" + surveyScreens.getInput().getMax_val() + "][][][]");
         if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical")) {

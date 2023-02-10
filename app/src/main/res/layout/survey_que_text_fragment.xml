@@ -21,10 +21,12 @@
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        >
 
         <com.oneflow.analytics.customwidgets.OFCustomTextViewBold
             android:id="@+id/survey_title"
@@ -52,11 +54,19 @@
             android:textSize="@dimen/page_sub_header_3"
             android:visibility="invisible" />
 
+
+
         <RelativeLayout
             android:id="@+id/input_layout_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/survey_description">
+
+            <include layout="@layout/survey_webview_fragment"
+                android:visibility="visible"
+                android:id="@+id/weblayout"
+
+                />
 
             <com.oneflow.analytics.customwidgets.OFCustomEditText
                 android:id="@+id/child_user_input_short"
@@ -65,6 +75,7 @@
                 android:layout_margin="@dimen/field_padding"
                 android:background="@drawable/gray_rectangle_withborder"
                 android:hint="Type here"
+                android:layout_below="@id/weblayout"
                 android:padding="@dimen/field_padding"
                 android:textSize="@dimen/page_sub_header_3"
                 android:visibility="invisible" />
@@ -152,5 +163,5 @@
                 android:text="@string/powered_by"
                 android:textColor="@color/powored_by_txt_color" />
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>
