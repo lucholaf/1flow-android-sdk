@@ -19,6 +19,7 @@
 package com.oneflow.analytics;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,6 +28,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -56,8 +58,8 @@ import java.util.Locale;
 public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHandlerOneFlow {
 
     String tag = this.getClass().getName();
-    OFCustomTextView result, sendLogsToAPI,noSurvey;
-    OFCustomEditText fakeEditText;
+    OFCustomTextView  sendLogsToAPI,noSurvey;
+   // OFCustomEditText fakeEditText;
     RecyclerView listOfSurvey;
     ProgressBar progressBar;
     ArrayList<OFGetSurveyListResponse> slr;
@@ -68,11 +70,11 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        result = (OFCustomTextView) findViewById(R.id.result);
+
         noSurvey = (OFCustomTextView) findViewById(R.id.no_survey);
         sendLogsToAPI = (OFCustomTextView) findViewById(R.id.send_log_to_api);
         listOfSurvey = (RecyclerView) findViewById(R.id.list_of_survey);
-        fakeEditText = (OFCustomEditText) findViewById(R.id.fake_edit_text);
+
         progressBar = (ProgressBar) findViewById(R.id.progress_circular);
 
         /*Long lastHit = new SHPRepo().getLongShp(this,OFConstants.SHP_ONEFLOW_CONFTIMING);
@@ -123,22 +125,58 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         //String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";
         //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";
         //String projectKey = "oneflow_prod_OUl/Rzs1AwluTu8j+N2QkdR9ubxrJV7V9ukU9rPp433upW9FghUGVZ947Ntfnvfw/xh00BpYqN8qtTqPvr4KVg=="; //languageTesting
-       String projectKey = this.getIntent().getStringExtra("pk");//"oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw=="; //AmitRepeatTest
-       // String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
+        //String projectKey = this.getIntent().getStringExtra("pk");//"oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw=="; //AmitRepeatTest
+        //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
+        //String projectKey = "oneflow_prod_gPLMkuXlCdPnp+ikjwtBWG9uutMePpF62ML0bdOQjCQYk+ULP70N/+KhUdDdQtIFRRlAz53CuReZPYFAaiCaug==";//HeyFam
         //String projectKey = "oneflow_prod_rjz2cV390BlTDSHQi1zHeL8w09+/ZQOJe7mpXJ1SY05sA2UapiKIZl+BwOq0JFoXJIxaXm87TQVo9MQnokf4fQ==";//WelcomeEndScreen
         //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
 
         //OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);
+
+        String projectKey = ofs.getStringValue(OFConstants.SHP_PROJECT_KEY);
+
+        if(!OFHelper.validateString(projectKey).equalsIgnoreCase("na")) {
+            configureOneFlow(projectKey);
+        }else{
+            //OFHelper.makeText(this,"Project key not available, Won't call OneFlow config",1);
+            noSurvey.setText("Configure not called");
+            progressBar.setVisibility(View.GONE);
+            noSurvey.setVisibility(View.VISIBLE);
+        }
+
+        /*fakeEditText.setHintTextColor(Color.parseColor("#00ff00"));
+        fakeEditText.setTextColor(Color.parseColor("#0000ff"));*/
+
+    }
+
+    private void configureOneFlow(String projectKey){
         OneFlow.configure(getApplicationContext(), projectKey);//"fonts/pacifico1.ttf");//,titleSetup,descriptionFont,optionsFont);
         //OneFlow.useFont("fonts/pacifico.ttf");
         OneFlow.shouldShowSurvey(true);
         OneFlow.shouldPrintLog(true);
-
-        fakeEditText.setHintTextColor(Color.parseColor("#00ff00"));
-        fakeEditText.setTextColor(Color.parseColor("#0000ff"));
-
     }
-
+    private void showCofigureDialog(){
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.activity_project_key);
+        OFCustomEditText projectKeyET = dialog.findViewById(R.id.project_key);
+        String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
+        projectKeyET.setText(projectKey);
+        OFCustomTextView registerButton = dialog.findViewById(R.id.register_project);
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(projectKeyET.getText().toString().equalsIgnoreCase("")){
+                    OFHelper.makeText(OFFirstActivity.this,"Please enter project key",1);
+                }else {
+                    dialog.cancel();
+                    noSurvey.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    configureOneFlow(projectKeyET.getText().toString());
+                }
+            }
+        });
+        dialog.show();
+    }
     BroadcastReceiver listFetched = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -148,7 +186,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
             if (intent.getAction().equalsIgnoreCase("survey_list_fetched")) {
                 slr = OFOneFlowSHP.getInstance(OFFirstActivity.this).getSurveyList();
                 progressBar.setVisibility(View.GONE);
-
+                OFHelper.v(tag, "OneFlow reached receiver 0["+slr+"]msg["+intent.getStringExtra("msg")+"]");
                 if(slr!=null) {
                     if (slr.size() > 0) {
                         listOfSurvey.setVisibility(View.VISIBLE);
@@ -200,6 +238,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         slr = OFOneFlowSHP.getInstance(OFFirstActivity.this).getSurveyList();
         if (slr != null) {
             addb.notifyMyList(slr);
+            noSurvey.setVisibility(View.GONE);
         }
 
         new OFEventDBRepoKT().fetchEvents(this, this, OFConstants.ApiHitType.fetchEventsFromDB);
@@ -207,7 +246,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
     public void clickHandler(View v) {
 
-        if (v.getId() == R.id.get_location) {
+        /*if (v.getId() == R.id.get_location) {
             // Helper.makeText(FirstActivity.this, "Clicked on button 3", 1);
             //new FeedbackController(this).getLocation();
         } else if (v.getId() == R.id.fetch_survey_list) {
@@ -216,10 +255,8 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         } else if (v.getId() == R.id.project_details) {
             // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
             //new FeedbackController(this).getProjectDetails();
-        } else if (v.getId() == R.id.send_log_to_api) {
-            // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
-            OneFlow.sendEventsToApi(this);
-        } else if (v.getId() == R.id.connect_vpn) {
+        } else*/
+       /* else if (v.getId() == R.id.connect_vpn) {
             // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
 
             HashMap<String, String> mapvalues = new HashMap<String, String>();
@@ -251,7 +288,14 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         } else if (v.getId() == R.id.configure_project) {
 
             OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");
-        } else if (v.getId() == R.id.log_user) {
+        }*/
+        if (v.getId() == R.id.send_log_to_api) {
+            // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
+            OneFlow.sendEventsToApi(this);
+        }else if (v.getId()== R.id.configure_oneflow){
+            showCofigureDialog();
+        }
+        else if (v.getId() == R.id.log_user) {
 
             String emailId = "";
             final EditText edittext = new EditText(this);

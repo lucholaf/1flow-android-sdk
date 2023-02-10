@@ -37,6 +37,17 @@ public class OFSurveyScreens extends OFBaseModel {
     @SerializedName("rules")
     private OFRules rules;
 
+    @SerializedName("media_embed_html")
+    private String mediaEmbedHTML;
+
+    public String getMediaEmbedHTML() {
+        return mediaEmbedHTML;
+    }
+
+    public void setMediaEmbedHTML(String mediaEmbedHTML) {
+        this.mediaEmbedHTML = mediaEmbedHTML;
+    }
+
     public OFRules getRules() {
         return rules;
     }

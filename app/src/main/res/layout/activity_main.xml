@@ -16,7 +16,7 @@
   ~
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -26,20 +26,22 @@
     tools:context=".OFFirstActivity">
 
     <ProgressBar
-
         android:layout_height="50dp"
         android:layout_width="50dp"
         android:id="@+id/progress_circular"
-        android:layout_gravity="center|center_vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
         />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_of_survey"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
-        android:visibility="gone"/>
+        android:layout_height="wrap_content"
+        android:layout_above="@id/configure_oneflow"
+        android:layout_alignParentTop="true"
+        android:visibility="visible"
+
+        />
 
     <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/no_survey"
@@ -55,168 +57,39 @@
         android:layout_gravity="center_vertical|center_horizontal"
          />
 
-    <TextView
-        android:id="@+id/configure_project"
-        style="@style/comman_positive_button_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/page_margin"
-        android:onClick="clickHandler"
-        android:padding="10dp"
-        android:text="Configure Project"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+
 
     <com.oneflow.analytics.customwidgets.OFCustomTextView
-        android:id="@+id/project_details"
+        android:id="@+id/configure_oneflow"
         style="@style/comman_positive_button_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/page_margin"
-        android:background="@drawable/btn_rounded_rectangle_normal"
-        android:onClick="clickHandler"
-        android:padding="10dp"
-        android:text="Fetch Project Details"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.oneflow.analytics.customwidgets.OFCustomTextView
-        android:id="@+id/create_user"
-        style="@style/comman_positive_button_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/page_margin"
-        android:background="@drawable/btn_rounded_rectangle_normal"
-        android:onClick="clickHandler"
-        android:padding="10dp"
-        android:text="Create User"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.oneflow.analytics.customwidgets.OFCustomTextView
-        android:id="@+id/create_session"
-        style="@style/comman_positive_button_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/page_margin"
-        android:background="@drawable/btn_rounded_rectangle_normal"
-        android:onClick="clickHandler"
-        android:padding="10dp"
-        android:text="Create Session"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.oneflow.analytics.customwidgets.OFCustomTextView
-        android:id="@+id/fetch_survey_list"
-        style="@style/comman_positive_button_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/page_margin"
-        android:background="@drawable/btn_rounded_rectangle_normal"
-        android:onClick="clickHandler"
-        android:padding="10dp"
-        android:text="Fetch Survey"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.oneflow.analytics.customwidgets.OFCustomEditText
-        android:id="@+id/fake_edit_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Type Here"
-        android:visibility="gone"
-        />
-
-    <com.oneflow.analytics.customwidgets.OFCustomTextView
-        android:id="@+id/record_log"
-        style="@style/comman_positive_button_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/page_margin"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="@dimen/page_margin"
+        android:layout_margin="8dp"
         android:background="@drawable/btn_selector"
         android:onClick="clickHandler"
         android:padding="10dp"
-        android:tag="button_clicked"
-        android:text="button_clicked"
+        android:tag="configure_oneflow"
+        android:text="Configure OneFlow"
+        android:layout_above="@id/log_user"
         android:visibility="visible"
-        android:layout_gravity="bottom" />
+         />
 
-    <com.oneflow.analytics.customwidgets.OFCustomTextView
-        android:id="@+id/connect_vpn"
-        style="@style/comman_positive_button_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/page_margin"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="@dimen/page_margin"
-        android:background="@drawable/btn_rounded_rectangle_normal"
-        android:onClick="clickHandler"
-        android:padding="10dp"
-        android:text="Connect VPN"
-        android:visibility="gone" />
-
-    <com.oneflow.analytics.customwidgets.OFCustomTextView
-        android:id="@+id/disconnect_vpn"
-        style="@style/comman_positive_button_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/page_margin"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="@dimen/page_margin"
-        android:background="@drawable/btn_rounded_rectangle_normal"
-        android:onClick="clickHandler"
-        android:padding="10dp"
-        android:text="DisConnect VPN"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.oneflow.analytics.customwidgets.OFCustomTextView
-        android:id="@+id/get_location"
-        style="@style/comman_positive_button_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/page_margin"
-        android:background="@drawable/btn_rounded_rectangle_normal"
-        android:onClick="clickHandler"
-        android:padding="10dp"
-        android:text="Get Location"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/log_user"
         style="@style/comman_positive_button_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/page_margin"
+        android:layout_margin="8dp"
         android:background="@drawable/btn_rounded_rectangle_normal"
         android:onClick="clickHandler"
         android:padding="10dp"
         android:text="Log User"
-        android:layout_gravity="bottom"
+        android:layout_above="@id/send_log_to_api"
         android:visibility="visible" />
 
     <com.oneflow.analytics.customwidgets.OFCustomTextView
@@ -224,26 +97,15 @@
         style="@style/comman_positive_button_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_margin="@dimen/page_margin"
+
+        android:layout_margin="8dp"
         android:background="@drawable/btn_rounded_rectangle_normal"
         android:onClick="clickHandler"
         android:padding="10dp"
         android:text="Send Events to API"
+        android:layout_alignParentBottom="true"
         android:visibility="visible" />
 
-    <com.oneflow.analytics.customwidgets.OFCustomTextView
-        android:id="@+id/result"
-        style="@style/comman_positive_button_style"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/page_margin"
-        android:background="@drawable/btn_rounded_rectangle_normal"
-        android:text="Result"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+
+</RelativeLayout>

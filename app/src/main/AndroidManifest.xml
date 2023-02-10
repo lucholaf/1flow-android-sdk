@@ -28,6 +28,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
+
         android:supportsRtl="true"
         android:theme="@style/Theme.TrySkySDK">
 
@@ -35,13 +36,15 @@
 
 
         <activity android:name="com.oneflow.analytics.OFProjectKeyActivity">
-            <!--<intent-filter>
+
+        </activity>
+        <activity android:name="com.oneflow.analytics.OFFirstActivity">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
-        <activity android:name="com.oneflow.analytics.OFFirstActivity"/>
         <!--
 <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
@@ -67,6 +70,7 @@
             android:name="com.oneflow.analytics.OFSurveyActivityFullScreen"
             android:theme="@style/CDialogThemeFullScreen"
             ></activity>
+        <!--<receiver android:name=".utils.OFThrottlingAlarm"/>-->
     </application>
 
 </manifest>
