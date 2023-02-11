@@ -32,8 +32,8 @@ android {
         //applicationId "com.circo.oneflow"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 21
-        versionName "2023.02.06"
+        versionCode 22
+        versionName "2023.02.08"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -55,7 +55,7 @@ android {
 }
 
 def lifeCycleVersion = '1.1.1'
-def retroFitVersion = '2.3.0'
+def retroFitVersion = '2.9.0'
 //def daggerVersion = '2.13'
 def glideVersion = '4.12.0'
 //def mockitoVersion = '2.11.0'

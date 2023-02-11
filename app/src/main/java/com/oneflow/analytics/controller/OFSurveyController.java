@@ -161,16 +161,37 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                             if (surveyItem.getScreens() != null) {
 
                                 OFHelper.v("OneFlow", "OneFlow screens not null");
-
+                                OFOneFlowSHP ofs1 = OFOneFlowSHP.getInstance(mContext);
                                 if (surveyItem.getScreens().size() > 0) {
                                     setUpHashForActivity();
-                                    OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
+                                    ofs1.storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
                                     Intent surveyIntent = null;
                                     if (surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
                                         surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get("bottom-center"));
                                     } else {
                                         surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get(surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition()));
                                     }
+
+
+                                    // =============Throttling Config=============
+                                    OFThrottlingConfig config = ofs1.getThrottlingConfig();
+                                    //flow correction and time should be in second
+                                    if (config != null) {
+
+                                        OFHelper.v("1Flow", "1Flow throttling config not null");
+                                        config.setActivated(true);
+                                        config.setActivatedById(surveyItem.get_id());
+                                        config.setActivatedAt(System.currentTimeMillis());
+
+                                        ofs1.setThrottlingConfig(config);
+
+                                        setupGlobalTimerToDeactivateThrottlingLocally();
+                                    } else {
+                                        OFHelper.v("1Flow", "1Flow throttling config null");
+                                    }
+
+
+
                                     surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     surveyIntent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
                                     surveyIntent.putExtra("eventName", (String) ret[0]);
@@ -191,8 +212,27 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
 
 
     }
-
     private void setupGlobalTimerToDeactivateThrottlingLocally() {
+
+
+        OFHelper.v("OFSurveyController", "1Flow deactivate called ");
+        OFThrottlingConfig config = OFOneFlowSHP.getInstance(mContext).getThrottlingConfig();
+        OFHelper.v("OFSurveyController", "1Flow deactivate called config activated[" + config.isActivated() + "]globalTime[" + config.getGlobalTime() + "]activatedBy[" + config.getActivatedById() + "]");
+        //OFMyCountDownTimerThrottling.getInstance(mContext,0l,0l).cancel();
+        if (config.getGlobalTime() != null && config.getGlobalTime() > 0) {
+            //OFMyCountDownTimerThrottling.getInstance(mContext, config.getGlobalTime() * 1000, ((Long) (config.getGlobalTime() * 1000) / 2)).start();
+            setThrottlingAlarm(config);
+        } else {
+            OFHelper.v("OFSurveyController", "1Flow deactivate called at else");
+            config.setActivated(false);
+            config.setActivatedById(null);
+            OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
+        }
+
+
+
+    }
+    /*private void setupGlobalTimerToDeactivateThrottlingLocally() {
 
 
         OFHelper.v("OneFlow", "OneFlow checking throttling after survey received");
@@ -227,43 +267,13 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                 OFHelper.v("OneFlow", "OneFlow checking called no throttling found after survey received");
             }
         }
-        /*if (config != null) {
 
-            if (config.getGlobalTime() != null) {
-                if (config.getGlobalTime() > 0) {
-
-                    OFHelper.v("OneFlow", "OneFlow deactivate called config global time not null");
-                    if (config.isActivated()) {
-
-                        long throttlingLifeTime = config.getActivatedAt() + (config.getGlobalTime() * 1000);
-                        if (System.currentTimeMillis() > throttlingLifeTime) {
-                            OFHelper.v("OneFlow", "OneFlow deactivate called time finished");
-                            config.setActivated(false);
-                            config.setActivatedById(null);
-                            OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
-                        }
-
-                    }
-                } else {
-                    config.setActivated(false);
-                    config.setActivatedById(null);
-                    OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
-                }
-            }
-        }*/
-    }
-    public void setThrottlingAlarm(long throttlingLifeTime) {
-
-
-        /*AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(mContext, OFThrottlingAlarm.class);
-        PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, (config.getGlobalTime() * 1000)+System.currentTimeMillis(), pi);*/
+    }*/
+    public void setThrottlingAlarm(OFThrottlingConfig config) {
+        OFHelper.v("OFSurveyController", "1Flow Setting ThrottlingAlarm [" + config.getGlobalTime() + "]");
 
         OFOneFlowSHP shp = OFOneFlowSHP.getInstance(mContext);
-        shp.storeValue(OFConstants.SHP_THROTTLING_TIME, throttlingLifeTime);
-
-
+        shp.storeValue(OFConstants.SHP_THROTTLING_TIME, config.getGlobalTime() * 1000 + System.currentTimeMillis());
     }
     /**
      * This method will return survey and its event name

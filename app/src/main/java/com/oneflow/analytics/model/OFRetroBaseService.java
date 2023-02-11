@@ -57,11 +57,11 @@ public class OFRetroBaseService {
 
         //.readTimeout(120, TimeUnit.SECONDS)
         //.addInterceptor(interceptor)
-        OkHttpClient clientDev = new OkHttpClient.Builder()
+       /* OkHttpClient clientDev = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
-                .build();
+                .build();*/
 
 
 
@@ -74,10 +74,16 @@ public class OFRetroBaseService {
 
 
         //.client(OFConstants.MODE.equalsIgnoreCase("dev")?clientDev:clientProd)
+       /* retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(clientDev)
+                .build();*/
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(OFConstants.MODE.equalsIgnoreCase("prod")?clientProd:clientDev)
+                .client(clientProd)
                 .build();
 
 
