@@ -156,13 +156,22 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         //OneFlow.useFont("fonts/pacifico.ttf");
         OneFlow.shouldShowSurvey(true);
         OneFlow.shouldPrintLog(true);
+
+
+        HashMap<String, Object> mapValue = new HashMap<>();
+        mapValue.put("location", "MP");
+        mapValue.put("env", "Prod");
+        mapValue.put("name", "Amit kumar");
+
+        OneFlow.logUser("ImmediateUser", mapValue);
     }
     private void showCofigureDialog(){
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_project_key);
         OFCustomEditText projectKeyET = dialog.findViewById(R.id.project_key);
+        String projectKey = "oneflow_prod_UjlFunf96DxcEXXXgJKqm32q1RDIYXbmDkepkDmomBoDdlzXQM/U9qzEAKh6yj34xfQQT1Ejp0ltJnF9wGJU5Q==";// [TEST] All Screens
         //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
-        String projectKey = "oneflow_prod_yxwI14oGAEhYgOEJjo43IsoKuWbSPoXBcKD+Bj5UkiZtPXb1vuuBkRUm5YxfBCs6thcsxPWbxDeJHJZlSGzxkw==";//[TEST]Flutter/React Native SDKs
+        //String projectKey = "oneflow_prod_yxwI14oGAEhYgOEJjo43IsoKuWbSPoXBcKD+Bj5UkiZtPXb1vuuBkRUm5YxfBCs6thcsxPWbxDeJHJZlSGzxkw==";//[TEST]Flutter/React Native SDKs
         projectKeyET.setText(projectKey);
         OFCustomTextView registerButton = dialog.findViewById(R.id.register_project);
         registerButton.setOnClickListener(new View.OnClickListener() {

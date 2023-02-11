@@ -924,15 +924,15 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                         oneFlowSHP.storeValue(OFConstants.AUTOEVENT_FIRSTOPEN, true);
                     }
 
-                    if (!oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_SESSIONSTART, false)) {
+                    //if (!oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_SESSIONSTART, false)) {
                         OFEventController ec = OFEventController.getInstance(mContext);
                         ec.storeEventsInDB(OFConstants.AUTOEVENT_SESSIONSTART, null, 0);
 
                         oneFlowSHP.storeValue(OFConstants.AUTOEVENT_SESSIONSTART, true);
                         ProcessLifecycleOwner.get().getLifecycle().addObserver(new AppLifecycleListener(mContext));
-                    } else {
+                    /*} else {
                         OFHelper.v("1Flow", "1Flow app is in start_session already recorded.");
-                    }
+                    }*/
 
                     OFLogUserRequest lur = oneFlowSHP.getLogUserRequest();
 
@@ -1129,10 +1129,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                                         hasClosed = closedSurveyList.contains(gslr.get_id());
                                     }
                                     OFHelper.v("1Flow", "1Flow closed survey[" + hasClosed + "][" + gslr.getSurveySettings().getClosedAsFinished() + "]position[" + gslr.getSurveySettings().getSdkTheme().getWidgetPosition() + "]");
-                                    if (!(gslr.getSurveySettings().getClosedAsFinished() && hasClosed)) { // this is if for empty closed survey
+                                    if (!(gslr.getSurveySettings().getClosedAsFinished() && hasClosed)) { // this is for empty closed survey
 
                                         setUpHashForActivity();
-
 
                                         //throttling condition below
                                         OFThrottlingConfig throttlingConfig = ofs.getThrottlingConfig();
