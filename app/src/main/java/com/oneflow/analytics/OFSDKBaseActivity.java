@@ -147,7 +147,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         // Helper.makeText(getApplicationContext(),"Size ["+screens.size()+"]",1);
         setProgressMax(surveyItem.getScreens().size()); // -1 for excluding thankyou page from progress bar; 2-sept-2022 showing progressbar at thankyou page
         selectedSurveyId = surveyItem.get_id();
-        OFHelper.v(this.getClass().getName(), "1Flow surveyId[" + selectedSurveyId + "]");
+        OFHelper.v(this.getClass().getName(), "1Flow surveyId[" + selectedSurveyId + "]triggerEventName["+triggerEventName+"]");
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -732,8 +732,9 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
     }
 
-    String tempImage = "<img style=\"max-width: 100%; height: auto;\" src=\"https://live.staticflickr.com/65535/48680180151_c6773c8936_k.jpg\">";
-    String tempVideo = "<div style=\"position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;\"><iframe src=\"https://www.youtube.com/embed/sGXHJvEttpE?autoplay=1\" style=\"position: absolute; top: 0; left: 0; width: 100%; height: 100%;\" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen></iframe></div>";
+    //String tempImage = "<img style=\"max-width: 100%; height: auto;\" src=\"https://live.staticflickr.com/65535/48680180151_c6773c8936_k.jpg\">";
+    /*String tempImage1 = "<img style=\"max-width: 100%; display: block; margin-left: auto;margin-right: auto;\" src=\"https://i.pinimg.com/originals/da/45/fb/da45fb10d3b777560c4bf3c10c314508.jpg\">";
+    String tempVideo = "<div style=\"position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;\"><iframe src=\"https://www.youtube.com/embed/sGXHJvEttpE?autoplay=1\" style=\"position: absolute; top: 0; left: 0; width: 100%; height: 100%;\" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen></iframe></div>";*/
 
 
 
@@ -749,7 +750,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 if (screen.getInput().getInput_type().equalsIgnoreCase("thank_you") ||
                         screen.getInput().getInput_type().equalsIgnoreCase("end-screen")
                 ) {
-                    screen.setMediaEmbedHTML(tempVideo);
+                    //screen.setMediaEmbedHTML(tempImage);
                     //Now thankyou page will also show progress bar 2-sept-2022
                     //pagePositionPBar.setVisibility(View.GONE);
                     frag = OFSurveyQueThankyouFragment.newInstance(screen, sdkTheme, themeColor);
@@ -768,11 +769,15 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 ) {
                     frag = OFSurveyQueTextFragment.newInstance(screen, sdkTheme, themeColor);
                 } else if (screen.getInput().getInput_type().equalsIgnoreCase("welcome-screen")) {
-                    screen.setMediaEmbedHTML(tempVideo);
+                    //screen.setMediaEmbedHTML(tempVideo);
                     frag = OFSurveyQueInfoFragment.newInstance(screen, sdkTheme, themeColor);
 
                 } else {
-                    screen.setMediaEmbedHTML(tempImage);
+                    /*if(position%2==0) {
+                        screen.setMediaEmbedHTML(tempImage);
+                    }else{
+                        screen.setMediaEmbedHTML(tempImage1);
+                    }*/
                     frag = OFSurveyQueFragment.newInstance(screen, sdkTheme, themeColor);
                 }
             }

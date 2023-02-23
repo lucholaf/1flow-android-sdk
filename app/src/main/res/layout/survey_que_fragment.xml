@@ -62,7 +62,7 @@
             android:visibility="invisible">
 
             <include layout="@layout/survey_webview_fragment"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/weblayout"
                 />
 
@@ -73,9 +73,8 @@
                 android:layout_below="@id/weblayout"
                 android:layout_centerHorizontal="true"
                 android:nestedScrollingEnabled="false"
-                android:layout_marginTop="10dp"
                 android:overScrollMode="never"
-                android:padding="0.5dp" />
+                 />
 
             <com.oneflow.analytics.customwidgets.OFCustomTextView
                 android:id="@+id/ratings_not_like"

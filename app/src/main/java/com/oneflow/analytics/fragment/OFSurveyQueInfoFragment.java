@@ -90,8 +90,8 @@ public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClic
         webLayout = view.findViewById(R.id.weblayout);
         webContent = view.findViewById(R.id.webview_contents);
         pBar = view.findViewById(R.id.pbar);
-        webContent.getSettings().setJavaScriptEnabled(true);
-        webContent.getSettings().setMediaPlaybackRequiresUserGesture(false);
+
+
         setupWeb();
 
         waterMarkImage = (ImageView) view.findViewById(R.id.watermark_img);

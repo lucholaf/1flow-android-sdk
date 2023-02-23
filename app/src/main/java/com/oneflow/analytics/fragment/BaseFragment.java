@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -18,6 +19,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
 import com.oneflow.analytics.OFSDKBaseActivity;
 import com.oneflow.analytics.OFSurveyActivityFullScreen;
 import com.oneflow.analytics.customwidgets.OFCustomeWebView;
@@ -65,35 +67,79 @@ public class BaseFragment extends Fragment {
         sdkTheme = (OFSDKSettingsTheme) getArguments().getSerializable("theme");
         themeColor = (String) getArguments().getString("themeColor");
 
+//        OFHelper.v(tag,"1Flow frag data contains["+surveyScreens.getMediaEmbedHTML().contains("/undefined")+"]");
+        OFHelper.v(tag,"1Flow frag data["+surveyScreens.getMediaEmbedHTML() +"]");
+        //https://www.loom.com/embed/31fdc69a9331436eb56ae41807f7f3ab
+       /* if(surveyScreens.getMediaEmbedHTML()!=null) {
+            if (surveyScreens.getMediaEmbedHTML().contains("/undefined")) {
+                String str = surveyScreens.getMediaEmbedHTML();
+                str = surveyScreens.getMediaEmbedHTML().replace("\n", "");
+                str = str.replace("undefined", "31fdc69a9331436eb56ae41807f7f3ab");
+                surveyScreens.setMediaEmbedHTML(str);
+            }
+        }*/
+        OFHelper.v(tag,"1Flow frag data["+surveyScreens.getMediaEmbedHTML() +"]");
+
+
 
     }
 
     public void setupWeb(){
+
         if(OFHelper.validateString(surveyScreens.getMediaEmbedHTML()).equalsIgnoreCase("NA")){
             webLayout.setVisibility(View.GONE);
         }else{
+            webContent.getSettings().setJavaScriptEnabled(true);
+            webContent.getSettings().setMediaPlaybackRequiresUserGesture(false);
+            webContent.getSettings().setBlockNetworkImage(false);
+            webContent.setBackgroundColor(Color.TRANSPARENT);
             webLayout.setVisibility(View.VISIBLE);
+            webContent.setVisibility(View.VISIBLE);
+            //webLayout.setVisibility(View.VISIBLE);
 
-            webContent.setWebChromeClient(new WebChromeClient() {
+           /* webContent.setWebChromeClient(new WebChromeClient() {
                                               @Override
                                               public void onProgressChanged(WebView view, int newProgress) {
-
                                                   super.onProgressChanged(view, newProgress);
 
                                                   if (newProgress == 100) {
-                                                      pBar.setVisibility(View.GONE);
-                                                      //webContent.setVisibility(View.VISIBLE);
+                                                      //pBar.setVisibility(View.GONE);
+                                                      webLayout.setVisibility(View.VISIBLE);
+                                                      webContent.setVisibility(View.VISIBLE);
 
-                                                  } else {
-                                                      pBar.setProgress(newProgress);
                                                   }
                                               }
                                           }
-                );
+                );*/
 
 
-            String webData = "<html><body style='margin:0;padding:0;'>"+surveyScreens.getMediaEmbedHTML()+"</body></html>";
-            webContent.loadData(webData,"text/html", "UTF-8");
+
+
+
+            Display display = getActivity().getWindowManager().getDefaultDisplay();
+            int width = display.getWidth();
+            /*if(surveyScreens.getMediaEmbedHTML().contains("img")) {
+                String data = "<html><head><style>img{width:100%}</style></head>";
+                //data = data + "<body><center><img width=\""+width+"\" src=\""+url+"\" /></center></body></html>";
+                data = data + "<body style='margin:0;padding:0;'>" + surveyScreens.getMediaEmbedHTML() + "</body></html>";
+                webContent.loadDataWithBaseURL(null,surveyScreens.getMediaEmbedHTML(), "text/html", "UTF-8",null);
+                //data = "file:///android_asset/Test1Flow.html";
+                webContent.loadUrl(data);
+                OFHelper.v(tag,"1Flow htmlData inside if ["+data+"]");
+            }else{*/
+                /*<style>img{display: block; height: auto; max-width: 100%;margin-left: auto;margin-right: auto;}</style>*/
+                /*if (surveyScreens.getMediaEmbedHTML().contains("max-height:100%;")){
+                    String val = surveyScreens.getMediaEmbedHTML().replace("max-height:100%;","");
+                    surveyScreens.setMediaEmbedHTML(val);
+                }*/
+                String webData = "<html><head></head><body style='margin:0;padding:0;'>"+surveyScreens.getMediaEmbedHTML()+"</body></html>";
+                OFHelper.v(tag,"1Flow htmlData after ["+webData+"]");
+                //webContent.loadData(webData,"text/html", "UTF-8");
+                //webData = "file:///android_asset/Test1Flow.html";
+                //webContent.loadUrl(webData);
+                webContent.loadDataWithBaseURL(null,webData,"text/html", "UTF-8",null);
+            //}
+
         }
 
     }
