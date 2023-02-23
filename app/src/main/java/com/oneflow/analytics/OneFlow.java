@@ -1083,8 +1083,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                         }
                     } else {
-                        OFHelper.v("OneFlow", "OneFlow no survey found show directly");
+
                         String eventName = (String) obj3;
+                        OFHelper.v("OneFlow", "OneFlow no survey found show directly eventName["+eventName+"]");
                         onResponseReceived(OFConstants.ApiHitType.checkResurveyNSubmission, gslr, 0l, eventName, null, null);
                     }
                 } else {

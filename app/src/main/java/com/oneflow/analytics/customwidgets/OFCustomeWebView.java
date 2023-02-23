@@ -20,8 +20,10 @@ import android.webkit.CookieSyncManager;
 import android.webkit.DownloadListener;
 import android.webkit.HttpAuthHandler;
 import android.webkit.ValueCallback;
+
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
 import android.webkit.WebSettings.PluginState;
 import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
@@ -45,7 +47,7 @@ public class OFCustomeWebView extends WebView {
 
     private WebChromeClient.CustomViewCallback customViewCallback;
     public static View mCustomView;
-    static MyWebChromeClient mWebChrome = null;
+    //static MyWebChromeClient mWebChrome = null;
 
     public OFCustomeWebView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -71,8 +73,12 @@ public class OFCustomeWebView extends WebView {
             }
         }
 
-        CookieSyncManager cookieSyncManager = CookieSyncManager
-                .createInstance(this.context);
+
+
+        this.getSettings().setPluginState(WebSettings.PluginState.ON);
+        //this.setWebChromeClient(new WebChromeClient());
+
+
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
         //SharedPreferences shp = CustomeWebView.this.context.getSharedPreferences(context.getString(R.string.app_name), CustomeWebView.this.context.MODE_PRIVATE);
@@ -80,24 +86,35 @@ public class OFCustomeWebView extends WebView {
         CookieSyncManager.getInstance().sync();
         SystemClock.sleep(500); // time in milliseconds
 
-        OFHelper.v(tag, "OneAxis at ABVwebView");
+        OFHelper.v(tag, "1Flow at ABVwebView");
+
+
+
 
         this.getSettings().setDomStorageEnabled(true);
+        this.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         this.getSettings().setJavaScriptEnabled(true);
 
         //this.getSettings().setPluginsEnabled(true);
-        this.getSettings().setPluginState(PluginState.ON);
+        //this.getSettings().setPluginState(PluginState.ON);
         this.setWebChromeClient(new MyWebChromeClient());
         //this.addJavascriptInterface(new DemoJavaScriptInterface(), "jsinterface");
-        this.getSettings().setRenderPriority(RenderPriority.HIGH);
+        //this.getSettings().setRenderPriority(RenderPriority.HIGH);
         this.getSettings().setBuiltInZoomControls(false);
         this.getSettings().setSupportZoom(false);
         this.getSettings().setLoadWithOverviewMode(true);
         this.getSettings().setUseWideViewPort(true);
+        this.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+
+
+        this.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+        //this.getSettings().setAppCacheEnabled(false);
+        //this.getSettings().setBlockNetworkImage(true);
+        //this.getSettings().setBlockNetworkLoads(true);
 
 //        this.getSettings().setDatabaseEnabled(true);
 //        appCachePath = context.getApplicationContext().getCacheDir().getAbsolutePath();
-        // OFHelper.v(tag, "OneAxis Caching url at ab[" + appCachePath + "]");
+        // OFHelper.v(tag, "1Flow Caching url at ab[" + appCachePath + "]");
 //        this.getSettings().setAppCachePath(appCachePath);
 //        this.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
         //this.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -110,6 +127,10 @@ public class OFCustomeWebView extends WebView {
         /*String databasePath = this.getContext().getDir("databases", Context.MODE_PRIVATE).getPath();
         this.getSettings().setDatabasePath(databasePath);*/
         this.setWebViewClient(new ABWebViewClient());
+
+
+
+
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         //FrameLayout fl=(FrameLayout)inflater.inflate(R.layout.custom_screen,null);
@@ -148,7 +169,7 @@ public class OFCustomeWebView extends WebView {
         CookieSyncManager.getInstance().sync();
         SystemClock.sleep(500); // time in milliseconds
 
-        OFHelper.v(tag, "OneAxis at ABVwebView");
+        OFHelper.v(tag, "1Flow at ABVwebView");
 
         this.getSettings().setDomStorageEnabled(true);
         this.getSettings().setJavaScriptEnabled(true);
@@ -160,12 +181,13 @@ public class OFCustomeWebView extends WebView {
         this.getSettings().setBuiltInZoomControls(false);
         this.getSettings().setSupportZoom(false);
 
-//        this.getSettings().setDatabaseEnabled(true);
-//        appCachePath = context.getApplicationContext().getCacheDir().getAbsolutePath();
-//        this.getSettings().setAppCachePath(appCachePath);
-//        this.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
-//        this.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-//        this.getSettings().setAppCacheEnabled(true);
+        this.getSettings().setDatabaseEnabled(true);
+        appCachePath = context.getApplicationContext().getCacheDir().getAbsolutePath();
+        this.getSettings().setAppCachePath(appCachePath);
+        this.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
+        //this.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        this.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+        this.getSettings().setAppCacheEnabled(true);
 
         this.getSettings().setAllowFileAccess(true);
         this.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
@@ -185,7 +207,7 @@ public class OFCustomeWebView extends WebView {
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 
 
-            OFHelper.e(tag, "OneAxis onReceivedError error isBack[" + isBack + "][" + failingUrl + "]ABWebView.this.getSettings().getCacheMode()[" + OFCustomeWebView.this.getSettings().getCacheMode() + "][" + errorCode + "][" + description + "]");
+            OFHelper.e(tag, "1Flow onReceivedError error isBack[" + isBack + "][" + failingUrl + "]ABWebView.this.getSettings().getCacheMode()[" + OFCustomeWebView.this.getSettings().getCacheMode() + "][" + errorCode + "][" + description + "]");
             /*
              * Create Timeout Exception
              */
@@ -197,7 +219,7 @@ public class OFCustomeWebView extends WebView {
                 mError = true;
                 if (!OFHelper.isConnected(context)) {
                     //MainActivity.noConnectionAlert("Internet connection is not available. Please check.");
-                    OFHelper.v(this.getClass().getName(), "OneAxis Network issue");
+                    OFHelper.v(this.getClass().getName(), "1Flow Network issue");
                 }
 
             }
@@ -220,14 +242,14 @@ public class OFCustomeWebView extends WebView {
 
                     ald.show();
                 } else {
-                    OFHelper.v(this.getClass().getName(), "OneAxis Network issue");
+                    OFHelper.v(this.getClass().getName(), "1Flow Network issue");
                     ///view.reload();
                 }
             }
             // TODO Auto-generated method stub
             if (errorCode == ERROR_TIMEOUT) {
                 view.stopLoading();
-                OFHelper.e(this.getClass().getName(), "OneAxis Network issue");
+                OFHelper.e(this.getClass().getName(), "1Flow Network issue");
             }
 
         }
@@ -318,10 +340,10 @@ public class OFCustomeWebView extends WebView {
         return (mCustomView != null);
     }
 
-    public static void hideCustomView() {
+    /*public static void hideCustomView() {
 
         mWebChrome.onHideCustomView();
-    }
+    }*/
 
     CountDownTimer cdt = new CountDownTimer(10000, 1000) {
 
@@ -347,6 +369,14 @@ public class OFCustomeWebView extends WebView {
 
         //private Bitmap mDefaultVideoPoster;
         private View mVideoProgressView;
+
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            super.onProgressChanged(view, newProgress);
+            if(newProgress>=100){
+                view.setVisibility(VISIBLE);
+            }
+        }
 
         @Override
         public void getVisitedHistory(ValueCallback<String[]> callback) {
