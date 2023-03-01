@@ -11,11 +11,13 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -34,7 +36,7 @@ public class BaseFragment extends Fragment {
     public View webLayout;
     public ProgressBar pBar;
     public OFCustomeWebView webContent;
-    LinearLayout waterMarkLayout;
+    LinearLayout waterMarkLayout,infoWebLayout;
     public OFSurveyScreens surveyScreens;
     public OFSDKSettingsTheme sdkTheme;
     public String themeColor;
@@ -47,9 +49,10 @@ public class BaseFragment extends Fragment {
         //sa = (OFSurveyActivityBottom) context;
         try {
             sa = (OFSDKBaseActivity) context;
-            OFHelper.v(tag,"OneFlow custom survery reading");
+
+            OFHelper.v(tag,"1Flow custom survery reading");
         }catch(Exception ex){
-            OFHelper.v(tag,"OneFlow custom survery exception");
+            OFHelper.v(tag,"1Flow custom survery exception");
             sa = null;
             //customFrag = CustomFrag.newInstance();
            // OFHelper.v(tag,"OneFlow custom survery exception ["+customFrag+"]");
@@ -83,12 +86,45 @@ public class BaseFragment extends Fragment {
 
 
     }
+    public int thisViewHeight = 0;
+    public void setThisViewHeight(int newHeight){
+        if(newHeight>thisViewHeight){
+            thisViewHeight = newHeight;
+        }
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if(!OFHelper.validateString(surveyScreens.getMediaEmbedHTML()).equalsIgnoreCase("NA")) {
+            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    //sa.resetHeight(((View)view.getParent()).getHeight());
+                    //sa.resetHeight(((View)((View)(((View)view.getParent())).getParent()).getParent()).getHeight());
+                    try {
+                        setThisViewHeight(((View) ((View) ((View) ((View) (((View) view.getParent())).getParent()).getParent()).getParent()).getParent()).getHeight());
+                    }catch (Exception ex){
+                        setThisViewHeight(((View) ((View) ((View) (((View) view.getParent())).getParent()).getParent()).getParent()).getHeight());
+                    }
+                    sa.resetHeight(thisViewHeight);
+                    //OFHelper.v(tag, "1Flow display inside view created now [" + ((View) ((View) ((View) ((View) (((View) view.getParent())).getParent()).getParent()).getParent()).getParent()).getHeight() + "][]");
 
+                }
+            });
+            OFHelper.e(tag, "1Flow hahahah view created now [" + view.getHeight() + "]parent[" + ((View) view.getParent()).getHeight() + "]");
+        }
+    }
     public void setupWeb(){
 
         if(OFHelper.validateString(surveyScreens.getMediaEmbedHTML()).equalsIgnoreCase("NA")){
             webLayout.setVisibility(View.GONE);
         }else{
+            if(surveyScreens.getMediaEmbedHTML().contains("<video")|| surveyScreens.getMediaEmbedHTML().contains("<iframe")){
+                webContent.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            }else{
+                webContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            }
             webContent.getSettings().setJavaScriptEnabled(true);
             webContent.getSettings().setMediaPlaybackRequiresUserGesture(false);
             webContent.getSettings().setBlockNetworkImage(false);
@@ -97,84 +133,77 @@ public class BaseFragment extends Fragment {
             webContent.setVisibility(View.VISIBLE);
             //webLayout.setVisibility(View.VISIBLE);
 
-           /* webContent.setWebChromeClient(new WebChromeClient() {
+            webContent.setWebChromeClient(new WebChromeClient() {
                                               @Override
                                               public void onProgressChanged(WebView view, int newProgress) {
                                                   super.onProgressChanged(view, newProgress);
+                                                  //OFHelper.v(tag,"1Flow display web progress["+newProgress+"]["+view.getHeight()+"]["+webContent.getHeight()+"]["+((View)((View)((View)((View)(((View)view.getParent())).getParent()).getParent()).getParent()).getParent()).getHeight()+"][]");
+                                                    try {
+                                                        if (((View) ((View) ((View) ((View) (((View) view.getParent())).getParent()).getParent()).getParent()).getParent()).getParent() != null) {
+                                                            setThisViewHeight(((View) ((View) ((View) ((View) (((View) view.getParent())).getParent()).getParent()).getParent()).getParent()).getHeight());
+                                                        }
+                                                    }catch (Exception ex){
+                                                        setThisViewHeight(((View) ((View) ((View) (((View) view.getParent())).getParent()).getParent()).getParent()).getHeight());
+                                                    }
+                                                  if (newProgress >= 100) {
 
-                                                  if (newProgress == 100) {
-                                                      //pBar.setVisibility(View.GONE);
-                                                      webLayout.setVisibility(View.VISIBLE);
-                                                      webContent.setVisibility(View.VISIBLE);
-
+                                                        sa.resetHeight(thisViewHeight);
                                                   }
                                               }
                                           }
-                );*/
+                );
 
 
 
-
-
-            Display display = getActivity().getWindowManager().getDefaultDisplay();
-            int width = display.getWidth();
-            /*if(surveyScreens.getMediaEmbedHTML().contains("img")) {
-                String data = "<html><head><style>img{width:100%}</style></head>";
-                //data = data + "<body><center><img width=\""+width+"\" src=\""+url+"\" /></center></body></html>";
-                data = data + "<body style='margin:0;padding:0;'>" + surveyScreens.getMediaEmbedHTML() + "</body></html>";
-                webContent.loadDataWithBaseURL(null,surveyScreens.getMediaEmbedHTML(), "text/html", "UTF-8",null);
-                //data = "file:///android_asset/Test1Flow.html";
-                webContent.loadUrl(data);
-                OFHelper.v(tag,"1Flow htmlData inside if ["+data+"]");
-            }else{*/
-                /*<style>img{display: block; height: auto; max-width: 100%;margin-left: auto;margin-right: auto;}</style>*/
-                /*if (surveyScreens.getMediaEmbedHTML().contains("max-height:100%;")){
-                    String val = surveyScreens.getMediaEmbedHTML().replace("max-height:100%;","");
-                    surveyScreens.setMediaEmbedHTML(val);
-                }*/
                 String webData = "<html><head></head><body style='margin:0;padding:0;'>"+surveyScreens.getMediaEmbedHTML()+"</body></html>";
                 OFHelper.v(tag,"1Flow htmlData after ["+webData+"]");
-                //webContent.loadData(webData,"text/html", "UTF-8");
-                //webData = "file:///android_asset/Test1Flow.html";
-                //webContent.loadUrl(webData);
+
                 webContent.loadDataWithBaseURL(null,webData,"text/html", "UTF-8",null);
-            //}
+
 
         }
 
     }
     public void transitActive() {
-        int colorFrom = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);//getResources().getColor(R.color.ratings_focused);
-        int colorTo = Color.parseColor(sa.themeColor);
-        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.setDuration(250); // milliseconds
-        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        try {
+            int colorFrom = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);//getResources().getColor(R.color.ratings_focused);
+            int colorTo = Color.parseColor(sa.themeColor);
+            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+            colorAnimation.setDuration(250); // milliseconds
+            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                //submitButton.setBackgroundColor((int) animator.getAnimatedValue());
-                gdSubmit.setColor((int) animator.getAnimatedValue());
-            }
+                @Override
+                public void onAnimationUpdate(ValueAnimator animator) {
+                    //submitButton.setBackgroundColor((int) animator.getAnimatedValue());
+                    gdSubmit.setColor((int) animator.getAnimatedValue());
+                }
 
-        });
-        colorAnimation.start();
+            });
+            colorAnimation.start();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     public void transitInActive() {
-        int colorFrom = Color.parseColor(sa.themeColor);
-        int colorTo = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);//getResources().getColor(R.color.ratings_focused);
-        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.setDuration(250); // milliseconds
-        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        try {
+            int colorFrom = Color.parseColor(sa.themeColor);
+            int colorTo = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);//getResources().getColor(R.color.ratings_focused);
+            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+            colorAnimation.setDuration(250); // milliseconds
+            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                //submitButton.setBackgroundColor((int) animator.getAnimatedValue());
-                gdSubmit.setColor((int) animator.getAnimatedValue());
-            }
+                @Override
+                public void onAnimationUpdate(ValueAnimator animator) {
+                    //submitButton.setBackgroundColor((int) animator.getAnimatedValue());
+                    gdSubmit.setColor((int) animator.getAnimatedValue());
+                }
 
-        });
-        colorAnimation.start();
+            });
+            colorAnimation.start();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     public void handleWaterMarkStyle(OFSDKSettingsTheme theme) {

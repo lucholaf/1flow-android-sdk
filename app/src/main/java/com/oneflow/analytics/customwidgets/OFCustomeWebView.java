@@ -53,8 +53,10 @@ public class OFCustomeWebView extends WebView {
         super(context, attributeSet);
         this.context = context;
 
-        if (Build.VERSION.SDK_INT >= 11) {
+        //this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        /*if (Build.VERSION.SDK_INT >= 11) {
             this.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+           // this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         } else {
             try {
                 Method setLayerTypeMethod = this.getClass().getMethod(
@@ -71,7 +73,7 @@ public class OFCustomeWebView extends WebView {
             } catch (InvocationTargetException e) {
                 OFHelper.e(tag,e.getMessage());
             }
-        }
+        }*/
 
 
 

@@ -50,14 +50,14 @@ public class OFRetroBaseService {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        /*if(!OFHelper.commanLogEnable) {
+       /* if(!OFHelper.commanLogEnable) {
             interceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
         }*/
 
 
         //.readTimeout(120, TimeUnit.SECONDS)
         //.addInterceptor(interceptor)
-       /* OkHttpClient clientDev = new OkHttpClient.Builder()
+        /*OkHttpClient clientDev = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
@@ -73,13 +73,7 @@ public class OFRetroBaseService {
 
 
 
-        //.client(OFConstants.MODE.equalsIgnoreCase("dev")?clientDev:clientProd)
-       /* retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(clientDev)
-                .build();*/
-
+        //OFConstants.MODE.equalsIgnoreCase("prod")?clientProd:clientDev
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())

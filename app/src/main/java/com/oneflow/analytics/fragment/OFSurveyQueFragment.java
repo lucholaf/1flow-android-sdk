@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
@@ -35,6 +36,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -97,7 +99,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
     public void onResume() {
         super.onResume();
         OFHelper.v(tag, "1Flow OnResume");
-
+        setupWeb();
 
         View[] animateViews = new View[]{surveyTitle, surveyDescription, optionLayout, submitButton};
 
@@ -296,7 +298,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         webContent = view.findViewById(R.id.webview_contents);
         pBar = view.findViewById(R.id.pbar);
 
-        setupWeb();
+
 
 
         OFHelper.v(tag, "1Flow input type [" + surveyScreens.getInput().getInput_type() + "][" + surveyScreens.getInput().getStars() + "]min[" + surveyScreens.getInput().getMin_val() + "][" + surveyScreens.getInput().getMax_val() + "][][][]");

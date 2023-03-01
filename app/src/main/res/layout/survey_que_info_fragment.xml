@@ -63,10 +63,12 @@
                 android:visibility="invisible" />
 
             <LinearLayout
+                android:id="@+id/info_weblayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="8dp"
+                android:visibility="invisible"
                 android:paddingRight="8dp">
 
                 <include
