@@ -50,25 +50,40 @@ public class OFRetroBaseService {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
+        /*if(!OFHelper.commanLogEnable) {
+            interceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+        }*/
+
+
         //.readTimeout(120, TimeUnit.SECONDS)
         //.addInterceptor(interceptor)
-        OkHttpClient clientDev = new OkHttpClient.Builder()
+       /* OkHttpClient clientDev = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(interceptor)
-                .build();
+                .build();*/
+
+
 
         OkHttpClient clientProd = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build();
 
-        OFHelper.v("APIClient","BaseUrl ["+BASE_URL+"]");
+
+
+
         //.client(OFConstants.MODE.equalsIgnoreCase("dev")?clientDev:clientProd)
+       /* retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(clientDev)
+                .build();*/
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(OFConstants.MODE.equalsIgnoreCase("prod")?clientProd:clientDev)
+                .client(clientProd)
                 .build();
 
 

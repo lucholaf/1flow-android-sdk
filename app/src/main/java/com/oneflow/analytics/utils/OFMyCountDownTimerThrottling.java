@@ -20,6 +20,7 @@ package com.oneflow.analytics.utils;
 
 import android.content.Context;
 import android.os.CountDownTimer;
+import android.os.Looper;
 
 import com.google.gson.Gson;
 import com.oneflow.analytics.model.survey.OFThrottlingConfig;
@@ -31,7 +32,7 @@ public class OFMyCountDownTimerThrottling extends CountDownTimer {
 
     public static synchronized OFMyCountDownTimerThrottling getInstance(Context context, Long duration, Long interval) {
         OFHelper.v("MyCountDownTimerThrottling", "OneFlow Throttling Constructor called duration[" + duration + "]interval[" + interval + "]");
-
+        Looper.getMainLooper();
         if (cdt == null) {
             cdt = new OFMyCountDownTimerThrottling(context, duration, interval);
 
@@ -43,6 +44,7 @@ public class OFMyCountDownTimerThrottling extends CountDownTimer {
         super(duration, interval);
         this.mContext = context;
         OFHelper.v("MyCountDownTimerThrottling", "OneFlow Throttling Constructor called");
+
     }
 
     @Override
@@ -54,7 +56,7 @@ public class OFMyCountDownTimerThrottling extends CountDownTimer {
     public void onFinish() {
 
         OFHelper.v("MyCountDownTimerThrottling", "OneFlow Throttling finish called ");
-        OFThrottlingConfig config = new OFOneFlowSHP(mContext).getThrottlingConfig();
+        OFThrottlingConfig config = OFOneFlowSHP.getInstance(mContext).getThrottlingConfig();
         OFHelper.v("MyCountDownTimerThrottling", "OneFlow Throttling deactivate called config[" + new Gson().toJson(config) + "]");
         if (config != null) {
 
@@ -65,14 +67,14 @@ public class OFMyCountDownTimerThrottling extends CountDownTimer {
                 OFHelper.v("MyCountDownTimerThrottling", "OneFlow Throttling deactivate called time finished");
                 config.setActivated(false);
                 config.setActivatedById(null);
-                new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+                OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
 
 
             }
         } else {
             config.setActivated(false);
             config.setActivatedById(null);
-            new OFOneFlowSHP(mContext).setThrottlingConfig(config);
+            OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
         }
     }
 }

@@ -19,6 +19,7 @@
 package com.oneflow.analytics;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,6 +28,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -56,23 +58,23 @@ import java.util.Locale;
 public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHandlerOneFlow {
 
     String tag = this.getClass().getName();
-    OFCustomTextView result, sendLogsToAPI,noSurvey;
-    OFCustomEditText fakeEditText;
+    OFCustomTextView  sendLogsToAPI,noSurvey;
+    // OFCustomEditText fakeEditText;
     RecyclerView listOfSurvey;
     ProgressBar progressBar;
     ArrayList<OFGetSurveyListResponse> slr;
     OFSurveyListAdapter addb;
-
+    Boolean configureCalled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        result = (OFCustomTextView) findViewById(R.id.result);
+
         noSurvey = (OFCustomTextView) findViewById(R.id.no_survey);
         sendLogsToAPI = (OFCustomTextView) findViewById(R.id.send_log_to_api);
         listOfSurvey = (RecyclerView) findViewById(R.id.list_of_survey);
-        fakeEditText = (OFCustomEditText) findViewById(R.id.fake_edit_text);
+
         progressBar = (ProgressBar) findViewById(R.id.progress_circular);
 
         /*Long lastHit = new SHPRepo().getLongShp(this,OFConstants.SHP_ONEFLOW_CONFTIMING);
@@ -80,18 +82,18 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         new SHPRepo().storeValue(this,OFConstants.SHP_THROTTLING_TIME,"Circo.OneFlow");*/
 
-        OFOneFlowSHP ofs = new OFOneFlowSHP(this);
+        OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(this);
 
         Long lastHit = ofs.getLongValue(OFConstants.SHP_ONEFLOW_CONFTIMING);
 
-        OFHelper.v(tag,"OneFlow lastHit["+lastHit+"]");
+        OFHelper.v(tag,"1Flow lastHit["+lastHit+"]");
 
-        OFHelper.v(tag,"OneFlow LanguageCodeTAG["+ Locale.getDefault().toLanguageTag()+"]");
-        OFHelper.v(tag,"OneFlow LanguageCodeLanguage["+ Locale.getDefault().getLanguage()+"]");
-        OFHelper.v(tag,"OneFlow LanguageCodeISO3["+ Locale.getDefault().getISO3Language()+"]");
-        OFHelper.v(tag,"OneFlow LanguageCodetoString["+ Locale.getDefault().toString() +"]");
-        OFHelper.v(tag,"OneFlow LanguageCodeDisplayLanguage["+ Locale.getDefault().getDisplayLanguage()+"]");
-        OFHelper.v(tag,"OneFlow LanguageCountry["+Locale.getDefault().getCountry()+"]");
+        OFHelper.v(tag,"1Flow LanguageCodeTAG["+ Locale.getDefault().toLanguageTag()+"]");
+        OFHelper.v(tag,"1Flow LanguageCodeLanguage["+ Locale.getDefault().getLanguage()+"]");
+        OFHelper.v(tag,"1Flow LanguageCodeISO3["+ Locale.getDefault().getISO3Language()+"]");
+        OFHelper.v(tag,"1Flow LanguageCodetoString["+ Locale.getDefault().toString() +"]");
+        OFHelper.v(tag,"1Flow LanguageCodeDisplayLanguage["+ Locale.getDefault().getDisplayLanguage()+"]");
+        OFHelper.v(tag,"1Flow LanguageCountry["+Locale.getDefault().getCountry()+"]");
 
         slr = new ArrayList<>();
         addb = new OFSurveyListAdapter(this, slr, clickListener);
@@ -117,28 +119,76 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         OFFontSetup optionsFont = new OFFontSetup(faceBold, 12f);*/
 
-       // String projectKey = "oneflow_sandbox_2Z9e492aa1qH22E2SnoSAT5broVR80RF9EXhQ0UcOTyZNgDRCsS4Y88hG4mL+IjPURFgrvCIsuNtUinVIr/ClQ==";
+        // String projectKey = "oneflow_sandbox_2Z9e492aa1qH22E2SnoSAT5broVR80RF9EXhQ0UcOTyZNgDRCsS4Y88hG4mL+IjPURFgrvCIsuNtUinVIr/ClQ==";
         //String projectKey = "oneflow_sandbox_9NtGc0TDDoOiq+c4z1OTaYpAsu6wUfZ+qECnLtbRYDKiSvMn+sbP+Y1UuSt3bu2RfOr+N4ZNk+84ZEyCeFgJGg==";
         //String projectKey = "oneflow_sandbox_hPz4Tfti7FgaKJ+yTdDGgf+OTNdW2czSmdAFMJL40tGbCqDWfswx+2Zy47zGdcax6zwdQRaYJugbfKglb2SLFA=="; //FakeProject
         //String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";
         //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";
         //String projectKey = "oneflow_prod_OUl/Rzs1AwluTu8j+N2QkdR9ubxrJV7V9ukU9rPp433upW9FghUGVZ947Ntfnvfw/xh00BpYqN8qtTqPvr4KVg=="; //languageTesting
-       String projectKey = this.getIntent().getStringExtra("pk");//"oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw=="; //AmitRepeatTest
-       // String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
+        //String projectKey = this.getIntent().getStringExtra("pk");//"oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw=="; //AmitRepeatTest
+        //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
+        //String projectKey = "oneflow_prod_gPLMkuXlCdPnp+ikjwtBWG9uutMePpF62ML0bdOQjCQYk+ULP70N/+KhUdDdQtIFRRlAz53CuReZPYFAaiCaug==";//HeyFam
         //String projectKey = "oneflow_prod_rjz2cV390BlTDSHQi1zHeL8w09+/ZQOJe7mpXJ1SY05sA2UapiKIZl+BwOq0JFoXJIxaXm87TQVo9MQnokf4fQ==";//WelcomeEndScreen
         //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
 
         //OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);
+
+        String projectKey = ofs.getStringValue(OFConstants.APPIDSHP);
+
+        OFHelper.v(tag,"1Flow projectKey["+projectKey+"]");
+        if(!OFHelper.validateString(projectKey).equalsIgnoreCase("na")) {
+            configureCalled = true;
+            configureOneFlow(projectKey);
+        }else{
+            //OFHelper.makeText(this,"Project key not available, Won't call OneFlow config",1);
+            noSurvey.setText("Configure not called");
+            progressBar.setVisibility(View.GONE);
+            noSurvey.setVisibility(View.VISIBLE);
+        }
+
+        /*fakeEditText.setHintTextColor(Color.parseColor("#00ff00"));
+        fakeEditText.setTextColor(Color.parseColor("#0000ff"));*/
+
+    }
+
+    private void configureOneFlow(String projectKey){
         OneFlow.configure(getApplicationContext(), projectKey);//"fonts/pacifico1.ttf");//,titleSetup,descriptionFont,optionsFont);
         //OneFlow.useFont("fonts/pacifico.ttf");
         OneFlow.shouldShowSurvey(true);
         OneFlow.shouldPrintLog(true);
 
-        fakeEditText.setHintTextColor(Color.parseColor("#00ff00"));
-        fakeEditText.setTextColor(Color.parseColor("#0000ff"));
 
+        HashMap<String, Object> mapValue = new HashMap<>();
+        mapValue.put("location", "MP");
+        mapValue.put("env", "Prod");
+        mapValue.put("name", "Amit kumar");
+
+        OneFlow.logUser("ImmediateUser", mapValue);
     }
-
+    private void showCofigureDialog(){
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.activity_project_key);
+        OFCustomEditText projectKeyET = dialog.findViewById(R.id.project_key);
+        String projectKey = "oneflow_prod_UjlFunf96DxcEXXXgJKqm32q1RDIYXbmDkepkDmomBoDdlzXQM/U9qzEAKh6yj34xfQQT1Ejp0ltJnF9wGJU5Q==";// [TEST] All Screens
+        //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
+        //String projectKey = "oneflow_prod_yxwI14oGAEhYgOEJjo43IsoKuWbSPoXBcKD+Bj5UkiZtPXb1vuuBkRUm5YxfBCs6thcsxPWbxDeJHJZlSGzxkw==";//[TEST]Flutter/React Native SDKs
+        projectKeyET.setText(projectKey);
+        OFCustomTextView registerButton = dialog.findViewById(R.id.register_project);
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(projectKeyET.getText().toString().equalsIgnoreCase("")){
+                    OFHelper.makeText(OFFirstActivity.this,"Please enter project key",1);
+                }else {
+                    dialog.cancel();
+                    noSurvey.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    configureOneFlow(projectKeyET.getText().toString());
+                }
+            }
+        });
+        dialog.show();
+    }
     BroadcastReceiver listFetched = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -146,9 +196,9 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
 
             if (intent.getAction().equalsIgnoreCase("survey_list_fetched")) {
-                slr = new OFOneFlowSHP(OFFirstActivity.this).getSurveyList();
+                slr = OFOneFlowSHP.getInstance(OFFirstActivity.this).getSurveyList();
                 progressBar.setVisibility(View.GONE);
-
+                OFHelper.v(tag, "OneFlow reached receiver 0["+slr+"]msg["+intent.getStringExtra("msg")+"]");
                 if(slr!=null) {
                     if (slr.size() > 0) {
                         listOfSurvey.setVisibility(View.VISIBLE);
@@ -197,17 +247,20 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         super.onResume();
         //Helper.makeText(this,"isConnected["+Helper.isInternetAvailable()+"]",1);
 
-        slr = new OFOneFlowSHP(OFFirstActivity.this).getSurveyList();
-        if (slr != null) {
-            addb.notifyMyList(slr);
-        }
+        if(!configureCalled) {
+            slr = OFOneFlowSHP.getInstance(OFFirstActivity.this).getSurveyList();
+            if (slr != null) {
+                addb.notifyMyList(slr);
+                noSurvey.setVisibility(View.GONE);
+            }
 
-        new OFEventDBRepoKT().fetchEvents(this, this, OFConstants.ApiHitType.fetchEventsFromDB);
+            new OFEventDBRepoKT().fetchEvents(this, this, OFConstants.ApiHitType.fetchEventsFromDB);
+        }
     }
 
     public void clickHandler(View v) {
 
-        if (v.getId() == R.id.get_location) {
+        /*if (v.getId() == R.id.get_location) {
             // Helper.makeText(FirstActivity.this, "Clicked on button 3", 1);
             //new FeedbackController(this).getLocation();
         } else if (v.getId() == R.id.fetch_survey_list) {
@@ -216,10 +269,8 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         } else if (v.getId() == R.id.project_details) {
             // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
             //new FeedbackController(this).getProjectDetails();
-        } else if (v.getId() == R.id.send_log_to_api) {
-            // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
-            OneFlow.sendEventsToApi(this);
-        } else if (v.getId() == R.id.connect_vpn) {
+        } else*/
+       /* else if (v.getId() == R.id.connect_vpn) {
             // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
 
             HashMap<String, String> mapvalues = new HashMap<String, String>();
@@ -251,7 +302,14 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         } else if (v.getId() == R.id.configure_project) {
 
             OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");
-        } else if (v.getId() == R.id.log_user) {
+        }*/
+        if (v.getId() == R.id.send_log_to_api) {
+            // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
+            OneFlow.sendEventsToApi(this);
+        }else if (v.getId()== R.id.configure_oneflow){
+            showCofigureDialog();
+        }
+        else if (v.getId() == R.id.log_user) {
 
             String emailId = "";
             final EditText edittext = new EditText(this);
@@ -274,21 +332,21 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
                     OFDataLogic obj[] = new OFDataLogic[]{dl};
                     //if (!edittext.getText().toString().isEmpty()) {
-                        dialog.cancel();
-                        HashMap<String, Object> mapValue = new HashMap<>();
-                        mapValue.put("location", "Bihar");
-                        mapValue.put("env", null);
-                        mapValue.put("name", "Amit kumar");
-                        mapValue.put("age", 86);
-                        mapValue.put("isActive", true);
-                        mapValue.put("desitance", 25.16);
-                        mapValue.put("timestamp", System.currentTimeMillis());
-                        mapValue.put("DateObj", new Date());
-                        mapValue.put("StringArray", b);
-                        mapValue.put("IntArray", a);
-                        mapValue.put("pojo", dl);
-                        mapValue.put("pojoArray", obj);
-                        OneFlow.logUser(edittext.getText().toString(), mapValue);
+                    dialog.cancel();
+                    HashMap<String, Object> mapValue = new HashMap<>();
+                    mapValue.put("location", "Bihar");
+                    mapValue.put("env", null);
+                    mapValue.put("name", "Amit kumar");
+                    mapValue.put("age", 86);
+                    mapValue.put("isActive", true);
+                    mapValue.put("desitance", 25.16);
+                    mapValue.put("timestamp", System.currentTimeMillis());
+                    mapValue.put("DateObj", new Date());
+                    mapValue.put("StringArray", b);
+                    mapValue.put("IntArray", a);
+                    mapValue.put("pojo", dl);
+                    mapValue.put("pojoArray", obj);
+                    OneFlow.logUser(edittext.getText().toString(), mapValue);
                     /*} else {
                         OFHelper.makeText(OFFirstActivity.this, "Enter email id", 1);
                     }*/

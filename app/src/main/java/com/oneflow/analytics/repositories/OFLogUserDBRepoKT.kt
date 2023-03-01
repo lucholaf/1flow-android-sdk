@@ -125,6 +125,10 @@ class OFLogUserDBRepoKT {
 
             OFHelper.v("LogDBRepo.updateSurveyInput", "OneFlow update called["+updated+"]id["+id+"]synced["+syncNew+"]")
 
+            if(mrh!=null){
+                mrh.onResponseReceived(type,updated,0L,"","","")
+            }
+
         }
 
     }

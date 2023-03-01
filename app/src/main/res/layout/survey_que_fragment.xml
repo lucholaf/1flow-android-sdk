@@ -43,7 +43,6 @@
             android:id="@+id/survey_description_que"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/survey_title_que"
             android:layout_marginLeft="@dimen/field_padding"
             android:layout_marginTop="5dp"
             android:layout_marginRight="@dimen/field_padding"
@@ -56,7 +55,6 @@
             android:id="@+id/option_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/survey_description_que"
             android:layout_margin="@dimen/field_padding"
             android:gravity="center_horizontal"
             android:visibility="invisible">
@@ -110,19 +108,20 @@
             layout="@layout/buttons_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/option_layout"></include>
-
+            ></include>
+        <!--android:layout_below="@id/option_layout"-->
+        <!--android:layout_below="@id/btn_layout"-->
         <LinearLayout
             android:id="@+id/bottom_water_mark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btn_layout"
+
             android:visibility="gone"
             android:gravity="center_vertical"
             android:layout_gravity="center_horizontal"
             android:padding="10dp"
             android:background="@drawable/btn_rounded_rectangle_watermark"
-            android:layout_centerHorizontal="true">
+            >
 
             <ImageView
                 android:layout_width="wrap_content"

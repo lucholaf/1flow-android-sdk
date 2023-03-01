@@ -46,6 +46,7 @@ import com.oneflow.analytics.customwidgets.OFCustomTextViewBold;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
+import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 
 
@@ -80,11 +81,11 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
-        OFHelper.v(tag,"OneFlow reached onSaveInstanceState");
+        OFHelper.v(tag,"1Flow reached onSaveInstanceState");
         if(surveyScreens.getInput().getInput_type().equalsIgnoreCase("short-text")){
-            new OFOneFlowSHP(getActivity()).storeValue("userInput",userInputShort.getText().toString());
+            OFOneFlowSHP.getInstance(getActivity()).storeValue("userInput",userInputShort.getText().toString());
         }else{
-            new OFOneFlowSHP(getActivity()).storeValue("userInput",userInput.getText().toString());
+            OFOneFlowSHP.getInstance(getActivity()).storeValue("userInput",userInput.getText().toString());
         }
 
         outState.putString("userText",userText);
@@ -96,9 +97,9 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         try {
-            OFHelper.v(tag,"OneFlow reached onSaveInstanceState");
+            OFHelper.v(tag,"1Flow reached onSaveInstanceState");
             userText = savedInstanceState.getString("userText");
-            OFHelper.v(tag,"OneFlow reached onSaveInstanceState0["+userText+"]");
+            OFHelper.v(tag,"1Flow reached onSaveInstanceState0["+userText+"]");
             if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("short-text")) {
                 userInputShort.setText(userText);
             } else {
@@ -114,7 +115,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        OFHelper.v(tag, "OneFlow visible to user");
+        OFHelper.v(tag, "1Flow visible to user");
         if (isVisibleToUser) {
 
             View[] animateViews = new View[]{surveyTitle, surveyDescription};
@@ -125,12 +126,12 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    //OFHelper.v(tag, "OneFlow animation START [" + i + "]");
+                    //OFHelper.v(tag, "1Flow animation START [" + i + "]");
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                   // OFHelper.v(tag, "OneFlow animation END[" + i + "]");
+                   // OFHelper.v(tag, "1Flow animation END[" + i + "]");
                     if (i < animateViews.length) {
                         animateViews[i++].startAnimation(animation);
                     }
@@ -190,7 +191,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         surveyInputLimit.setTextColor(OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 0.5f));
 
 
-        OFHelper.v(tag, "OneFlow list data[" + surveyScreens + "]");
+        OFHelper.v(tag, "1Flow list data[" + surveyScreens + "]");
         animationIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
 
         if (OneFlow.titleFace != null) {
@@ -307,9 +308,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     private void submitButtonBeautification() {
         try {
             gdSubmit = (GradientDrawable) (submitButton).getBackground();
-            // GradientDrawable gdOption = (GradientDrawable) optionLayout.getBackground();
-            //submitButton.setVisibility(View.INVISIBLE);
-            //gdOption.setColor(getResources().getColor(R.color.white));
+
             int colorAlpha = OFHelper.manipulateColor(Color.parseColor(themeColor), 0.5f);
             gdSubmit.setColor(colorAlpha);//Color.parseColor(themeColor));
 
@@ -353,7 +352,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     public void onResume() {
         super.onResume();
         View[] animateViews;
-        String savedValue = new OFOneFlowSHP(getActivity()).getStringValue("userInput");
+        String savedValue = OFOneFlowSHP.getInstance(getActivity()).getStringValue("userInput");
         if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
             animateViews = new View[]{surveyTitle, surveyDescription, optionLayout, submitButton};//, skipBtn};
             if(!savedValue.equalsIgnoreCase("NA")) {
@@ -381,12 +380,12 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
             animation1.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation START [" + i + "]");
+                    OFHelper.v(tag, "1Flow animation START [" + i + "]");
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation END[" + i + "]");
+                    OFHelper.v(tag, "1Flow animation END[" + i + "]");
                     //
                     i++;
                     if (i < animateViews.length) {
@@ -399,18 +398,18 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
                 @Override
                 public void onAnimationRepeat(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation REPEAT[" + i + "]");
+                    OFHelper.v(tag, "1Flow animation REPEAT[" + i + "]");
                 }
             });
             animation2.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation START [" + i + "]");
+                    OFHelper.v(tag, "1Flow animation START [" + i + "]");
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation END[" + i + "]");
+                    OFHelper.v(tag, "1Flow animation END[" + i + "]");
                     //
                     i++;
                     if (i < animateViews.length) {
@@ -423,25 +422,25 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
                 @Override
                 public void onAnimationRepeat(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation REPEAT[" + i + "]");
+                    OFHelper.v(tag, "1Flow animation REPEAT[" + i + "]");
                 }
             });
             animation3.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation START [" + i + "]");
+                    OFHelper.v(tag, "1Flow animation START [" + i + "]");
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation END[" + i + "]");
+                    OFHelper.v(tag, "1Flow animation END[" + i + "]");
 
                     i++;
 
                     if (i < animateViews.length) {
                         /* if (surveyScreens.getInput().getMin_chars() <= 0) {*/
                         try {
-                            OFHelper.v(tag, "OneFlow min char reached [" + surveyScreens.getButtons().get(0).getTitle() + "]");
+                            OFHelper.v(tag, "1Flow min char reached [" + surveyScreens.getButtons().get(0).getTitle() + "]");
                             if (!OFHelper.validateString(surveyScreens.getButtons().get(0).getTitle()).equalsIgnoreCase("NA")) {
                                 ((OFCustomTextViewBold) animateViews[i]).setText(surveyScreens.getButtons().get(0).getTitle());
                             }
@@ -457,20 +456,20 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
                 @Override
                 public void onAnimationRepeat(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation REPEAT[" + i + "]");
+                    OFHelper.v(tag, "1Flow animation REPEAT[" + i + "]");
                 }
             });
             animation4.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation4 START [" + i + "]");
+                    OFHelper.v(tag, "1Flow animation4 START [" + i + "]");
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
 
 
-                    OFHelper.v(tag, "OneFlow animation4 END[" + i + "]len[" + animateViews.length + "][" + surveyScreens.getInput().getMin_chars() + "]");
+                    OFHelper.v(tag, "1Flow animation4 END[" + i + "]len[" + animateViews.length + "][" + surveyScreens.getInput().getMin_chars() + "]");
 
 
                     i++;
@@ -485,12 +484,12 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
                 @Override
                 public void onAnimationRepeat(Animation animation) {
-                    OFHelper.v(tag, "OneFlow animation REPEAT[" + i + "]");
+                    OFHelper.v(tag, "1Flow animation REPEAT[" + i + "]");
                 }
             });
         }
 
-        OFHelper.v(tag,"OneFlow reached onResume 0["+userText+"]");
+        OFHelper.v(tag,"1Flow reached onResume 0["+userText+"]");
         if(!userText.isEmpty()) {
             if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("short-text")) {
                 userInputShort.setText(userText);
@@ -498,29 +497,45 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
                 userInput.setText(userText);
             }
         }
+
     }
 
+   /* Subscription subscriptionBtn = RxView.clicks(submitButton).subscribe(new Action1<Void>() {
+        @Override
+        public void call(Void aVoid) {
+            OFHelper.makeText(getActivity(),"Clicked on button",1);
+        }
+    });*/
 
+    /*Observable<View> submitRxButton = Observable.create(new ObservableOnSubscribe<View>() {
+        @Override
+        public void subscribe(@io.reactivex.annotations.NonNull ObservableEmitter<View> emitter) throws Exception {
+            OFHelper.makeText(getActivity(),"Clicked on button",1);
+        }
+    });*/
 
 
 
     @Override
     public void onClick(View v) {
-
-        new OFOneFlowSHP(getActivity()).storeValue("userInput","");
-        if (v.getId() == R.id.skip_btn) {
-            sa.addUserResponseToList(surveyScreens.get_id(), null, null);
-        } else if (v.getId() == R.id.submit_btn) {
-            if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
-                if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
-                    sa.addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString().trim().length() > 0 ? userInput.getText().toString().trim() : null);
+        long lastHitGap = System.currentTimeMillis()-OFOneFlowSHP.getInstance(getActivity()).getLongValue(OFConstants.SHP_LAST_CLICK_TIME);
+        OFHelper.v(tag, "1Flow lastHit[" + lastHitGap + "]");
+        if(lastHitGap>1500) {
+            OFOneFlowSHP.getInstance(getActivity()).storeValue("userInput", "");
+            if (v.getId() == R.id.skip_btn) {
+                sa.addUserResponseToList(surveyScreens.get_id(), null, null);
+            } else if (v.getId() == R.id.submit_btn) {
+                if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
+                    if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
+                        sa.addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString().trim().length() > 0 ? userInput.getText().toString().trim() : null);
+                    }
+                } else {
+                    sa.addUserResponseToList(surveyScreens.get_id(), null, userInputShort.getText().toString().trim().length() > 0 ? userInputShort.getText().toString().trim() : null);
                 }
-            } else {
-                sa.addUserResponseToList(surveyScreens.get_id(), null, userInputShort.getText().toString().trim().length() > 0 ? userInputShort.getText().toString().trim() : null);
-            }
 
-        } else if (v.getId() == R.id.cancel_btn) {
-            //  Helper.makeText(getActivity(), "Clicked on cancel button", 1);
+            } else if (v.getId() == R.id.cancel_btn) {
+                //  Helper.makeText(getActivity(), "Clicked on cancel button", 1);
+            }
         }
     }
 

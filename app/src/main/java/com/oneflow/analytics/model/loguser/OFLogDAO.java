@@ -30,7 +30,7 @@ public interface OFLogDAO {
     @Insert
     public long insertUserInput(OFSurveyUserInput sur);
 
-    @Query("select * from SurveyUserInput LIMIT 1")
+    @Query("select * from SurveyUserInput where synced = 0 order by created_on desc limit 1")
     OFSurveyUserInput getOfflineUserInput();
 
     @Query("select * from SurveyUserInput where survey_id = :surveyId and user_id = :userId order by created_on desc limit 1")

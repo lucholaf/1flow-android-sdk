@@ -44,12 +44,14 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
 
         if (OFHelper.isConnected(context)) {
             // Helper.makeText(context,"Network available",1);
-            OFOneFlowSHP shp = new OFOneFlowSHP(context);
-           // OFLocationResponse lr = new OFOneFlowSHP(context).getUserLocationDetails();
+            OFOneFlowSHP shp = OFOneFlowSHP.getInstance(context);
+           // OFLocationResponse lr = OFOneFlowSHP.getInstance(context).getUserLocationDetails();
             if (shp.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN,false)) {
-                checkOffLineSurvey();
+                if(counter<1) {
+                    checkOffLineSurvey();
+                }
             } else {
-                String projectKey = new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP);
+                String projectKey = OFOneFlowSHP.getInstance(context).getStringValue(OFConstants.APPIDSHP);
                 OneFlow.configure(context, projectKey);
                 // CurrentLocation.getCurrentLocation(context,this,Constants.ApiHitType.fetchLocation);
             }
@@ -58,7 +60,10 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
 
 
 
+    int counter = 0;
     public void checkOffLineSurvey() {
+        OFHelper.v("OFNetworkChangeReceiver", "1Flow calling checkOffLineSurvey["+(counter++)+"] ");
+
         new OFLogUserDBRepoKT().fetchSurveyInput(context, this, OFConstants.ApiHitType.fetchSurveysFromDB);
         //new OFMyDBAsyncTask(context,this,OFConstants.ApiHitType.fetchSurveysFromDB).execute();
 
@@ -75,17 +80,23 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
                     if (survey != null) {
                         OFSurvey.submitUserResponseOffline(context, survey, this, OFConstants.ApiHitType.logUser);
                     }
+                }else{
+                    counter=0;
                 }
                 break;
-            case logUser:
+            case submittingOfflineSurvey:
+
                 if(obj!=null) {
                     OFSurveyUserInput survey1 = (OFSurveyUserInput) obj;
-                    new OFLogUserDBRepoKT().deleteSentSurveyFromDB(context, new Integer[]{survey1.get_id()}, this, OFConstants.ApiHitType.deleteEventsFromDB);
+                    //new OFLogUserDBRepoKT().deleteSentSurveyFromDB(context, new Integer[]{survey1.get_id()}, this, OFConstants.ApiHitType.deleteEventsFromDB);
+
+                    new OFLogUserDBRepoKT().updateSurveyInput(context, this, OFConstants.ApiHitType.updateSurveyIds, true, survey1.getSurvey_id());
+
                     //new OFMyDBAsyncTask(context,this,OFConstants.ApiHitType.deleteEventsFromDB).execute(new Integer[]{survey1.get_id()});
                 }
                 break;
             //case deleteSurveyFromDB:
-            case deleteEventsFromDB:
+            case updateSurveyIds:
                 checkOffLineSurvey();
                 break;
         }

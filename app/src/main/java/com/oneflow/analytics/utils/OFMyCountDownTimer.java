@@ -93,7 +93,7 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
 
                             ids[i++] = ret.getId();
                         }
-                        OFOneFlowSHP shp = new OFOneFlowSHP(mContext);
+                        OFOneFlowSHP shp = OFOneFlowSHP.getInstance(mContext);
                         if (shp.getUserDetails() != null) {
                             if (!OFHelper.validateString(shp.getUserDetails().getAnalytic_user_id()).equalsIgnoreCase("NA")) {
                                 OFEventAPIRequest ear = new OFEventAPIRequest();

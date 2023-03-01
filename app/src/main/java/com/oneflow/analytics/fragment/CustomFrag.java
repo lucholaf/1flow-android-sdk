@@ -295,7 +295,7 @@ public class CustomFrag extends Fragment {
             public void onClick(View v) {
 
                 //closed survey logic for storage.
-                OFOneFlowSHP ofs = new OFOneFlowSHP(getActivity());
+                OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(getActivity());
                 ArrayList<String> closedSurveyList = ofs.getClosedSurveyList();
                 if (closedSurveyList == null) {
                     closedSurveyList = new ArrayList<>();

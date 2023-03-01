@@ -121,7 +121,8 @@ class OFEventDBRepoKT {
         val scope = CoroutineScope(job)
         scope.launch {
             val sdkdb = OFSDKDB.getInstance(context)
-            val beforeSurveyEvent = sdkdb.eventDAO()?.getEventBeforeSurvey3Sec(Calendar.getInstance().timeInMillis - 3000) // -3000 added for before 3sec logic
+            //val beforeSurveyEvent = sdkdb.eventDAO()?.getEventBeforeSurvey3Sec(Calendar.getInstance().timeInMillis - 10000) // -3000 added for before 3sec logic, changed to 10 sec as new requirement on 30-01-23
+            val beforeSurveyEvent = sdkdb.eventDAO()?.getEventBeforeSurveyFetched(Calendar.getInstance().timeInMillis) // -3000 added for before 3sec logic, changed to 10 sec as new requirement on 30-01-23
             mrh.onResponseReceived(type, beforeSurveyEvent, 0L, "", null, null)
         }
 

@@ -170,7 +170,7 @@ public class OFSurvey {
         try {
             Call<OFGenericResponse> responseCall = null;
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/add_survey_response";
-            responseCall = connectAPI.submitSurveyUserResponse(new OFOneFlowSHP(context).getStringValue(OFConstants.APPIDSHP), sur);//, url);
+            responseCall = connectAPI.submitSurveyUserResponse(OFOneFlowSHP.getInstance(context).getStringValue(OFConstants.APPIDSHP), sur);//, url);
 
             responseCall.enqueue(new Callback<OFGenericResponse>() {
                 @Override

@@ -29,9 +29,9 @@ public class OFLogCountdownTimer extends CountDownTimer implements OFMyResponseH
     @Override
     public void onTick(long millisUntilFinished) {
        // OFHelper.v("OFLogCountdownTimer", "OneFlow LogApi onTick called ");
-        OFLogUserRequest lur = new OFOneFlowSHP(mContext).getLogUserRequest();
+        OFLogUserRequest lur = OFOneFlowSHP.getInstance(mContext).getLogUserRequest();
         if (lur != null) {
-            OFLogUserRepo.logUser(new OFOneFlowSHP(mContext).getStringValue(OFConstants.APPIDSHP), lur, this, OFConstants.ApiHitType.logUser);
+            OFLogUserRepo.logUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), lur, this, OFConstants.ApiHitType.logUser);
         }
     }
 
@@ -50,7 +50,7 @@ public class OFLogCountdownTimer extends CountDownTimer implements OFMyResponseH
                     OFLogUserResponse logUserResponse = (OFLogUserResponse) obj;
                     if (logUserResponse != null) {
                         // replacing current session id and user analytical id
-                        OFOneFlowSHP ofs = new OFOneFlowSHP(mContext);
+                        OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(mContext);
                         ofs.storeValue(OFConstants.SHP_LOG_USER_KEY, reserved);//ofs.getLogUserRequest().getSystem_id()); // system id stored for sending next app launch
                         ofs.clearLogUserRequest();
                         OFAddUserResultResponse aurr = ofs.getUserDetails();
