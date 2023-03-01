@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
@@ -31,10 +32,13 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
@@ -134,10 +138,18 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
     OFGetSurveyListResponse surveyItem;
     boolean shouldFadeAway = false;
-
+    int heightScreen;
+    float per = 0.8f;
     @Override
     protected void onStart() {
         super.onStart();
+
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        Display disp = getWindowManager().getDefaultDisplay();
+        disp.getMetrics(displayMetrics);
+        heightScreen = (int)(displayMetrics.heightPixels*per);
+
 
         surveyItem = (OFGetSurveyListResponse) this.getIntent().getSerializableExtra("SurveyType");
 
@@ -736,8 +748,14 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     /*String tempImage1 = "<img style=\"max-width: 100%; display: block; margin-left: auto;margin-right: auto;\" src=\"https://i.pinimg.com/originals/da/45/fb/da45fb10d3b777560c4bf3c10c314508.jpg\">";
     String tempVideo = "<div style=\"position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;\"><iframe src=\"https://www.youtube.com/embed/sGXHJvEttpE?autoplay=1\" style=\"position: absolute; top: 0; left: 0; width: 100%; height: 100%;\" frameborder=\"0\" allow=\"autoplay; fullscreen\" allowfullscreen></iframe></div>";*/
 
+       public void resetHeight(int fragmentHeight){
 
+        int dialogHeight = fragmentHeight>heightScreen?heightScreen+50:ViewGroup.LayoutParams.WRAP_CONTENT;
 
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, dialogHeight);
+
+        OFHelper.v(tag,"1Flow displayHeight condi["+(fragmentHeight>heightScreen)+"]dialogHeight["+dialogHeight+"]inPx["+heightScreen+"]dialogHeight inPx["+fragmentHeight +"].");
+    }
     public Fragment getFragment() {
 
         Fragment frag = null;

@@ -171,6 +171,13 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                                     } else {
                                         surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get(surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition()));
                                     }
+
+
+                                    HashMap<String, Object> mapValue = new HashMap<>();
+                                    mapValue.put("survey_id", surveyItem.get_id());
+                                    OFEventController ec = OFEventController.getInstance(mContext);
+                                    ec.storeEventsInDB(OFConstants.AUTOEVENT_SURVEYIMPRESSION, mapValue, 0);
+
                                     surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     surveyIntent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
                                     surveyIntent.putExtra("eventName", (String) ret[0]);
