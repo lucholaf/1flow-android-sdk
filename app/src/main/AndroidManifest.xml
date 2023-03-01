@@ -39,11 +39,11 @@
 
         </activity>
         <activity android:name="com.oneflow.analytics.OFFirstActivity">
-            <intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <!--
 <action android:name="android.intent.action.VIEW"/>
