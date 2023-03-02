@@ -8,15 +8,23 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
 import com.oneflow.analytics.OFSDKBaseActivity;
 import com.oneflow.analytics.OFSurveyActivityFullScreen;
+import com.oneflow.analytics.customwidgets.OFCustomeWebView;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.utils.OFHelper;
@@ -25,7 +33,10 @@ public class BaseFragment extends Fragment {
     public boolean isActive = false;
     public GradientDrawable gdSubmit;
     public OFSDKBaseActivity sa;
-    LinearLayout waterMarkLayout;
+    public View webLayout;
+    public ProgressBar pBar;
+    public OFCustomeWebView webContent;
+    LinearLayout waterMarkLayout,infoWebLayout;
     public OFSurveyScreens surveyScreens;
     public OFSDKSettingsTheme sdkTheme;
     public String themeColor;
@@ -38,9 +49,10 @@ public class BaseFragment extends Fragment {
         //sa = (OFSurveyActivityBottom) context;
         try {
             sa = (OFSDKBaseActivity) context;
-            OFHelper.v(tag,"OneFlow custom survery reading");
+
+            OFHelper.v(tag,"1Flow custom survery reading");
         }catch(Exception ex){
-            OFHelper.v(tag,"OneFlow custom survery exception");
+            OFHelper.v(tag,"1Flow custom survery exception");
             sa = null;
             //customFrag = CustomFrag.newInstance();
            // OFHelper.v(tag,"OneFlow custom survery exception ["+customFrag+"]");
@@ -58,41 +70,140 @@ public class BaseFragment extends Fragment {
         sdkTheme = (OFSDKSettingsTheme) getArguments().getSerializable("theme");
         themeColor = (String) getArguments().getString("themeColor");
 
+//        OFHelper.v(tag,"1Flow frag data contains["+surveyScreens.getMediaEmbedHTML().contains("/undefined")+"]");
+        OFHelper.v(tag,"1Flow frag data["+surveyScreens.getMediaEmbedHTML() +"]");
+        //https://www.loom.com/embed/31fdc69a9331436eb56ae41807f7f3ab
+       /* if(surveyScreens.getMediaEmbedHTML()!=null) {
+            if (surveyScreens.getMediaEmbedHTML().contains("/undefined")) {
+                String str = surveyScreens.getMediaEmbedHTML();
+                str = surveyScreens.getMediaEmbedHTML().replace("\n", "");
+                str = str.replace("undefined", "31fdc69a9331436eb56ae41807f7f3ab");
+                surveyScreens.setMediaEmbedHTML(str);
+            }
+        }*/
+        OFHelper.v(tag,"1Flow frag data["+surveyScreens.getMediaEmbedHTML() +"]");
+
+
 
     }
+    public int thisViewHeight = 0;
+    public void setThisViewHeight(int newHeight){
+        if(newHeight>thisViewHeight){
+            thisViewHeight = newHeight;
+        }
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if(!OFHelper.validateString(surveyScreens.getMediaEmbedHTML()).equalsIgnoreCase("NA")) {
+            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    //sa.resetHeight(((View)view.getParent()).getHeight());
+                    //sa.resetHeight(((View)((View)(((View)view.getParent())).getParent()).getParent()).getHeight());
+                    try {
+                        setThisViewHeight(((View) ((View) ((View) ((View) (((View) view.getParent())).getParent()).getParent()).getParent()).getParent()).getHeight());
+                    }catch (Exception ex){
+                        setThisViewHeight(((View) ((View) ((View) (((View) view.getParent())).getParent()).getParent()).getParent()).getHeight());
+                    }
+                    sa.resetHeight(thisViewHeight);
+                    //OFHelper.v(tag, "1Flow display inside view created now [" + ((View) ((View) ((View) ((View) (((View) view.getParent())).getParent()).getParent()).getParent()).getParent()).getHeight() + "][]");
 
-    public void transitActive() {
-        int colorFrom = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);//getResources().getColor(R.color.ratings_focused);
-        int colorTo = Color.parseColor(sa.themeColor);
-        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.setDuration(250); // milliseconds
-        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                }
+            });
+            OFHelper.e(tag, "1Flow hahahah view created now [" + view.getHeight() + "]parent[" + ((View) view.getParent()).getHeight() + "]");
+        }
+    }
+    public void setupWeb(){
 
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                //submitButton.setBackgroundColor((int) animator.getAnimatedValue());
-                gdSubmit.setColor((int) animator.getAnimatedValue());
+        if(OFHelper.validateString(surveyScreens.getMediaEmbedHTML()).equalsIgnoreCase("NA")){
+            webLayout.setVisibility(View.GONE);
+        }else{
+            if(surveyScreens.getMediaEmbedHTML().contains("<video")|| surveyScreens.getMediaEmbedHTML().contains("<iframe")){
+                webContent.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+            }else{
+                webContent.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             }
+            webContent.getSettings().setJavaScriptEnabled(true);
+            webContent.getSettings().setMediaPlaybackRequiresUserGesture(false);
+            webContent.getSettings().setBlockNetworkImage(false);
+            webContent.setBackgroundColor(Color.TRANSPARENT);
+            webLayout.setVisibility(View.VISIBLE);
+            webContent.setVisibility(View.VISIBLE);
+            //webLayout.setVisibility(View.VISIBLE);
 
-        });
-        colorAnimation.start();
+            webContent.setWebChromeClient(new WebChromeClient() {
+                                              @Override
+                                              public void onProgressChanged(WebView view, int newProgress) {
+                                                  super.onProgressChanged(view, newProgress);
+                                                  //OFHelper.v(tag,"1Flow display web progress["+newProgress+"]["+view.getHeight()+"]["+webContent.getHeight()+"]["+((View)((View)((View)((View)(((View)view.getParent())).getParent()).getParent()).getParent()).getParent()).getHeight()+"][]");
+                                                    try {
+                                                        if (((View) ((View) ((View) ((View) (((View) view.getParent())).getParent()).getParent()).getParent()).getParent()).getParent() != null) {
+                                                            setThisViewHeight(((View) ((View) ((View) ((View) (((View) view.getParent())).getParent()).getParent()).getParent()).getParent()).getHeight());
+                                                        }
+                                                    }catch (Exception ex){
+                                                        setThisViewHeight(((View) ((View) ((View) (((View) view.getParent())).getParent()).getParent()).getParent()).getHeight());
+                                                    }
+                                                  if (newProgress >= 100) {
+
+                                                        sa.resetHeight(thisViewHeight);
+                                                  }
+                                              }
+                                          }
+                );
+
+
+
+                String webData = "<html><head></head><body style='margin:0;padding:0;'>"+surveyScreens.getMediaEmbedHTML()+"</body></html>";
+                OFHelper.v(tag,"1Flow htmlData after ["+webData+"]");
+
+                webContent.loadDataWithBaseURL(null,webData,"text/html", "UTF-8",null);
+
+
+        }
+
+    }
+    public void transitActive() {
+        try {
+            int colorFrom = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);//getResources().getColor(R.color.ratings_focused);
+            int colorTo = Color.parseColor(sa.themeColor);
+            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+            colorAnimation.setDuration(250); // milliseconds
+            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                @Override
+                public void onAnimationUpdate(ValueAnimator animator) {
+                    //submitButton.setBackgroundColor((int) animator.getAnimatedValue());
+                    gdSubmit.setColor((int) animator.getAnimatedValue());
+                }
+
+            });
+            colorAnimation.start();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     public void transitInActive() {
-        int colorFrom = Color.parseColor(sa.themeColor);
-        int colorTo = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);//getResources().getColor(R.color.ratings_focused);
-        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
-        colorAnimation.setDuration(250); // milliseconds
-        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        try {
+            int colorFrom = Color.parseColor(sa.themeColor);
+            int colorTo = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);//getResources().getColor(R.color.ratings_focused);
+            ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+            colorAnimation.setDuration(250); // milliseconds
+            colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-                //submitButton.setBackgroundColor((int) animator.getAnimatedValue());
-                gdSubmit.setColor((int) animator.getAnimatedValue());
-            }
+                @Override
+                public void onAnimationUpdate(ValueAnimator animator) {
+                    //submitButton.setBackgroundColor((int) animator.getAnimatedValue());
+                    gdSubmit.setColor((int) animator.getAnimatedValue());
+                }
 
-        });
-        colorAnimation.start();
+            });
+            colorAnimation.start();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 
     public void handleWaterMarkStyle(OFSDKSettingsTheme theme) {

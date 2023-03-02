@@ -545,25 +545,29 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
         OFHelper.v("FeedbackController", "1Flow recordEvents record called with[" + eventName + "]at[" + OFHelper.formatedDate(System.currentTimeMillis(), "dd-MM-yyyy hh:mm:ss.SSS") + "]");
         try {
-            OneFlow of = new OneFlow(mContext);
-            of.checkThrottlingLife();
-            // this 'if' is for converting date object to second format(timestamp)
-            if (eventValues != null) {
-                eventValues = OFHelper.checkDateInHashMap(eventValues);
-            }
-            OFHelper.v("FeedbackController", "1Flow recordEvents record called with[" + eventValues + "]");
-            if (mContext != null) {
-                // storage, api call and check survey if available.
-                //EventController.getInstance(mContext).storeEventsInDB(eventName, eventValues, 0);
-                OFEventController ec = OFEventController.getInstance(mContext);
-                ec.storeEventsInDB(eventName, eventValues, 0);
+            if (!OFHelper.validateString(eventName.trim()).equalsIgnoreCase("NA")) {
+                OneFlow of = new OneFlow(mContext);
+                of.checkThrottlingLife();
+                // this 'if' is for converting date object to second format(timestamp)
+                if (eventValues != null) {
+                    eventValues = OFHelper.checkDateInHashMap(eventValues);
+                }
+                OFHelper.v("FeedbackController", "1Flow recordEvents record called with[" + eventValues + "]");
+                if (mContext != null) {
+                    // storage, api call and check survey if available.
+                    //EventController.getInstance(mContext).storeEventsInDB(eventName, eventValues, 0);
+                    OFEventController ec = OFEventController.getInstance(mContext);
+                    ec.storeEventsInDB(eventName, eventValues, 0);
 
 
-                //Checking if any survey available under coming event.
-                of.checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
+                    //Checking if any survey available under coming event.
+                    of.checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
 
+                } else {
+                    OFHelper.v("1Flow", "1Flow null context for event");
+                }
             } else {
-                OFHelper.v("1Flow", "1Flow null context for event");
+                OFHelper.v("1Flow", "1Flow empty event unable to trigger survey");
             }
         } catch (Exception ex) {
 
@@ -1098,8 +1102,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                         }
                     } else {
-                        OFHelper.v("1Flow", "1Flow no survey found show directly");
+
                         String eventName = (String) obj3;
+                        OFHelper.v("1Flow", "1Flow no survey found show directly eventName[" + eventName + "]");
                         onResponseReceived(OFConstants.ApiHitType.checkResurveyNSubmission, gslr, 0l, eventName, null, null);
                     }
                 } else {

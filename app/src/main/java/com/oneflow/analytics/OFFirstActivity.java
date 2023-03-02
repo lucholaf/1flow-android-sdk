@@ -58,7 +58,7 @@ import java.util.Locale;
 public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHandlerOneFlow {
 
     String tag = this.getClass().getName();
-    OFCustomTextView  sendLogsToAPI,noSurvey;
+    OFCustomTextView sendLogsToAPI, noSurvey;
     // OFCustomEditText fakeEditText;
     RecyclerView listOfSurvey;
     ProgressBar progressBar;
@@ -86,14 +86,14 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         Long lastHit = ofs.getLongValue(OFConstants.SHP_ONEFLOW_CONFTIMING);
 
-        OFHelper.v(tag,"1Flow lastHit["+lastHit+"]");
+        OFHelper.v(tag, "1Flow lastHit[" + lastHit + "]");
 
-        OFHelper.v(tag,"1Flow LanguageCodeTAG["+ Locale.getDefault().toLanguageTag()+"]");
-        OFHelper.v(tag,"1Flow LanguageCodeLanguage["+ Locale.getDefault().getLanguage()+"]");
-        OFHelper.v(tag,"1Flow LanguageCodeISO3["+ Locale.getDefault().getISO3Language()+"]");
-        OFHelper.v(tag,"1Flow LanguageCodetoString["+ Locale.getDefault().toString() +"]");
-        OFHelper.v(tag,"1Flow LanguageCodeDisplayLanguage["+ Locale.getDefault().getDisplayLanguage()+"]");
-        OFHelper.v(tag,"1Flow LanguageCountry["+Locale.getDefault().getCountry()+"]");
+        OFHelper.v(tag, "1Flow LanguageCodeTAG[" + Locale.getDefault().toLanguageTag() + "]");
+        OFHelper.v(tag, "1Flow LanguageCodeLanguage[" + Locale.getDefault().getLanguage() + "]");
+        OFHelper.v(tag, "1Flow LanguageCodeISO3[" + Locale.getDefault().getISO3Language() + "]");
+        OFHelper.v(tag, "1Flow LanguageCodetoString[" + Locale.getDefault().toString() + "]");
+        OFHelper.v(tag, "1Flow LanguageCodeDisplayLanguage[" + Locale.getDefault().getDisplayLanguage() + "]");
+        OFHelper.v(tag, "1Flow LanguageCountry[" + Locale.getDefault().getCountry() + "]");
 
         slr = new ArrayList<>();
         addb = new OFSurveyListAdapter(this, slr, clickListener);
@@ -135,11 +135,11 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         String projectKey = ofs.getStringValue(OFConstants.APPIDSHP);
 
-        OFHelper.v(tag,"1Flow projectKey["+projectKey+"]");
-        if(!OFHelper.validateString(projectKey).equalsIgnoreCase("na")) {
+        OFHelper.v(tag, "1Flow projectKey[" + projectKey + "]");
+        if (!OFHelper.validateString(projectKey).equalsIgnoreCase("na")) {
             configureCalled = true;
             configureOneFlow(projectKey);
-        }else{
+        } else {
             //OFHelper.makeText(this,"Project key not available, Won't call OneFlow config",1);
             noSurvey.setText("Configure not called");
             progressBar.setVisibility(View.GONE);
@@ -151,7 +151,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
     }
 
-    private void configureOneFlow(String projectKey){
+    private void configureOneFlow(String projectKey) {
         OneFlow.configure(getApplicationContext(), projectKey);//"fonts/pacifico1.ttf");//,titleSetup,descriptionFont,optionsFont);
         //OneFlow.useFont("fonts/pacifico.ttf");
         OneFlow.shouldShowSurvey(true);
@@ -161,25 +161,30 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         HashMap<String, Object> mapValue = new HashMap<>();
         mapValue.put("location", "MP");
         mapValue.put("env", "Prod");
-        mapValue.put("name", "Amit kumar");
+        mapValue.put("test_date", OFHelper.formatDateIntoCustomFormat(new Date(),"yyyy-mm-dd"));
+        mapValue.put("tested_by", "Amit kumar sharma");
 
-        OneFlow.logUser("ImmediateUser", mapValue);
+        OneFlow.logUser("test_Android_2023_03_01", mapValue);
     }
-    private void showCofigureDialog(){
+
+    private void showCofigureDialog() {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_project_key);
         OFCustomEditText projectKeyET = dialog.findViewById(R.id.project_key);
-        String projectKey = "oneflow_prod_UjlFunf96DxcEXXXgJKqm32q1RDIYXbmDkepkDmomBoDdlzXQM/U9qzEAKh6yj34xfQQT1Ejp0ltJnF9wGJU5Q==";// [TEST] All Screens
-        //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
+        //String projectKey = "oneflow_prod_UjlFunf96DxcEXXXgJKqm32q1RDIYXbmDkepkDmomBoDdlzXQM/U9qzEAKh6yj34xfQQT1Ejp0ltJnF9wGJU5Q==";// [TEST] All Screens
+        //String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";// AmitRepeatTest
+        //String projectKey = "oneflow_prod_SR8Fn2G0BMPY4RW7ZE/bG37M2VbOQrG8KKfOCkW6K8MdYNMKj2Ug9VPkwtbgTLXZE6YZ2fvm6M9UxuEBcVB9Xw==";// Ahsan project key
+        //String projectKey = "oneflow_prod_hlXx+7J/PLaZmjrScYvDqVr75+oIAS+Fyc2Hs7hO4o1GcsbyeMTJ74XKceugfPhDZ3MPdbB65rltbhP9cWmaYA==";// Embed I&V Android
+        String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
         //String projectKey = "oneflow_prod_yxwI14oGAEhYgOEJjo43IsoKuWbSPoXBcKD+Bj5UkiZtPXb1vuuBkRUm5YxfBCs6thcsxPWbxDeJHJZlSGzxkw==";//[TEST]Flutter/React Native SDKs
         projectKeyET.setText(projectKey);
         OFCustomTextView registerButton = dialog.findViewById(R.id.register_project);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(projectKeyET.getText().toString().equalsIgnoreCase("")){
-                    OFHelper.makeText(OFFirstActivity.this,"Please enter project key",1);
-                }else {
+                if (projectKeyET.getText().toString().equalsIgnoreCase("")) {
+                    OFHelper.makeText(OFFirstActivity.this, "Please enter project key", 1);
+                } else {
                     dialog.cancel();
                     noSurvey.setVisibility(View.GONE);
                     progressBar.setVisibility(View.VISIBLE);
@@ -189,6 +194,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         });
         dialog.show();
     }
+
     BroadcastReceiver listFetched = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -198,8 +204,8 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
             if (intent.getAction().equalsIgnoreCase("survey_list_fetched")) {
                 slr = OFOneFlowSHP.getInstance(OFFirstActivity.this).getSurveyList();
                 progressBar.setVisibility(View.GONE);
-                OFHelper.v(tag, "OneFlow reached receiver 0["+slr+"]msg["+intent.getStringExtra("msg")+"]");
-                if(slr!=null) {
+                OFHelper.v(tag, "OneFlow reached receiver 0[" + slr + "]msg[" + intent.getStringExtra("msg") + "]");
+                if (slr != null) {
                     if (slr.size() > 0) {
                         listOfSurvey.setVisibility(View.VISIBLE);
                         addb.notifyMyList(slr);
@@ -216,9 +222,9 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
             } else if (intent.getAction().equalsIgnoreCase("events_submitted")) {
                 new OFEventDBRepoKT().fetchEvents(OFFirstActivity.this, OFFirstActivity.this, OFConstants.ApiHitType.fetchEventsFromDB);
 
-            }else if(intent.getAction().equalsIgnoreCase("survey_finished")){
+            } else if (intent.getAction().equalsIgnoreCase("survey_finished")) {
                 String triggerName = intent.getStringExtra("surveyDetail");
-                OFHelper.v(tag,"OneFlow Submitted survey data["+triggerName+"]");
+                OFHelper.v(tag, "OneFlow Submitted survey data[" + triggerName + "]");
             }
         }
     };
@@ -226,16 +232,19 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         @Override
         public void onClick(View v) {
             String tag = (String) v.getTag();
+
             String tagArray[] = tag.split(",");
             //GetSurveyListResponse surveyItem = checkSurveyTitleAndScreens(tag);
 
-
-            HashMap<String, Object> mapvalues = new HashMap<String, Object>();
-            mapvalues.put("testKey1", "testValue1");
-            mapvalues.put("testKey2", 25);
-            mapvalues.put("testKey3", "testValue3");
-            OneFlow.recordEvents(tagArray[0], mapvalues);
-
+            if (tagArray[0].trim().equalsIgnoreCase("")) {
+                OFHelper.showAlert(OFFirstActivity.this, "", "Event name not defined, Unable to trigger");
+            } else {
+                HashMap<String, Object> mapvalues = new HashMap<String, Object>();
+                mapvalues.put("testKey1", "testValue1");
+                mapvalues.put("testKey2", 25);
+                mapvalues.put("testKey3", "testValue3");
+                OneFlow.recordEvents(tagArray[0], mapvalues);
+            }
             /*Intent intent = new Intent(SurveyList.this, SurveyActivity.class);
             intent.putExtra("SurveyType", surveyItem);
             startActivity(intent);*/
@@ -247,7 +256,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         super.onResume();
         //Helper.makeText(this,"isConnected["+Helper.isInternetAvailable()+"]",1);
 
-        if(!configureCalled) {
+        if (!configureCalled) {
             slr = OFOneFlowSHP.getInstance(OFFirstActivity.this).getSurveyList();
             if (slr != null) {
                 addb.notifyMyList(slr);
@@ -306,10 +315,9 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         if (v.getId() == R.id.send_log_to_api) {
             // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
             OneFlow.sendEventsToApi(this);
-        }else if (v.getId()== R.id.configure_oneflow){
+        } else if (v.getId() == R.id.configure_oneflow) {
             showCofigureDialog();
-        }
-        else if (v.getId() == R.id.log_user) {
+        } else if (v.getId() == R.id.log_user) {
 
             String emailId = "";
             final EditText edittext = new EditText(this);
@@ -322,7 +330,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
             alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
-                    int a[] = new int[]{1, 2, 3, 4};
+                    /*int a[] = new int[]{1, 2, 3, 4};
                     String b[] = new String[]{"One", "Two", "Three", "Four"};
                     OFDataLogic dl = new OFDataLogic();
                     dl.setAction("Action");
@@ -346,10 +354,26 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
                     mapValue.put("IntArray", a);
                     mapValue.put("pojo", dl);
                     mapValue.put("pojoArray", obj);
-                    OneFlow.logUser(edittext.getText().toString(), mapValue);
+                    OneFlow.logUser(edittext.getText().toString(), mapValue);*/
                     /*} else {
                         OFHelper.makeText(OFFirstActivity.this, "Enter email id", 1);
                     }*/
+                    if (edittext.getText().toString().trim().equalsIgnoreCase("")) {
+                        OFHelper.makeText(OFFirstActivity.this, "Empty user name", 1);
+
+                    } else {
+                        if (OFHelper.isConnected(OFFirstActivity.this)) {
+
+                            OFHelper.v(tag, "1Flow date[" + OFHelper.formatDateIntoCustomFormat(new Date(), "YYYY-MM-dd") + "]");
+
+                            HashMap<String, Object> mapValue = new HashMap<>();
+                            mapValue.put("test_date", OFHelper.formatDateIntoCustomFormat(new Date(), "YYYY-MM-dd"));
+                            mapValue.put("tested_by", "DummyBuild_2023.02.09");
+
+
+                            OneFlow.logUser(edittext.getText().toString(), mapValue);
+                        }
+                    }
                 }
             });
 
@@ -371,9 +395,9 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
     public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved, Object Obj2, Object obj3) {
         switch (hitType) {
             case fetchEventsFromDB:
-                if(obj!=null) {
+                if (obj != null) {
                     List<OFRecordEventsTabKT> list = (List<OFRecordEventsTabKT>) obj;
-                    OFHelper.v(tag,"OneFlow Events size["+list.size()+"]");
+                    OFHelper.v(tag, "OneFlow Events size[" + list.size() + "]");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

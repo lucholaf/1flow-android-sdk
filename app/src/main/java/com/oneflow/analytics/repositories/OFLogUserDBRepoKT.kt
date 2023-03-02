@@ -220,12 +220,14 @@ class OFLogUserDBRepoKT {
         scope.launch {
             val sdkdb = OFSDKDB.getInstance(context)
             val surveyUserInput = sdkdb.logDAO()?.getLastSyncedSurveyId()
-
-            val ofSurveyUserInput = surveyUserInput as OFSurveyUserInput
-
-            OFHelper.v("OFLogUserDBRepoKT", "OneFlow fetching Last submitted survey[" + ofSurveyUserInput.createdOn +"]")
-            OFHelper.v("OFLogUserDBRepoKT", "OneFlow fetching Last submitted survey[" + ofSurveyUserInput.synced +"]")
-            mrh.onResponseReceived(type, surveyUserInput, 0L, eventName, null, null)
+            try {
+                val ofSurveyUserInput = surveyUserInput as OFSurveyUserInput
+                OFHelper.v("OFLogUserDBRepoKT", "OneFlow fetching Last submitted survey[" + ofSurveyUserInput.createdOn + "]")
+                OFHelper.v("OFLogUserDBRepoKT", "OneFlow fetching Last submitted survey[" + ofSurveyUserInput.synced + "]")
+                mrh.onResponseReceived(type, surveyUserInput, 0L, eventName, null, null)
+            }catch (ex: Exception){
+                mrh.onResponseReceived(type, null, 0L, eventName, null, null)
+            }
         }
     }
 

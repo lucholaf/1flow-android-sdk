@@ -21,10 +21,11 @@
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
 
         <com.oneflow.analytics.customwidgets.OFCustomTextViewBold
             android:id="@+id/survey_title"
@@ -36,7 +37,6 @@
             android:layout_marginBottom="@dimen/field_padding"
             android:textColor="@color/txtblack"
             android:textSize="@dimen/page_sub_header_1"
-
             android:visibility="invisible" />
 
         <com.oneflow.analytics.customwidgets.OFCustomTextView
@@ -52,17 +52,27 @@
             android:textSize="@dimen/page_sub_header_3"
             android:visibility="invisible" />
 
+
         <RelativeLayout
             android:id="@+id/input_layout_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/survey_description">
+            android:layout_below="@id/survey_description"
+            android:visibility="invisible"
+            android:padding="@dimen/field_padding">
+
+
+            <include
+                android:id="@+id/weblayout"
+                layout="@layout/survey_webview_fragment"
+                android:visibility="gone" />
 
             <com.oneflow.analytics.customwidgets.OFCustomEditText
                 android:id="@+id/child_user_input_short"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_margin="@dimen/field_padding"
+                android:layout_below="@id/weblayout"
+                android:layout_marginTop="@dimen/field_padding"
                 android:background="@drawable/gray_rectangle_withborder"
                 android:hint="Type here"
                 android:padding="@dimen/field_padding"
@@ -73,8 +83,8 @@
                 android:id="@+id/option_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/weblayout"
 
-                android:layout_margin="@dimen/field_padding"
                 android:background="@drawable/gray_rectangle_withborder"
                 android:minHeight="100dp"
                 android:visibility="invisible">
@@ -132,7 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/skip_btn"
-            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
             android:background="@drawable/btn_rounded_rectangle_watermark"
             android:padding="10dp">
@@ -152,5 +162,5 @@
                 android:text="@string/powered_by"
                 android:textColor="@color/powored_by_txt_color" />
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>
