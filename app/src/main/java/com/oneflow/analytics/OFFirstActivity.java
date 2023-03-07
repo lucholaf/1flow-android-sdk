@@ -319,14 +319,14 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
             OneFlow.sendEventsToApi(this);
         } else if (v.getId() == R.id.configure_oneflow) {
             showCofigureDialog();
-        } else if (v.getId() == R.id.start_session) {
+        }/* else if (v.getId() == R.id.start_session) {
            // OneFlow.recordEvents("start_session",null);
 
             OFEventController ec = OFEventController.getInstance(OFFirstActivity.this);
             ec.storeEventsInDB("start_session", null, 0);
 
 
-        } else if (v.getId() == R.id.log_user) {
+        } */else if (v.getId() == R.id.log_user) {
 
             String emailId = "";
             final EditText edittext = new EditText(this);
