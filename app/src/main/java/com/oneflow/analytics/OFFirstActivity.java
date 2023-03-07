@@ -38,6 +38,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.oneflow.analytics.adapter.OFSurveyListAdapter;
+import com.oneflow.analytics.controller.OFEventController;
 import com.oneflow.analytics.customwidgets.OFCustomEditText;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.model.events.OFRecordEventsTabKT;
@@ -158,13 +159,13 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         OneFlow.shouldPrintLog(true);
 
 
-        HashMap<String, Object> mapValue = new HashMap<>();
+       /* HashMap<String, Object> mapValue = new HashMap<>();
         mapValue.put("location", "MP");
         mapValue.put("env", "Prod");
         mapValue.put("test_date", OFHelper.formatDateIntoCustomFormat(new Date(),"yyyy-mm-dd"));
         mapValue.put("tested_by", "Amit kumar sharma");
 
-        OneFlow.logUser("test_Android_2023_03_01", mapValue);
+        OneFlow.logUser("test_Android_2023_03_01", mapValue);*/
     }
 
     private void showCofigureDialog() {
@@ -172,10 +173,11 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         dialog.setContentView(R.layout.activity_project_key);
         OFCustomEditText projectKeyET = dialog.findViewById(R.id.project_key);
         //String projectKey = "oneflow_prod_UjlFunf96DxcEXXXgJKqm32q1RDIYXbmDkepkDmomBoDdlzXQM/U9qzEAKh6yj34xfQQT1Ejp0ltJnF9wGJU5Q==";// [TEST] All Screens
-        //String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";// AmitRepeatTest
+        String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";// AmitRepeatTest
+        //String projectKey = "oneflow_prod_cfgHr2eqbDESMQHMpnjxO8rGR+QXltsFaJ5nIcm9lt/BjeXwaTMK/J+d9JanbLtsDEkBnuEf2xkl26D+hJz2+g=="; //Conversation AI
         //String projectKey = "oneflow_prod_SR8Fn2G0BMPY4RW7ZE/bG37M2VbOQrG8KKfOCkW6K8MdYNMKj2Ug9VPkwtbgTLXZE6YZ2fvm6M9UxuEBcVB9Xw==";// Ahsan project key
         //String projectKey = "oneflow_prod_hlXx+7J/PLaZmjrScYvDqVr75+oIAS+Fyc2Hs7hO4o1GcsbyeMTJ74XKceugfPhDZ3MPdbB65rltbhP9cWmaYA==";// Embed I&V Android
-        String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
+        //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
         //String projectKey = "oneflow_prod_yxwI14oGAEhYgOEJjo43IsoKuWbSPoXBcKD+Bj5UkiZtPXb1vuuBkRUm5YxfBCs6thcsxPWbxDeJHJZlSGzxkw==";//[TEST]Flutter/React Native SDKs
         projectKeyET.setText(projectKey);
         OFCustomTextView registerButton = dialog.findViewById(R.id.register_project);
@@ -317,6 +319,13 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
             OneFlow.sendEventsToApi(this);
         } else if (v.getId() == R.id.configure_oneflow) {
             showCofigureDialog();
+        } else if (v.getId() == R.id.start_session) {
+           // OneFlow.recordEvents("start_session",null);
+
+            OFEventController ec = OFEventController.getInstance(OFFirstActivity.this);
+            ec.storeEventsInDB("start_session", null, 0);
+
+
         } else if (v.getId() == R.id.log_user) {
 
             String emailId = "";

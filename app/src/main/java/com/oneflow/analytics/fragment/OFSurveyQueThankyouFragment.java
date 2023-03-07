@@ -211,7 +211,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
             }
         });
         //ruleAction();
-        sa.initFragment();
+        sa.initFragment(5);
         return view;
 
     }
@@ -225,7 +225,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                 sa.closeBtn.setVisibility(View.VISIBLE);
             }
         } catch (Exception ex) {
-            OFHelper.e(tag, "1Flow Error[" + ex.getMessage() + "]");
+           // OFHelper.e(tag, "1Flow Error[" + ex.getMessage() + "]");
         }
     }
 

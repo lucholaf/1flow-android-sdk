@@ -31,10 +31,16 @@ public interface OFRecordEventDAO {
     long insertAll(OFRecordEventsTab ret);
 
     @Query("Select * from RecordEvents")
-    OFRecordEventsTab getAllRecordedEvents();
+    List<OFRecordEventsTab> getAllPendingRecordedEvents();
 
     @Query("Select name from RecordEvents where created_on<:surveyTime")
-    String[] getEventBeforeSurveyFetched(Long surveyTime);
+    String[] getEventBeforeSurveyFetchedOld(Long surveyTime);
+
+    @Query("Select name from RecordEvents where created_on<:surveyTime")
+    String[] getEventBeforeSurveyFetchedOld1(Long surveyTime);
+
+    @Query("Select name from RecordEvents where created_on between :startingFrom and :surveyTime")
+    String[] getEventBeforeSurveyFetched(Long startingFrom, Long surveyTime);
 
    /* @Query("Select * from RecordEvents")// where name like :eventName
     List<OFRecordEventsTab> findIfEventAlreadyLogged();//String eventName);*/
@@ -42,8 +48,10 @@ public interface OFRecordEventDAO {
     @Query("Select name from RecordEvents where created_on>:surveyTime order by created_on")
     String[] getEventBeforeSurvey3Sec(Long surveyTime);
 
-    @Query("Select * from RecordEvents where synced = 0")
-    List<OFRecordEventsTab> getAllUnsyncedEvents();
+    //@Query("Select * from RecordEvents where synced = 0")
+   /* @Query("Select * from RecordEvents")
+    List<OFRecordEv
+    entsTab> getAllUnsyncedEvents();*/
 
     @Query("Delete from RecordEvents where _id in (:idList)")
     Integer deleteSyncedEvents(Integer[] idList);

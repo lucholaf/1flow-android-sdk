@@ -9,13 +9,16 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -63,13 +66,31 @@ public class BaseFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        OFHelper.v(tag,"1Flow frag onSaveInstanceState called 0");
+        outState.putSerializable("data",surveyScreens);
+        outState.putSerializable("theme",sdkTheme);
+        outState.putSerializable("themeColor",themeColor);
+
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        surveyScreens = (OFSurveyScreens) getArguments().getSerializable("data");
-        sdkTheme = (OFSDKSettingsTheme) getArguments().getSerializable("theme");
-        themeColor = (String) getArguments().getString("themeColor");
 
+        if(savedInstanceState!=null){
+            OFHelper.v(tag,"1Flow frag onCreate called 0");
+            surveyScreens = (OFSurveyScreens)savedInstanceState.getSerializable("data");
+            sdkTheme = (OFSDKSettingsTheme) savedInstanceState.getSerializable("theme");
+            themeColor = (String) savedInstanceState.getString("themeColor");
+        }else {
+            OFHelper.v(tag,"1Flow frag onCreate called 1");
+            surveyScreens = (OFSurveyScreens) getArguments().getSerializable("data");
+            sdkTheme = (OFSDKSettingsTheme) getArguments().getSerializable("theme");
+            themeColor = (String) getArguments().getString("themeColor");
+        }
 //        OFHelper.v(tag,"1Flow frag data contains["+surveyScreens.getMediaEmbedHTML().contains("/undefined")+"]");
         OFHelper.v(tag,"1Flow frag data["+surveyScreens.getMediaEmbedHTML() +"]");
         //https://www.loom.com/embed/31fdc69a9331436eb56ae41807f7f3ab
@@ -81,7 +102,7 @@ public class BaseFragment extends Fragment {
                 surveyScreens.setMediaEmbedHTML(str);
             }
         }*/
-        OFHelper.v(tag,"1Flow frag data["+surveyScreens.getMediaEmbedHTML() +"]");
+
 
 
 
@@ -112,10 +133,13 @@ public class BaseFragment extends Fragment {
 
                 }
             });
-            OFHelper.e(tag, "1Flow hahahah view created now [" + view.getHeight() + "]parent[" + ((View) view.getParent()).getHeight() + "]");
+            OFHelper.e(tag, "1Flow view created now [" + view.getHeight() + "]parent[" + ((View) view.getParent()).getHeight() + "]");
         }
     }
     public void setupWeb(){
+
+        double[] data = OFHelper.getScreenSize(getActivity());
+        OFHelper.v(tag, "1Flow Window size width["+data[0]+"]");
 
         if(OFHelper.validateString(surveyScreens.getMediaEmbedHTML()).equalsIgnoreCase("NA")){
             webLayout.setVisibility(View.GONE);
@@ -258,7 +282,7 @@ public class BaseFragment extends Fragment {
                 });
             }
         } catch (Exception ex) {
-            OFHelper.e("BaseFragment", "OneFlow watermark error ");
+            OFHelper.e("BaseFragment", "1Flow watermark error ");
         }
     }
 }

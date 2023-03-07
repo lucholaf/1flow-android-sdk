@@ -101,6 +101,8 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         OFHelper.v(tag, "1Flow OnResume");
         setupWeb();
 
+
+
         View[] animateViews = new View[]{surveyTitle, surveyDescription, optionLayout, submitButton};
 
         Animation[] annim = new Animation[]{animation1, animation2, animation3, animation4};
@@ -248,6 +250,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         OFHelper.v(tag, "1Flow list desc[" + surveyScreens.getMessage() + "]length[" + surveyScreens.getMessage().length() + "]");
 
 
+
         animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
         animation2 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
         animation3 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
@@ -318,6 +321,11 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating")) {
             if (surveyScreens.getInput() != null) {
 
+                // this is only to keep stars closer
+                ViewGroup.LayoutParams params=surveyOptionRecyclerView.getLayoutParams();
+                params.width= ViewGroup.LayoutParams.WRAP_CONTENT;
+                surveyOptionRecyclerView.setLayoutParams(params);
+
                 surveyScreens.getInput().setRatingsList(prepareRatingsList(1, 5));//surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
                 ratingsNotLike.setVisibility(View.GONE);
                 ratingsFullLike.setVisibility(View.GONE);
@@ -385,19 +393,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
 
     }
 
-    public ArrayList<OFSurveyChoises> fakeList() {
-        String label[] = new String[]{"first", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Ninth", "Tenth", "Eleventh", "Twelfth", "Thirteen", "Fourteen", "Fifteen", "Sixteen"};
-        ArrayList<OFSurveyChoises> flist = new ArrayList<>();
-        OFSurveyChoises sc = null;
-        for (int i = 0; i < label.length; i++) {
-            sc = new OFSurveyChoises();
-            sc.setId(String.valueOf(i));
-            sc.setTitle(label[i]);
-            flist.add(sc);
-        }
-        OFHelper.v(tag, "1Flow inputtype choices init after 0[" + flist.size() + "]");
-        return flist;
-    }
+
 
 
     private void submitButtonBeautification() {
