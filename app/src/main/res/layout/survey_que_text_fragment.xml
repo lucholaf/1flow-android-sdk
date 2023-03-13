@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="1dp"
                     android:background="@color/full_transparancy"
-                    android:gravity="top|left"
+                    android:gravity="top|start"
                     android:hint="Type here"
                     android:inputType="textMultiLine"
                     android:isScrollContainer="false"
@@ -105,10 +105,10 @@
 
                 <com.oneflow.analytics.customwidgets.OFCustomTextView
                     android:id="@+id/text_limit"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/child_user_input"
-                    android:layout_alignParentRight="true"
+                    android:gravity="end"
                     android:layout_margin="@dimen/field_padding"
                     android:text="0/265"
                     android:textColor="@color/txtlightgray"

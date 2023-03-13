@@ -78,10 +78,11 @@
 
             <com.oneflow.analytics.customwidgets.OFCustomTextView
                 android:id="@+id/ratings_not_like"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/survey_options_list"
                 android:layout_marginTop="@dimen/field_padding"
+                android:gravity="start"
                 android:text=""
                 android:textColor="@color/txtgray"
                 android:textSize="@dimen/page_sub_header_4" />
@@ -100,12 +101,13 @@
 
             <com.oneflow.analytics.customwidgets.OFCustomTextView
                 android:id="@+id/ratings_full_like"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/survey_options_list"
-                android:layout_alignParentRight="true"
+                android:gravity="end"
                 android:layout_marginTop="@dimen/field_padding"
                 android:text=""
+
                 android:textColor="@color/txtgray"
                 android:textSize="@dimen/page_sub_header_4" />
 
