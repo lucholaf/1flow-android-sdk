@@ -59,7 +59,9 @@ import java.util.Locale;
 public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHandlerOneFlow {
 
     String tag = this.getClass().getName();
+
     OFCustomTextView sendLogsToAPI, noSurvey;
+
     // OFCustomEditText fakeEditText;
     RecyclerView listOfSurvey;
     ProgressBar progressBar;
@@ -87,6 +89,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         Long lastHit = ofs.getLongValue(OFConstants.SHP_ONEFLOW_CONFTIMING);
 
+
         OFHelper.v(tag, "1Flow lastHit[" + lastHit + "]");
 
         OFHelper.v(tag, "1Flow LanguageCodeTAG[" + Locale.getDefault().toLanguageTag() + "]");
@@ -95,6 +98,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         OFHelper.v(tag, "1Flow LanguageCodetoString[" + Locale.getDefault().toString() + "]");
         OFHelper.v(tag, "1Flow LanguageCodeDisplayLanguage[" + Locale.getDefault().getDisplayLanguage() + "]");
         OFHelper.v(tag, "1Flow LanguageCountry[" + Locale.getDefault().getCountry() + "]");
+
 
         slr = new ArrayList<>();
         addb = new OFSurveyListAdapter(this, slr, clickListener);
@@ -136,11 +140,13 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         String projectKey = ofs.getStringValue(OFConstants.APPIDSHP);
 
+
         OFHelper.v(tag, "1Flow projectKey[" + projectKey + "]");
         if (!OFHelper.validateString(projectKey).equalsIgnoreCase("na")) {
             configureCalled = true;
             configureOneFlow(projectKey);
         } else {
+
             //OFHelper.makeText(this,"Project key not available, Won't call OneFlow config",1);
             noSurvey.setText("Configure not called");
             progressBar.setVisibility(View.GONE);
@@ -152,11 +158,14 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
     }
 
+
     private void configureOneFlow(String projectKey) {
+
         OneFlow.configure(getApplicationContext(), projectKey);//"fonts/pacifico1.ttf");//,titleSetup,descriptionFont,optionsFont);
         //OneFlow.useFont("fonts/pacifico.ttf");
         OneFlow.shouldShowSurvey(true);
         OneFlow.shouldPrintLog(true);
+
 
 
        /* HashMap<String, Object> mapValue = new HashMap<>();
@@ -197,6 +206,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         dialog.show();
     }
 
+  
     BroadcastReceiver listFetched = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -208,6 +218,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
                 progressBar.setVisibility(View.GONE);
                 OFHelper.v(tag, "OneFlow reached receiver 0[" + slr + "]msg[" + intent.getStringExtra("msg") + "]");
                 if (slr != null) {
+
                     if (slr.size() > 0) {
                         listOfSurvey.setVisibility(View.VISIBLE);
                         addb.notifyMyList(slr);
@@ -257,6 +268,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
     protected void onResume() {
         super.onResume();
         //Helper.makeText(this,"isConnected["+Helper.isInternetAvailable()+"]",1);
+
 
         if (!configureCalled) {
             slr = OFOneFlowSHP.getInstance(OFFirstActivity.this).getSurveyList();
@@ -317,6 +329,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         if (v.getId() == R.id.send_log_to_api) {
             // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
             OneFlow.sendEventsToApi(this);
+
         } else if (v.getId() == R.id.configure_oneflow) {
             showCofigureDialog();
         }/* else if (v.getId() == R.id.start_session) {
@@ -327,6 +340,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
 
         } */else if (v.getId() == R.id.log_user) {
+
 
             String emailId = "";
             final EditText edittext = new EditText(this);

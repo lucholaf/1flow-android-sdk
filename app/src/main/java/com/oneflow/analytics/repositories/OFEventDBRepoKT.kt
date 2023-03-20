@@ -121,8 +121,10 @@ class OFEventDBRepoKT {
         scope.launch {
             val sdkdb = OFSDKDB.getInstance(context)
             //val beforeSurveyEvent = sdkdb.eventDAO()?.getEventBeforeSurvey3Sec(Calendar.getInstance().timeInMillis - 10000) // -3000 added for before 3sec logic, changed to 10 sec as new requirement on 30-01-23
+
             //val beforeSurveyEvent = sdkdb.eventDAO()?.getEventBeforeSurveyFetched(Calendar.getInstance().timeInMillis) // -3000 added for before 3sec logic, changed to 10 sec as new requirement on 30-01-23
             val beforeSurveyEvent = sdkdb.eventDAO()?.getEventBeforeSurveyFetched(Calendar.getInstance().timeInMillis-(1000*30),Calendar.getInstance().timeInMillis) // now passing range of time to tackle with orphan event which has not been deleted
+
             mrh.onResponseReceived(type, beforeSurveyEvent, 0L, "", null, null)
         }
 

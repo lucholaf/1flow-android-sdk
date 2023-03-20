@@ -34,6 +34,7 @@ public interface OFRecordEventDAO {
     List<OFRecordEventsTab> getAllPendingRecordedEvents();
 
     @Query("Select name from RecordEvents where created_on<:surveyTime")
+
     String[] getEventBeforeSurveyFetchedOld(Long surveyTime);
 
     @Query("Select name from RecordEvents where created_on<:surveyTime")

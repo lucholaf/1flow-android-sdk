@@ -55,7 +55,7 @@
         android:visibility="gone"
         android:gravity="center"
         android:layout_gravity="center_vertical|center_horizontal"
-         />
+        />
 
 
 
@@ -76,7 +76,9 @@
         android:text="Configure OneFlow"
         android:layout_above="@id/log_user"
         android:visibility="visible"
+
          />
+
 
 
     <com.oneflow.analytics.customwidgets.OFCustomTextView

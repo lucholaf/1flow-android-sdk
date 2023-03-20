@@ -53,9 +53,11 @@ public class BaseFragment extends Fragment {
         try {
             sa = (OFSDKBaseActivity) context;
 
+
             OFHelper.v(tag,"1Flow custom survery reading");
         }catch(Exception ex){
             OFHelper.v(tag,"1Flow custom survery exception");
+
             sa = null;
             //customFrag = CustomFrag.newInstance();
            // OFHelper.v(tag,"OneFlow custom survery exception ["+customFrag+"]");

@@ -725,6 +725,7 @@ public class OFHelper {
     }
 
 
+
     public static double[] getScreenSize(Activity context) {
 
         double[] data = new double[3];

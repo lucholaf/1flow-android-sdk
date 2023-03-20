@@ -99,6 +99,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
     public void onResume() {
         super.onResume();
         OFHelper.v(tag, "1Flow OnResume");
+
         setupWeb();
 
 
@@ -250,7 +251,6 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         OFHelper.v(tag, "1Flow list desc[" + surveyScreens.getMessage() + "]length[" + surveyScreens.getMessage().length() + "]");
 
 
-
         animation1 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
         animation2 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
         animation3 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
@@ -297,9 +297,11 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
             ratingsFullLike.setText("Extermely likely");
         }*/
 
+
         webLayout = view.findViewById(R.id.weblayout);
         webContent = view.findViewById(R.id.webview_contents);
         pBar = view.findViewById(R.id.pbar);
+
 
 
 
@@ -392,8 +394,6 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         return view;
 
     }
-
-
 
 
     private void submitButtonBeautification() {
