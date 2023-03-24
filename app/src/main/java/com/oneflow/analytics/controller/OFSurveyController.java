@@ -150,7 +150,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                 }
                 break;
             case fetchEventsBeforSurveyFetched:
-                if (obj != null) {
+               if (obj != null) {
                     String[] name = (String[]) obj;
                     OFHelper.v("SurveyController", "OneFlow events before survey found[" + Arrays.asList(name) + "]length[" + name.length + "]");
                     if (name.length > 0) {
@@ -161,10 +161,10 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                             if (surveyItem.getScreens() != null) {
 
                                 OFHelper.v("OneFlow", "OneFlow screens not null");
-                                OFOneFlowSHP ofs1 = OFOneFlowSHP.getInstance(mContext);
+
                                 if (surveyItem.getScreens().size() > 0) {
                                     setUpHashForActivity();
-                                    ofs1.storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
+                                    OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
                                     Intent surveyIntent = null;
                                     if (surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
                                         surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get("bottom-center"));
@@ -173,24 +173,10 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                                     }
 
 
-                                    // =============Throttling Config=============
-                                    OFThrottlingConfig config = ofs1.getThrottlingConfig();
-                                    //flow correction and time should be in second
-                                    if (config != null) {
-
-                                        OFHelper.v("1Flow", "1Flow throttling config not null");
-                                        config.setActivated(true);
-                                        config.setActivatedById(surveyItem.get_id());
-                                        config.setActivatedAt(System.currentTimeMillis());
-
-                                        ofs1.setThrottlingConfig(config);
-
-                                        setupGlobalTimerToDeactivateThrottlingLocally();
-                                    } else {
-                                        OFHelper.v("1Flow", "1Flow throttling config null");
-                                    }
-
-
+                                    HashMap<String, Object> mapValue = new HashMap<>();
+                                    mapValue.put("survey_id", surveyItem.get_id());
+                                    OFEventController ec = OFEventController.getInstance(mContext);
+                                    ec.storeEventsInDB(OFConstants.AUTOEVENT_SURVEYIMPRESSION, mapValue, 0);
 
                                     surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                     surveyIntent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
@@ -267,6 +253,43 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                 OFHelper.v("OneFlow", "OneFlow checking called no throttling found after survey received");
             }
         }
+
+        /*if (config != null) {
+
+            if (config.getGlobalTime() != null) {
+                if (config.getGlobalTime() > 0) {
+
+                    OFHelper.v("OneFlow", "OneFlow deactivate called config global time not null");
+                    if (config.isActivated()) {
+
+                        long throttlingLifeTime = config.getActivatedAt() + (config.getGlobalTime() * 1000);
+                        if (System.currentTimeMillis() > throttlingLifeTime) {
+                            OFHelper.v("OneFlow", "OneFlow deactivate called time finished");
+                            config.setActivated(false);
+                            config.setActivatedById(null);
+                            OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
+                        }
+
+                    }
+                } else {
+                    config.setActivated(false);
+                    config.setActivatedById(null);
+                    OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
+                }
+            }
+        }*/
+    }
+    public void setThrottlingAlarm(long throttlingLifeTime) {
+
+
+        /*AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(mContext, OFThrottlingAlarm.class);
+        PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, (config.getGlobalTime() * 1000)+System.currentTimeMillis(), pi);*/
+
+        OFOneFlowSHP shp = OFOneFlowSHP.getInstance(mContext);
+        shp.storeValue(OFConstants.SHP_THROTTLING_TIME, throttlingLifeTime);
+
 
     }*/
     public void setThrottlingAlarm(OFThrottlingConfig config) {

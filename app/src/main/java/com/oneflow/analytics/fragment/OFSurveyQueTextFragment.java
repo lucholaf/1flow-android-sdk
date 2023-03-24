@@ -54,7 +54,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
 
     OFCustomTextViewBold surveyTitle, submitButton;
-    RelativeLayout optionLayout;
+    RelativeLayout optionLayout,optionLayoutOuter;
     OFCustomEditText userInput, userInputShort;
 
     OFCustomTextView surveyInputLimit, skipBtn;
@@ -171,6 +171,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         userInput = (OFCustomEditText) view.findViewById(R.id.child_user_input);
         userInputShort = (OFCustomEditText) view.findViewById(R.id.child_user_input_short);
         surveyInputLimit = (OFCustomTextView) view.findViewById(R.id.text_limit);
+        optionLayoutOuter = (RelativeLayout) view.findViewById(R.id.input_layout_view);
         optionLayout = (RelativeLayout) view.findViewById(R.id.option_layout);
         waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
 
@@ -219,6 +220,11 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
             surveyDescription.setVisibility(View.GONE);
         }
 
+        webLayout = view.findViewById(R.id.weblayout);
+        webContent = view.findViewById(R.id.webview_contents);
+        pBar = view.findViewById(R.id.pbar);
+
+
         surveyInputLimit.setText("0/" + surveyScreens.getInput().getMax_chars());
         OFHelper.v(tag, " OneFlow onTextChanged min[" + surveyScreens.getInput().getMin_chars() + "]max[" + surveyScreens.getInput().getMax_chars() + "]");
         //setMaxLength(surveyScreens.getInput().getMax_chars());
@@ -230,12 +236,12 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
             userInput.setHint(surveyScreens.getInput().getPlaceholderText());
             userInputShort.setVisibility(View.GONE);
-            optionLayout.setVisibility(View.INVISIBLE);
+            optionLayout.setVisibility(View.VISIBLE);
             submitButtonBeautification();
         } else {
             userInputShort.setHint(surveyScreens.getInput().getPlaceholderText());
             optionLayout.setVisibility(View.GONE);
-            userInputShort.setVisibility(View.INVISIBLE);
+            userInputShort.setVisibility(View.VISIBLE);
         }
 
         submitButton.requestFocus();
@@ -351,15 +357,19 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
+        setupWeb();
         View[] animateViews;
         String savedValue = OFOneFlowSHP.getInstance(getActivity()).getStringValue("userInput");
+
+        animateViews = new View[]{surveyTitle, surveyDescription, optionLayoutOuter, submitButton};//, skipBtn};
+
         if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
-            animateViews = new View[]{surveyTitle, surveyDescription, optionLayout, submitButton};//, skipBtn};
+
             if(!savedValue.equalsIgnoreCase("NA")) {
                 userInput.setText(savedValue);
             }
         } else {
-            animateViews = new View[]{surveyTitle, surveyDescription, userInputShort, submitButton};
+            //animateViews = new View[]{surveyTitle, surveyDescription, userInputShort, submitButton};
             if(!savedValue.equalsIgnoreCase("NA")) {
                 userInputShort.setText(savedValue);
             }

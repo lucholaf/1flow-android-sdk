@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
@@ -35,11 +36,13 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.adapter.OFSurveyOptionsAdapter;
@@ -96,6 +99,9 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
     public void onResume() {
         super.onResume();
         OFHelper.v(tag, "1Flow OnResume");
+
+        setupWeb();
+
 
 
         View[] animateViews = new View[]{surveyTitle, surveyDescription, optionLayout, submitButton};
@@ -214,7 +220,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         optionLayout = (RelativeLayout) view.findViewById(R.id.option_layout);
         waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
 
-
+        OFHelper.v(tag, "1Flow list data[" + new Gson().toJson(surveyScreens) + "]");
         int colorTitle = OFHelper.manipulateColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getText_color())), 1.0f);
 
         surveyTitle.setTextColor(colorTitle);
@@ -291,6 +297,15 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
             ratingsFullLike.setText("Extermely likely");
         }*/
 
+
+        webLayout = view.findViewById(R.id.weblayout);
+        webContent = view.findViewById(R.id.webview_contents);
+        pBar = view.findViewById(R.id.pbar);
+
+
+
+
+
         OFHelper.v(tag, "1Flow input type [" + surveyScreens.getInput().getInput_type() + "][" + surveyScreens.getInput().getStars() + "]min[" + surveyScreens.getInput().getMin_val() + "][" + surveyScreens.getInput().getMax_val() + "][][][]");
         if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-numerical")) {
             if (surveyScreens.getInput() != null) {
@@ -307,6 +322,11 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
 
         } else if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star") || surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating")) {
             if (surveyScreens.getInput() != null) {
+
+                // this is only to keep stars closer
+                ViewGroup.LayoutParams params=surveyOptionRecyclerView.getLayoutParams();
+                params.width= ViewGroup.LayoutParams.WRAP_CONTENT;
+                surveyOptionRecyclerView.setLayoutParams(params);
 
                 surveyScreens.getInput().setRatingsList(prepareRatingsList(1, 5));//surveyScreens.getInput().getMin_val(), surveyScreens.getInput().getMax_val()));
                 ratingsNotLike.setVisibility(View.GONE);
@@ -373,20 +393,6 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
 
         return view;
 
-    }
-
-    public ArrayList<OFSurveyChoises> fakeList() {
-        String label[] = new String[]{"first", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Ninth", "Tenth", "Eleventh", "Twelfth", "Thirteen", "Fourteen", "Fifteen", "Sixteen"};
-        ArrayList<OFSurveyChoises> flist = new ArrayList<>();
-        OFSurveyChoises sc = null;
-        for (int i = 0; i < label.length; i++) {
-            sc = new OFSurveyChoises();
-            sc.setId(String.valueOf(i));
-            sc.setTitle(label[i]);
-            flist.add(sc);
-        }
-        OFHelper.v(tag, "1Flow inputtype choices init after 0[" + flist.size() + "]");
-        return flist;
     }
 
 

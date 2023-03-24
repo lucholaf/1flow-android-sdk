@@ -30,6 +30,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 
+import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 
 
@@ -67,7 +68,7 @@ public class OFSurveyActivityCenter extends OFSDKBaseActivity {
 
         wlp.gravity = Gravity.CENTER;
         if (data[0] > 3) {
-            wlp.width = 1000;
+            wlp.width = OFConstants.screenWidth;
         } else {
             wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         }

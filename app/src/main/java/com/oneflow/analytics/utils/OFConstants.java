@@ -21,8 +21,10 @@ package com.oneflow.analytics.utils;
 public interface OFConstants {
 
 
-    String currentVersion = "2023.02.09";//2023.02.06";//2023.01.12";//""2022.11.20";
-    String MODE = "prod";//
+
+    String currentVersion = "2023.03.08";//2023.01.12";//""2022.11.20";
+    String MODE = "prod";//"dev";//"
+
     String DBNAME = "one_flow_db";
     String APPKEYSHP = "one_flow_config_key";
     String APPIDSHP = "one_flow_app_id_key";
@@ -59,6 +61,8 @@ public interface OFConstants {
     String SHP_THROTTLING_TIME = "throttling_receiver_time";
     String SHP_SURVEY_SEARCH_POSITION = "survey_search_position";
     String SHP_LAST_CLICK_TIME = "survey_last_click_time";
+    String SHP_EVENTS_DELETE_PENDING = "survey_events_delete_pending";
+
 
 
     String surveyDetail = "surveyDetail";
@@ -68,8 +72,10 @@ public interface OFConstants {
 
 
     enum ApiHitType{
-        Config, FirstOpen, CreateUser, CreateSession, RecordLogs, fetchEventsFromDB, sendEventsToAPI, insertEventsInDB,
-        deleteEventsFromDB, submittingOfflineSurvey, logUser, insertSurveyInDB, fetchSurveysFromDB, deleteSurveyFromDB, fetchLocation,
+
+        Config, FirstOpen, CreateUser, CreateSession, RecordLogs, fetchEventsFromDBBeforeConfig,fetchEventsFromDB, sendEventsToAPI, insertEventsInDB,
+        deleteEventsFromDB,deleteEventsFromDBLastSession, submittingOfflineSurvey, logUser, insertSurveyInDB, fetchSurveysFromDB, deleteSurveyFromDB, fetchLocation,
+
         fetchSurveysFromAPI,fetchEventsBeforSurveyFetched,fetchSubmittedSurvey,checkResurveyNSubmission,updateSurveyIds,
         surveySubmited,lastSubmittedSurvey,updateSubmittedSurveyLocally
     }
@@ -78,4 +84,5 @@ public interface OFConstants {
     }
 
     String userInputValueTemp = "";
+    int screenWidth = 1100;
 }

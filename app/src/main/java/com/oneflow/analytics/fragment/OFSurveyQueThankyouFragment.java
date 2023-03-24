@@ -81,7 +81,10 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.survey_que_thankyou_fragment, container, false);
-        OFHelper.v(tag, "1Flow list data[" + surveyScreens + "]");
+
+        OFHelper.v(tag, "1Flow list data.[" + surveyScreens + "]");
+        OFHelper.v(tag, "1Flow list data.html[" + surveyScreens.getMediaEmbedHTML() + "]");
+
 
 
         thankyouImage = (ImageView) view.findViewById(R.id.thankyou_img);
@@ -97,6 +100,11 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
         ((TextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
         surveyDescription.setTextColor(colorAlpha);
 
+        webLayout = view.findViewById(R.id.weblayout);
+        webContent = view.findViewById(R.id.webview_contents);
+        pBar = view.findViewById(R.id.pbar);
+
+        setupWeb();
 
         if (OneFlow.titleFace != null) {
             if (OneFlow.titleFace.getTypeface() != null) {
@@ -205,7 +213,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
             }
         });
         //ruleAction();
-        sa.initFragment();
+        sa.initFragment(5);
         return view;
 
     }
@@ -219,7 +227,9 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                 sa.closeBtn.setVisibility(View.VISIBLE);
             }
         } catch (Exception ex) {
-            OFHelper.e(tag, "1Flow Error[" + ex.getMessage() + "]");
+
+           // OFHelper.e(tag, "1Flow Error[" + ex.getMessage() + "]");
+
         }
     }
 

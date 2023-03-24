@@ -317,7 +317,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 if (OFHelper.isConnected(mContext)) {
                     /*fc.getLocation();*/
                     OFHelper.headerKey = projectKey;
-                    fc.registerUser(fc.createRequest());
+                    fc.registerUser();
                     // flow has been change now calling survey after add session
                     // OFSurveyController.getInstance(mContext);
 
@@ -525,9 +525,21 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     }
 
 
-    private void registerUser(OFAddUserRequestNew aur) {
 
-        OFAddUserRepo.addUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), aur, this, OFConstants.ApiHitType.CreateUser);
+    private void registerUser() {
+
+        //registerUser(createRequest());
+        // checking old event if delete is pending
+        //Boolean isDeletePending = OFOneFlowSHP.getInstance(mContext).getBooleanValue(OFConstants.SHP_EVENTS_DELETE_PENDING,false);
+        OFHelper.v("1Flow","1Flow called register user");
+       /* if(!isDeletePending) {
+            new OFEventDBRepoKT().fetchEvents(mContext, this, OFConstants.ApiHitType.fetchEventsFromDBBeforeConfig);
+        }else{*/
+            OFAddUserRepo.addUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), createRequest(), this, OFConstants.ApiHitType.CreateUser);
+        //}
+
+
+
     }
 
    /* private void createSession(OFCreateSessionRequest csr) {
@@ -544,26 +556,31 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     public static void recordEvents(String eventName, HashMap eventValues) {
 
         OFHelper.v("FeedbackController", "1Flow recordEvents record called with[" + eventName + "]at[" + OFHelper.formatedDate(System.currentTimeMillis(), "dd-MM-yyyy hh:mm:ss.SSS") + "]");
+
         try {
-            OneFlow of = new OneFlow(mContext);
-            of.checkThrottlingLife();
-            // this 'if' is for converting date object to second format(timestamp)
-            if (eventValues != null) {
-                eventValues = OFHelper.checkDateInHashMap(eventValues);
-            }
-            OFHelper.v("FeedbackController", "1Flow recordEvents record called with[" + eventValues + "]");
-            if (mContext != null) {
-                // storage, api call and check survey if available.
-                //EventController.getInstance(mContext).storeEventsInDB(eventName, eventValues, 0);
-                OFEventController ec = OFEventController.getInstance(mContext);
-                ec.storeEventsInDB(eventName, eventValues, 0);
+            if (!OFHelper.validateString(eventName.trim()).equalsIgnoreCase("NA")) {
+                OneFlow of = new OneFlow(mContext);
+                of.checkThrottlingLife();
+                // this 'if' is for converting date object to second format(timestamp)
+                if (eventValues != null) {
+                    eventValues = OFHelper.checkDateInHashMap(eventValues);
+                }
+                OFHelper.v("FeedbackController", "1Flow recordEvents record called with[" + eventValues + "]");
+                if (mContext != null) {
+                    // storage, api call and check survey if available.
+                    //EventController.getInstance(mContext).storeEventsInDB(eventName, eventValues, 0);
+                    OFEventController ec = OFEventController.getInstance(mContext);
+                    ec.storeEventsInDB(eventName, eventValues, 0);
 
 
-                //Checking if any survey available under coming event.
-                of.checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
+                    //Checking if any survey available under coming event.
+                    of.checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
 
+                } else {
+                    OFHelper.v("1Flow", "1Flow null context for event");
+                }
             } else {
-                OFHelper.v("1Flow", "1Flow null context for event");
+                OFHelper.v("1Flow", "1Flow empty event unable to trigger survey");
             }
         } catch (Exception ex) {
 
@@ -573,6 +590,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     public static void recordEventsWithoutSurvey(String eventName, HashMap eventValues) {
 
         OFHelper.v("1Flow", "1Flow recordEvents record called without firing survey with[" + eventName + "]at[" + OFHelper.formatedDate(System.currentTimeMillis(), "dd-MM-yyyy hh:mm:ss.SSS") + "]");
+
         try {
             OneFlow of = new OneFlow(mContext);
             of.checkThrottlingLife(); //checking throttling life span if activated.
@@ -580,7 +598,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             if (eventValues != null) {
                 eventValues = OFHelper.checkDateInHashMap(eventValues);
             }
+
             OFHelper.v("1Flow", "1Flow recordEvents record called without firing survey with[" + eventValues + "]");
+
             if (mContext != null) {
                 // storage, api call and check survey if available.
                 //EventController.getInstance(mContext).storeEventsInDB(eventName, eventValues, 0);
@@ -865,6 +885,40 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         OFHelper.v("1Flow", "1Flow onReceived type[" + hitType + "]reserve[" + reserve + "]");
         switch (hitType) {
 
+
+            case fetchEventsFromDBBeforeConfig:
+                if (obj != null) {
+                    ArrayList<OFRecordEventsTab> list = (ArrayList<OFRecordEventsTab>) obj;
+                    OFHelper.v("1Flow", "1Flow checking older events[" + list.size() + "]");
+                    //Preparing list to send api
+                    if (list.size() > 0) {
+                        Integer[] ids = new Integer[list.size()];
+                        int i = 0;
+                        ArrayList<OFRecordEventsTabToAPI> retListToAPI = new ArrayList<>();
+                        OFRecordEventsTabToAPI retMain;
+                        for (OFRecordEventsTab ret : list) {
+                            ids[i++] = ret.getId();
+                        }
+
+                        new OFEventDBRepoKT().deleteEvents(mContext, ids, this, OFConstants.ApiHitType.deleteEventsFromDBLastSession);
+
+                    }else{
+                        OFHelper.v("1Flow", "1Flow checking older events not found hitting adduser");
+                        OFAddUserRepo.addUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), createRequest(), this, OFConstants.ApiHitType.CreateUser);
+                    }
+                }else{
+                    OFHelper.v("1Flow", "1Flow checking older events not found hitting adduser.");
+                    OFAddUserRepo.addUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), createRequest(), this, OFConstants.ApiHitType.CreateUser);
+                }
+                break;
+
+            case deleteEventsFromDBLastSession:
+                OFHelper.v("1Flow", "1Flow checking older events deleted hitting adduser");
+                OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_EVENTS_DELETE_PENDING,false);
+                OFAddUserRepo.addUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), createRequest(), this, OFConstants.ApiHitType.CreateUser);
+
+                break;
+
             case CreateUser:
 
                 if (obj != null) {
@@ -936,11 +990,13 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                     OFLogUserRequest lur = oneFlowSHP.getLogUserRequest();
 
+
                     OFHelper.v("1Flow", "1Flow create user finish hitting pending logUser[" + lur + "]");
                     if (lur != null && logUserPending) {
                         logUserPending = false;
                         lur.setAnonymous_user_id(userResponse.getAnalytic_user_id());
                         OFLogUserRepo.logUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), lur, this, OFConstants.ApiHitType.logUser);
+
 
                     } else {
                         //calling fetch survey api on ADD USER success changed on 17-01-23
@@ -993,7 +1049,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             case fetchEventsFromDB:
 
                 OFHelper.v("FeedbackController", "1Flow checking before log fetchEventsFromDB came back");
-                OneFlow fc = new OneFlow(mContext);
+
+                //OneFlow fc = new OneFlow(mContext);
+
                 OFOneFlowSHP ofshp = OFOneFlowSHP.getInstance(mContext);
                 if (obj != null) {
                     ArrayList<OFRecordEventsTab> list = (ArrayList<OFRecordEventsTab>) obj;
@@ -1020,7 +1078,12 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                             ear.setEvents(retListToAPI);
 
                             OFHelper.v("1Flow", "1Flow checking before log fetchEventsFromDB request prepared");
-                            OFEventAPIRepo.sendLogsToApi(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), ear, fc, OFConstants.ApiHitType.sendEventsToAPI, ids);
+
+
+                            ofshp.storeValue(OFConstants.SHP_EVENTS_DELETE_PENDING,true);
+
+                            OFEventAPIRepo.sendLogsToApi(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), ear, OneFlow.this, OFConstants.ApiHitType.sendEventsToAPI, ids);
+
                         }
                     } else {
 
@@ -1046,6 +1109,10 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 Intent intent = new Intent("events_submitted");
                 intent.putExtra("size", String.valueOf((Integer) obj));
                 mContext.sendBroadcast(intent);
+
+
+                OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_EVENTS_DELETE_PENDING,false);
+
                 OFLogUserRequest lur = OFOneFlowSHP.getInstance(mContext).getLogUserRequest();
                 OFHelper.v("1flow", "1Flow checking events submitted hitting logUser[" + lur + "]");
                 if (lur != null) {
@@ -1098,8 +1165,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                         }
                     } else {
-                        OFHelper.v("1Flow", "1Flow no survey found show directly");
+
                         String eventName = (String) obj3;
+                        OFHelper.v("1Flow", "1Flow no survey found show directly eventName[" + eventName + "]");
                         onResponseReceived(OFConstants.ApiHitType.checkResurveyNSubmission, gslr, 0l, eventName, null, null);
                     }
                 } else {

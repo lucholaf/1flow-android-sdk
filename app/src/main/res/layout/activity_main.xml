@@ -76,7 +76,9 @@
         android:text="Configure OneFlow"
         android:layout_above="@id/log_user"
         android:visibility="visible"
-        />
+
+         />
+
 
 
     <com.oneflow.analytics.customwidgets.OFCustomTextView

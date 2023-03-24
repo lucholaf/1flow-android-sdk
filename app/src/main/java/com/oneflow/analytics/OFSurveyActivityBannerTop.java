@@ -57,7 +57,7 @@ public class OFSurveyActivityBannerTop extends OFSDKBaseActivity {
         WindowManager.LayoutParams wlp = window.getAttributes();
         OFHelper.v(tag, "OneFlow Window size width[" + window.getAttributes().width + "]height[" + window.getAttributes().height + "]");
 
-        double[] data = OFHelper.getScreenSize(this);
+       //double[] data = OFHelper.getScreenSize(this);
 
         wlp.gravity = Gravity.TOP;
        /* if (data[0] > 3) {

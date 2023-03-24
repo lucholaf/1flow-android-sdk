@@ -69,6 +69,7 @@ public interface OFApiInterface {
     Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> getSurvey(@Header("one_flow_key") String headerKey,
                                                                           @Query("user_id") String userId,
                                                                           @Query("language_code") String languageCode,
+                                                                          @Query("platform") String platform,
                                                                           @Query("min_version") String minVersion
 
 

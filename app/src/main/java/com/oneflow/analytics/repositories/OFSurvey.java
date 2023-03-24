@@ -57,7 +57,7 @@ public class OFSurvey {
             Call<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>> responseCall = null;
             //String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/survey/incoming_webhook/get-surveys";
 
-            responseCall = connectAPI.getSurvey(headerKey,  userId,  language, versionName);//,OFConstants.MODE);
+            responseCall = connectAPI.getSurvey(headerKey,  userId,  language, "android", versionName);//,OFConstants.MODE);// platform added as asked by namit on 09-Mar-2023
 
             responseCall.enqueue(new Callback<OFGenericResponse<ArrayList<OFGetSurveyListResponse>>>() {
                 @Override

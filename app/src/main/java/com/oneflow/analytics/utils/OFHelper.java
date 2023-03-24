@@ -136,7 +136,7 @@ public class OFHelper {
 
         int printRange = 4000;
 
-        if (commanLogEnable){//OFConstants.MODE.equalsIgnoreCase("dev")) {
+        if (commanLogEnable) {//OFConstants.MODE.equalsIgnoreCase("dev")) {
 
             if (msg.length() > printRange) {
                 long range = msg.length() / printRange;
@@ -155,7 +155,7 @@ public class OFHelper {
     }
 
     public static void d(String tag, String msg, boolean shouldPrint) {
-        if (shouldPrint){//OFConstants.MODE.equalsIgnoreCase("dev")) {
+        if (shouldPrint) {//OFConstants.MODE.equalsIgnoreCase("dev")) {
             if (msg.length() > 4075) {
                 Log.d(tag, msg.substring(0, 4075));
                 Log.d("continue", msg.substring(4076, msg.length()));
@@ -166,7 +166,7 @@ public class OFHelper {
     }
 
     public static void i(String tag, String msg, boolean shouldPrint) {
-        if (shouldPrint){//OFConstants.MODE.equalsIgnoreCase("dev")) {
+        if (shouldPrint) {//OFConstants.MODE.equalsIgnoreCase("dev")) {
             if (msg.length() > 4075) {
                 Log.i(tag, msg.substring(0, 4075));
                 Log.i("continue", msg.substring(4076, msg.length()));
@@ -177,7 +177,7 @@ public class OFHelper {
     }
 
     public static void e(String tag, String msg) {
-        if (commanLogEnable){//OFConstants.MODE.equalsIgnoreCase("dev")) {
+        if (commanLogEnable) {//OFConstants.MODE.equalsIgnoreCase("dev")) {
             if (msg.length() > 4075) {
                 Log.e(tag, msg.substring(0, 4075));
                 Log.e("continue", msg.substring(4076, msg.length()));
@@ -234,9 +234,6 @@ public class OFHelper {
     }
 
 
-
-
-
     public static String getDeviceId(Context context) {
         String deviceId = "";
 
@@ -246,11 +243,11 @@ public class OFHelper {
         OFOneFlowSHP shp = OFOneFlowSHP.getInstance(context);
         deviceId = shp.getStringValue(OFConstants.SHP_DEVICE_UNIQUE_ID);
 
-       // v("Helper", "OneFlow DeviceId 0[" + deviceId + "]");
-        if(deviceId.equalsIgnoreCase("NA")){
-            deviceId = UUID.randomUUID().toString().replace("-","").substring(0,24);//getDeviceNewId();
-           // v("Helper", "OneFlow DeviceId 1[" + deviceId + "]");
-            shp.storeValue(OFConstants.SHP_DEVICE_UNIQUE_ID,deviceId);
+        // v("Helper", "OneFlow DeviceId 0[" + deviceId + "]");
+        if (deviceId.equalsIgnoreCase("NA")) {
+            deviceId = UUID.randomUUID().toString().replace("-", "").substring(0, 24);//getDeviceNewId();
+            // v("Helper", "OneFlow DeviceId 1[" + deviceId + "]");
+            shp.storeValue(OFConstants.SHP_DEVICE_UNIQUE_ID, deviceId);
         }
 
 
@@ -262,6 +259,7 @@ public class OFHelper {
         InputMethodManager inputManager = (InputMethodManager) mActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(edt.getWindowToken(), 0);
     }
+
     public static void showKeyboard(Activity mActivity, EditText edt) {
         InputMethodManager inputManager = (InputMethodManager) mActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputManager.showSoftInput(edt, 0);
@@ -760,7 +758,7 @@ public class OFHelper {
         Gson gson = new Gson();
         gson.toJson(map);
         //OFHelper.v("OneFlow", "OneFlow date object before[" + gson.toJson(map) + "]");
-       // System.out.println("OneFlow date object before[" + gson.toJson(map) + "]");
+        // System.out.println("OneFlow date object before[" + gson.toJson(map) + "]");
 
         for (String key : map.keySet()) {
             if (map.get(key) instanceof Date || map.get(key) instanceof java.sql.Date) {
@@ -768,41 +766,43 @@ public class OFHelper {
                 map.put(key, dt.getTime() / 1000);
             }
         }
-       // OFHelper.v("OneFlow", "OneFlow date object after[" + gson.toJson(map) + "]");
-       // System.out.println("OneFlow date object after[" + gson.toJson(map) + "]");
+        // OFHelper.v("OneFlow", "OneFlow date object after[" + gson.toJson(map) + "]");
+        // System.out.println("OneFlow date object after[" + gson.toJson(map) + "]");
         return map;
     }
-    public static String getAlphaHexColor(String color,int per){
-        String mainColor = "",hex="";
+
+    public static String getAlphaHexColor(String color, int per) {
+        String mainColor = "", hex = "";
         String returnColor = "";
         //v("Helper", "OneFlow colors alpha in["+color+"]");
-        if(color.length()>0) {
+        if (color.length() > 0) {
             mainColor = color.substring(color.length() - 6);
 
             hex = Integer.toHexString(getAlphaNumber(per)).toUpperCase();
 
             //v("Helper", "OneFlow colors alpha in["+mainColor+"]alpha["+getAlphaNumber(per)+"]["+hex+"]");
 
-            returnColor = "#"+hex+mainColor.toUpperCase();
-        }else{
+            returnColor = "#" + hex + mainColor.toUpperCase();
+        } else {
             returnColor = "NA";
         }
         //v("Helper", "OneFlow colors alpha out["+returnColor+"]");
         return returnColor;
     }
-    public static String handlerColor(String color){
-        String colorNew ="";
-       // v("Helper", "OneFlow colors transparancy in[" + color + "]");
+
+    public static String handlerColor(String color) {
+        String colorNew = "";
+        // v("Helper", "OneFlow colors transparancy in[" + color + "]");
         try {
 
             String tranparancy = "";
 
-            if(color.startsWith("#")){
-                if(color.length()>7){
-                    tranparancy = color.substring(7,8);
+            if (color.startsWith("#")) {
+                if (color.length() > 7) {
+                    tranparancy = color.substring(7, 8);
                 }
-            }else{
-                if(color.length()>6){
+            } else {
+                if (color.length() > 6) {
                     tranparancy = color.substring(6, 8);
                 }
             }
@@ -814,23 +814,23 @@ public class OFHelper {
                 tempColor = color.substring(1, 7);
             }
 
-            colorNew = "#"+tranparancy+tempColor;
+            colorNew = "#" + tranparancy + tempColor;
            /* if (!color.startsWith("#")) {
                 colorNew = "#" +colorNew;//color;
             }*/
-           // v("Helper", "OneFlow colors transparancy out [" + tranparancy + "]tempColor[" + tempColor + "]colorNew[" + colorNew + "]");
+            // v("Helper", "OneFlow colors transparancy out [" + tranparancy + "]tempColor[" + tempColor + "]colorNew[" + colorNew + "]");
         } catch (Exception ex) {
             //styleColor=""+getResources().getColor(R.color.colorPrimaryDark);
         }
 
 
-
         return colorNew;
     }
 
-    public static int getAlphaNumber(int percentage){
-         return Math.round((255*percentage)/100);
+    public static int getAlphaNumber(int percentage) {
+        return Math.round((255 * percentage) / 100);
     }
+
     public static int manipulateColor(int color, float factor) {
         factor = 1.0f - factor;
        /* int a = Color.alpha(color);
@@ -842,6 +842,22 @@ public class OFHelper {
                 Math.min(g,255),
                 Math.min(b,255));*/
         return ColorUtils.blendARGB(color, Color.WHITE, factor);
+    }
+
+    public static int manipulateColorNew(int color, int factor) {
+       // factor = 1.0f - factor;
+       // v("Helper", "1Flow color in helper factor[" + factor + "]");
+       /* int a = Color.alpha(color);
+        int r = Math.round(Color.red(color) * factor);
+        int g = Math.round(Color.green(color) * factor);
+        int b = Math.round(Color.blue(color) * factor);
+        return Color.argb(a,
+                Math.min(r,255),
+                Math.min(g,255),
+                Math.min(b,255));*/
+        int blendedColor = ColorUtils.setAlphaComponent(color, factor);
+        //v("Helper", "1Flow color in helper factor[" + blendedColor + "]");
+        return blendedColor;
     }
 
 
@@ -856,6 +872,7 @@ public class OFHelper {
         int alpha = Color.alpha(color);
         return Color.argb(alpha, red, green, blue);
     }
+
     private static int lightenColor(int color, double fraction) {
         return (int) Math.min(color + (color * fraction), 255);
     }

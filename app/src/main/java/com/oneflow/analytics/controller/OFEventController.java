@@ -107,6 +107,7 @@ public class OFEventController implements OFMyResponseHandlerOneFlow {
                             OFEventAPIRequest ear = new OFEventAPIRequest();
                             ear.setUserId(OFOneFlowSHP.getInstance(mContext).getUserDetails().getAnalytic_user_id());
                             ear.setEvents(retListToAPI);
+                            OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_EVENTS_DELETE_PENDING,true);
                             OFHelper.v(this.getClass().getName(), "OneFlow fetchEventsFromDB request prepared");
                             OFEventAPIRepo.sendLogsToApi(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), ear, this, OFConstants.ApiHitType.sendEventsToAPI, ids);
                         }
@@ -125,6 +126,7 @@ public class OFEventController implements OFMyResponseHandlerOneFlow {
                 break;
             case deleteEventsFromDB:
                 if (obj != null) {
+                    OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_EVENTS_DELETE_PENDING,false);
                     OFHelper.v(this.getClass().getName(), "OneFlow events delete count[" + ((Integer) obj) + "]");
                     Intent intent = new Intent("events_submitted");
                     intent.putExtra("size", String.valueOf((Integer) obj));

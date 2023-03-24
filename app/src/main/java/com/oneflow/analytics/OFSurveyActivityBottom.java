@@ -28,8 +28,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
+import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
+import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 
 
@@ -49,7 +53,7 @@ public class OFSurveyActivityBottom extends OFSDKBaseActivity {
         setContentView(R.layout.survey_view);
 
         inTime = System.currentTimeMillis();
-        OFHelper.v(tag, "OneFlow reached at surveyActivity");
+        OFHelper.v(tag, "1Flow reached at surveyActivity");
         pagePositionPBar = (ProgressBar) findViewById(R.id.pbar);
         closeBtn = (ImageView) findViewById(R.id.close_btn_image_view);
         slider = (View) findViewById(R.id.slider);
@@ -61,13 +65,13 @@ public class OFSurveyActivityBottom extends OFSDKBaseActivity {
         window = this.getWindow();
 
         WindowManager.LayoutParams wlp = window.getAttributes();
-        OFHelper.v(tag, "OneFlow Window size width[" + window.getAttributes().width + "]height[" + window.getAttributes().height + "]");
+        OFHelper.v(tag, "1Flow Window size width[" + window.getAttributes().width + "]height[" + window.getAttributes().height + "]");
 
         double[] data = OFHelper.getScreenSize(this);
-
+        OFHelper.v(tag, "1Flow Window size width["+data[0]+"]data[1]["+data[1]+"]");
         wlp.gravity = Gravity.BOTTOM;
         if (data[0] > 3) {
-            wlp.width = 1000;
+            wlp.width = OFConstants.screenWidth;
         } else {
             wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         }

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /* Copyright 2021 1Flow, Inc.
   ~
   ~
@@ -18,26 +17,23 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="65dp"
-    android:gravity="center"
-    android:background="@drawable/gray_rectangle_new_theme"
-    android:layout_margin="3dp"
+
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/field_padding"
     >
-    <!--android:background="@drawable/textview_selector"-->
 
-    <com.oneflow.analytics.customwidgets.OFCustomTextView
-        android:id="@+id/ratings_list_child_tv"
+    <com.oneflow.analytics.customwidgets.OFCustomeWebView
+        android:id="@+id/webview_contents"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="@dimen/rating_text_size"
-        android:layout_centerInParent="true"
-        android:text="X"
-        android:padding="0dp"
-        android:maxLines="1"
-        android:textColor="@color/txtblack"
-        android:gravity="center"
-
+        android:layout_height="wrap_content"
         />
-
+    <com.oneflow.analytics.customwidgets.OFCustomProgressBar
+        android:id="@+id/pbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
 </RelativeLayout>

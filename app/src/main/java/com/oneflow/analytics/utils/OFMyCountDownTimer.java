@@ -47,12 +47,12 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
     private OFMyCountDownTimer(Context context, Long duration, Long interval) {
         super(duration, interval);
         this.mContext = context;
-        OFHelper.v("MyCountDownTimer", "OneFlow Constructor called");
+        OFHelper.v("MyCountDownTimer", "1Flow Constructor called");
     }
 
     @Override
     public void onTick(long millisUntilFinished) {
-        OFHelper.v("MyCountDownTimer", "OneFlow tick called");
+        OFHelper.v("MyCountDownTimer", "1Flow tick called");
         if (OFHelper.isConnected(mContext)) {
             //OFEventDBRepo.fetchEvents(mContext, this, OFConstants.ApiHitType.fetchEventsFromDB);
             new OFEventDBRepoKT().fetchEvents(mContext,this,OFConstants.ApiHitType.fetchEventsFromDB);
@@ -62,21 +62,21 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
 
     @Override
     public void onFinish() {
-        OFHelper.v("MyCountDownTimer", "OneFlow finish called");
+        OFHelper.v("MyCountDownTimer", "1Flow finish called");
     }
 
     @Override
     public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved,Object obj2, Object obj3) {
-        OFHelper.v("OneFlow", "OneFlow onReceived type[" + hitType + "]");
+        OFHelper.v("OFMyCountDownTimer", "1Flow onReceived type[" + hitType + "]");
         switch (hitType) {
 
             case fetchEventsFromDB:
 
-                OFHelper.v("FeedbackController", "OneFlow fetchEventsFromDB came back");
+                OFHelper.v("OFMyCountDownTimer", "1Flow fetchEventsFromDB came back");
 
                 if(obj!=null) {
                     ArrayList<OFRecordEventsTab> list = (ArrayList<OFRecordEventsTab>) obj;
-                    OFHelper.v("FeedbackController", "OneFlow fetchEventsFromDB list received size[" + list.size() + "]");
+                    OFHelper.v("OFMyCountDownTimer", "1Flow fetchEventsFromDB list received size[" + list.size() + "]");
                     //Preparing list to send api
                     if (list.size() > 0) {
                         Integer[] ids = new Integer[list.size()];
@@ -99,7 +99,8 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
                                 OFEventAPIRequest ear = new OFEventAPIRequest();
                                 ear.setUserId(shp.getUserDetails().getAnalytic_user_id());
                                 ear.setEvents(retListToAPI);
-                                OFHelper.v("FeedbackController", "OneFlow fetchEventsFromDB request prepared");
+                                OFHelper.v("OFMyCountDownTimer", "1Flow fetchEventsFromDB request prepared");
+                                shp.storeValue(OFConstants.SHP_EVENTS_DELETE_PENDING,true);
                                 OFEventAPIRepo.sendLogsToApi(shp.getStringValue(OFConstants.APPIDSHP), ear, this, OFConstants.ApiHitType.sendEventsToAPI, ids);
                             }
                         }
@@ -116,7 +117,8 @@ public class OFMyCountDownTimer extends CountDownTimer implements OFMyResponseHa
                 break;
             case deleteEventsFromDB:
                 if(obj!=null) {
-                    OFHelper.v("FeedbackControler", "OneFlow events delete count[" + ((Integer) obj) + "]");
+                    OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_EVENTS_DELETE_PENDING,false);
+                    OFHelper.v("FeedbackControler", "1Flow events delete count[" + ((Integer) obj) + "]");
                     Intent intent = new Intent("events_submitted");
                     intent.putExtra("size", String.valueOf((Integer) obj));
                     mContext.sendBroadcast(intent);

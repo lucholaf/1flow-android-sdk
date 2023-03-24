@@ -19,6 +19,7 @@
 package com.oneflow.analytics.fragment;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -29,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -87,8 +89,16 @@ public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClic
         animation4 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
         animation5 = AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in_sdk);
 
+        webLayout = view.findViewById(R.id.weblayout);
+        webContent = view.findViewById(R.id.webview_contents);
+        pBar = view.findViewById(R.id.pbar);
+
+
+        //setupWeb();
+
         waterMarkImage = (ImageView) view.findViewById(R.id.watermark_img);
         waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
+        infoWebLayout = (LinearLayout) view.findViewById(R.id.info_weblayout);
         submitButton = (OFCustomTextViewBold) view.findViewById(R.id.submit_btn);
 
 
@@ -210,10 +220,16 @@ public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClic
 
 
 
-   /* @Override
+  /*  @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        sa = (OFSDKBaseActivity) context;
+        //sa = (OFSDKBaseActivity) context;
+        OFHelper.v(tag,"1Flow onAttach sa ["+sa+"]");
+        if(sa!=null) {
+//            sa.resetHeight(this);
+        }else{
+            OFHelper.v(tag,"1Flow onAttach sa null");
+        }
 
     }*/
 
@@ -234,9 +250,22 @@ public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
-        View[] animateViews;
 
-        animateViews = new View[]{surveyTitle, surveyDescription, submitButton};
+        setupWeb();
+
+        /*if (sa != null && sa.getWindow() != null) {
+            int fragmentHeight = *//* calculate the height of your fragment *//*;
+
+            sa.setDialogHeight(fragmentHeight);
+        }*/
+
+
+        View[] animateViews;
+        if(OFHelper.validateString(surveyScreens.getMediaEmbedHTML()).equalsIgnoreCase("NA")) {
+            animateViews = new View[]{surveyTitle, surveyDescription, submitButton};
+        }else{
+            animateViews = new View[]{surveyTitle, surveyDescription, infoWebLayout, submitButton};
+        }
 
 
         Animation[] annim = new Animation[]{animation1, animation2, animation3, animation4, animation5};

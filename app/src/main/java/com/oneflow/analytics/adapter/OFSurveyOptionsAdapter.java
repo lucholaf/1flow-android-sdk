@@ -148,7 +148,6 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.surveyInputs = surveyInputs;
         this.themeColor = themeColor;
         this.themeTextColor = themeTextColor;
-        //OFHelper.v(tag, "OneFlow theme color [" + themeColor + "]input type [" + surveyInputs.getInput_type() + "]childSize[" + new Gson().toJson(surveyInputs.getRatingsList()) + "]");
         if (surveyInputs.getInput_type().equalsIgnoreCase("rating-emojis")) {
             viewType = 4;
             listSize = surveyInputs.getRatingsList().size();
@@ -196,7 +195,6 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        //OFHelper.v(tag, "OneFlow createViewHolder called viewtype [" + viewType + "]");
         switch (viewType) {
             case 0:
                 //numericals
@@ -233,10 +231,8 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     CheckBox cbGlobal;
 
     public String handleCheckboxFromOutside() {
-       // OFHelper.v(tag, "OneFlow handleCheckboxFromOutside [" + otherLayoutGlobal + "]");
         String retString = "";
         if (otherLayoutGlobal != null) {
-        //    OFHelper.v(tag, "OneFlow handleCheckboxFromOutside [" + otherLayoutGlobal.getVisibility() + "]");
             if (otherLayoutGlobal.getVisibility() == View.VISIBLE) {
                 otherLayoutGlobal.setVisibility(View.GONE);
                 cbGlobal.setText(otherLayoutGlobal.getTag().toString());
@@ -274,37 +270,23 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 
 
-        //OFHelper.v(tag, "OneFlow viewtype [" + viewType + "]5["+OFHelper.getAlphaNumber(5)+"]");
-        int colorAlpha = OFHelper.manipulateColor(Color.parseColor(themeTextColor),0.5f);//ColorUtils.setAlphaComponent(Color.parseColor(themeColor), OFHelper.getAlphaNumber(0.));
-        int colorAlpha5 = OFHelper.manipulateColor(Color.parseColor(themeTextColor),0.05f);//ColorUtils.setAlphaComponent(Color.parseColor(themeTextColor), OFHelper.getAlphaNumber(25));
+        int colorAlpha50 = OFHelper.manipulateColorNew(Color.parseColor(themeTextColor),50);//ColorUtils.setAlphaComponent(Color.parseColor(themeColor), OFHelper.getAlphaNumber(0.));
+        int colorAlpha10 = OFHelper.manipulateColorNew(Color.parseColor(themeTextColor),15);//ColorUtils.setAlphaComponent(Color.parseColor(themeTextColor), OFHelper.getAlphaNumber(25));
         //int colorAlpha5 = OFHelper.lighten(Color.parseColor(themeTextColor),0.d);
-      //  OFHelper.v(tag, "OneFlow colorAlpha 50[" + colorAlpha + "]colorAlpha5["+colorAlpha5+"]");
+        OFHelper.v(tag, "1Flow color theme["+themeTextColor+"]colorAlpha 50[" + colorAlpha50 + "]colorAlpha5["+colorAlpha10+"]");
         int statesRadio[][] = {{android.R.attr.state_checked}, {}};
         int colorsRadio[] = {Color.parseColor(themeColor), mContext.getResources().getColor(R.color.ratings_focused)};
         try {
             switch (viewType) {
                 case 0:
                     //Numerical
-                    //OFHelper.v(tag, "OneFlow position[" + position + "]value [" + surveyInputs.getRatingsList().get(position).getId() + "]isSelected[" + surveyInputs.getRatingsList().get(position).getSelected() + "]");
                     ((RatingsViewHolder) holder).title.setText(surveyInputs.getRatingsList().get(position).getId() + "");
                     ((RatingsViewHolder) holder).title.setTag(surveyInputs.getRatingsList().get(position).getId());
 
-               /* if (position == 0) {
 
-                    ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.left_gray_rectangle));
-                    ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtblack));
 
-                } else if (position == surveyInputs.getRatingsList().size() - 1) {
+                    //((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.gray_rectangle_new_theme));
 
-                    ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.right_gray_rectangle));
-                    ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtblack));
-
-                } else {*/
-
-                    ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).setBackground(mContext.getResources().getDrawable(R.drawable.gray_rectangle_new_theme));
-                    //((RatingsViewHolder) holder).title.setTextColor(Color.parseColor(themeTextColor));//mContext.getResources().getColor(R.color.txtblack));
-
-                    //}
                     GradientDrawable gd = (GradientDrawable) ((RelativeLayout) (((RatingsViewHolder) holder).title).getParent()).getBackground();
 
                     ((RatingsViewHolder) holder).title.setOnTouchListener(new View.OnTouchListener() {
@@ -315,14 +297,18 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                             switch (event.getAction()) {
 
                                 case MotionEvent.ACTION_DOWN:
-                                    gd.setColor(colorAlpha);
+                                    gd.setColor(colorAlpha50);
                                     break;
 
                                 case MotionEvent.ACTION_MOVE:
                                     // touch move code
                                     //Helper.makeText(mContext,"Moved",1);
                                     break;
-
+                                case MotionEvent.ACTION_CANCEL:
+                                    OFHelper.v(tag,"1Flow action canceled");
+                                    gd.setColor(colorAlpha10);//R.color.new_theme_gray));
+                                    ((RatingsViewHolder) holder).title.setTextColor(Color.parseColor(themeTextColor));
+                                    break;
                                 case MotionEvent.ACTION_UP:
 
                                     gd.setColor(Color.parseColor(themeColor));
@@ -337,7 +323,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         gd.setColor(Color.parseColor(themeColor));
                         ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtwhite));
                     } else {
-                        gd.setColor(colorAlpha5);//R.color.new_theme_gray));
+                        gd.setColor(colorAlpha10);//R.color.new_theme_gray));
                         ((RatingsViewHolder) holder).title.setTextColor(Color.parseColor(themeTextColor));//mContext.getResources().getColor(R.color.txtblack));
                     }
 
@@ -350,7 +336,6 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     break;
                 case 1:
                     //Radio
-            //        OFHelper.v(tag, "OneFlow title [" + surveyInputs.getChoices().get(position).getTitle() + "]tag[" + surveyInputs.getChoices().get(position).getId() + "]");
 
                     //below block was used to check others option as it was not coming from api
                     /*if(surveyInputs.getChoices().get(position).getTitle().equalsIgnoreCase("Others") || surveyInputs.getChoices().get(position).getTitle().equalsIgnoreCase("Other")) {
@@ -368,15 +353,6 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         public void onClick(View v) {
 
 
-                           /* OFHelper.v(tag,"OneFlow radio visibility["+((MCQRadioViewHolder) holder).otherLayout.getVisibility()+"]");
-
-                            if(otherLayoutGlobal!=null){
-                                if(otherLayoutGlobal.getVisibility() == View.VISIBLE) {
-                                    ((MCQRadioViewHolder) holder).otherLayout.setVisibility(View.GONE);
-                                }
-                            }
-                        }*/
-
                             if (!surveyInputs.getOtherOption().equalsIgnoreCase(surveyInputs.getChoices().get(position).getId())) {
 
                                 gch.itemClicked(v, null, "");
@@ -387,8 +363,8 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     GradientDrawable gdRadio = (GradientDrawable) ((RelativeLayout) (((MCQRadioViewHolder) holder).title).getParent()).getBackground();
                     GradientDrawable gdRadioSubmit = (GradientDrawable) ((MCQRadioViewHolder) holder).otherSubmit.getBackground();
                     gdRadioSubmit.setColor(Color.parseColor(themeColor));
-                    gdRadio.setStroke(strokeWidth, mContext.getResources().getColor(R.color.new_theme_gray));
-                    gdRadio.setColor(colorAlpha5);//R.color.new_theme_gray));
+                    gdRadio.setStroke(0, colorAlpha10);
+                    gdRadio.setColor(colorAlpha10);
 
                     ((MCQRadioViewHolder) holder).otherSubmit.setTag(surveyInputs.getChoices().get(position).getId() == null ? String.valueOf(position) : surveyInputs.getChoices().get(position).getId());
 
@@ -429,25 +405,29 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                                 case MotionEvent.ACTION_DOWN:
 
-                                    int colorsRadioAlpha[] = {Color.parseColor(themeColor), colorAlpha};
+                                    int colorsRadioAlpha[] = {Color.parseColor(themeColor), colorAlpha50};
                                     CompoundButtonCompat.setButtonTintList(((MCQRadioViewHolder) holder).title, new ColorStateList(statesRadio, colorsRadioAlpha));
-                                    gdRadio.setStroke(strokeWidth, colorAlpha);
+                                    gdRadio.setStroke(strokeWidth, colorAlpha50);
                                     break;
 
                                 case MotionEvent.ACTION_MOVE:
                                     // touch move code
                                     //Helper.makeText(mContext,"Moved",1);
                                     break;
-
+                                case MotionEvent.ACTION_CANCEL:
+                                    OFHelper.v(tag,"1Flow radio action canceled");
+                                    gdRadio.setStroke(0, colorAlpha10);
+                                    gdRadio.setColor(colorAlpha10);//R.color.new_theme_gray));
+                                    break;
                                 case MotionEvent.ACTION_UP:
 
                                     if (lastChecked == null) {
                                         lastChecked = rb;
                                     } else {
 
-                                        OFHelper.v(tag, "OneFlow radio visibility[" + otherLayoutGlobal + "]");
+                                        OFHelper.v(tag, "1Flow radio visibility[" + otherLayoutGlobal + "]");
                                         if (otherLayoutGlobal != null) {
-                                            OFHelper.v(tag, "OneFlow radio visibility[" + otherLayoutGlobal.getVisibility() + "]");
+                                            OFHelper.v(tag, "1Flow radio visibility[" + otherLayoutGlobal.getVisibility() + "]");
                                             if (otherLayoutGlobal.getVisibility() == View.VISIBLE) {
                                                 otherLayoutGlobal.setVisibility(View.GONE);
                                                 lastChecked.setText(otherLayoutGlobal.getTag().toString());
@@ -475,15 +455,19 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                                             ((MCQRadioViewHolder) holder).otherLayout.setVisibility(View.VISIBLE);
                                             ((MCQRadioViewHolder) holder).othersEditText.requestFocus();
                                             OFHelper.showKeyboard((Activity) mContext, ((MCQRadioViewHolder) holder).othersEditText);
-                                            gdRadio.setColor(mContext.getResources().getColor(R.color.plainwhite));
+                                           // gdRadio.setColor(mContext.getResources().getColor(R.color.plainwhite));
+
+                                            gdRadio.setColor(colorAlpha10);
                                         } else {
                                             gdRadio.setColor(Color.parseColor(themeColor));
                                         }
 
                                     } else {
 
-                                        gdRadio.setStroke(strokeWidth, mContext.getResources().getColor(R.color.ratings_focused));
-                                        gdRadio.setColor(mContext.getResources().getColor(R.color.new_theme_gray));
+                                        /*gdRadio.setStroke(strokeWidth, mContext.getResources().getColor(R.color.ratings_focused));
+                                        gdRadio.setColor(mContext.getResources().getColor(R.color.new_theme_gray));*/
+                                        gdRadio.setStroke(0, colorAlpha10);
+                                        gdRadio.setColor(colorAlpha10);//R.color.new_theme_gray));
                                         if (((MCQRadioViewHolder) holder).otherLayout.getVisibility() == View.VISIBLE) {
                                             otherLayoutGlobal = null;
                                             rb.setText(surveyInputs.getChoices().get(position).getTitle());
@@ -501,7 +485,6 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     ((TextViewHolder) holder).title.setTextColor(Color.parseColor(themeTextColor));
                     break;
                 case 3:
-                //    OFHelper.v(tag, "OneFlow title [" + surveyInputs.getChoices().get(position).getTitle() + "]tag[" + surveyInputs.getChoices().get(position).getId() + "]");
 
                     ((MCQCheckBoxViewHolder) holder).title.setTypeface(typeface);
 
@@ -523,11 +506,11 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     });
                     GradientDrawable gdCheckbox = (GradientDrawable) ((RelativeLayout) (((MCQCheckBoxViewHolder) holder).title).getParent()).getBackground();
 
-                    GradientDrawable gdCheckSubmit = (GradientDrawable) ((MCQCheckBoxViewHolder) holder).otherSubmit.getBackground();
-                    gdCheckSubmit.setColor(Color.parseColor(themeColor));
+                   /* GradientDrawable gdCheckSubmit = (GradientDrawable) ((MCQCheckBoxViewHolder) holder).otherSubmit.getBackground();
+                    gdCheckSubmit.setColor(Color.parseColor(themeColor));*/
 
-                    gdCheckbox.setStroke(strokeWidth,colorAlpha5 );//mContext.getResources().getColor(R.color.new_theme_gray));
-                    gdCheckbox.setColor(colorAlpha5);//mContext.getResources().getColor(R.color.new_theme_gray));
+                    gdCheckbox.setStroke(0,colorAlpha10 );//mContext.getResources().getColor(R.color.new_theme_gray));
+                    gdCheckbox.setColor(colorAlpha10);//mContext.getResources().getColor(R.color.new_theme_gray));
                     GradientDrawable submitGradient = (GradientDrawable) ((MCQCheckBoxViewHolder) holder).otherSubmit.getBackground();
                     submitGradient.setColor(Color.parseColor(themeColor));
 
@@ -564,16 +547,26 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                                 case MotionEvent.ACTION_DOWN:
                                     // touch down code
 
-                                    int colorsRadioAlpha[] = {Color.parseColor(themeColor), colorAlpha};
+                                    int colorsRadioAlpha[] = {Color.parseColor(themeColor), colorAlpha50};
                                     CompoundButtonCompat.setButtonTintList(((MCQCheckBoxViewHolder) holder).title, new ColorStateList(statesRadio, colorsRadioAlpha));
-                                    gdCheckbox.setStroke(strokeWidth, colorAlpha);
+                                    gdCheckbox.setStroke(strokeWidth, colorAlpha50);
                                     break;
 
                                 case MotionEvent.ACTION_MOVE:
                                     // touch move code
                                     //Helper.makeText(mContext,"Moved",1);
                                     break;
+                                case MotionEvent.ACTION_CANCEL:
+                                    OFHelper.v(tag,"1Flow checkbox action canceled");
+                                    /*gdCheckbox.setStroke(strokeWidth, mContext.getResources().getColor(R.color.new_theme_gray));
+                                    gdCheckbox.setColor(mContext.getResources().getColor(R.color.new_theme_gray));*/
 
+                                   // gdCheckbox.setStroke(strokeWidth,colorAlpha5 );//mContext.getResources().getColor(R.color.new_theme_gray));
+                                    //gdCheckbox.setColor(colorAlpha5);//mContext.getResources().getColor(R.color.new_theme_gray));
+                                    //gdCheckbox.setStroke(strokeWidth, mContext.getResources().getColor(R.color.new_theme_gray));
+                                    gdCheckbox.setStroke(0,colorAlpha10 );
+                                    //gdCheckbox.setColor(colorAlpha5);//R.color.new_theme_gray));
+                                    break;
                                 case MotionEvent.ACTION_UP:
                                     // touch up code
                                     //Helper.makeText(mContext, "Released", 1);
@@ -581,7 +574,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                                     if (!cb.isChecked()) {
 
                                         gdCheckbox.setStroke(strokeWidth, Color.parseColor(themeColor));
-                                        gdCheckbox.setColor(colorAlpha5);//mContext.getResources().getColor(R.color.plainwhite));
+                                        gdCheckbox.setColor(colorAlpha10);//mContext.getResources().getColor(R.color.plainwhite));
                                         // others logic
                                         if (surveyInputs.getOtherOption().equalsIgnoreCase(surveyInputs.getChoices().get(position).getId())) {
                                             // OFHelper.makeText(mContext, "Id and other same", 1);
@@ -598,8 +591,9 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                                     } else {
 
-                                        gdCheckbox.setStroke(strokeWidth, mContext.getResources().getColor(R.color.new_theme_gray));
-                                        gdCheckbox.setColor(mContext.getResources().getColor(R.color.new_theme_gray));
+                                        /*gdCheckbox.setStroke(strokeWidth, mContext.getResources().getColor(R.color.new_theme_gray));
+                                        gdCheckbox.setColor(mContext.getResources().getColor(R.color.new_theme_gray));*/
+                                        gdCheckbox.setStroke(0,colorAlpha10 );
 
                                         if (((MCQCheckBoxViewHolder) holder).otherLayout.getVisibility() == View.VISIBLE) {
                                             cb.setText(surveyInputs.getChoices().get(position).getTitle());
@@ -631,14 +625,16 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                             switch (event.getAction()) {
                                 case MotionEvent.ACTION_DOWN:
                                     //Helper.makeText(mContext,"Down called",0);
-                                    gdEmojis.setColor(colorAlpha);
+                                    gdEmojis.setColor(colorAlpha50);
                                     break;
 
                                 case MotionEvent.ACTION_MOVE:
                                     // touch move code
                                     //Helper.makeText(mContext,"Moved",1);
                                     break;
-
+                                case MotionEvent.ACTION_CANCEL:
+                                    gdEmojis.setColor(null);
+                                    break;
                                 case MotionEvent.ACTION_UP:
                                     gdEmojis.setColor(Color.parseColor(themeColor));
                                     break;
@@ -661,7 +657,6 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     });
                     break;
                 case 5:
-                //    OFHelper.v(tag, "OneFlow binding views");
 
                     if (surveyInputs.getRatingsList().get(position).getSelected()) {
                         ((RatingsStar) holder).stars.setImageDrawable(mContext.getResources().getDrawable(R.drawable.selected_star));//mContext.getResources().getDrawable(R.drawable.ic_baseline_star_92));
@@ -692,7 +687,6 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-//        Helper.v(tag, "OneFlow attendance Calender adapter getItemCount() :::: " + String.valueOf(calendar.getActualMaximum(Calendar.DAY_OF_MONTH) + startPosition));
         return listSize;
     }
 
