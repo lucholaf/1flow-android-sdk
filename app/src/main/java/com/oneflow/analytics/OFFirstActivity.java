@@ -25,10 +25,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -38,11 +36,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.oneflow.analytics.adapter.OFSurveyListAdapter;
-import com.oneflow.analytics.controller.OFEventController;
 import com.oneflow.analytics.customwidgets.OFCustomEditText;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.model.events.OFRecordEventsTabKT;
-import com.oneflow.analytics.model.survey.OFDataLogic;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.repositories.OFEventDBRepoKT;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
@@ -155,8 +151,31 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         /*fakeEditText.setHintTextColor(Color.parseColor("#00ff00"));
         fakeEditText.setTextColor(Color.parseColor("#0000ff"));*/
-
+        //retriveCurrentFCMToken();
     }
+
+    /*private void retriveCurrentFCMToken() {
+        try {
+//            sendNotification();
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this,
+                    new OnSuccessListener<InstanceIdResult>() {
+                        @Override
+                        public void onSuccess(InstanceIdResult instanceIdResult) {
+                            String token = instanceIdResult.getToken();
+                            OFHelper.v("FCM Token", "1Flow fcm token["+token+"]");
+                            if (!OFHelper.validateString(token).equalsIgnoreCase("NA")) {
+                                if (!token.equalsIgnoreCase(OFOneFlowSHP.getInstance(OFFirstActivity.this).getStringValue(OFConstants.shpFCMToken))) {
+                                    OFOneFlowSHP.getInstance(OFFirstActivity.this).storeValue(OFConstants.shpFCMToken, token);//shpFCMToken
+                                }
+                            }
+                        }
+                    });
+
+        } catch (Exception e) {
+            if (BuildConfig.DEBUG)
+                e.printStackTrace();
+        }
+    }*/
 
 
     private void configureOneFlow(String projectKey) {
@@ -187,6 +206,8 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         //String projectKey = "oneflow_prod_SR8Fn2G0BMPY4RW7ZE/bG37M2VbOQrG8KKfOCkW6K8MdYNMKj2Ug9VPkwtbgTLXZE6YZ2fvm6M9UxuEBcVB9Xw==";// Ahsan project key
         //String projectKey = "oneflow_prod_hlXx+7J/PLaZmjrScYvDqVr75+oIAS+Fyc2Hs7hO4o1GcsbyeMTJ74XKceugfPhDZ3MPdbB65rltbhP9cWmaYA==";// Embed I&V Android
         //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
+        //String projectKey = "oneflow_prod_Aj1cg38j4iAzpwhl/jEACm1HTDFgYJhj5yxEDDHlMo9u53RNdpqcDjZvGeBW17CldKelGu2/TXfUfTE4bDgR3Q==";//Rohan's Arabic
+        //String projectKey = "oneflow_prod_SR8Fn2G0BMPY4RW7ZE/bGxkFmyfC4mcHfsqjNpy5zHnO+GcpXBdg+Dw6pJmVBC2lcGFgTpHQziPqFUsmcaWAIA==";//Rohan's Arabic
         //String projectKey = "oneflow_prod_yxwI14oGAEhYgOEJjo43IsoKuWbSPoXBcKD+Bj5UkiZtPXb1vuuBkRUm5YxfBCs6thcsxPWbxDeJHJZlSGzxkw==";//[TEST]Flutter/React Native SDKs
         projectKeyET.setText(projectKey);
         OFCustomTextView registerButton = dialog.findViewById(R.id.register_project);

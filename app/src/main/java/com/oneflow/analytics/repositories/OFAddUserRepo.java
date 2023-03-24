@@ -21,7 +21,6 @@ package com.oneflow.analytics.repositories;
 import com.oneflow.analytics.model.OFApiInterface;
 import com.oneflow.analytics.model.OFGenericResponse;
 import com.oneflow.analytics.model.OFRetroBaseService;
-import com.oneflow.analytics.model.adduser.OFAddUserRequest;
 import com.oneflow.analytics.model.adduser.OFAddUserRequestNew;
 import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
 import com.oneflow.analytics.utils.OFConstants;

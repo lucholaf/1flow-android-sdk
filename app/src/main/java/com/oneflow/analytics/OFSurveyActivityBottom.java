@@ -28,11 +28,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
-import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 

@@ -18,7 +18,6 @@
 
 package com.oneflow.analytics;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -68,7 +67,6 @@ import com.oneflow.analytics.repositories.OFEventDBRepoKT;
 import com.oneflow.analytics.repositories.OFLogUserDBRepoKT;
 import com.oneflow.analytics.repositories.OFLogUserRepo;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
-import com.oneflow.analytics.utils.OFActivityCallbacks;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFLogCountdownTimer;

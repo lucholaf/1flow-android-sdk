@@ -3,9 +3,7 @@ package com.oneflow.analytics.repositories
 import android.content.Context
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse
 import com.oneflow.analytics.model.survey.OFSurveyUserInput
-import com.oneflow.analytics.model.survey.OFSurveyUserInputKT
 import com.oneflow.analytics.sdkdb.OFSDKDB
-import com.oneflow.analytics.sdkdb.OFSDKKOTDB
 import com.oneflow.analytics.utils.OFConstants.ApiHitType
 import com.oneflow.analytics.utils.OFHelper
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow

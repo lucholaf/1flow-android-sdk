@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
@@ -34,10 +33,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.Display;
 import android.view.DragEvent;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +74,6 @@ import com.oneflow.analytics.model.survey.OFSurveyFinishChild;
 import com.oneflow.analytics.model.survey.OFSurveyFinishModel;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.model.survey.OFSurveyUserInput;
-import com.oneflow.analytics.model.survey.OFSurveyUserInputKT;
 import com.oneflow.analytics.model.survey.OFSurveyUserResponseChild;
 import com.oneflow.analytics.repositories.OFLogUserDBRepoKT;
 import com.oneflow.analytics.repositories.OFSurvey;
@@ -318,7 +314,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         OFHelper.v(tag, "1Flow from onLoadThisView");
         initFragment(0);
     }
-    public static boolean isActive;
+
 
     public static boolean isActive;
     @Override

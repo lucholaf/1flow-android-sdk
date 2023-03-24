@@ -20,15 +20,12 @@ package com.oneflow.analytics.sdkdb;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.StrictMode;
 import android.util.Base64;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
-import com.oneflow.analytics.model.location.OFLocationResponse;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.model.survey.OFThrottlingConfig;
@@ -47,8 +44,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import io.reactivex.schedulers.Schedulers;
 
 public class OFOneFlowSHP {
     String keyName = "one_flow_temp.db";

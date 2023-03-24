@@ -23,7 +23,6 @@ import android.content.Intent;
 
 import com.oneflow.analytics.model.events.OFEventAPIRequest;
 import com.oneflow.analytics.model.events.OFRecordEventsTab;
-import com.oneflow.analytics.model.events.OFRecordEventsTabKT;
 import com.oneflow.analytics.model.events.OFRecordEventsTabToAPI;
 import com.oneflow.analytics.repositories.OFEventAPIRepo;
 import com.oneflow.analytics.repositories.OFEventDBRepoKT;

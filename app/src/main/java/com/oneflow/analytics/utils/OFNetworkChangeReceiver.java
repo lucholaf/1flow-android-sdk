@@ -24,7 +24,6 @@ import android.content.Intent;
 
 import com.oneflow.analytics.OneFlow;
 import com.oneflow.analytics.model.survey.OFSurveyUserInput;
-import com.oneflow.analytics.model.survey.OFSurveyUserInputKT;
 import com.oneflow.analytics.repositories.OFLogUserDBRepoKT;
 import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;

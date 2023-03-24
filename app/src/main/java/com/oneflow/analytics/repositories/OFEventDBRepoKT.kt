@@ -2,9 +2,7 @@ package com.oneflow.analytics.repositories
 
 import android.content.Context
 import com.oneflow.analytics.model.events.OFRecordEventsTab
-import com.oneflow.analytics.model.events.OFRecordEventsTabKT
 import com.oneflow.analytics.sdkdb.OFSDKDB
-import com.oneflow.analytics.sdkdb.OFSDKKOTDB
 import com.oneflow.analytics.utils.OFConstants.ApiHitType
 import com.oneflow.analytics.utils.OFHelper
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow

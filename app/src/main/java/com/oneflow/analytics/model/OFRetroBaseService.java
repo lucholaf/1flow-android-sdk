@@ -19,7 +19,6 @@
 package com.oneflow.analytics.model;
 
 import com.oneflow.analytics.utils.OFConstants;
-import com.oneflow.analytics.utils.OFHelper;
 
 import java.util.concurrent.TimeUnit;
 

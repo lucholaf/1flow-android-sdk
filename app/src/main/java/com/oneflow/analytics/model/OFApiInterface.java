@@ -18,18 +18,13 @@
 
 package com.oneflow.analytics.model;
 
-import com.oneflow.analytics.model.adduser.OFAddUserRequest;
 import com.oneflow.analytics.model.adduser.OFAddUserRequestNew;
 import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
-import com.oneflow.analytics.model.createsession.OFCreateSessionRequest;
-import com.oneflow.analytics.model.createsession.OFCreateSessionResponse;
 import com.oneflow.analytics.model.events.OFEventAPIRequest;
-import com.oneflow.analytics.model.location.OFLocationResponse;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
 import com.oneflow.analytics.model.loguser.OFLogUserResponse;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.model.survey.OFSurveyUserInput;
-import com.oneflow.analytics.model.survey.OFSurveyUserInputKT;
 
 import java.util.ArrayList;
 
@@ -38,7 +33,6 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
