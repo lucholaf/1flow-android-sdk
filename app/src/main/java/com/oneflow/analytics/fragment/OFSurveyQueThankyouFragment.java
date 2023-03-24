@@ -81,8 +81,10 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.survey_que_thankyou_fragment, container, false);
+
         OFHelper.v(tag, "1Flow list data.[" + surveyScreens + "]");
         OFHelper.v(tag, "1Flow list data.html[" + surveyScreens.getMediaEmbedHTML() + "]");
+
 
 
         thankyouImage = (ImageView) view.findViewById(R.id.thankyou_img);
@@ -225,7 +227,9 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                 sa.closeBtn.setVisibility(View.VISIBLE);
             }
         } catch (Exception ex) {
+
            // OFHelper.e(tag, "1Flow Error[" + ex.getMessage() + "]");
+
         }
     }
 

@@ -360,7 +360,9 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         setupWeb();
         View[] animateViews;
         String savedValue = OFOneFlowSHP.getInstance(getActivity()).getStringValue("userInput");
+
         animateViews = new View[]{surveyTitle, surveyDescription, optionLayoutOuter, submitButton};//, skipBtn};
+
         if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
 
             if(!savedValue.equalsIgnoreCase("NA")) {

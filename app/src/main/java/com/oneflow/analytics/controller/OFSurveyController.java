@@ -150,7 +150,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                 }
                 break;
             case fetchEventsBeforSurveyFetched:
-                if (obj != null) {
+               if (obj != null) {
                     String[] name = (String[]) obj;
                     OFHelper.v("SurveyController", "OneFlow events before survey found[" + Arrays.asList(name) + "]length[" + name.length + "]");
                     if (name.length > 0) {
@@ -198,8 +198,27 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
 
 
     }
-
     private void setupGlobalTimerToDeactivateThrottlingLocally() {
+
+
+        OFHelper.v("OFSurveyController", "1Flow deactivate called ");
+        OFThrottlingConfig config = OFOneFlowSHP.getInstance(mContext).getThrottlingConfig();
+        OFHelper.v("OFSurveyController", "1Flow deactivate called config activated[" + config.isActivated() + "]globalTime[" + config.getGlobalTime() + "]activatedBy[" + config.getActivatedById() + "]");
+        //OFMyCountDownTimerThrottling.getInstance(mContext,0l,0l).cancel();
+        if (config.getGlobalTime() != null && config.getGlobalTime() > 0) {
+            //OFMyCountDownTimerThrottling.getInstance(mContext, config.getGlobalTime() * 1000, ((Long) (config.getGlobalTime() * 1000) / 2)).start();
+            setThrottlingAlarm(config);
+        } else {
+            OFHelper.v("OFSurveyController", "1Flow deactivate called at else");
+            config.setActivated(false);
+            config.setActivatedById(null);
+            OFOneFlowSHP.getInstance(mContext).setThrottlingConfig(config);
+        }
+
+
+
+    }
+    /*private void setupGlobalTimerToDeactivateThrottlingLocally() {
 
 
         OFHelper.v("OneFlow", "OneFlow checking throttling after survey received");
@@ -234,6 +253,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                 OFHelper.v("OneFlow", "OneFlow checking called no throttling found after survey received");
             }
         }
+
         /*if (config != null) {
 
             if (config.getGlobalTime() != null) {
@@ -271,6 +291,12 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
         shp.storeValue(OFConstants.SHP_THROTTLING_TIME, throttlingLifeTime);
 
 
+    }*/
+    public void setThrottlingAlarm(OFThrottlingConfig config) {
+        OFHelper.v("OFSurveyController", "1Flow Setting ThrottlingAlarm [" + config.getGlobalTime() + "]");
+
+        OFOneFlowSHP shp = OFOneFlowSHP.getInstance(mContext);
+        shp.storeValue(OFConstants.SHP_THROTTLING_TIME, config.getGlobalTime() * 1000 + System.currentTimeMillis());
     }
     /**
      * This method will return survey and its event name

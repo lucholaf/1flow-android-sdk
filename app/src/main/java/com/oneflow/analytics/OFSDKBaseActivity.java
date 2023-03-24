@@ -186,7 +186,9 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         // Helper.makeText(getApplicationContext(),"Size ["+screens.size()+"]",1);
         setProgressMax(surveyItem.getScreens().size()); // -1 for excluding thankyou page from progress bar; 2-sept-2022 showing progressbar at thankyou page
         selectedSurveyId = surveyItem.get_id();
+
         OFHelper.v(this.getClass().getName(), "1Flow onLoadThisView called position["+position+"]surveyId[" + selectedSurveyId + "]triggerEventName[" + triggerEventName + "]");
+
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,6 +230,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
 
         themeColor = "#" + Integer.toHexString(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+
         try {
 
             String tranparancy = "";
@@ -257,6 +260,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
             pagePositionPBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(themeColor)));
             //pagePositionPBar.getProgressDrawable().setColorFilter(Color.parseColor(styleColor.toString()), PorterDuff.Mode.DARKEN);
         } catch (NumberFormatException nfe) {
+
             themeColor = "#" + Integer.toHexString(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             pagePositionPBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(themeColor)));
         }
@@ -266,6 +270,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         //surveyItem.getSurveySettings().getSdkTheme().setText_color(themeColor);
 
         sdkTheme = surveyItem.getSurveySettings().getSdkTheme();
+
 
         mainChildForBackground.setBackgroundColor(Color.parseColor(OFHelper.handlerColor(sdkTheme.getBackground_color())));
 
@@ -292,6 +297,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
             pagePositionPBar.setVisibility(View.GONE);
         }
 
+
         if (sdkTheme.getClose_button()) {
             closeBtn.setVisibility(View.VISIBLE);
         } else {
@@ -314,6 +320,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     }
     public static boolean isActive;
 
+    public static boolean isActive;
     @Override
     public void onBackPressed() {
         if (false) {//!sdkTheme.getClose_button()) {
@@ -342,7 +349,9 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     }
 
     public void finishSurveyNow() {
+
         OFHelper.v(tag, "1Flow finishSurveyNow called");
+
         OFOneFlowSHP.getInstance(this).storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
         //on close of this page considering survey is over, so submit the respones to api
         if (surveyResponseChildren != null) {
@@ -643,11 +652,13 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
 
     public void prepareAndSubmitUserResposneNew() {
+
         OFHelper.v(tag, "1Flow checking value prepareAndSubmitUserResposneNew called [" + surveyResponseChildren.size() + "]surveyId[" + selectedSurveyId + "]");
         //setupGlobalTimerToDeactivateThrottlingLocally();
         OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(this);
         ofs.storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
         OFHelper.v(tag, "1Flow checking value prepareAndSubmitUserResposneNew called [" + ofs.getBooleanValue(OFConstants.SHP_SURVEY_RUNNING, false));
+
         OFSurveyUserInput sur = new OFSurveyUserInput();
         sur.setTotDuration(totalTimeSpentInSec());
         sur.setMode(OFConstants.MODE);
@@ -678,8 +689,10 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
     public int position = 0;
 
+
     public void initFragment(int calledFrom) {
         OFHelper.v(tag, "1Flow initFragment answer calledFrom["+calledFrom+"] position [" + position + "]screensize[" + screens.size() + "]selected answers[" + new Gson().toJson(surveyResponseChildren) + "]");
+
 //      OFHelper.v(tag, "1Flow answer position [" +new Gson().toJson(screens.get(position-1) )+ "]");
         if (position >= screens.size()) {
             finishSurveyNow();
@@ -697,7 +710,9 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     }
 
     private void setProgressAnimate() {
+
         OFHelper.v(tag, "1Flow progressbar [" + position + "] max [" + pagePositionPBar.getProgress() + "]postion[" + (position * 100) + "]");
+
         if (position == 0) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -810,7 +825,9 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
         Fragment frag = null;
         try {
+
             OFHelper.v(tag, "1Flow getFragment called");
+
             OFSurveyScreens screen = validateScreens();
 
             if (screen != null) {
@@ -829,7 +846,9 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                             shouldFadeAway = true;
                         }
                     } catch (Exception ex) {
+
                         OFHelper.e(tag, "1Flow ERROR at getFragment[" + ex.getMessage() + "]");
+
                     }
 
                 } else if (screen.getInput().getInput_type().equalsIgnoreCase("text") ||
@@ -850,8 +869,10 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 }
             }
         } catch (Exception ex) {
+
             //  ex.printStackTrace();
             //  OFHelper.e(tag, "1Flow ERROR [" + ex.getMessage() + "]");
+
             //frag = SurveyQueThankyouFragment.newInstance(screen);
         }
         return frag;
@@ -865,7 +886,9 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     public OFSurveyScreens validateScreens() {
         String[] possibleType = new String[]{"text", "short-text", "thank_you", "mcq", "checkbox", "rating-numerical", "rating-5-star", "rating", "rating-emojis", "nps", "welcome-screen", "end-screen"};
         OFSurveyScreens screen = null;
+
         OFHelper.v(tag, "1Flow validateScreens called[" + position + "]");
+
         while (position < screens.size()) {
             screen = screens.get(position);
             OFHelper.v(tag, "1Flow finding question type [" + screen.getInput().getInput_type() + "]");
@@ -892,13 +915,16 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 //if internet available then only send to api else already stored locally
                 if (OFHelper.isConnected(this)) {
                     OFSurveyUserInput sur = (OFSurveyUserInput) obj;
+
                     OFHelper.v(tag, "1Flow calling submit user surveyId[" + sur.getSurvey_id() + "]surID[" + sur.get_id() + "] Resposne [" + sur.getAnswers() + "]");
+
                     if (sur.getAnswers() != null) {
                         if (sur.getAnswers().size() > 0) {
                             OFSurvey.submitUserResponse(OFOneFlowSHP.getInstance(this).getStringValue(OFConstants.APPIDSHP), sur, OFConstants.ApiHitType.surveySubmited, this);
                         }
                     }
                 } else {
+
                     OFHelper.v(tag, "1Flow no data connectivity available submit survey later[" + position + "][" + screens.size() + "]lastScreen[" + screens.get(screens.size() - 1).getInput().getInput_type() + "]");
                     /*this logic is added to avoid wait on thankyou page after clicking close button,
                      * Below logic will also help to close survey if there is no thankyou page
@@ -920,6 +946,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 OFHelper.v(tag, "1Flow survey submitted successfully");
                 if (obj != null) {
                     OFSurveyUserInput sur = (OFSurveyUserInput) obj;
+
                     OFHelper.v(tag, "1Flow survey submitted successfully [" + sur.get_id() + "]surveyId[" + sur.getSurvey_id() + "]");
                     //Updating survey once data is sent to server, Sending type null as return is not required
                     new OFLogUserDBRepoKT().updateSurveyInput(this, null, null, true, sur.getSurvey_id());
