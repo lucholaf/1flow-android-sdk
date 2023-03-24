@@ -278,7 +278,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                 }
             }
         }*/
-    }
+   // }
     public void setThrottlingAlarm(long throttlingLifeTime) {
 
 
@@ -291,7 +291,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
         shp.storeValue(OFConstants.SHP_THROTTLING_TIME, throttlingLifeTime);
 
 
-    }*/
+    }
     public void setThrottlingAlarm(OFThrottlingConfig config) {
         OFHelper.v("OFSurveyController", "1Flow Setting ThrottlingAlarm [" + config.getGlobalTime() + "]");
 
