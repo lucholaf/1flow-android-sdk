@@ -118,7 +118,7 @@ public class OFEventController implements OFMyResponseHandlerOneFlow {
                 break;
             case sendEventsToAPI:
                 if (obj != null) {
-                    //Events has been sent to api not deleting local records
+                    //Events has been sent to api now deleting local records
                     Integer[] ids1 = (Integer[]) obj;
                     //OFEventDBRepo.deleteEvents(mContext, ids1, this, OFConstants.ApiHitType.deleteEventsFromDB);
                     new OFEventDBRepoKT().deleteEvents(mContext, ids1, this, OFConstants.ApiHitType.deleteEventsFromDB);

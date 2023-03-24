@@ -49,8 +49,8 @@ public interface OFLogDAO {
     /*@Query("select * from SurveyUserInput")
     ArrayList<SurveyUserInput> getOfflineUserInputList();*/
 
-    @Query("Delete from SurveyUserInput where _id in (:idList)")
-    Integer deleteSurvey(Integer[] idList);
+    /*@Query("Delete from SurveyUserInput where _id in (:idList)")
+    Integer deleteSurvey(Integer[] idList);*/
 
 
 

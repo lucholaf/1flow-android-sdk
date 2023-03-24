@@ -80,4 +80,6 @@ public interface OFConstants {
 
     String userInputValueTemp = "";
     int screenWidth = 1100;
+    int buttonActiveValue = 100;
+    int buttonInActiveValue = 85;
 }

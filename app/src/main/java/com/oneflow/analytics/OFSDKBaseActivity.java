@@ -640,33 +640,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     String selectedSurveyId;
 
 
-   /* public void prepareAndSubmitUserResposne() {
 
-        OFOneFlowSHP ofs = new OFOneFlowSHP(this);
-        ofs.storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
-        OFSurveyUserInput sur = new OFSurveyUserInput();
-        sur.setMode(OFConstants.MODE);
-        sur.setTrigger_event(triggerEventName);
-        sur.setAnswers(surveyResponseChildren);
-        sur.setOs(OFConstants.os);
-        sur.setAnalytic_user_id(ofs.getUserDetails().getAnalytic_user_id());
-        sur.setSurvey_id(selectedSurveyId);
-        sur.setSession_id(ofs.getStringValue(OFConstants.SESSIONDETAIL_IDSHP));
-
-        if (OFHelper.isConnected(this)) {
-            OFHelper.v(tag, "1Flow calling submit user Resposne");
-            OFSurvey.submitUserResponse(new OFOneFlowSHP(this).getStringValue(OFConstants.APPIDSHP), sur, OFConstants.ApiHitType.surveySubmited, this);
-        } else {
-
-            sur.setUser_id(ofs.getStringValue(OFConstants.USERUNIQUEIDSHP));
-
-            //TODO Store data in db
-            OFLogUserDBRepo.insertUserInputs(this, sur, null, OFConstants.ApiHitType.insertSurveyInDB);
-            //storing id for avoiding repeatation of offline surveys
-            new OFOneFlowSHP(this).storeValue(sur.getSurvey_id(), Calendar.getInstance().getTimeInMillis());
-            //Helper.makeText(this,getString(R.string.no_network),1);
-        }
-    }*/
 
     public void prepareAndSubmitUserResposneNew() {
         OFHelper.v(tag, "1Flow checking value prepareAndSubmitUserResposneNew called [" + surveyResponseChildren.size() + "]surveyId[" + selectedSurveyId + "]");

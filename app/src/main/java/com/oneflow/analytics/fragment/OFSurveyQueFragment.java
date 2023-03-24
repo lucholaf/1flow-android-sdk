@@ -400,7 +400,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         try {
             gdSubmit = (GradientDrawable) (submitButton).getBackground();
             gdSubmit.setColor(Color.parseColor(themeColor));
-            int colorAlpha = OFHelper.manipulateColor(Color.parseColor(themeColor), 0.5f);
+            int colorAlpha = OFHelper.manipulateColorNew(Color.parseColor(themeColor), OFConstants.buttonActiveValue);
 
             submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
             submitButton.setOnTouchListener(new View.OnTouchListener() {

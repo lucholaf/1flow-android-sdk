@@ -528,8 +528,12 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                                 gdCheckbox.setStroke(strokeWidth, mContext.getResources().getColor(R.color.new_theme_gray));
                                 gdCheckbox.setColor(mContext.getResources().getColor(R.color.new_theme_gray));
                             } else {
+
                                 gdCheckbox.setStroke(strokeWidth, Color.parseColor(themeColor));
-                                gdCheckbox.setColor(mContext.getResources().getColor(R.color.plainwhite));
+                                gdCheckbox.setColor(colorAlpha10);
+
+                                gdCheckbox.setStroke(strokeWidth, Color.parseColor(themeColor));
+                                
                                 ((MCQCheckBoxViewHolder) holder).otherLayout.setVisibility(View.GONE);
                                 ((MCQCheckBoxViewHolder) holder).title.setText(((MCQCheckBoxViewHolder) holder).othersEditText.getText());
                                 gch.itemClicked(v, true, ((MCQCheckBoxViewHolder) holder).othersEditText.getText().toString());

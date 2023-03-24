@@ -30,6 +30,7 @@ import com.oneflow.analytics.OFSurveyActivityFullScreen;
 import com.oneflow.analytics.customwidgets.OFCustomeWebView;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
+import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 
 public class BaseFragment extends Fragment {
@@ -190,7 +191,7 @@ public class BaseFragment extends Fragment {
     }
     public void transitActive() {
         try {
-            int colorFrom = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);//getResources().getColor(R.color.ratings_focused);
+            int colorFrom = OFHelper.manipulateColorNew(Color.parseColor(sa.themeColor), OFConstants.buttonActiveValue);//getResources().getColor(R.color.ratings_focused);
             int colorTo = Color.parseColor(sa.themeColor);
             ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
             colorAnimation.setDuration(250); // milliseconds
@@ -212,7 +213,7 @@ public class BaseFragment extends Fragment {
     public void transitInActive() {
         try {
             int colorFrom = Color.parseColor(sa.themeColor);
-            int colorTo = OFHelper.manipulateColor(Color.parseColor(sa.themeColor), 0.5f);//getResources().getColor(R.color.ratings_focused);
+            int colorTo = OFHelper.manipulateColorNew(Color.parseColor(sa.themeColor), OFConstants.buttonActiveValue);//getResources().getColor(R.color.ratings_focused);
             ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
             colorAnimation.setDuration(250); // milliseconds
             colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

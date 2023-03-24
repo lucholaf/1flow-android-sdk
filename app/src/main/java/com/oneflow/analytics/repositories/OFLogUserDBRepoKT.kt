@@ -59,7 +59,7 @@ class OFLogUserDBRepoKT {
         }
 
     }*/
-    fun deleteSentSurveyFromDB(context: Context, ids: Array<Int?>?, mrh: OFMyResponseHandlerOneFlow, type: ApiHitType?) {
+    /*fun deleteSentSurveyFromDB(context: Context, ids: Array<Int?>?, mrh: OFMyResponseHandlerOneFlow, type: ApiHitType?) {
         OFHelper.v("LogDBRepo.DeleteUserInput", "OneFlow reached at delete method")
 
         val job = Job()
@@ -71,7 +71,7 @@ class OFLogUserDBRepoKT {
             mrh.onResponseReceived(type, deleteCount, 0L, "", null, null)
         }
 
-    }
+    }*/
 
 
     /*fun fetchSurveyInput(context: Context, mrh: OFMyResponseHandlerOneFlow, type: ApiHitType?) {
