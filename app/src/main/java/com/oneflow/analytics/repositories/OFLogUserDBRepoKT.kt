@@ -118,15 +118,18 @@ class OFLogUserDBRepoKT {
         val job = Job()
         val scope = CoroutineScope(job)
         scope.launch {
-            val sdkdb = OFSDKDB.getInstance(context)
-            var updated = sdkdb.logDAO()?.updateUserInput(syncNew, id)
+            try {
+                val sdkdb = OFSDKDB.getInstance(context)
+                var updated = sdkdb.logDAO()?.updateUserInput(syncNew, id)
 
-            OFHelper.v("LogDBRepo.updateSurveyInput", "OneFlow update called["+updated+"]id["+id+"]synced["+syncNew+"]")
+                OFHelper.v("LogDBRepo.updateSurveyInput", "OneFlow update called[" + updated + "]id[" + id + "]synced[" + syncNew + "]")
 
-            if(mrh!=null){
-                mrh.onResponseReceived(type,updated,0L,"","","")
+                if (mrh != null) {
+                    mrh.onResponseReceived(type, updated, 0L, "", "", "")
+                }
+            }catch (ex: Exception){
+
             }
-
         }
 
     }
@@ -185,6 +188,7 @@ class OFLogUserDBRepoKT {
         scope.launch {
             val sdkdb = OFSDKDB.getInstance(context)
             val surveyUserInput = sdkdb.logDAO()?.getSurveyForID(id, userId)
+            //val surveyUserInput = sdkdb.logDAO()?.getSurveyForID(, userId)
             var ret:Long? = 0L
             ret = if (surveyUserInput != null) {
                 surveyUserInput.createdOn

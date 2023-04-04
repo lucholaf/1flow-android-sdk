@@ -31,6 +31,9 @@ public class OFRecordEventsTabToAPI {
     @SerializedName("plt")
     private String platform;
 
+    @SerializedName("_id")
+    private String _id;
+
     @SerializedName("parameters")
     private HashMap<String,Object> dataMap;
 
@@ -40,6 +43,13 @@ public class OFRecordEventsTabToAPI {
     @SerializedName("value")
     private String value;
 
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public String getPlatform() {
         return platform;

@@ -1061,6 +1061,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                         for (OFRecordEventsTab ret : list) {
                             retMain = new OFRecordEventsTabToAPI();
                             retMain.setEventName(ret.getEventName());
+                            retMain.set_id(ret.getUuid());
                             retMain.setTime(ret.getTime());
                             retMain.setPlatform("a");
                             retMain.setDataMap(ret.getDataMap());
@@ -1150,11 +1151,15 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                                     onResponseReceived(OFConstants.ApiHitType.checkResurveyNSubmission, gslr, 0l, eventName, null, null);
                                 }
                             } else {
+
+                                int searchPostion = OFOneFlowSHP.getInstance(mContext).getIntegerValue(OFConstants.SHP_SURVEY_SEARCH_POSITION);
+
                                 String eventName = (String) obj3;
                                 // as this survey not fired, going to check again if any other survey available with same event name
                                 OFHelper.v("1Flow", "1Flow resurvey failed checking list again [" + eventName + "]");
-
-                                checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
+                                if(searchPostion>0) { // this login add to stop re-iteration
+                                    checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
+                                }
                             }
                         } catch (Exception ex) {
                             ex.printStackTrace();

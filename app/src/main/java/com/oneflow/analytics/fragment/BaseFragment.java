@@ -22,11 +22,14 @@ import androidx.fragment.app.Fragment;
 
 import com.oneflow.analytics.OFSDKBaseActivity;
 import com.oneflow.analytics.OFSurveyActivityFullScreen;
+import com.oneflow.analytics.controller.OFEventController;
 import com.oneflow.analytics.customwidgets.OFCustomeWebView;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
+
+import java.util.HashMap;
 
 public class BaseFragment extends Fragment {
     public boolean isActive = false;
@@ -48,8 +51,6 @@ public class BaseFragment extends Fragment {
         //sa = (OFSurveyActivityBottom) context;
         try {
             sa = (OFSDKBaseActivity) context;
-
-
             OFHelper.v(tag,"1Flow custom survery reading");
         }catch(Exception ex){
             OFHelper.v(tag,"1Flow custom survery exception");
@@ -126,7 +127,7 @@ public class BaseFragment extends Fragment {
                     }catch (Exception ex){
                         setThisViewHeight(((View) ((View) ((View) (((View) view.getParent())).getParent()).getParent()).getParent()).getHeight());
                     }
-                    sa.resetHeight(thisViewHeight);
+                    //sa.resetHeight(thisViewHeight);
                     //OFHelper.v(tag, "1Flow display inside view created now [" + ((View) ((View) ((View) ((View) (((View) view.getParent())).getParent()).getParent()).getParent()).getParent()).getHeight() + "][]");
 
                 }
@@ -169,7 +170,7 @@ public class BaseFragment extends Fragment {
                                                     }
                                                   if (newProgress >= 100) {
 
-                                                        sa.resetHeight(thisViewHeight);
+                                                        //sa.resetHeight(thisViewHeight);
                                                   }
                                               }
                                           }

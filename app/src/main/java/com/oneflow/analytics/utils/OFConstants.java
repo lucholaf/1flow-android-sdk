@@ -20,10 +20,8 @@ package com.oneflow.analytics.utils;
 
 public interface OFConstants {
 
-
-
-    String currentVersion = "2023.03.08";//2023.01.12";//""2022.11.20";
-    String MODE = "prod";//"dev";//"
+    String currentVersion = "2023.04.02";//2023.03.08";//2023.01.12";//""2022.11.20";
+    String MODE = "dev";//""beta";//prod";//
 
     String DBNAME = "one_flow_db";
     String APPKEYSHP = "one_flow_config_key";
@@ -39,12 +37,20 @@ public interface OFConstants {
     String SDKVERSIONSHP = "sdk_version_key";
     String BRACTION_EVENTS = "one_flow_submit_events";
     String BRACTION_SURVEYS = "one_flow_submit_surveys";
+
     String AUTOEVENT_FIRSTOPEN = "first_open"; //Used for sharedpref also
     String AUTOEVENT_APPUPDATE = "app_updated";
     String AUTOEVENT_SESSIONSTART = "session_start";
     String AUTOEVENT_INAPP_PURCHASE = "in_app_purchase";
-    String AUTOEVENT_SURVEYIMPRESSION = "survey_impression";
+    String AUTOEVENT_SURVEYIMPRESSION = "flow_started";//""survey_impression"; //changed on 31-mar-2023
     String AUTOEVENT_CLOSED_SURVEY = "$flow_closed";
+
+    String AUTOEVENT_FLOWSTEP_SEEN = "flow_step_seen";
+    String AUTOEVENT_FLOWSTEP_CLICKED = "flow_step_clicked";
+    String AUTOEVENT_QUESTION_ANSWERED = "question_answered";
+    String AUTOEVENT_FLOW_ENDED = "flow_ended";
+    String AUTOEVENT_FLOW_COMPLETED = "flow_completed";
+
 
     String SHP_SURVEYSTART = "survey_starts";
     String SHP_ONEFLOW_CONFTIMING = "shp_conf_timing";

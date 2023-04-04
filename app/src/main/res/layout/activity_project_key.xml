@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OFProjectKeyActivity">
+    >
 
     <com.oneflow.analytics.customwidgets.OFCustomEditText
         android:id="@+id/project_key"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="140dp"
         android:layout_margin="10dp"
-        android:gravity="top"
+        android:gravity="start"
         android:background="@drawable/rounded_rectangle_with_border_gray"
         android:padding="10dp" />
 

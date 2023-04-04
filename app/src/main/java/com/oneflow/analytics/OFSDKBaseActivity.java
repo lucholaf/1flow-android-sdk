@@ -87,6 +87,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponseHandlerOneFlow {
 
@@ -118,39 +119,41 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        OFHelper.v(this.getClass().getName(), "1Flow onSaveInstanceState called["+savedInstanceCalled+"]");
+        OFHelper.v(this.getClass().getName(), "1Flow onSaveInstanceState called[" + savedInstanceCalled + "]");
         outState.putSerializable("SurveyType", surveyItem);
         outState.putSerializable("SurveyTheme", sdkTheme);
         outState.putSerializable("position", position);
-        OFHelper.v(this.getClass().getName(), "1Flow onSaveInstanceState called 0["+position+"]");
+        OFHelper.v(this.getClass().getName(), "1Flow onSaveInstanceState called 0[" + position + "]");
     }
 
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        OFHelper.v(this.getClass().getName(), "1Flow onRestoreInstanceState base called 0["+position+"]");
+        OFHelper.v(this.getClass().getName(), "1Flow onRestoreInstanceState base called 0[" + position + "]");
         try {
             surveyItem = (OFGetSurveyListResponse) savedInstanceState.getSerializable("SurveyType");
             sdkTheme = (OFSDKSettingsTheme) savedInstanceState.getSerializable("SurveyTheme");
             position = (int) savedInstanceState.getSerializable("position");
 
-            OFHelper.v(this.getClass().getName(), "1Flow onRestoreInstanceState base called 1 ["+position+"]");
+            OFHelper.v(this.getClass().getName(), "1Flow onRestoreInstanceState base called 1 [" + position + "]");
 
         } catch (Exception ex) {
             OFHelper.e(this.getClass().getName(), "1Flow onRestoreInstanceState base called 0");
         }
         //position--;
     }
+
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        OFHelper.v(tag,"1Flow onConfigurationChanged called ["+position+"]");
+        OFHelper.v(tag, "1Flow onConfigurationChanged called [" + position + "]");
 
         //initFragment();
 
 
     }
+
     OFGetSurveyListResponse surveyItem;
     boolean shouldFadeAway = false;
     int heightScreen;
@@ -161,13 +164,13 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     protected void onStart() {
         super.onStart();
 
-        OFHelper.v(this.getClass().getName(), "1Flow onStart called ["+savedInstanceCalled+"]");
+        OFHelper.v(this.getClass().getName(), "1Flow onStart called [" + savedInstanceCalled + "]");
 
         //this condition added because on rotation it was showing older fragment
 
     }
 
-    public void loadThisView(){
+    public void loadThisView() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         Display disp = getWindowManager().getDefaultDisplay();
         disp.getMetrics(displayMetrics);
@@ -183,7 +186,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         setProgressMax(surveyItem.getScreens().size()); // -1 for excluding thankyou page from progress bar; 2-sept-2022 showing progressbar at thankyou page
         selectedSurveyId = surveyItem.get_id();
 
-        OFHelper.v(this.getClass().getName(), "1Flow onLoadThisView called position["+position+"]surveyId[" + selectedSurveyId + "]triggerEventName[" + triggerEventName + "]");
+        OFHelper.v(this.getClass().getName(), "1Flow onLoadThisView called position[" + position + "]surveyId[" + selectedSurveyId + "]triggerEventName[" + triggerEventName + "]");
 
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,10 +211,28 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                         ec.storeEventsInDB(OFConstants.AUTOEVENT_CLOSED_SURVEY, mapValue, 0);
                     }
 
-                } else if (position == screens.size()) {
+                    //} else if (position == screens.size()) {
+                } else if (screens.get(position).getInput().getInput_type().equalsIgnoreCase("thank_you") ||
+                        screens.get(position).getInput().getInput_type().equalsIgnoreCase("end-screen")) {
                     surveyClosingStatus = "finished";
+
+                    /*OFHelper.v(tag,"1Flow event step seen recording");
+                    // event for all type of step visibility
+                    HashMap<String, Object> mapValue = new HashMap<>();
+                    mapValue.put("flow_id", selectedSurveyId);
+
+                    OFEventController ec = OFEventController.getInstance(OFSDKBaseActivity.this);
+                    ec.storeEventsInDB(OFConstants.AUTOEVENT_FLOW_COMPLETED, mapValue, 0);*/
                 } else {
                     surveyClosingStatus = "closed";
+
+                    /*OFHelper.v(tag,"1Flow event step seen recording");
+                    // event for all type of step visibility
+                    HashMap<String, Object> mapValue = new HashMap<>();
+                    mapValue.put("flow_id", selectedSurveyId);
+                    OFEventController ec = OFEventController.getInstance(OFSDKBaseActivity.this);
+                    ec.storeEventsInDB(OFConstants.AUTOEVENT_FLOW_ENDED, mapValue, 0);*/
+
                 }
 
                 if (position >= screens.size()) {
@@ -317,6 +338,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
 
     public static boolean isActive;
+
     @Override
     public void onBackPressed() {
         if (false) {//!sdkTheme.getClose_button()) {
@@ -330,23 +352,45 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     protected void onPause() {
         OFHelper.v(tag, "1Flow onPause called");
         //overridePendingTransition(0, R.anim.slide_down_dialog_sdk);
+
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        OFHelper.v(tag, "1Flow onResume called["+position+"]");
+        OFHelper.v(tag, "1Flow onResume called[" + position + "]");
         //if(!savedInstanceCalled) {
         // below method has been shifted in onResume because onStart is being called befor onRestoreState method
-            loadThisView();
+        loadThisView();
         //}
 
     }
 
     public void finishSurveyNow() {
 
-        OFHelper.v(tag, "1Flow finishSurveyNow called");
+        OFHelper.v(tag, "1Flow finishSurveyNow called ["+surveyClosingStatus+"]currentScreen["+screens.get(position-1).getInput().getInput_type()+"]");
+
+        // recording finish events
+        if (surveyClosingStatus.equalsIgnoreCase("finished")) {
+            OFHelper.v(tag, "1Flow auto event step completed recording");
+            // event for all type of step visibility
+            HashMap<String, Object> mapValue = new HashMap<>();
+            mapValue.put("flow_id", selectedSurveyId);
+
+            OFEventController ec = OFEventController.getInstance(OFSDKBaseActivity.this);
+            ec.storeEventsInDB(OFConstants.AUTOEVENT_FLOW_COMPLETED, mapValue, 0);
+        } else {
+            OFHelper.v(tag, "1Flow auto event step ended recording");
+            // event for all type of step visibility
+            HashMap<String, Object> mapValue = new HashMap<>();
+            mapValue.put("flow_id", selectedSurveyId);
+            //mapValue.put("step_id", screens.get(position).get_id());
+
+            OFEventController ec = OFEventController.getInstance(OFSDKBaseActivity.this);
+            ec.storeEventsInDB(OFConstants.AUTOEVENT_FLOW_ENDED, mapValue, 0);
+        }
+
 
         OFOneFlowSHP.getInstance(this).storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
         //on close of this page considering survey is over, so submit the respones to api
@@ -396,6 +440,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     protected void onStop() {
         super.onStop();
         isActive = false;
+        OFOneFlowSHP.getInstance(this).storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
         OFHelper.v(tag, "1Flow onStop called");
         /*OFOneFlowSHP ofs1 = new OFOneFlowSHP(this);
         ofs1.storeValue(OFConstants.SHP_SURVEY_RUNNING, true);*/
@@ -415,6 +460,16 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         if (surveyResponseChildren == null) {
             surveyResponseChildren = new ArrayList<>();
         }
+
+        // event for all type of step clicked
+        HashMap<String, Object> mapValue = new HashMap<>();
+        mapValue.put("flow_id", selectedSurveyId);
+        mapValue.put("step_id", screenID);
+        OFEventController ec = OFEventController.getInstance(this);
+
+        ec.storeEventsInDB(OFConstants.AUTOEVENT_FLOWSTEP_CLICKED, mapValue, 0);
+        OFHelper.v(tag, "1Flow auto event clicked recording [" + mapValue + "]");
+
         //this condition for skipping question
         if (answerIndex != null || answerValue != null) {
             OFSurveyUserResponseChild asrc = new OFSurveyUserResponseChild();
@@ -438,6 +493,22 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
             if (!found) {
                 surveyResponseChildren.add(asrc);
             }
+
+            // event for all type of step visibility
+            HashMap<String, Object> mapValue1 = new HashMap<>();
+            mapValue1.put("question_id", surveyItem.get_id());
+            mapValue1.put("flow_id", selectedSurveyId);
+            mapValue1.put("step_id", screenID);
+            mapValue1.put("type", screens.get(position).getInput().getInput_type());
+            mapValue1.put("answer", OFHelper.validateString(answerValue).equalsIgnoreCase("na") ? answerIndex : answerValue);
+            mapValue1.put("question_title", screens.get(position).getTitle());
+            mapValue1.put("question_description", screens.get(position).getMessage());
+            mapValue1.put("survey_name", surveyItem.getName());
+
+
+            ec.storeEventsInDB(OFConstants.AUTOEVENT_QUESTION_ANSWERED, mapValue1, 0);
+            OFHelper.v(tag, "1Flow auto event answered recording [" + mapValue1 + "]");
+
         }
 
         OFHelper.v(tag, "1Flow position [" + position + "]");
@@ -645,17 +716,16 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     String selectedSurveyId;
 
 
-
-
     public void prepareAndSubmitUserResposneNew() {
 
         OFHelper.v(tag, "1Flow checking value prepareAndSubmitUserResposneNew called [" + surveyResponseChildren.size() + "]surveyId[" + selectedSurveyId + "]");
-        //setupGlobalTimerToDeactivateThrottlingLocally();
+
         OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(this);
         ofs.storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
         OFHelper.v(tag, "1Flow checking value prepareAndSubmitUserResposneNew called [" + ofs.getBooleanValue(OFConstants.SHP_SURVEY_RUNNING, false));
 
         OFSurveyUserInput sur = new OFSurveyUserInput();
+        sur.setId(UUID.randomUUID().toString());
         sur.setTotDuration(totalTimeSpentInSec());
         sur.setMode(OFConstants.MODE);
         sur.setTrigger_event(triggerEventName);
@@ -687,7 +757,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
 
     public void initFragment(int calledFrom) {
-        OFHelper.v(tag, "1Flow initFragment answer calledFrom["+calledFrom+"] position [" + position + "]screensize[" + screens.size() + "]selected answers[" + new Gson().toJson(surveyResponseChildren) + "]");
+        OFHelper.v(tag, "1Flow initFragment answer calledFrom[" + calledFrom + "] position [" + position + "]screensize[" + screens.size() + "]selected answers[" + new Gson().toJson(surveyResponseChildren) + "]");
 
 //      OFHelper.v(tag, "1Flow answer position [" +new Gson().toJson(screens.get(position-1) )+ "]");
         if (position >= screens.size()) {
@@ -697,7 +767,6 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         }
         OFHelper.v(tag, "1Flow answer position after[" + position + "]screensize[" + screens.size() + "]selected answers[" + new Gson().toJson(surveyResponseChildren) + "]");
     }
-
 
 
     void setProgressMax(int max) {
@@ -734,7 +803,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
     private void loadFragmentsRes() {
 
-        OFHelper.v(this.getClass().getName(), "1Flow loadFragments called[" + position + "]frag["+frag+"]");
+        OFHelper.v(this.getClass().getName(), "1Flow loadFragments called[" + position + "]frag[" + frag + "]");
         //if (screen != null) {
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -757,36 +826,46 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
     private void loadFragments() {
 
-        OFHelper.v(this.getClass().getName(), "1Flow loadFragments called[" + position + "]frag["+frag+"]");
+        OFHelper.v(this.getClass().getName(), "1Flow loadFragments called[" + position + "]frag[" + frag + "]");
         //if (screen != null) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
         //====================for prohibiting recreating of fragment====================
-        frag = fm.findFragmentByTag("Frag"+position);
+        frag = fm.findFragmentByTag("Frag" + position);
 
-        if(frag==null) {
+        if (frag == null) {
+
+
+            // event for all type of step visibility
+            HashMap<String, Object> mapValue = new HashMap<>();
+            mapValue.put("flow_id", selectedSurveyId);
+            mapValue.put("step_id", screens.get(position).get_id());
+            OFEventController ec = OFEventController.getInstance(this);
+
+            ec.storeEventsInDB(OFConstants.AUTOEVENT_FLOWSTEP_SEEN, mapValue, 0);
+            OFHelper.v(tag, "1Flow auto event seen recording [" + mapValue + "]");
+
             frag = getFragment();
             //frag.setRetainInstance(true);
 
-        if (frag != null) {
-            setProgressAnimate();
+            if (frag != null) {
+                setProgressAnimate();
 
-            if (position == 0) {
-                ft.add(R.id.fragment_view, frag,"Frag"+position).commit();
+                if (position == 0) {
+                    ft.add(R.id.fragment_view, frag, "Frag" + position).commit();
+                } else {
+                    ft.replace(R.id.fragment_view, frag, "Frag" + position).commit();
+                }
             } else {
-                ft.replace(R.id.fragment_view, frag,"Frag"+position).commit();
+                //Helper.makeText(getApplicationContext(), "frag null", 1);
             }
         } else {
-            //Helper.makeText(getApplicationContext(), "frag null", 1);
-        }
-        }else{
             setProgressAnimate();
-           // ft.replace(R.id.fragment_view, frag,"Frag"+position).commit();
+            // ft.replace(R.id.fragment_view, frag,"Frag"+position).commit();
         }
         //===============================================================================
     }
-
 
 
     //String tempImage = "<img style=\"max-width: 100%; height: auto;\" src=\"https://live.staticflickr.com/65535/48680180151_c6773c8936_k.jpg\">";
@@ -801,7 +880,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         OFHelper.v(tag, "1Flow Window size width[" + window.getAttributes().width + "]height[" + window.getAttributes().height + "]");
 
         double[] data = OFHelper.getScreenSize(this);
-        OFHelper.v(tag, "1Flow Window size width[" + data[0] + "]data[1]["+data[1]+"]");
+        OFHelper.v(tag, "1Flow Window size width[" + data[0] + "]data[1][" + data[1] + "]");
         int width = 0;
         if (data[0] > 3) {
             width = OFConstants.screenWidth;
@@ -811,7 +890,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
 ///=================================================================
 
-       // getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, dialogHeight);
+        // getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, dialogHeight);
         getWindow().setLayout(width, dialogHeight);
 
         OFHelper.v(tag, "1Flow displayHeight condi[" + (fragmentHeight > heightScreen) + "]dialogHeight[" + dialogHeight + "]inPx[" + heightScreen + "]dialogHeight inPx[" + fragmentHeight + "].");
@@ -912,7 +991,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 if (OFHelper.isConnected(this)) {
                     OFSurveyUserInput sur = (OFSurveyUserInput) obj;
 
-                    OFHelper.v(tag, "1Flow calling submit user surveyId[" + sur.getSurvey_id() + "]surID[" + sur.get_id() + "] Resposne [" + sur.getAnswers() + "]");
+                    OFHelper.v(tag, "1Flow calling submit user surveyId[" + sur.getSurvey_id() + "]surID[" + sur.get_lid() + "] Resposne [" + sur.getAnswers() + "]");
 
                     if (sur.getAnswers() != null) {
                         if (sur.getAnswers().size() > 0) {
@@ -943,7 +1022,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 if (obj != null) {
                     OFSurveyUserInput sur = (OFSurveyUserInput) obj;
 
-                    OFHelper.v(tag, "1Flow survey submitted successfully [" + sur.get_id() + "]surveyId[" + sur.getSurvey_id() + "]");
+                    OFHelper.v(tag, "1Flow survey submitted successfully [" + sur.get_lid() + "]surveyId[" + sur.getSurvey_id() + "]");
                     //Updating survey once data is sent to server, Sending type null as return is not required
                     new OFLogUserDBRepoKT().updateSurveyInput(this, null, null, true, sur.getSurvey_id());
                     //new OFMyDBAsyncTask(this,this,OFConstants.ApiHitType.updateSubmittedSurveyLocally,false).execute(true,sur.get_id());

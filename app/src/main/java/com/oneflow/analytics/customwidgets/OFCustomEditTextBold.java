@@ -100,7 +100,7 @@ public class OFCustomEditTextBold extends AppCompatEditText {
 
     }
 
-    @Override
+   /* @Override
     public int getSelectionStart() {
 
         for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
@@ -114,6 +114,6 @@ public class OFCustomEditTextBold extends AppCompatEditText {
         return super.getSelectionStart();
 
     }
-
+*/
 
 }

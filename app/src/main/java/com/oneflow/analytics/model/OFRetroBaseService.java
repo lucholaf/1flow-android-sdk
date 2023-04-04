@@ -20,6 +20,7 @@ package com.oneflow.analytics.model;
 
 import com.oneflow.analytics.utils.OFConstants;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -40,11 +41,19 @@ public class OFRetroBaseService {
     //public static String baseDomainProd = "api.1flow.app/";
     //public static String baseDomainProd = "api.1flow.app/";
     //public static String baseDomainProd = "y33xx6sddf.eu-west-1.awsapprunner.com/api/2021-06-15/";
+    public static String baseDomainBeta = "beta-sdk.1flow.app/api/2021-06-15/";
     public static String baseDomainProd = "api-sdk.1flow.app/api/2021-06-15/";
 
-    public static final String BASE_URL = urlPrefix+ (OFConstants.MODE.equalsIgnoreCase("dev") ?baseDomainDev:baseDomainProd);
+    public static String BASE_URL;// = urlPrefix+ (OFConstants.MODE.equalsIgnoreCase("dev") ?baseDomainDev:baseDomainProd);
+    public static HashMap<String, String> baseUrl = new HashMap<>();
 
     public static Retrofit getClient() {
+
+        baseUrl.put("dev",urlPrefix+baseDomainDev);
+        baseUrl.put("beta",urlPrefix+baseDomainBeta);
+        baseUrl.put("prod",urlPrefix+baseDomainProd);
+
+        BASE_URL = baseUrl.get(OFConstants.MODE);
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -67,7 +76,7 @@ public class OFRetroBaseService {
                 .build();*/
 
 
-
+//.addInterceptor(interceptor)
         OkHttpClient clientProd = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)

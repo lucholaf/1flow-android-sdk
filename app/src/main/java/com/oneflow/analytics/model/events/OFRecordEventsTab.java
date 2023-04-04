@@ -36,6 +36,10 @@ public class OFRecordEventsTab {
     @SerializedName("_id")
     private int id;
 
+    @ColumnInfo(name = "uu_id")
+    @SerializedName("uu_id")
+    private String uuid;
+
     @ColumnInfo(name = "name")
     @SerializedName("name")
     private String eventName;
@@ -60,6 +64,14 @@ public class OFRecordEventsTab {
     @ColumnInfo(name = "created_on")
     @SerializedName("created_on")
     private Long createdOn;
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     public Long getCreatedOn() {
         return createdOn;

@@ -82,7 +82,7 @@ public class OFOneFlowSHP {
 
 
     public void storeValue(String key, Object value) {
-        OFHelper.v(this.getClass().getName(), "OneFlow key[" + key + "]value[" + (value) + "]");
+        //OFHelper.v(this.getClass().getName(), "OneFlow key[" + key + "]value[" + (value) + "]");
         SharedPreferences.Editor editor = pref.edit();
         if (value instanceof Boolean) {
             editor.putBoolean(key, (boolean) value);

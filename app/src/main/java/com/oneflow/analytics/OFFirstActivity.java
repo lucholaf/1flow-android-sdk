@@ -34,7 +34,7 @@ import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.google.gson.Gson;
 import com.oneflow.analytics.adapter.OFSurveyListAdapter;
 import com.oneflow.analytics.customwidgets.OFCustomEditText;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
@@ -71,6 +71,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         setContentView(R.layout.activity_main);
 
         noSurvey = (OFCustomTextView) findViewById(R.id.no_survey);
+        ((OFCustomTextView) findViewById(R.id.build_mode)).setText(OFConstants.MODE);
         sendLogsToAPI = (OFCustomTextView) findViewById(R.id.send_log_to_api);
         listOfSurvey = (RecyclerView) findViewById(R.id.list_of_survey);
 
@@ -151,25 +152,26 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         /*fakeEditText.setHintTextColor(Color.parseColor("#00ff00"));
         fakeEditText.setTextColor(Color.parseColor("#0000ff"));*/
-        //retriveCurrentFCMToken();
+       // FirebaseApp.initializeApp(this);
+       // retriveCurrentFCMToken();
     }
 
     /*private void retriveCurrentFCMToken() {
         try {
 //            sendNotification();
-            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this,
-                    new OnSuccessListener<InstanceIdResult>() {
-                        @Override
-                        public void onSuccess(InstanceIdResult instanceIdResult) {
-                            String token = instanceIdResult.getToken();
-                            OFHelper.v("FCM Token", "1Flow fcm token["+token+"]");
-                            if (!OFHelper.validateString(token).equalsIgnoreCase("NA")) {
-                                if (!token.equalsIgnoreCase(OFOneFlowSHP.getInstance(OFFirstActivity.this).getStringValue(OFConstants.shpFCMToken))) {
-                                    OFOneFlowSHP.getInstance(OFFirstActivity.this).storeValue(OFConstants.shpFCMToken, token);//shpFCMToken
-                                }
-                            }
-                        }
-                    });
+            final String[] token = {""};
+            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+                @Override
+                public void onComplete(Task<String> task) {
+                    if(task.isComplete()){
+                        token[0] = task.getResult();
+                        OFHelper.e("AppConstants", "1Flow onComplete: new Token got: "+token[0] );
+
+                    }
+                }
+
+            });
+            //return token[0];
 
         } catch (Exception e) {
             if (BuildConfig.DEBUG)
@@ -177,6 +179,19 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         }
     }*/
 
+   /* @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+
+        Bundle bundle = intent.getExtras();
+        for (String key: bundle.keySet())
+        {
+            OFHelper.v(tag,"1Flow data from notifcation key["+key+"]value["+bundle.get(key)+"]");
+        }
+        OFHelper.v(tag,"1Flow data from notifcation finish");
+
+    }*/
 
     private void configureOneFlow(String projectKey) {
 
@@ -290,7 +305,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         super.onResume();
         //Helper.makeText(this,"isConnected["+Helper.isInternetAvailable()+"]",1);
 
-
+        OFHelper.v(tag,"1Flow onResume ["+configureCalled+"]");
         if (!configureCalled) {
             slr = OFOneFlowSHP.getInstance(OFFirstActivity.this).getSurveyList();
             if (slr != null) {
@@ -437,11 +452,12 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
     @Override
     public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved, Object Obj2, Object obj3) {
+        OFHelper.v(tag, "1Flow reached onResponseEvent["+hitType+"]obj["+obj+"]");
         switch (hitType) {
             case fetchEventsFromDB:
                 if (obj != null) {
                     List<OFRecordEventsTabKT> list = (List<OFRecordEventsTabKT>) obj;
-                    OFHelper.v(tag, "OneFlow Events size[" + list.size() + "]");
+                    OFHelper.v(tag, "1Flow Events size[" + new Gson().toJson(list) + "]");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -449,6 +465,8 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
                         }
                     });
 
+                }else{
+                    OFHelper.v(tag, "1Flow Events size no event to submit");
                 }
                 break;
 

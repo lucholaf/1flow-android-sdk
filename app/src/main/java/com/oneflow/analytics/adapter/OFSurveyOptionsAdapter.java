@@ -375,17 +375,17 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         public void onClick(View v) {
                             OFHelper.hideKeyboard((Activity) mContext, ((MCQRadioViewHolder) holder).othersEditText);
                             if (((MCQRadioViewHolder) holder).othersEditText.getText().toString().isEmpty()) {
-                                gdRadio.setStroke(strokeWidth, mContext.getResources().getColor(R.color.new_theme_gray));
-                                gdRadio.setColor(mContext.getResources().getColor(R.color.new_theme_gray));
+                                gdRadio.setStroke(strokeWidth, colorAlpha10);
+                                gdRadio.setColor(colorAlpha10);
                                 ((MCQRadioViewHolder) holder).otherLayout.setVisibility(View.GONE);
                                 ((MCQRadioViewHolder) holder).title.setText(surveyInputs.getChoices().get(position).getTitle());
-                                ((MCQRadioViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtblack));
+                                ((MCQRadioViewHolder) holder).title.setTextColor(Color.parseColor(themeTextColor));
                                 ((MCQRadioViewHolder) holder).title.setChecked(false);
                             } else {
 
                                 gdRadio.setStroke(strokeWidth, Color.parseColor(themeColor));
                                 gdRadio.setColor(Color.parseColor(themeColor));
-                                ((MCQRadioViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtwhite));
+                                ((MCQRadioViewHolder) holder).title.setTextColor(Color.parseColor(themeTextColor));
                                 ((MCQRadioViewHolder) holder).otherLayout.setVisibility(View.GONE);
                                 ((MCQRadioViewHolder) holder).title.setText(((MCQRadioViewHolder) holder).othersEditText.getText());
                                 gch.itemClicked(v, ((MCQRadioViewHolder) holder).title.getText().toString(), "");
@@ -525,14 +525,12 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                                 ((MCQCheckBoxViewHolder) holder).title.setChecked(false);
                                 gch.itemClicked(v, false, ((MCQCheckBoxViewHolder) holder).othersEditText.getText().toString());
 
-                                gdCheckbox.setStroke(strokeWidth, mContext.getResources().getColor(R.color.new_theme_gray));
-                                gdCheckbox.setColor(mContext.getResources().getColor(R.color.new_theme_gray));
+                                gdCheckbox.setStroke(strokeWidth, colorAlpha10);
+                                gdCheckbox.setColor(colorAlpha10);
                             } else {
 
                                 gdCheckbox.setStroke(strokeWidth, Color.parseColor(themeColor));
                                 gdCheckbox.setColor(colorAlpha10);
-
-                                gdCheckbox.setStroke(strokeWidth, Color.parseColor(themeColor));
                                 
                                 ((MCQCheckBoxViewHolder) holder).otherLayout.setVisibility(View.GONE);
                                 ((MCQCheckBoxViewHolder) holder).title.setText(((MCQCheckBoxViewHolder) holder).othersEditText.getText());

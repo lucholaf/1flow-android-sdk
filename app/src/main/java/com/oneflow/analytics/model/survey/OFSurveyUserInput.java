@@ -32,10 +32,19 @@ import java.util.ArrayList;
 public class OFSurveyUserInput {
 
 
-    @PrimaryKey(autoGenerate = true)
+    /*@PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_id")
     @SerializedName("_id")
-    private Integer _id;
+    private Integer _id;*/
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "_lid")
+    @SerializedName("_lid")
+    private Integer _lid; //this is LID for local id
+
+    @ColumnInfo(name = "_id")
+    @SerializedName("_id")
+    private String id;
 
     @ColumnInfo(name = "analytic_user_id")
     @SerializedName("analytic_user_id")
@@ -81,6 +90,14 @@ public class OFSurveyUserInput {
     @ColumnInfo(name = "tot_duration")
     @SerializedName("tot_duration")
     private Integer totDuration;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Integer getTotDuration() {
         return totDuration;
@@ -130,12 +147,12 @@ public class OFSurveyUserInput {
         this.trigger_event = trigger_event;
     }
 
-    public Integer get_id() {
-        return _id;
+    public Integer get_lid() {
+        return _lid;
     }
 
-    public void set_id(Integer _id) {
-        this._id = _id;
+    public void set_lid(Integer _lid) {
+        this._lid = _lid;
     }
 
     public String getSession_id() {

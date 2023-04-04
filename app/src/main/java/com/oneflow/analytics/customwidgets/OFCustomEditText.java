@@ -76,7 +76,7 @@ public class OFCustomEditText extends AppCompatEditText {
 
         //getSelectionStart();
 
-        this.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+        /*this.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
 
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                 // TODO Auto-generated method stub
@@ -99,25 +99,25 @@ public class OFCustomEditText extends AppCompatEditText {
                 // TODO Auto-generated method stub
                 return false;
             }
-        });
+        });*/
 
 
     }
 
-    @Override
+    /*@Override
     public int getSelectionStart() {
 
-       /* for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+       *//* for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
 
 
             if (element.getMethodName().equals("canPaste") || element.getMethodName().equals("canCopy") || element.getMethodName().equals("canCut") || element.getMethodName().equalsIgnoreCase("canSelectAll") || element.getMethodName().equalsIgnoreCase("canClipboard")) {
                 return -1;
             }
-        }*/
+        }*//*
 
         return super.getSelectionStart();
 
-    }
+    }*/
 
 
 }

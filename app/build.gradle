@@ -22,6 +22,7 @@ plugins {
     //id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+   // id 'com.google.gms.google-services'
 }
 
 android {
@@ -34,7 +35,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 20
-        versionName "2023.03.08"
+        versionName "2023.04.02"
 
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -64,7 +65,7 @@ def glideVersion = '4.12.0'
 def rxjavaVersion = '2.0.1'
 def room_version = "2.3.0"
 def billing_version = "4.0.0"
-
+//def core_version = "1.6.0"
 
 dependencies {
 
@@ -128,5 +129,15 @@ dependencies {
     //implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
     //implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
     //implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0'
+
+//    implementation "androidx.core:core:$core_version"
+
+    /*implementation platform('com.google.firebase:firebase-bom:31.3.0')
+
+    implementation 'com.google.firebase:firebase-analytics'
+
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
+
+    implementation 'com.google.firebase:firebase-core:19.0.0'*/
 
 }
