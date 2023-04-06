@@ -174,7 +174,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
 
 
                                     HashMap<String, Object> mapValue = new HashMap<>();
-                                    mapValue.put("survey_id", surveyItem.get_id());
+                                    mapValue.put("flow_id", surveyItem.get_id());
                                     OFEventController ec = OFEventController.getInstance(mContext);
                                     ec.storeEventsInDB(OFConstants.AUTOEVENT_SURVEYIMPRESSION, mapValue, 0);
 

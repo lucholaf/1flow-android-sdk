@@ -1363,7 +1363,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         OFOneFlowSHP ofs1 = OFOneFlowSHP.getInstance(mContext);
 
         HashMap<String, Object> mapValue = new HashMap<>();
-        mapValue.put("survey_id", gslr.get_id());
+        mapValue.put("flow_id", gslr.get_id());
         OFEventController ec = OFEventController.getInstance(mContext);
         ec.storeEventsInDB(OFConstants.AUTOEVENT_SURVEYIMPRESSION, mapValue, 0);
 
