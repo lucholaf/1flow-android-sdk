@@ -20,8 +20,8 @@ package com.oneflow.analytics.utils;
 
 public interface OFConstants {
 
-    String currentVersion = "2023.04.03";//2023.03.08";//2023.01.12";//""2022.11.20";
-    String MODE = "dev";//""beta";//prod";//
+    String currentVersion = "2023.04.06";//2023.03.08";//2023.01.12";//""2022.11.20";
+    String MODE = "beta";//"prod";//"dev";//""beta";//
 
     String DBNAME = "one_flow_db";
     String APPKEYSHP = "one_flow_config_key";
