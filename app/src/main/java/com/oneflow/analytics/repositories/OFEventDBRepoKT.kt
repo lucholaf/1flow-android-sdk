@@ -22,7 +22,7 @@ class OFEventDBRepoKT {
             //val sdkdb: OFSDKKOTDB = OFSDKKOTDB.getDatabase(context,scope)
             val sdkdb = OFSDKDB.getInstance(context)
             val ret = OFRecordEventsTab()
-            ret.uuid = UUID.randomUUID().toString();
+            ret.uuid = OFHelper.mongoObjectId();//UUID.randomUUID().toString();
             ret.eventName = eventName
             ret.dataMap = data
             ret.value = value.toString()

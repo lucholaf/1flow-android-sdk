@@ -61,6 +61,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -119,6 +120,14 @@ public class OFHelper {
         return sb.toString();
     }
 
+    public static String mongoObjectId() {
+        String time = Long.toHexString(Calendar.getInstance().getTimeInMillis()/1000);
+
+        String machine = String.format("%06d", new Random().nextInt(999999 - 100000 + 1) + 100000);
+        String pid = String.format("%04d", new Random().nextInt(9999 - 1000 + 1) + 1000);
+        String counter = String.format("%06d", new Random().nextInt(999999 - 100000 + 1) + 100000);
+        return time + machine + pid + counter;
+    }
 
     public static String getGpsProviderInfo() {
         return gpsProviderInfo;
@@ -254,6 +263,7 @@ public class OFHelper {
         //v("Helper", "OneFlow DeviceId 2[" + deviceId + "]");
         return deviceId;
     }
+
 
     public static void hideKeyboard(Activity mActivity, EditText edt) {
         InputMethodManager inputManager = (InputMethodManager) mActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);

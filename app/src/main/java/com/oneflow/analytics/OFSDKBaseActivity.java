@@ -460,15 +460,19 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         if (surveyResponseChildren == null) {
             surveyResponseChildren = new ArrayList<>();
         }
-
-        // event for all type of step clicked
-        HashMap<String, Object> mapValue = new HashMap<>();
-        mapValue.put("flow_id", selectedSurveyId);
-        mapValue.put("step_id", screenID);
         OFEventController ec = OFEventController.getInstance(this);
 
-        ec.storeEventsInDB(OFConstants.AUTOEVENT_FLOWSTEP_CLICKED, mapValue, 0);
-        OFHelper.v(tag, "1Flow auto event clicked recording [" + mapValue + "]");
+        // event click only for welcome or info screen
+
+        if(screens.get(position).getInput().getInput_type().equalsIgnoreCase("welcome-screen")) {
+            HashMap<String, Object> mapValue = new HashMap<>();
+            mapValue.put("flow_id", selectedSurveyId);
+            mapValue.put("step_id", screenID);
+
+
+            ec.storeEventsInDB(OFConstants.AUTOEVENT_FLOWSTEP_CLICKED, mapValue, 0);
+            OFHelper.v(tag, "1Flow auto event clicked recording [" + mapValue + "]");
+        }
 
         //this condition for skipping question
         if (answerIndex != null || answerValue != null) {
@@ -725,7 +729,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         OFHelper.v(tag, "1Flow checking value prepareAndSubmitUserResposneNew called [" + ofs.getBooleanValue(OFConstants.SHP_SURVEY_RUNNING, false));
 
         OFSurveyUserInput sur = new OFSurveyUserInput();
-        sur.setId(UUID.randomUUID().toString());
+        sur.setId(OFHelper.mongoObjectId());//UUID.randomUUID().toString());
         sur.setTotDuration(totalTimeSpentInSec());
         sur.setMode(OFConstants.MODE);
         sur.setTrigger_event(triggerEventName);

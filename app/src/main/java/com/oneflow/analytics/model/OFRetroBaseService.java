@@ -35,7 +35,7 @@ public class OFRetroBaseService {
     public static String urlPrefix = "https://";
 
 
-    public static String baseDomainDev = "ez37ppkkcs.eu-west-1.awsapprunner.com/api/2021-06-15/";
+    public static String baseDomainDev = "dev-sdk.1flow.app/api/2021-06-15/";
     //public static String baseDomainDev = "api-sdk.1flow.app";
    // public static String baseDomainProd = "1flow.app/api/";
     //public static String baseDomainProd = "api.1flow.app/";
