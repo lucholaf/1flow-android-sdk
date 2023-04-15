@@ -369,7 +369,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
     public void finishSurveyNow() {
 
-        OFHelper.v(tag, "1Flow finishSurveyNow called ["+surveyClosingStatus+"]currentScreen["+screens.get(position-1).getInput().getInput_type()+"]");
+        //OFHelper.v(tag, "1Flow finishSurveyNow called ["+surveyClosingStatus+"]currentScreen["+screens.get(position-1).getInput().getInput_type()+"]");
 
         // recording finish events
         if (surveyClosingStatus.equalsIgnoreCase("finished")) {
