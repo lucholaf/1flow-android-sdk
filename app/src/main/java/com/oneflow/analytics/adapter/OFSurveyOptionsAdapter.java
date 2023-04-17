@@ -141,6 +141,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
     }
     String themeTextColor;
+    int colorAlpha10,colorAlpha50;
     public OFSurveyOptionsAdapter(Context mContext, OFSurveyInputs surveyInputs, OFGenericClickHandler onClickListener, String themeColor,String themeTextColor) {
         this.mInflater = LayoutInflater.from(mContext);
         this.mContext = mContext;
@@ -148,6 +149,11 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.surveyInputs = surveyInputs;
         this.themeColor = themeColor;
         this.themeTextColor = themeTextColor;
+
+        colorAlpha50 = OFHelper.manipulateColorNew(Color.parseColor(themeTextColor),50);//ColorUtils.setAlphaComponent(Color.parseColor(themeColor), OFHelper.getAlphaNumber(0.));
+        colorAlpha10 = OFHelper.manipulateColorNew(Color.parseColor(themeTextColor),15);//ColorUtils.setAlphaComponent(Color.parseColor(themeTextColor), OFHelper.getAlphaNumber(25));
+        //int colorAlpha5 = OFHelper.lighten(Color.parseColor(themeTextColor),0.d);
+
         if (surveyInputs.getInput_type().equalsIgnoreCase("rating-emojis")) {
             viewType = 4;
             listSize = surveyInputs.getRatingsList().size();
@@ -238,7 +244,12 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 cbGlobal.setText(otherLayoutGlobal.getTag().toString());
                 cbGlobal.setChecked(false);
                 GradientDrawable gdCheckbox = (GradientDrawable) ((RelativeLayout) (cbGlobal).getParent()).getBackground();
-                gdCheckbox.setStroke(strokeWidth, mContext.getResources().getColor(R.color.ratings_focused));
+                //gdCheckbox.setStroke(strokeWidth, mContext.getResources().getColor(R.color.ratings_focused));
+
+                gdCheckbox.setStroke(0, colorAlpha10);
+               // gdCheckbox.setColor(colorAlpha10);//mContext.getResources().getColor(R.color.plainwhite));
+
+
             } else {
                 if (cbGlobal.isChecked()) {
                     retString = cbGlobal.getText().toString();
@@ -270,10 +281,6 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 
 
-        int colorAlpha50 = OFHelper.manipulateColorNew(Color.parseColor(themeTextColor),50);//ColorUtils.setAlphaComponent(Color.parseColor(themeColor), OFHelper.getAlphaNumber(0.));
-        int colorAlpha10 = OFHelper.manipulateColorNew(Color.parseColor(themeTextColor),15);//ColorUtils.setAlphaComponent(Color.parseColor(themeTextColor), OFHelper.getAlphaNumber(25));
-        //int colorAlpha5 = OFHelper.lighten(Color.parseColor(themeTextColor),0.d);
-        OFHelper.v(tag, "1Flow color theme["+themeTextColor+"]colorAlpha 50[" + colorAlpha50 + "]colorAlpha5["+colorAlpha10+"]");
         int statesRadio[][] = {{android.R.attr.state_checked}, {}};
         int colorsRadio[] = {Color.parseColor(themeColor), mContext.getResources().getColor(R.color.ratings_focused)};
         try {
@@ -498,9 +505,12 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         public void onClick(View v) {
 
                             if (!surveyInputs.getOtherOption().equalsIgnoreCase(surveyInputs.getChoices().get(position).getId())) {
+                                handleCheckboxFromOutside();
                                 gch.itemClicked(v, null, "");
                             } else {
-                                gch.itemClicked(v, null, "");
+                                if(!OFHelper.validateString(((MCQCheckBoxViewHolder) holder).title.getText().toString()).equalsIgnoreCase("na")) {
+                                    gch.itemClicked(v, null, "");
+                                }
                             }
                         }
                     });
@@ -568,6 +578,8 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                                     //gdCheckbox.setStroke(strokeWidth, mContext.getResources().getColor(R.color.new_theme_gray));
                                     gdCheckbox.setStroke(0,colorAlpha10 );
                                     //gdCheckbox.setColor(colorAlpha5);//R.color.new_theme_gray));
+                                    cb.setChecked(false);
+                                    gch.itemClicked(v, null, "");
                                     break;
                                 case MotionEvent.ACTION_UP:
                                     // touch up code
