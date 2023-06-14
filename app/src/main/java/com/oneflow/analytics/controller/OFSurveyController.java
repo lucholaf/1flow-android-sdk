@@ -161,34 +161,40 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                             if (surveyItem.getScreens() != null) {
 
                                 OFHelper.v("OneFlow", "OneFlow screens not null");
+                                try {
+                                    if (surveyItem.getScreens().size() > 0) {
+                                        setUpHashForActivity();
+                                        if(mContext!=null) {
+                                            OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
+                                            Intent surveyIntent = null;
+                                            if (surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
+                                                surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get("bottom-center"));
+                                            } else {
+                                                surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get(surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition()));
+                                            }
 
-                                if (surveyItem.getScreens().size() > 0) {
-                                    setUpHashForActivity();
-                                    OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
-                                    Intent surveyIntent = null;
-                                    if (surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
-                                        surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get("bottom-center"));
+
+                                            HashMap<String, Object> mapValue = new HashMap<>();
+                                            mapValue.put("flow_id", surveyItem.get_id());
+                                            OFEventController ec = OFEventController.getInstance(mContext);
+                                            ec.storeEventsInDB(OFConstants.AUTOEVENT_SURVEYIMPRESSION, mapValue, 0);
+
+                                            surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            surveyIntent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
+                                            surveyIntent.putExtra("eventName", (String) ret[0]);
+
+                                            OFHelper.v("1Flow", "1Flow activity running[" + OFSDKBaseActivity.isActive + "]");
+                                            if (!OFSDKBaseActivity.isActive) {
+                                                mContext.getApplicationContext().startActivity(surveyIntent);
+                                            }
+                                        }
                                     } else {
-                                        surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get(surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition()));
+                                        OFHelper.v("SurveyController", "OneFlow no older survey found");
                                     }
+                                }catch(Exception ex){
 
-
-                                    HashMap<String, Object> mapValue = new HashMap<>();
-                                    mapValue.put("flow_id", surveyItem.get_id());
-                                    OFEventController ec = OFEventController.getInstance(mContext);
-                                    ec.storeEventsInDB(OFConstants.AUTOEVENT_SURVEYIMPRESSION, mapValue, 0);
-
-                                    surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    surveyIntent.putExtra("SurveyType", surveyItem);//"move_file_in_folder");//""empty0");//
-                                    surveyIntent.putExtra("eventName", (String) ret[0]);
-
-                                    OFHelper.v("1Flow","1Flow activity running["+ OFSDKBaseActivity.isActive+"]");
-                                    if(!OFSDKBaseActivity.isActive) {
-                                        mContext.getApplicationContext().startActivity(surveyIntent);
-                                    }
-                                } else {
-                                    OFHelper.v("SurveyController", "OneFlow no older survey found");
                                 }
+
                             }
                         }
                     }
