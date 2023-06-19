@@ -69,6 +69,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
         OFSurvey.getSurvey(shp.getStringValue(OFConstants.APPIDSHP), this, OFConstants.ApiHitType.fetchSurveysFromAPI,shp.getUserDetails().getAnalytic_user_id(),OFConstants.currentVersion);
     }
 
+
     public void fetchSurveyFromList() {
 
     }
@@ -110,12 +111,6 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                 if (obj != null) {
 
 
-                    /*HashMap<String, Object>  mapvalues = new HashMap<String, Object>();
-                    mapvalues.put("whenStarted",System.currentTimeMillis()/1000);*/
-
-
-
-
                     ArrayList<OFGetSurveyListResponse> surveyListResponse = (ArrayList<OFGetSurveyListResponse>) obj;
                     OFOneFlowSHP shp = OFOneFlowSHP.getInstance(mContext);
                     if (!OFHelper.validateString(reserved).equalsIgnoreCase("NA")) {
@@ -150,21 +145,21 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                 }
                 break;
             case fetchEventsBeforSurveyFetched:
-               if (obj != null) {
-                    String[] name = (String[]) obj;
-                    OFHelper.v("SurveyController", "OneFlow events before survey found[" + Arrays.asList(name) + "]length[" + name.length + "]");
-                    if (name.length > 0) {
-                        Object[] ret = checkSurveyTitleAndScreens(Arrays.asList(name));
-                        OFGetSurveyListResponse surveyItem = (OFGetSurveyListResponse) ret[1];
-                        OFHelper.v("SurveyController", "OneFlow survey found[" + surveyItem + "]");
-                        if (surveyItem != null) {
-                            if (surveyItem.getScreens() != null) {
+                try {
+                    if (obj != null) {
+                        String[] name = (String[]) obj;
+                        OFHelper.v("SurveyController", "OneFlow events before survey found[" + Arrays.asList(name) + "]length[" + name.length + "]");
+                        if (name.length > 0) {
+                            Object[] ret = checkSurveyTitleAndScreens(Arrays.asList(name));
+                            OFGetSurveyListResponse surveyItem = (OFGetSurveyListResponse) ret[1];
+                            OFHelper.v("SurveyController", "OneFlow survey found[" + surveyItem + "]");
+                            if (surveyItem != null) {
+                                if (surveyItem.getScreens() != null) {
 
-                                OFHelper.v("OneFlow", "OneFlow screens not null");
-                                try {
-                                    if (surveyItem.getScreens().size() > 0) {
-                                        setUpHashForActivity();
-                                        if(mContext!=null) {
+                                    OFHelper.v("OneFlow", "OneFlow screens not null");
+                                    if(mContext!=null) {
+                                        if (surveyItem.getScreens().size() > 0) {
+                                            setUpHashForActivity();
                                             OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
                                             Intent surveyIntent = null;
                                             if (surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
@@ -187,18 +182,18 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                                             if (!OFSDKBaseActivity.isActive) {
                                                 mContext.getApplicationContext().startActivity(surveyIntent);
                                             }
+                                        } else {
+                                            OFHelper.v("SurveyController", "OneFlow no older survey found");
                                         }
-                                    } else {
-                                        OFHelper.v("SurveyController", "OneFlow no older survey found");
                                     }
-                                }catch(Exception ex){
-
                                 }
-
                             }
                         }
                     }
                 }
+               catch(Exception ex){
+
+               }
                 break;
         }
 
