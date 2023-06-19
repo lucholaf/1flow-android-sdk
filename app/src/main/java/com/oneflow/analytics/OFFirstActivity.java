@@ -46,11 +46,16 @@ import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
+import org.bson.types.ObjectId;
+
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHandlerOneFlow {
 
@@ -112,28 +117,6 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         Typeface faceBold = Typeface.createFromAsset(getAssets(), "fonts/Lato-Bold.ttf");
         Typeface faceReg = Typeface.createFromAsset(getAssets(), "fonts/Lato-Regular.ttf");
-        //OneFlow.configure(this, "BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"1XdRfcEB8jVN05hkDk/+ltke3BHrQ3R9W35JBylCWzg=");//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//"u6NKK1Vx5xbx3TeOt3ASTGRABmN1gIhhnef53wwwGKo=");//"BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");//"7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");//
-        //OneFlow.configure(getApplicationContext(), "uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==");//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");
-        //OneFlow.configure(getApplicationContext(), "uiO1MtmMY3Qa31oB3G8ubgnf7Eirmy6UJTe/8lsHB44xRiJgcNXbgwpmrDm0MmAzNVjMi/nAgBlJVgoy7QUs+A==");//""BaTElA/QFYa8B+LWBYDdSRDBvRdu0ZBCvXHG4JBAYHZuDIdtT2X8hAKJEHGjBybKQOaua/xllAOXAJC2dJfHcw==");
-       /* OFFontSetup titleSetup = new OFFontSetup(faceReg, 20F);
-
-        OFFontSetup descriptionFont = new OFFontSetup(null, 12f);
-
-        OFFontSetup optionsFont = new OFFontSetup(faceBold, 12f);*/
-
-        // String projectKey = "oneflow_sandbox_2Z9e492aa1qH22E2SnoSAT5broVR80RF9EXhQ0UcOTyZNgDRCsS4Y88hG4mL+IjPURFgrvCIsuNtUinVIr/ClQ==";
-        //String projectKey = "oneflow_sandbox_9NtGc0TDDoOiq+c4z1OTaYpAsu6wUfZ+qECnLtbRYDKiSvMn+sbP+Y1UuSt3bu2RfOr+N4ZNk+84ZEyCeFgJGg==";
-        //String projectKey = "oneflow_sandbox_hPz4Tfti7FgaKJ+yTdDGgf+OTNdW2czSmdAFMJL40tGbCqDWfswx+2Zy47zGdcax6zwdQRaYJugbfKglb2SLFA=="; //FakeProject
-        //String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";
-        //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";
-        //String projectKey = "oneflow_prod_OUl/Rzs1AwluTu8j+N2QkdR9ubxrJV7V9ukU9rPp433upW9FghUGVZ947Ntfnvfw/xh00BpYqN8qtTqPvr4KVg=="; //languageTesting
-        //String projectKey = this.getIntent().getStringExtra("pk");//"oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw=="; //AmitRepeatTest
-        //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
-        //String projectKey = "oneflow_prod_gPLMkuXlCdPnp+ikjwtBWG9uutMePpF62ML0bdOQjCQYk+ULP70N/+KhUdDdQtIFRRlAz53CuReZPYFAaiCaug==";//HeyFam
-        //String projectKey = "oneflow_prod_rjz2cV390BlTDSHQi1zHeL8w09+/ZQOJe7mpXJ1SY05sA2UapiKIZl+BwOq0JFoXJIxaXm87TQVo9MQnokf4fQ==";//WelcomeEndScreen
-        //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//"oneflow_prod_RyR/jsDNOiHS+GMW1ov0bykRA0NHE5mmIqM6eZJtN2ziWaecbiMQu+EvVDmmM3pUzupp7JJyZZcqZDlGASckiA==";
-
-        //OneFlow.configure(getApplicationContext(), projectKey);//,titleSetup,descriptionFont,optionsFont);
 
         String projectKey = ofs.getStringValue(OFConstants.APPIDSHP);
 
@@ -154,7 +137,15 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         fakeEditText.setTextColor(Color.parseColor("#0000ff"));*/
        // FirebaseApp.initializeApp(this);
        // retriveCurrentFCMToken();
+
+
+        ObjectId id = new ObjectId(new Date());
+        OFHelper.v(tag,"1Flow mongodb id lib["+id+"]");
+    //    OFHelper.v(tag,"1Flow mongodb id method["+objectIdMy()+"]");
+
     }
+
+
 
     /*private void retriveCurrentFCMToken() {
         try {
@@ -215,8 +206,10 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_project_key);
         OFCustomEditText projectKeyET = dialog.findViewById(R.id.project_key);
-        //String projectKey = "oneflow_prod_UjlFunf96DxcEXXXgJKqm32q1RDIYXbmDkepkDmomBoDdlzXQM/U9qzEAKh6yj34xfQQT1Ejp0ltJnF9wGJU5Q==";// [TEST] All Screens
-        String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";// AmitRepeatTest
+        String projectKey = "oneflow_prod_UjlFunf96DxcEXXXgJKqm32q1RDIYXbmDkepkDmomBoDdlzXQM/U9qzEAKh6yj34xfQQT1Ejp0ltJnF9wGJU5Q==";// [TEST] All Screens
+        //String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";// AmitRepeatTest
+        //String projectKey = "oneflow_prod_CE5Cvb8EahGdiyeu7TkY4DDR8inq1u8qLHvV2XnJM5UuZNW1V0I+XMQi2Qo5raeyrk7b3GEl+a9iz6F2EWGtNg==";// QA-2
+        //String projectKey = "oneflow_prod_z1IhZWJa3hgnvqPoaK7GiTRD0gB329MKOuXHgyGj4zE5dWXGhtlPAd4q9nVCKqS8qOc0YtSEAlDR1fysr8SqiQ==";// NewScreenTestProj
         //String projectKey = "oneflow_prod_cfgHr2eqbDESMQHMpnjxO8rGR+QXltsFaJ5nIcm9lt/BjeXwaTMK/J+d9JanbLtsDEkBnuEf2xkl26D+hJz2+g=="; //Conversation AI
         //String projectKey = "oneflow_prod_SR8Fn2G0BMPY4RW7ZE/bG37M2VbOQrG8KKfOCkW6K8MdYNMKj2Ug9VPkwtbgTLXZE6YZ2fvm6M9UxuEBcVB9Xw==";// Ahsan project key
         //String projectKey = "oneflow_prod_hlXx+7J/PLaZmjrScYvDqVr75+oIAS+Fyc2Hs7hO4o1GcsbyeMTJ74XKceugfPhDZ3MPdbB65rltbhP9cWmaYA==";// Embed I&V Android

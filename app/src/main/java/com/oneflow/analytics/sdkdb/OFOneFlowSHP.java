@@ -25,7 +25,7 @@ import android.util.Base64;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
+import com.oneflow.analytics.model.adduser.OFAddUserResponse;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.model.survey.OFThrottlingConfig;
@@ -102,15 +102,15 @@ public class OFOneFlowSHP {
     }
 
 
-    public OFAddUserResultResponse getUserDetails() {
+    public OFAddUserResponse getUserDetails() {
         String json = pref.getString(OFConstants.USERDETAILSHP, null);
         OFHelper.v("json", "[" + json + "]");
-        OFAddUserResultResponse obj =
-                gson.fromJson(json, OFAddUserResultResponse.class);
+        OFAddUserResponse obj =
+                gson.fromJson(json, OFAddUserResponse.class);
         return obj;
     }
 
-    public void setUserDetails(OFAddUserResultResponse arr) {
+    public void setUserDetails(OFAddUserResponse arr) {
         SharedPreferences.Editor prefsEditor = pref.edit();
         String json = gson.toJson(arr);
         OFHelper.v("json", "[" + json + "]");

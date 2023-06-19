@@ -81,8 +81,25 @@
             android:theme="@style/CDialogThemeFullScreen"
 
             ></activity>
+
+
+        <activity
+            android:name="com.oneflow.analytics.OFFirstLanderActivity"
+            android:theme="@style/Theme.OFTransparent"
+
+            ></activity>
         <!--<receiver android:name=".utils.OFThrottlingAlarm"/>-->
         <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
+
+        <!--<service
+            android:name=".PushNotificationReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                &lt;!&ndash;<action android:name="com.google.firebase.INSTANCE_ID_EVENT" />&ndash;&gt;
+            </intent-filter>
+        </service>-->
+
     </application>
 
 </manifest>

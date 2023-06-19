@@ -22,19 +22,18 @@ import androidx.fragment.app.Fragment;
 
 import com.oneflow.analytics.OFSDKBaseActivity;
 import com.oneflow.analytics.OFSurveyActivityFullScreen;
-import com.oneflow.analytics.controller.OFEventController;
 import com.oneflow.analytics.customwidgets.OFCustomeWebView;
 import com.oneflow.analytics.model.survey.OFSDKSettingsTheme;
 import com.oneflow.analytics.model.survey.OFSurveyScreens;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 
-import java.util.HashMap;
+import java.lang.ref.WeakReference;
 
 public class BaseFragment extends Fragment {
     public boolean isActive = false;
     public GradientDrawable gdSubmit;
-    public OFSDKBaseActivity sa;
+    //public OFSDKBaseActivity sa;
     public View webLayout;
     public ProgressBar pBar;
     public OFCustomeWebView webContent;
@@ -43,6 +42,9 @@ public class BaseFragment extends Fragment {
     public OFSDKSettingsTheme sdkTheme;
     public String themeColor;
     public String tag = this.getClass().getName();
+
+    WeakReference<OFSDKBaseActivity> weakReference;
+
     //CustomFrag customFrag;
     @Override
     public void onAttach(Context context) {
@@ -50,17 +52,31 @@ public class BaseFragment extends Fragment {
 
         //sa = (OFSurveyActivityBottom) context;
         try {
-            sa = (OFSDKBaseActivity) context;
+            //sa = (OFSDKBaseActivity) context;
+            weakReference = new WeakReference<>((OFSDKBaseActivity)context);
+
             OFHelper.v(tag,"1Flow custom survery reading");
         }catch(Exception ex){
             OFHelper.v(tag,"1Flow custom survery exception");
 
-            sa = null;
+            //sa = null;
             //customFrag = CustomFrag.newInstance();
            // OFHelper.v(tag,"OneFlow custom survery exception ["+customFrag+"]");
             ex.printStackTrace();
         }
 
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        weakReference.clear();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
 
     }
 
@@ -92,7 +108,7 @@ public class BaseFragment extends Fragment {
         }
 //        OFHelper.v(tag,"1Flow frag data contains["+surveyScreens.getMediaEmbedHTML().contains("/undefined")+"]");
         OFHelper.v(tag,"1Flow frag data["+surveyScreens.getMediaEmbedHTML() +"]");
-        //https://www.loom.com/embed/31fdc69a9331436eb56ae41807f7f3ab
+
        /* if(surveyScreens.getMediaEmbedHTML()!=null) {
             if (surveyScreens.getMediaEmbedHTML().contains("/undefined")) {
                 String str = surveyScreens.getMediaEmbedHTML();
@@ -189,8 +205,8 @@ public class BaseFragment extends Fragment {
     }
     public void transitActive() {
         try {
-            int colorFrom = OFHelper.manipulateColorNew(Color.parseColor(sa.themeColor), OFConstants.buttonActiveValue);//getResources().getColor(R.color.ratings_focused);
-            int colorTo = Color.parseColor(sa.themeColor);
+            int colorFrom = OFHelper.manipulateColorNew(Color.parseColor(weakReference.get().themeColor), OFConstants.buttonActiveValue);//getResources().getColor(R.color.ratings_focused);
+            int colorTo = Color.parseColor(weakReference.get().themeColor);
             ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
             colorAnimation.setDuration(250); // milliseconds
             colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -210,8 +226,8 @@ public class BaseFragment extends Fragment {
 
     public void transitInActive() {
         try {
-            int colorFrom = Color.parseColor(sa.themeColor);
-            int colorTo = OFHelper.manipulateColorNew(Color.parseColor(sa.themeColor), OFConstants.buttonActiveValue);//getResources().getColor(R.color.ratings_focused);
+            int colorFrom = Color.parseColor(weakReference.get().themeColor);
+            int colorTo = OFHelper.manipulateColorNew(Color.parseColor(weakReference.get().themeColor), OFConstants.buttonActiveValue);//getResources().getColor(R.color.ratings_focused);
             ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
             colorAnimation.setDuration(250); // milliseconds
             colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -232,7 +248,7 @@ public class BaseFragment extends Fragment {
     public void handleWaterMarkStyle(OFSDKSettingsTheme theme) {
 
         try {
-            if (sa instanceof OFSurveyActivityFullScreen) {
+            if (weakReference.get() instanceof OFSurveyActivityFullScreen) {
                 waterMarkLayout.setVisibility(View.GONE);
             } else {
                 if (theme.getRemove_watermark()) {

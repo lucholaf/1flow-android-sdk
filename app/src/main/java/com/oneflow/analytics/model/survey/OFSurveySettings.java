@@ -21,6 +21,8 @@ package com.oneflow.analytics.model.survey;
 import com.google.gson.annotations.SerializedName;
 import com.oneflow.analytics.model.OFBaseModel;
 
+import java.util.ArrayList;
+
 public class OFSurveySettings extends OFBaseModel {
 
     @SerializedName("show_watermark")
@@ -39,6 +41,17 @@ public class OFSurveySettings extends OFBaseModel {
     private OFRetakeSurvey retake_survey;
     @SerializedName("sdk_theme")
     private OFSDKSettingsTheme sdkTheme = new OFSDKSettingsTheme() ;
+    @SerializedName("trigger_filters")
+    private ArrayList<OFTriggerFilters> triggerFilters = null;
+
+
+    public ArrayList<OFTriggerFilters> getTriggerFilters() {
+        return triggerFilters;
+    }
+
+    public void setTriggerFilters(ArrayList<OFTriggerFilters> triggerFilters) {
+        this.triggerFilters = triggerFilters;
+    }
 
     public Boolean getOverrideGlobalThrottling() {
         return overrideGlobalThrottling;

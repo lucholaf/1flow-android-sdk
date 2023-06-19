@@ -50,6 +50,8 @@ public class OFGetSurveyListResponse extends OFBaseModel {
     private OFSurveyStyle style;
     @SerializedName("survey_settings")
     private OFSurveySettings surveySettings;
+    @SerializedName("survey_time_interval")
+    private OFTimingOption surveyTimeInterval;
     @SerializedName("screens")
     private ArrayList<OFSurveyScreens> screens;
     @SerializedName("trigger_event_name")
@@ -65,6 +67,14 @@ public class OFGetSurveyListResponse extends OFBaseModel {
     @SerializedName("__v")
     private Integer __v;
 
+
+    public OFTimingOption getSurveyTimeInterval() {
+        return surveyTimeInterval;
+    }
+
+    public void setSurveyTimeInterval(OFTimingOption surveyTimeInterval) {
+        this.surveyTimeInterval = surveyTimeInterval;
+    }
 
     public OFSurveySettings getSurveySettings() {
         return surveySettings;

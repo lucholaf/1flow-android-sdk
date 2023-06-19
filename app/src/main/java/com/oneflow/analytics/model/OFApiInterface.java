@@ -18,8 +18,8 @@
 
 package com.oneflow.analytics.model;
 
-import com.oneflow.analytics.model.adduser.OFAddUserRequestNew;
-import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
+import com.oneflow.analytics.model.adduser.OFAddUserReq;
+import com.oneflow.analytics.model.adduser.OFAddUserResponse;
 import com.oneflow.analytics.model.events.OFEventAPIRequest;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
 import com.oneflow.analytics.model.loguser.OFLogUserResponse;
@@ -33,14 +33,16 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 
 public interface OFApiInterface {
 
    // @POST("add-user")
     @POST("v3/user")
-    Call<OFGenericResponse<OFAddUserResultResponse>> addUserComman(@Header("one_flow_key") String headerKey, @Body OFAddUserRequestNew aur);//, @Url String url);
+    Call<OFGenericResponse<OFAddUserResponse>> addUserComman(@Header("one_flow_key") String headerKey, @Body OFAddUserReq aur);//, @Url String url);
 
    /* @POST("add-session")
     Call<OFGenericResponse<OFCreateSessionResponse>> createSession(@Header("one_flow_key") String headerKey, @Body OFCreateSessionRequest aur);//, @Url String url);
@@ -77,6 +79,18 @@ public interface OFApiInterface {
     @POST("v3/response")
     Call<OFGenericResponse> submitSurveyUserResponse(@Header("one_flow_key") String headerKey, @Body OFSurveyUserInput aur);//, @Url String url);
 
+    //@POST("v3/identify")
+    @GET("v3/survey/{survey_id}")
+    Call<OFGenericResponse<OFGetSurveyListResponse>> getSurveyWithoutCondition(@Header("one_flow_key") String headerKey,
+                                                                               @Path("survey_id") String surveyId,
+                                                                               @Query("user_id") String userId,
+                                                                               @Query("language_code") String languageCode,
+                                                                               @Query("platform") String platform,
+                                                                               @Query("min_version") String minVersion
+
+
+    );
+
     ///@POST("v1/2021-06-15/events/bulk")
     //@POST("events")
     @POST("v3/track")
@@ -93,5 +107,7 @@ public interface OFApiInterface {
    /* @POST("v1/2021-06-15/json")
     Call<GenericResponse<AddUserResponse>> uploadFile(@Body AddUserRequest aur);*/
 
+    @GET
+    Call<String> getJSMethod(@Url String url);
 
 }

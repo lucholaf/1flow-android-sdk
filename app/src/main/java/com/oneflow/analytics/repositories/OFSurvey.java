@@ -218,5 +218,55 @@ public class OFSurvey {
 
         }
     }
+    public static void getSurveyWithoutCondition(Context context, OFMyResponseHandlerOneFlow mrh,String surveyId, OFConstants.ApiHitType type, String userId, String minVersion) {
+        OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
 
+        String language = Locale.getDefault().toString();
+        if (OFHelper.validateString(language).equalsIgnoreCase("NA")) {
+            language = "en_US";
+        }
+        OFHelper.v(tag, "OneFlow Language survey reached getSurvey called language[" + language + "]");
+
+        try {
+            Call<OFGenericResponse<OFGetSurveyListResponse>> responseCall = null;
+            //String url = "";
+            responseCall = connectAPI.getSurveyWithoutCondition(OFOneFlowSHP.getInstance(context).getStringValue(OFConstants.APPIDSHP), surveyId,userId,language,"android",minVersion);
+
+            responseCall.enqueue(new Callback<OFGenericResponse<OFGetSurveyListResponse>>() {
+                @Override
+                public void onResponse(Call<OFGenericResponse<OFGetSurveyListResponse>> call, Response<OFGenericResponse<OFGetSurveyListResponse>> response) {
+
+
+                    OFHelper.v(tag, "OneFlow reached success[" + response.isSuccessful() + "]");
+                    OFHelper.v(tag, "OneFlow reached success raw[" + response.raw() + "]");
+                    OFHelper.v(tag, "OneFlow reached success errorBody[" + response.errorBody() + "]");
+                    OFHelper.v(tag, "OneFlow reached success message[" + response.message() + "]");
+
+
+                    if (response.isSuccessful()) {
+                        // OFHelper.v(tag, "OneFlow response[" + response.body().getSuccess() + "]");
+                        // OFHelper.v(tag, "OneFlow response message[" + response.body().getMessage() + "]");
+                        mrh.onResponseReceived(type, response.body().getResult(), 0l, "",null,null);
+
+                    } else {
+                        //mrh.onResponseReceived(response.body(), type);
+                        OFHelper.v(tag, "OneFlow response 0[" + response.body() + "]");
+                        /*Helper.v(tag, "OneFlow response 1[" + response.body().getMessage() + "]");
+                        Helper.v(tag, "OneFlow response 2[" + response.body().getSuccess() + "]");*/
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<OFGenericResponse<OFGetSurveyListResponse>> call, Throwable t) {
+
+                    OFHelper.e(tag, "OneFlow error[" + t.toString() + "]");
+                    OFHelper.e(tag, "OneFlow errorMsg[" + t.getMessage() + "]");
+
+                }
+            });
+        } catch (Exception ex) {
+
+        }
+    }
 }

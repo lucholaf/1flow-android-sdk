@@ -35,6 +35,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.android.billingclient.api.BillingClient;
@@ -47,10 +48,9 @@ import com.oneflow.analytics.controller.OFEventController;
 import com.oneflow.analytics.controller.OFSurveyController;
 import com.oneflow.analytics.model.OFConnectivity;
 import com.oneflow.analytics.model.OFFontSetup;
-import com.oneflow.analytics.model.adduser.AddUserContext;
-import com.oneflow.analytics.model.adduser.OFAddUserRequest;
-import com.oneflow.analytics.model.adduser.OFAddUserRequestNew;
-import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
+import com.oneflow.analytics.model.adduser.OFAddUserContext;
+import com.oneflow.analytics.model.adduser.OFAddUserReq;
+import com.oneflow.analytics.model.adduser.OFAddUserResponse;
 import com.oneflow.analytics.model.adduser.OFDeviceDetails;
 import com.oneflow.analytics.model.createsession.OFCreateSessionResponse;
 import com.oneflow.analytics.model.events.OFEventAPIRequest;
@@ -66,19 +66,24 @@ import com.oneflow.analytics.repositories.OFEventAPIRepo;
 import com.oneflow.analytics.repositories.OFEventDBRepoKT;
 import com.oneflow.analytics.repositories.OFLogUserDBRepoKT;
 import com.oneflow.analytics.repositories.OFLogUserRepo;
+import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
+import com.oneflow.analytics.utils.OFDelayedSurveyCountdownTimer;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFLogCountdownTimer;
 import com.oneflow.analytics.utils.OFMyCountDownTimer;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 import com.oneflow.analytics.utils.OFNetworkChangeReceiver;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 
 //import com.oneflow.analytics.utils.OFLogCountdownTimer;
 
@@ -183,6 +188,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         }
 
     }*/
+
 
     public static void configure(Context mContext, String projectKey) {
         OFHelper.v("1Flow", "1Flow configure called project Key[" + projectKey + "]");
@@ -410,41 +416,17 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             }
         }
     };*/
-    private OFAddUserRequest createRequestOld() {
+
+
+    //private OFAddUserRequestNew createRequest() {
+    private OFAddUserReq createRequest() {
         OFDeviceDetails dd = new OFDeviceDetails();
         dd.setUnique_id(OFHelper.getDeviceId(mContext));
         dd.setDevice_id(OFHelper.getDeviceId(mContext));
         dd.setOs("android");
 
         final OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(mContext);
-        OFAddUserRequest aur = new OFAddUserRequest();
 
-        // this flow added for recognizing user on server side to provide proper list of surveys
-        String systemId = ofs.getStringValue(OFConstants.SHP_LOG_USER_KEY);
-        if (systemId.equalsIgnoreCase("NA")) {
-            aur.setSystem_id(OFHelper.getDeviceId(mContext));
-        } else {
-            aur.setSystem_id(systemId);
-        }
-        aur.setLanguage(new Locale(Locale.getDefault().getLanguage()).getDisplayName(Locale.US));
-        aur.setOFDeviceDetails(dd);
-        /*aur.setOFLocationDetails(null);
-        aur.setLocationCheck(true);*/
-        /*aur.setName("Amit");
-        aur.setEmail("amit@tryskybox.com");*/
-        return aur;
-    }
-
-    private OFAddUserRequestNew createRequest() {
-        OFDeviceDetails dd = new OFDeviceDetails();
-        dd.setUnique_id(OFHelper.getDeviceId(mContext));
-        dd.setDevice_id(OFHelper.getDeviceId(mContext));
-        dd.setOs("android");
-
-        final OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(mContext);
-        OFAddUserRequestNew aur = new OFAddUserRequestNew();
-
-        aur.setUser_id(OFHelper.getDeviceId(mContext));
 
         HashMap<String, String> device = new HashMap<>();
         device.put("manufacturer", Build.MANUFACTURER);
@@ -499,17 +481,22 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         screen.put("type", isTablet(mContext));
 
 
-        AddUserContext auc = new AddUserContext();
+        /*AddUserContext auc = new AddUserContext();
 
         auc.setDevice(device);
         auc.setApp(app);
         auc.setLibrary(library);
         auc.setNetwork(network);
         auc.setOs(os);
-        auc.setScreen(screen);
+        auc.setScreen(screen);*/
 
+        OFAddUserContext ofau = new OFAddUserContext(app, device, library, network, screen, os);
 
-        aur.setAddUserContext(auc);
+        /*OFAddUserRequestNew aur = new OFAddUserRequestNew();
+        aur.setUser_id(OFHelper.getDeviceId(mContext));
+        aur.setAddUserContext(ofau);*/
+
+        OFAddUserReq aur = new OFAddUserReq(OFHelper.getDeviceId(mContext), ofau);
 
         return aur;
     }
@@ -521,23 +508,46 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     }
 
 
-
     private void registerUser() {
 
         //registerUser(createRequest());
         // checking old event if delete is pending
         //Boolean isDeletePending = OFOneFlowSHP.getInstance(mContext).getBooleanValue(OFConstants.SHP_EVENTS_DELETE_PENDING,false);
-        OFHelper.v("1Flow","1Flow called register user");
+        OFHelper.v("1Flow", "1Flow called register user");
        /* if(!isDeletePending) {
             new OFEventDBRepoKT().fetchEvents(mContext, this, OFConstants.ApiHitType.fetchEventsFromDBBeforeConfig);
         }else{*/
-            OFAddUserRepo.addUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), createRequest(), this, OFConstants.ApiHitType.CreateUser);
+        OFAddUserRepo.addUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), createRequest(), this, OFConstants.ApiHitType.CreateUser);
         //}
-
 
 
     }
 
+
+    public static void startFlow(String surveyId) {
+        OFOneFlowSHP shp = OFOneFlowSHP.getInstance(mContext);
+        try {
+            String userId = shp.getUserDetails().getAnalytic_user_id();
+            if (!OFHelper.validateString(userId).equalsIgnoreCase("na")) {
+                OneFlow of = new OneFlow(mContext);
+                of.initDirectSurvey(userId, surveyId);
+            } else {
+                OFHelper.v("1Flow", "1Flow no survey available");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    public void initDirectSurvey(String userId, String surveyID) {
+
+        //OFSurvey.getSurveyWithoutCondition(mContext, this, "8baf188420037bd2d768ad27", OFConstants.ApiHitType.directSurvey, userId, OFConstants.currentVersion);
+        OFSurvey.getSurveyWithoutCondition(mContext, this, surveyID, OFConstants.ApiHitType.directSurvey, userId, OFConstants.currentVersion);
+    }
+
+
+    static Map<String, Object> eventMap = new HashMap<>();
    /* private void createSession(OFCreateSessionRequest csr) {
         //sdkdb = Room.databaseBuilder(context, SDKDB.class,"one-flow-db").build();
         OFCreateSession.createSession(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), csr, this, OFConstants.ApiHitType.CreateSession);
@@ -551,7 +561,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
      */
     public static void recordEvents(String eventName, HashMap eventValues) {
 
-        OFHelper.v("FeedbackController", "1Flow recordEvents record called with[" + eventName + "]at[" + OFHelper.formatedDate(System.currentTimeMillis(), "dd-MM-yyyy hh:mm:ss.SSS") + "]");
+
+        OFHelper.v("1Flow", "1Flow recordEvents record called with[" + eventName + "]at[" + OFHelper.formatedDate(System.currentTimeMillis(), "dd-MM-yyyy hh:mm:ss.SSS") + "]");
 
         try {
             if (!OFHelper.validateString(eventName.trim()).equalsIgnoreCase("NA")) {
@@ -561,13 +572,17 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 if (eventValues != null) {
                     eventValues = OFHelper.checkDateInHashMap(eventValues);
                 }
-                OFHelper.v("FeedbackController", "1Flow recordEvents record called with[" + eventValues + "]");
+                OFHelper.v("1Flow", "1Flow recordEvents record called with[" + eventValues + "]");
                 if (mContext != null) {
                     // storage, api call and check survey if available.
                     //EventController.getInstance(mContext).storeEventsInDB(eventName, eventValues, 0);
                     OFEventController ec = OFEventController.getInstance(mContext);
                     ec.storeEventsInDB(eventName, eventValues, 0);
 
+                    eventMap = new HashMap<>();
+                    eventMap.put("name", eventName);
+                    eventMap.put("parameters", eventValues);
+                    eventMap.put("timestamp", System.currentTimeMillis() / 1000);
 
                     //Checking if any survey available under coming event.
                     of.checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
@@ -654,7 +669,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     userDetail = OFHelper.checkDateInHashMap(userDetail);
                 }
                 OFHelper.v("1Flow", "1Flow logUser data stored 1");
-                OFAddUserResultResponse aurr = OFOneFlowSHP.getInstance(mContext).getUserDetails();
+                OFAddUserResponse aurr = OFOneFlowSHP.getInstance(mContext).getUserDetails();
                 OFLogUserRequest lur = new OFLogUserRequest();
                 lur.setUser_id(uniqueId);//"rqqVmpdHc9QsKbZuz9P5YqPaEb23");//aurr.getAnalytic_user_id());
                 lur.setParameters(userDetail);
@@ -823,8 +838,17 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                     counter++;
                     OFHelper.v(tag, "1Flow list size 0 [" + item.getTrigger_event_name() + "]firedEventName[" + firedEventName + "]");
-                    String[] eventName = item.getTrigger_event_name().split(",");
+                    String[] eventName;
                     boolean recordFound = false;
+                    //=====TempCode====
+                    if (!OFHelper.validateString(item.getTrigger_event_name()).equalsIgnoreCase("na")) {
+                        eventName = item.getTrigger_event_name().split(",");
+                    } else {
+                        eventName = new String[1];
+                        eventName[0] = item.getSurveySettings().getTriggerFilters().get(0).getField();
+                    }
+                    OFHelper.v(tag, "1Flow list size eventName [" + Arrays.asList(eventName) + "]");
+                    //======TempCode=======
                     for (String name : eventName) {
                         if (name.contains(firedEventName)) {
                             gslr = item;
@@ -857,8 +881,6 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 new OFLogUserDBRepoKT().findSurveyForID(mContext, this, OFConstants.ApiHitType.fetchSubmittedSurvey, gslr, gslr.get_id(), OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.USERUNIQUEIDSHP), firedEventName);
                 //new OFMyDBAsyncTask(mContext,this,OFConstants.ApiHitType.fetchSubmittedSurvey,false).execute(gslr, OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.USERUNIQUEIDSHP), firedEventName);
             }
-
-
         }
     }
 
@@ -898,11 +920,11 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                         new OFEventDBRepoKT().deleteEvents(mContext, ids, this, OFConstants.ApiHitType.deleteEventsFromDBLastSession);
 
-                    }else{
+                    } else {
                         OFHelper.v("1Flow", "1Flow checking older events not found hitting adduser");
                         OFAddUserRepo.addUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), createRequest(), this, OFConstants.ApiHitType.CreateUser);
                     }
-                }else{
+                } else {
                     OFHelper.v("1Flow", "1Flow checking older events not found hitting adduser.");
                     OFAddUserRepo.addUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), createRequest(), this, OFConstants.ApiHitType.CreateUser);
                 }
@@ -910,7 +932,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
             case deleteEventsFromDBLastSession:
                 OFHelper.v("1Flow", "1Flow checking older events deleted hitting adduser");
-                OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_EVENTS_DELETE_PENDING,false);
+                OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_EVENTS_DELETE_PENDING, false);
                 OFAddUserRepo.addUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), createRequest(), this, OFConstants.ApiHitType.CreateUser);
 
                 break;
@@ -918,54 +940,10 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             case CreateUser:
 
                 if (obj != null) {
-                    OFAddUserResultResponse userResponse = (OFAddUserResultResponse) obj;
+                    OFAddUserResponse userResponse = (OFAddUserResponse) obj;
                     OFOneFlowSHP oneFlowSHP = OFOneFlowSHP.getInstance(mContext);
                     oneFlowSHP.setUserDetails(userResponse);
-                    /*TelephonyManager telephonyManager = ((TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE));
-                    String operatorName = telephonyManager.getNetworkOperatorName().isEmpty() ? null : telephonyManager.getNetworkOperatorName();
 
-                    WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-                    Display display = wm.getDefaultDisplay();
-                    DisplayMetrics metrics = new DisplayMetrics();
-                    display.getMetrics(metrics);*/
-
-                    //OFCreateSessionRequest csr = new OFCreateSessionRequest();
-
-
-                   /* OFDeviceDetails ddc = new OFDeviceDetails();
-                    ddc.setUnique_id(OFHelper.getDeviceId(mContext));
-                    ddc.setDevice_id(OFHelper.getDeviceId(mContext));
-                    ddc.setOs("android");
-                    ddc.setCarrier(operatorName);
-                    ddc.setManufacturer(Build.MANUFACTURER);
-                    ddc.setModel(Build.MODEL);
-                    ddc.setOs_ver(Build.VERSION.SDK);
-                    ddc.setScreen_width(metrics.widthPixels);
-                    ddc.setScreen_height(metrics.heightPixels);
-                    String userId = "NA";
-
-                    if (userResponse != null) {
-                        userId = userResponse.getAnalytic_user_id();
-                    }*/
-                    /*csr.setAnalytic_user_id(userId);
-                    csr.setSystem_id(OFHelper.getDeviceId(mContext));
-                    csr.setDevice(ddc);
-                    csr.setLocation_check(true);
-                    csr.setLocation(null);
-                    csr.setConnectivity(getConnectivityData());
-
-                    csr.setApi_version(OFConstants.currentVersion);
-                    csr.setApp_build_number(OFConstants.currentVersion);
-                    csr.setLibrary_name("1flow-android-sdk");
-                    csr.setLibrary_version(String.valueOf(1));
-                    csr.setApi_endpoint("session");
-
-
-                    csr.setApp_version(OFConstants.currentVersion);*/
-
-                    //recordEvents(OFConstants.AUTOEVENT_SESSIONSTART, null);
-
-                    //createSession(csr);
                     if (!oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN, false)) {
 
                         HashMap<String, Object> mapValue = new HashMap<>();
@@ -975,22 +953,24 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     }
 
                     //if (!oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_SESSIONSTART, false)) {
-                        OFEventController ec = OFEventController.getInstance(mContext);
-                        ec.storeEventsInDB(OFConstants.AUTOEVENT_SESSIONSTART, null, 0);
+                    OFEventController ec = OFEventController.getInstance(mContext);
+                    ec.storeEventsInDB(OFConstants.AUTOEVENT_SESSIONSTART, null, 0);
 
-                        oneFlowSHP.storeValue(OFConstants.AUTOEVENT_SESSIONSTART, true);
-                        ProcessLifecycleOwner.get().getLifecycle().addObserver(new AppLifecycleListener(mContext));
+                    oneFlowSHP.storeValue(OFConstants.AUTOEVENT_SESSIONSTART, true);
+                    ProcessLifecycleOwner.get().getLifecycle().addObserver(new AppLifecycleListener(mContext));
                     /*} else {
                         OFHelper.v("1Flow", "1Flow app is in start_session already recorded.");
                     }*/
 
                     OFLogUserRequest lur = oneFlowSHP.getLogUserRequest();
 
+                    new OFCacheHandler(mContext).start();
 
                     OFHelper.v("1Flow", "1Flow create user finish hitting pending logUser[" + lur + "]");
                     if (lur != null && logUserPending) {
                         logUserPending = false;
                         lur.setAnonymous_user_id(userResponse.getAnalytic_user_id());
+                        //lur.setAnonymous_user_id(userResponse);
                         OFLogUserRepo.logUser(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), lur, this, OFConstants.ApiHitType.logUser);
 
 
@@ -1007,6 +987,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                         OFHelper.makeText(mContext, reserved, 1);
                     }
                 }
+
+
                 break;
             case CreateSession:
                 if (obj != null) {
@@ -1015,7 +997,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     if (createSession != null) {
                         OFOneFlowSHP oneFlowSHP = OFOneFlowSHP.getInstance(mContext);
 
-                        OFHelper.v("FeedbackController", "1Flow checking firstOpen [" + oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN, false) + "]");
+                        OFHelper.v("1Flow", "1Flow checking firstOpen [" + oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN, false) + "]");
                         if (!oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN, false)) {
 
                             HashMap<String, Object> mapValue = new HashMap<>();
@@ -1077,7 +1059,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                             OFHelper.v("1Flow", "1Flow checking before log fetchEventsFromDB request prepared");
 
 
-                            ofshp.storeValue(OFConstants.SHP_EVENTS_DELETE_PENDING,true);
+                            ofshp.storeValue(OFConstants.SHP_EVENTS_DELETE_PENDING, true);
 
                             OFEventAPIRepo.sendLogsToApi(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), ear, OneFlow.this, OFConstants.ApiHitType.sendEventsToAPI, ids);
 
@@ -1108,7 +1090,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 mContext.sendBroadcast(intent);
 
 
-                OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_EVENTS_DELETE_PENDING,false);
+                OFOneFlowSHP.getInstance(mContext).storeValue(OFConstants.SHP_EVENTS_DELETE_PENDING, false);
 
                 OFLogUserRequest lur = OFOneFlowSHP.getInstance(mContext).getLogUserRequest();
                 OFHelper.v("1flow", "1Flow checking events submitted hitting logUser[" + lur + "]");
@@ -1157,7 +1139,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                                 String eventName = (String) obj3;
                                 // as this survey not fired, going to check again if any other survey available with same event name
                                 OFHelper.v("1Flow", "1Flow resurvey failed checking list again [" + eventName + "]");
-                                if(searchPostion>0) { // this login add to stop re-iteration
+                                if (searchPostion > 0) { // this login add to stop re-iteration
                                     checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
                                 }
                             }
@@ -1202,6 +1184,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                                         setUpHashForActivity();
 
+                                        triggerSurvey(gslr, reserved);
+
+                                        /*
                                         //throttling condition below
                                         OFThrottlingConfig throttlingConfig = ofs.getThrottlingConfig();
                                         if (throttlingConfig == null) {
@@ -1231,7 +1216,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                                                 }
                                             }
 
-                                        }
+                                        }*/
                                     } else {
                                         OFHelper.v("1Flow", "1Flow resurvey this survey already submitted searching again");
                                         // as this survey not fired, going to check again if any other survey available with same event name
@@ -1245,6 +1230,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     OFHelper.e("1Flow", "1Flow subimission failed checkResurveyNSubmission");
                 }
                 break;
+
             case lastSubmittedSurvey:
                 OFHelper.v("1Flow", "1Flow globalThrottling received[" + obj + "]");
 
@@ -1271,7 +1257,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                         OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(mContext);
                         //ofs.storeValue(OFConstants.SHP_LOG_USER_KEY, reserved);//ofs.getLogUserRequest().getSystem_id()); // system id stored for sending next app launch
                         ofs.clearLogUserRequest();
-                        OFAddUserResultResponse aurr = ofs.getUserDetails();
+                        OFAddUserResponse aurr = ofs.getUserDetails();
                         //setting up new user analytical id
 
                         //testing for multiple app launches
@@ -1314,7 +1300,17 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     OFHelper.v("1Flow", "1Flow survey fetch not called as user id not present");
                 }
                 break;
-
+            case directSurvey:
+                OFHelper.v("1Flow", "1Flow survey callback");
+                OFGetSurveyListResponse surveyResponse = (OFGetSurveyListResponse) obj;
+                setUpHashForActivity();
+                if (surveyResponse != null) {
+                    OFHelper.v("1Flow", "1Flow survey callback not null");
+                    triggerSurvey(surveyResponse, "");
+                } else {
+                    OFHelper.v("1Flow", "1Flow survey callback null");
+                }
+                break;
         }
     }
 
@@ -1348,31 +1344,35 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         return connectivity;
     }
 
+    Long delayDuration = 0l;
 
     private void triggerSurvey(OFGetSurveyListResponse gslr, String eventName) {
 
 
-        OFHelper.v("1Flow", "1Flow eventName[" + eventName + "]surveyId[" + gslr.get_id() + "]");
-        Intent surveyIntent = null;
-        if (gslr.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
+        OFHelper.v("1Flow", "1Flow eventName[" + eventName + "]surveyId[" + gslr.get_id() + "]position[" + gslr.getSurveySettings().getSdkTheme().getWidgetPosition() + "]");
+        //Intent surveyIntent = null;
+       /* if (gslr.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
             surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get("bottom-center"));
         } else {
             surveyIntent = new Intent(mContext.getApplicationContext(), activityName.get(gslr.getSurveySettings().getSdkTheme().getWidgetPosition()));
-        }
+        }*/
+        final Intent surveyIntent = new Intent(mContext.getApplicationContext(), OFFirstLanderActivity.class);
 
-        OFOneFlowSHP ofs1 = OFOneFlowSHP.getInstance(mContext);
+        //OFOneFlowSHP ofs1 = OFOneFlowSHP.getInstance(mContext);
 
-        HashMap<String, Object> mapValue = new HashMap<>();
+
+        // #001 below code commented because survey will finally be started in next activity after event validation
+       /* HashMap<String, Object> mapValue = new HashMap<>();
         mapValue.put("flow_id", gslr.get_id());
         OFEventController ec = OFEventController.getInstance(mContext);
         ec.storeEventsInDB(OFConstants.AUTOEVENT_SURVEYIMPRESSION, mapValue, 0);
 
         ofs1.storeValue(OFConstants.SHP_SURVEY_RUNNING, true);
-        ofs1.storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
+        ofs1.storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());*/
 
 
-        OFThrottlingConfig config = ofs1.getThrottlingConfig();
-        //flow correction and time should be in second
+        /*OFThrottlingConfig config = ofs1.getThrottlingConfig();
+
         if (config != null) {
 
             OFHelper.v("1Flow", "1Flow throttling config not null");
@@ -1385,20 +1385,48 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             setupGlobalTimerToDeactivateThrottlingLocally();
         } else {
             OFHelper.v("1Flow", "1Flow throttling config null");
-        }
-
-        // resetting counter for similar type of event name
-        //ofs1.storeValue(OFConstants.SHP_SURVEY_SEARCH_POSITION, 0);
+        }*/
 
         surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         surveyIntent.putExtra("SurveyType", gslr);
         surveyIntent.putExtra("eventName", eventName);
+        surveyIntent.putExtra("eventData", new JSONObject(eventMap).toString());
+
 
         OFHelper.v("1Flow", "1Flow activity running[" + OFSDKBaseActivity.isActive + "]");
+
         if (!OFSDKBaseActivity.isActive) {
-            mContext.getApplicationContext().startActivity(surveyIntent);
+            if (gslr.getSurveyTimeInterval() != null) {
+
+                    if (gslr.getSurveyTimeInterval().getType().equalsIgnoreCase("show_after")) {
+
+                        try {
+                            delayDuration = gslr.getSurveyTimeInterval().getValue() * 1000;
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        OFHelper.v("1Flow", "1Flow activity waiting duration[" + delayDuration + "]");
+
+
+                        ContextCompat.getMainExecutor(mContext).execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                OFDelayedSurveyCountdownTimer delaySurvey = OFDelayedSurveyCountdownTimer.getInstance(mContext, delayDuration, 1000l, surveyIntent);
+                                delaySurvey.start();
+                            }
+                        });
+
+
+                    } else {
+                        mContext.getApplicationContext().startActivity(surveyIntent);
+                    }
+
+            } else {
+                mContext.getApplicationContext().startActivity(surveyIntent);
+            }
         }
     }
+
 
     private void setupGlobalTimerToDeactivateThrottlingLocally() {
 

@@ -52,7 +52,6 @@ import com.oneflow.analytics.utils.OFHelper;
 
 public class OFSurveyQueThankyouFragment extends BaseFragment {
 
-
     ImageView thankyouImage, waterMarkImage;
 
     OFCustomTextViewBold surveyTitle;
@@ -61,8 +60,8 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
 
     String tag = this.getClass().getName();
 
-
     public static OFSurveyQueThankyouFragment newInstance(OFSurveyScreens ahdList, OFSDKSettingsTheme sdkTheme, String themeColor) {
+
         OFSurveyQueThankyouFragment myFragment = new OFSurveyQueThankyouFragment();
 
         Bundle args = new Bundle();
@@ -131,7 +130,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
         }
 
 
-        sa.position = sa.screens.size();
+        weakReference.get().position = weakReference.get().screens.size();
         handleWaterMarkStyle(sdkTheme);
         //Glide.with(this).load(R.drawable.thank_you).into(thankyouImage);
         Glide.with(this).load(R.drawable.thanku_bg).into(new DrawableImageViewTarget(thankyouImage) {
@@ -158,7 +157,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                                             public void run() {
 
                                                 ruleAction();
-                                                sa.finish();
+                                                weakReference.get().finish();
                                             }
                                         }, surveyScreens.getRules().getDismissBehavior().getFadesAway() ? (surveyScreens.getRules().getDismissBehavior().getDelayInSeconds() * 1000) : 20);
                                         // above logic is added for fade away if true then should fade away in mentioned duration
@@ -168,7 +167,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                                         @Override
                                         public void run() {
                                             ruleAction();
-                                            sa.finish();
+                                            weakReference.get().finish();
                                         }
                                     }, 20);
                                 }
@@ -177,7 +176,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                                     @Override
                                     public void run() {
 
-                                        sa.finish();
+                                        weakReference.get().finish();
                                     }
                                 }, 20);
                             }
@@ -212,7 +211,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
             }
         });
         //ruleAction();
-        sa.initFragment(5);
+        weakReference.get().initFragment(5);
         return view;
 
     }
@@ -223,7 +222,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
         try {
             //Logic for showing close button if fade away is false then have to show close button at thankyou page
             if (!surveyScreens.getRules().getDismissBehavior().getFadesAway()) {
-                sa.closeBtn.setVisibility(View.VISIBLE);
+                weakReference.get().closeBtn.setVisibility(View.VISIBLE);
             }
         } catch (Exception ex) {
 
@@ -244,7 +243,7 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                         startActivity(browserIntent);
                     } else if (dl.getType().equalsIgnoreCase("rating")) {
                         // OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
-                        sa.reviewThisApp(getActivity());
+                        weakReference.get().reviewThisApp(getActivity());
                     }
                 }
             }

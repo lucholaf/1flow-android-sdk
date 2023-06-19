@@ -533,14 +533,14 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         if(lastHitGap>1500) {
             OFOneFlowSHP.getInstance(getActivity()).storeValue("userInput", "");
             if (v.getId() == R.id.skip_btn) {
-                sa.addUserResponseToList(surveyScreens.get_id(), null, null);
+                weakReference.get().addUserResponseToList(surveyScreens.get_id(), null, null);
             } else if (v.getId() == R.id.submit_btn) {
                 if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
                     if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
-                        sa.addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString().trim().length() > 0 ? userInput.getText().toString().trim() : null);
+                        weakReference.get().addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString().trim().length() > 0 ? userInput.getText().toString().trim() : null);
                     }
                 } else {
-                    sa.addUserResponseToList(surveyScreens.get_id(), null, userInputShort.getText().toString().trim().length() > 0 ? userInputShort.getText().toString().trim() : null);
+                    weakReference.get().addUserResponseToList(surveyScreens.get_id(), null, userInputShort.getText().toString().trim().length() > 0 ? userInputShort.getText().toString().trim() : null);
                 }
 
             } else if (v.getId() == R.id.cancel_btn) {

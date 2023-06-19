@@ -20,9 +20,10 @@ package com.oneflow.analytics.utils;
 
 public interface OFConstants {
 
-    String currentVersion = "2023.06.06";//2023.04.16";//2023.03.08";//2023.01.12";//""2022.11.20";
+    String currentVersion = "2023.06.16";//2023.04.16";//2023.03.08";//2023.01.12";//""2022.11.20";
     String MODE = "prod";//"dev";//""beta";//
 
+    String cacheFileName = "logic-engine.js";
     String DBNAME = "one_flow_db";
     String APPKEYSHP = "one_flow_config_key";
     String APPIDSHP = "one_flow_app_id_key";
@@ -83,7 +84,9 @@ public interface OFConstants {
         deleteEventsFromDB,deleteEventsFromDBLastSession, submittingOfflineSurvey, logUser, insertSurveyInDB, fetchSurveysFromDB, deleteSurveyFromDB, fetchLocation,
 
         fetchSurveysFromAPI,fetchEventsBeforSurveyFetched,fetchSubmittedSurvey,checkResurveyNSubmission,updateSurveyIds,
-        surveySubmited,lastSubmittedSurvey,updateSubmittedSurveyLocally
+        surveySubmited,lastSubmittedSurvey,updateSubmittedSurveyLocally,
+
+        directSurvey,filterSurveys
     }
     enum BRActionType{
         submitEvents,submitSurveys

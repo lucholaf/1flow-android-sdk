@@ -3,7 +3,7 @@ package com.oneflow.analytics.utils;
 import android.content.Context;
 import android.os.CountDownTimer;
 
-import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
+import com.oneflow.analytics.model.adduser.OFAddUserResponse;
 import com.oneflow.analytics.model.loguser.OFLogUserRequest;
 import com.oneflow.analytics.model.loguser.OFLogUserResponse;
 import com.oneflow.analytics.repositories.OFLogUserDBRepoKT;
@@ -53,7 +53,7 @@ public class OFLogCountdownTimer extends CountDownTimer implements OFMyResponseH
                         OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(mContext);
                         ofs.storeValue(OFConstants.SHP_LOG_USER_KEY, reserved);//ofs.getLogUserRequest().getSystem_id()); // system id stored for sending next app launch
                         ofs.clearLogUserRequest();
-                        OFAddUserResultResponse aurr = ofs.getUserDetails();
+                        OFAddUserResponse aurr = ofs.getUserDetails();
                         //setting up new user analytical id
 
                         aurr.setAnalytic_user_id(logUserResponse.getAnalytic_user_id());

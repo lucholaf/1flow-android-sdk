@@ -25,7 +25,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
+import com.oneflow.analytics.model.adduser.OFAddUserResponse;
 import com.oneflow.analytics.model.events.OFRecordEventDAO;
 import com.oneflow.analytics.model.events.OFRecordEventsTab;
 import com.oneflow.analytics.model.loguser.OFLogDAO;
@@ -40,7 +40,7 @@ import com.oneflow.analytics.sdkdb.survey.OFSubmittedSurveysTab;
 import com.oneflow.analytics.utils.OFConstants;
 
 
-@Database(entities = {OFRecordEventsTab.class, OFAddUserResultResponse.class, OFSubmittedSurveysTab.class, OFSurveyUserInput.class},version = 40)
+@Database(entities = {OFRecordEventsTab.class, OFAddUserResponse.class, OFSubmittedSurveysTab.class, OFSurveyUserInput.class},version = 40)
 
 @TypeConverters({OFMapConverter.class, OFDataConverterLocation.class, OFDataConverterDevice.class, OFSurveyUserResponseChildConverter.class})
 public abstract class OFSDKDB extends RoomDatabase {

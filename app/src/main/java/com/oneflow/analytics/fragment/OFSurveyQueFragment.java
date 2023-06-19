@@ -475,7 +475,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
                                 allSelections = allSelections.replace(" ", "");
                                 OFHelper.v(tag, "1Flow allselection[" + allSelections + "] str[" + reserve + "]");
 
-                                sa.addUserResponseToList(surveyScreens.get_id(), allSelections, reserve);
+                                weakReference.get().addUserResponseToList(surveyScreens.get_id(), allSelections, reserve);
                             }
                         }
                     }
@@ -509,7 +509,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    sa.addUserResponseToList(surveyScreens.get_id(), position, null);
+                                    weakReference.get().addUserResponseToList(surveyScreens.get_id(), position, null);
                                 }
                             }, 5);
                         }
@@ -518,7 +518,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                sa.addUserResponseToList(surveyScreens.get_id(), position, (String) obj);
+                                weakReference.get().addUserResponseToList(surveyScreens.get_id(), position, (String) obj);
                             }
                         }, 5);
                     }
@@ -584,9 +584,9 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
                     public void run() {
                         if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-5-star") ||
                                 surveyScreens.getInput().getInput_type().equalsIgnoreCase("rating-emojis")) {
-                            sa.addUserResponseToList(surveyScreens.get_id(), null, String.valueOf(position + 1));
+                            weakReference.get().addUserResponseToList(surveyScreens.get_id(), null, String.valueOf(position + 1));
                         } else {
-                            sa.addUserResponseToList(surveyScreens.get_id(), null, String.valueOf(position));
+                            weakReference.get().addUserResponseToList(surveyScreens.get_id(), null, String.valueOf(position));
                         }
                     }
                 }, 1000);

@@ -21,8 +21,8 @@ package com.oneflow.analytics.repositories;
 import com.oneflow.analytics.model.OFApiInterface;
 import com.oneflow.analytics.model.OFGenericResponse;
 import com.oneflow.analytics.model.OFRetroBaseService;
-import com.oneflow.analytics.model.adduser.OFAddUserRequestNew;
-import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
+import com.oneflow.analytics.model.adduser.OFAddUserReq;
+import com.oneflow.analytics.model.adduser.OFAddUserResponse;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandler;
@@ -36,20 +36,20 @@ public class OFAddUserRepo {
 
     static String tag = "OFAddUserRepo";
     OFMyResponseHandler myResponseHandler;
-    public static void addUser(String headerKey, OFAddUserRequestNew aur, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType hitType){
+    public static void addUser(String headerKey, OFAddUserReq aur, OFMyResponseHandlerOneFlow mrh, OFConstants.ApiHitType hitType){
 
         OFApiInterface connectAPI = OFRetroBaseService.getClient().create(OFApiInterface.class);
         try {
-            Call<OFGenericResponse<OFAddUserResultResponse>> responseCall = null;
+            Call<OFGenericResponse<OFAddUserResponse>> responseCall = null;
 
 
             String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/project-analytics-user/incoming_webhook/add-user";
             //String url = "https://webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-xqiin/service/project-analytics-user/incoming_webhook/add-user";
             responseCall = connectAPI.addUserComman(headerKey,aur);//,url);
 
-            responseCall.enqueue(new Callback<OFGenericResponse<OFAddUserResultResponse>>() {
+            responseCall.enqueue(new Callback<OFGenericResponse<OFAddUserResponse>>() {
                 @Override
-                public void onResponse(Call<OFGenericResponse<OFAddUserResultResponse>> call, Response<OFGenericResponse<OFAddUserResultResponse>> response) {
+                public void onResponse(Call<OFGenericResponse<OFAddUserResponse>> call, Response<OFGenericResponse<OFAddUserResponse>> response) {
                     OFHelper.v(tag, "OneFlow add user reached success["+response.isSuccessful()+"]");
 
                     if (response.isSuccessful()) {
@@ -69,7 +69,7 @@ public class OFAddUserRepo {
                 }
 
                 @Override
-                public void onFailure(Call<OFGenericResponse<OFAddUserResultResponse>> call, Throwable t) {
+                public void onFailure(Call<OFGenericResponse<OFAddUserResponse>> call, Throwable t) {
 
                     mrh.onResponseReceived(hitType,null,0l,"Something went wrong",null,null);
                     OFHelper.e(tag,"OneFlow error["+t.toString()+"]");

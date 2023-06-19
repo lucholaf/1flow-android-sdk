@@ -22,14 +22,14 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.oneflow.analytics.model.adduser.OFAddUserResultResponse;
+import com.oneflow.analytics.model.adduser.OFAddUserResponse;
 
 @Dao
 public interface OFUserDAO {
 
     @Insert
-    void insertUser(OFAddUserResultResponse aurr);
+    void insertUser(OFAddUserResponse aurr);
 
     @Query("Select * from User")
-    OFAddUserResultResponse getUser();
+    OFAddUserResponse getUser();
 }
