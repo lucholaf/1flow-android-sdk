@@ -550,7 +550,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         //sdkdb = Room.databaseBuilder(context, SDKDB.class,"one-flow-db").build();
         OFCreateSession.createSession(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), csr, this, OFConstants.ApiHitType.CreateSession);
     }*/
-
+   public static void recordEvents(String eventName) {
+       recordEvents(eventName,null);
+   }
     /**
      * Record events on any user action. This method will recognize if any survey is available against this event name
      *
