@@ -54,14 +54,14 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
 
     OFCustomTextViewBold surveyTitle, submitButton;
-    RelativeLayout optionLayout,optionLayoutOuter;
+    RelativeLayout optionLayout, optionLayoutOuter;
     OFCustomEditText userInput, userInputShort;
 
     OFCustomTextView surveyInputLimit, skipBtn;
 
     OFCustomTextView surveyDescription;
 
-    String userText="";
+    String userText = "";
 
     String tag = this.getClass().getName();
 
@@ -72,7 +72,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         Bundle args = new Bundle();
         args.putSerializable("data", ahdList);
         args.putSerializable("theme", sdkTheme);
-        args.putString("themeColor",themeColor);
+        args.putString("themeColor", themeColor);
         myFragment.setArguments(args);
 
         return myFragment;
@@ -81,14 +81,14 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
-        OFHelper.v(tag,"1Flow reached onSaveInstanceState");
-        if(surveyScreens.getInput().getInput_type().equalsIgnoreCase("short-text")){
-            OFOneFlowSHP.getInstance(getActivity()).storeValue("userInput",userInputShort.getText().toString());
-        }else{
-            OFOneFlowSHP.getInstance(getActivity()).storeValue("userInput",userInput.getText().toString());
+        OFHelper.v(tag, "1Flow reached onSaveInstanceState");
+        if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("short-text")) {
+            OFOneFlowSHP.getInstance(getActivity()).storeValue("userInput", userInputShort.getText().toString());
+        } else {
+            OFOneFlowSHP.getInstance(getActivity()).storeValue("userInput", userInput.getText().toString());
         }
 
-        outState.putString("userText",userText);
+        outState.putString("userText", userText);
         super.onSaveInstanceState(outState);
     }
 
@@ -97,15 +97,15 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         try {
-            OFHelper.v(tag,"1Flow reached onSaveInstanceState");
+            OFHelper.v(tag, "1Flow reached onSaveInstanceState");
             userText = savedInstanceState.getString("userText");
-            OFHelper.v(tag,"1Flow reached onSaveInstanceState0["+userText+"]");
+            OFHelper.v(tag, "1Flow reached onSaveInstanceState0[" + userText + "]");
             if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("short-text")) {
                 userInputShort.setText(userText);
             } else {
                 userInput.setText(userText);
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
 
         }
     }
@@ -131,7 +131,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                   // OFHelper.v(tag, "1Flow animation END[" + i + "]");
+                    // OFHelper.v(tag, "1Flow animation END[" + i + "]");
                     if (i < animateViews.length) {
                         animateViews[i++].startAnimation(animation);
                     }
@@ -174,7 +174,6 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         optionLayoutOuter = (RelativeLayout) view.findViewById(R.id.input_layout_view);
         optionLayout = (RelativeLayout) view.findViewById(R.id.option_layout);
         waterMarkLayout = (LinearLayout) view.findViewById(R.id.bottom_water_mark);
-
 
 
         handleWaterMarkStyle(sdkTheme);
@@ -365,12 +364,12 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
 
         if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
 
-            if(!savedValue.equalsIgnoreCase("NA")) {
+            if (!savedValue.equalsIgnoreCase("NA")) {
                 userInput.setText(savedValue);
             }
         } else {
             //animateViews = new View[]{surveyTitle, surveyDescription, userInputShort, submitButton};
-            if(!savedValue.equalsIgnoreCase("NA")) {
+            if (!savedValue.equalsIgnoreCase("NA")) {
                 userInputShort.setText(savedValue);
             }
         }
@@ -499,8 +498,8 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
             });
         }
 
-        OFHelper.v(tag,"1Flow reached onResume 0["+userText+"]");
-        if(!userText.isEmpty()) {
+        OFHelper.v(tag, "1Flow reached onResume 0[" + userText + "]");
+        if (!userText.isEmpty()) {
             if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("short-text")) {
                 userInputShort.setText(userText);
             } else {
@@ -525,22 +524,33 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
     });*/
 
 
-
     @Override
     public void onClick(View v) {
-        long lastHitGap = System.currentTimeMillis()-OFOneFlowSHP.getInstance(getActivity()).getLongValue(OFConstants.SHP_LAST_CLICK_TIME);
+        long lastHitGap = System.currentTimeMillis() - OFOneFlowSHP.getInstance(getActivity()).getLongValue(OFConstants.SHP_LAST_CLICK_TIME);
         OFHelper.v(tag, "1Flow lastHit[" + lastHitGap + "]");
-        if(lastHitGap>1500) {
+        if (lastHitGap > 1500) {
             OFOneFlowSHP.getInstance(getActivity()).storeValue("userInput", "");
             if (v.getId() == R.id.skip_btn) {
-                weakReference.get().addUserResponseToList(surveyScreens.get_id(), null, null);
+                if (weakReference != null) {
+                    weakReference.get().addUserResponseToList(surveyScreens.get_id(), null, null);
+                } else {
+                    OFHelper.v(tag, "1Flow no instance available to process");
+                }
             } else if (v.getId() == R.id.submit_btn) {
                 if (surveyScreens.getInput().getInput_type().equalsIgnoreCase("text")) {
                     if (userInput.getText().toString().trim().length() >= surveyScreens.getInput().getMin_chars()) {
-                        weakReference.get().addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString().trim().length() > 0 ? userInput.getText().toString().trim() : null);
+                        if (weakReference != null) {
+                            weakReference.get().addUserResponseToList(surveyScreens.get_id(), null, userInput.getText().toString().trim().length() > 0 ? userInput.getText().toString().trim() : null);
+                        } else {
+                            OFHelper.v(tag, "1Flow no instance available to process");
+                        }
                     }
                 } else {
-                    weakReference.get().addUserResponseToList(surveyScreens.get_id(), null, userInputShort.getText().toString().trim().length() > 0 ? userInputShort.getText().toString().trim() : null);
+                    if (weakReference != null) {
+                        weakReference.get().addUserResponseToList(surveyScreens.get_id(), null, userInputShort.getText().toString().trim().length() > 0 ? userInputShort.getText().toString().trim() : null);
+                    } else {
+                        OFHelper.v(tag, "1Flow no instance available to process");
+                    }
                 }
 
             } else if (v.getId() == R.id.cancel_btn) {

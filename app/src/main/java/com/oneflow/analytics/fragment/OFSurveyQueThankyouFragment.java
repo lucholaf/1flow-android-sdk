@@ -129,8 +129,11 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
             surveyDescription.setVisibility(View.GONE);
         }
 
-
-        weakReference.get().position = weakReference.get().screens.size();
+        if(weakReference!=null) {
+            weakReference.get().position = weakReference.get().screens.size();
+        }else{
+            OFHelper.v(tag,"1Flow no instance available to process");
+        }
         handleWaterMarkStyle(sdkTheme);
         //Glide.with(this).load(R.drawable.thank_you).into(thankyouImage);
         Glide.with(this).load(R.drawable.thanku_bg).into(new DrawableImageViewTarget(thankyouImage) {
@@ -157,7 +160,11 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                                             public void run() {
 
                                                 ruleAction();
-                                                weakReference.get().finish();
+                                                if(weakReference!=null) {
+                                                    weakReference.get().finish();
+                                                }else{
+                                                    OFHelper.v(tag,"1Flow no instance available to process");
+                                                }
                                             }
                                         }, surveyScreens.getRules().getDismissBehavior().getFadesAway() ? (surveyScreens.getRules().getDismissBehavior().getDelayInSeconds() * 1000) : 20);
                                         // above logic is added for fade away if true then should fade away in mentioned duration
@@ -167,7 +174,11 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                                         @Override
                                         public void run() {
                                             ruleAction();
-                                            weakReference.get().finish();
+                                            if(weakReference!=null) {
+                                                weakReference.get().finish();
+                                            }else{
+                                                OFHelper.v(tag,"1Flow no instance available to process");
+                                            }
                                         }
                                     }, 20);
                                 }
@@ -175,8 +186,11 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-
-                                        weakReference.get().finish();
+                                        if(weakReference!=null) {
+                                            weakReference.get().finish();
+                                        }else{
+                                            OFHelper.v(tag,"1Flow no instance available to process");
+                                        }
                                     }
                                 }, 20);
                             }
@@ -211,7 +225,11 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
             }
         });
         //ruleAction();
-        weakReference.get().initFragment(5);
+        if(weakReference!=null) {
+            weakReference.get().initFragment(5);
+        }else{
+            OFHelper.v(tag,"1Flow no instance available to process");
+        }
         return view;
 
     }
@@ -222,7 +240,11 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
         try {
             //Logic for showing close button if fade away is false then have to show close button at thankyou page
             if (!surveyScreens.getRules().getDismissBehavior().getFadesAway()) {
-                weakReference.get().closeBtn.setVisibility(View.VISIBLE);
+                if(weakReference!=null) {
+                    weakReference.get().closeBtn.setVisibility(View.VISIBLE);
+                }else{
+                    OFHelper.v(tag,"1Flow no instance available to process");
+                }
             }
         } catch (Exception ex) {
 
@@ -243,7 +265,11 @@ public class OFSurveyQueThankyouFragment extends BaseFragment {
                         startActivity(browserIntent);
                     } else if (dl.getType().equalsIgnoreCase("rating")) {
                         // OFHelper.makeText(OFSurveyActivity.this,"RATING METHOD CALLED",1);
-                        weakReference.get().reviewThisApp(getActivity());
+                        if(weakReference!=null) {
+                            weakReference.get().reviewThisApp(getActivity());
+                        }else{
+                            OFHelper.v(tag,"1Flow no instance available to process");
+                        }
                     }
                 }
             }
