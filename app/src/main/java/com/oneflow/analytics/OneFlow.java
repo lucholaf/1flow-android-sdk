@@ -541,8 +541,6 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     }
 
     public void initDirectSurvey(String userId, String surveyID) {
-
-        //OFSurvey.getSurveyWithoutCondition(mContext, this, "8baf188420037bd2d768ad27", OFConstants.ApiHitType.directSurvey, userId, OFConstants.currentVersion);
         OFSurvey.getSurveyWithoutCondition(mContext, this, surveyID, OFConstants.ApiHitType.directSurvey, userId, OFConstants.currentVersion);
     }
 
@@ -1306,7 +1304,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 setUpHashForActivity();
                 if (surveyResponse != null) {
                     OFHelper.v("1Flow", "1Flow survey callback not null");
-                    triggerSurvey(surveyResponse, "");
+                    //triggerSurvey(surveyResponse, "");
+                    directSurveyShowUp(surveyResponse,"");
                 } else {
                     OFHelper.v("1Flow", "1Flow survey callback null");
                 }
@@ -1423,6 +1422,86 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
             } else {
                 mContext.getApplicationContext().startActivity(surveyIntent);
+            }
+        }
+    }
+    Intent surveyIntentD = null;
+    private void directSurveyShowUp(OFGetSurveyListResponse gslr, String eventName) {
+
+        OFHelper.v("1Flow", "1Flow eventName[" + eventName + "]surveyId[" + gslr.get_id() + "]position[" + gslr.getSurveySettings().getSdkTheme().getWidgetPosition() + "]");
+
+        if (gslr.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
+            surveyIntentD = new Intent(mContext.getApplicationContext(), activityName.get("bottom-center"));
+        } else {
+            surveyIntentD = new Intent(mContext.getApplicationContext(), activityName.get(gslr.getSurveySettings().getSdkTheme().getWidgetPosition()));
+        }
+        //final Intent surveyIntentD = new Intent(mContext.getApplicationContext(), OFFirstLanderActivity.class);
+
+        OFOneFlowSHP ofs1 = OFOneFlowSHP.getInstance(mContext);
+
+
+        // #001 below code commented because survey will finally be started in next activity after event validation
+        HashMap<String, Object> mapValue = new HashMap<>();
+        mapValue.put("flow_id", gslr.get_id());
+        OFEventController ec = OFEventController.getInstance(mContext);
+        ec.storeEventsInDB(OFConstants.AUTOEVENT_SURVEYIMPRESSION, mapValue, 0);
+
+        ofs1.storeValue(OFConstants.SHP_SURVEY_RUNNING, true);
+        ofs1.storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());
+
+
+        OFThrottlingConfig config = ofs1.getThrottlingConfig();
+
+        if (config != null) {
+
+            OFHelper.v("1Flow", "1Flow throttling config not null");
+            config.setActivated(true);
+            config.setActivatedById(gslr.get_id());
+            config.setActivatedAt(System.currentTimeMillis());
+
+            ofs1.setThrottlingConfig(config);
+
+            setupGlobalTimerToDeactivateThrottlingLocally();
+        } else {
+            OFHelper.v("1Flow", "1Flow throttling config null");
+        }
+
+        surveyIntentD.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        surveyIntentD.putExtra("SurveyType", gslr);
+        surveyIntentD.putExtra("eventName", eventName);
+        surveyIntentD.putExtra("eventData", new JSONObject(eventMap).toString());
+
+
+        OFHelper.v("1Flow", "1Flow activity running[" + OFSDKBaseActivity.isActive + "]");
+
+        if (!OFSDKBaseActivity.isActive) {
+            if (gslr.getSurveyTimeInterval() != null) {
+
+                if (gslr.getSurveyTimeInterval().getType().equalsIgnoreCase("show_after")) {
+
+                    try {
+                        delayDuration = gslr.getSurveyTimeInterval().getValue() * 1000;
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    OFHelper.v("1Flow", "1Flow activity waiting duration[" + delayDuration + "]");
+
+
+                    ContextCompat.getMainExecutor(mContext).execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            OFDelayedSurveyCountdownTimer delaySurvey = OFDelayedSurveyCountdownTimer.getInstance(mContext, delayDuration, 1000l, surveyIntentD);
+                            delaySurvey.start();
+                        }
+                    });
+
+
+                } else {
+                    mContext.getApplicationContext().startActivity(surveyIntentD);
+                }
+
+            } else {
+                mContext.getApplicationContext().startActivity(surveyIntentD);
             }
         }
     }

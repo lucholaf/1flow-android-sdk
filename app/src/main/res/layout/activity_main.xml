@@ -74,12 +74,26 @@
         android:padding="10dp"
         android:tag="configure_oneflow"
         android:text="Configure OneFlow"
-        android:layout_above="@id/log_user"
+        android:layout_above="@id/direct_survey"
         android:visibility="visible"
 
          />
 
+    <com.oneflow.analytics.customwidgets.OFCustomTextView
+        android:id="@+id/direct_survey"
+        style="@style/comman_positive_button_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/btn_selector"
+        android:onClick="clickHandler"
+        android:padding="10dp"
+        android:tag="configure_oneflow"
+        android:text="Direct Survey"
+        android:layout_above="@id/log_user"
+        android:visibility="visible"
 
+        />
 
     <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/log_user"
