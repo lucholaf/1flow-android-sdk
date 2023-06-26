@@ -12,12 +12,12 @@ public class OFFilterSurveys extends Thread{
     Context context;
     OFMyResponseHandlerOneFlow responseHandler;
     OFConstants.ApiHitType type;
-    OFGetSurveyListResponse gslr;
+    //OFGetSurveyListResponse gslr;
     String eventName;
-    public OFFilterSurveys(Context context, OFMyResponseHandlerOneFlow responseHandler, OFConstants.ApiHitType type, OFGetSurveyListResponse gslr, String eventName) {
+    public OFFilterSurveys(Context context, OFMyResponseHandlerOneFlow responseHandler, OFConstants.ApiHitType type,  String eventName) {
         this.context = context;
         this.type = type;
-        this.gslr = gslr;
+        //this.gslr = gslr;
         this.eventName = eventName;
         this.responseHandler = responseHandler;
     }
@@ -34,18 +34,19 @@ public class OFFilterSurveys extends Thread{
         ArrayList<OFGetSurveyListResponse> currentList = OFOneFlowSHP.getInstance(context).getSurveyList();
         ArrayList<OFGetSurveyListResponse> returningList = new ArrayList<>();
 
-        OFHelper.v(tag,"1Flow actual size["+currentList.size()+"]");
-        for (OFGetSurveyListResponse gslrLocal : currentList) {
-            if (checkSurveyAvailability(gslrLocal)) {
-                OFHelper.v(tag,"1Flow actual found true");
-                returningList.add(gslrLocal);
-            }else{
-                OFHelper.v(tag,"1Flow actual found false");
+        if(currentList!=null) {
+            OFHelper.v(tag, "1Flow actual size[" + currentList.size() + "]");
+            for (OFGetSurveyListResponse gslrLocal : currentList) {
+                if (checkSurveyAvailability(gslrLocal)) {
+                    OFHelper.v(tag, "1Flow actual found true");
+                    returningList.add(gslrLocal);
+                } else {
+                    OFHelper.v(tag, "1Flow actual found false");
+                }
             }
+            OFHelper.v(tag, "1Flow actual size 1[" + returningList.size() + "]");
         }
-        OFHelper.v(tag,"1Flow actual size 1["+returningList.size()+"]");
-
-        responseHandler.onResponseReceived(type,returningList,0l,eventName,gslr,null);
+        responseHandler.onResponseReceived(type,returningList,0l,eventName,null,null);
 
     }
 

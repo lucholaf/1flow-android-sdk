@@ -585,7 +585,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     eventMap.put("timestamp", System.currentTimeMillis() / 1000);
 
                     //Checking if any survey available under coming event.
-                    of.checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
+                    //of.checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
+                    of.triggerSurveyNew(eventName);
 
                 } else {
                     OFHelper.v("1Flow", "1Flow null context for event");
@@ -1345,7 +1346,23 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         return connectivity;
     }
 
+    private void triggerSurveyNew(String eventName){
+        final Intent surveyIntent = new Intent(mContext.getApplicationContext(), OFFirstLanderActivity.class);
+
+        surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        surveyIntent.putExtra("eventName", eventName);
+        surveyIntent.putExtra("eventData", new JSONObject(eventMap).toString());
+
+
+        OFHelper.v("1Flow", "1Flow activity running[" + OFSDKBaseActivity.isActive + "]");
+
+        if (!OFSDKBaseActivity.isActive) {
+            mContext.getApplicationContext().startActivity(surveyIntent);
+        }
+    }
+
     Long delayDuration = 0l;
+
 
     private void triggerSurvey(OFGetSurveyListResponse gslr, String eventName) {
 

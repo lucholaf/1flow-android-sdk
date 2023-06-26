@@ -11,6 +11,7 @@ import android.webkit.WebViewClient;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
 import com.oneflow.analytics.controller.OFEventController;
@@ -21,6 +22,7 @@ import com.oneflow.analytics.model.survey.OFThrottlingConfig;
 import com.oneflow.analytics.repositories.OFLogUserDBRepoKT;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
+import com.oneflow.analytics.utils.OFDelayedSurveyCountdownTimer;
 import com.oneflow.analytics.utils.OFFilterSurveys;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
@@ -37,7 +39,7 @@ import java.util.HashMap;
 
 public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResponseHandlerOneFlow {
     OFCustomeWebView wv;
-    OFGetSurveyListResponse surveyItem;
+    //OFGetSurveyListResponse surveyItem;
     String triggerEventName;
     String eventData;
     String tag = this.getClass().getName();
@@ -50,13 +52,13 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
 
         setContentView(R.layout.lander_page);
         wv = findViewById(R.id.webview_contents_lander);
-        surveyItem = (OFGetSurveyListResponse) this.getIntent().getSerializableExtra("SurveyType");
+        //surveyItem = (OFGetSurveyListResponse) this.getIntent().getSerializableExtra("SurveyType");
         triggerEventName = this.getIntent().getStringExtra("eventName");//surveyItem.getTrigger_event_name();
         eventData = this.getIntent().getStringExtra("eventData");
         OFHelper.v(tag, "1Flow webmethod called [" + eventData + "]");
 
 
-        new OFFilterSurveys(OFFirstLanderActivity.this, OFFirstLanderActivity.this, OFConstants.ApiHitType.Config.filterSurveys,surveyItem,triggerEventName).start();
+        new OFFilterSurveys(OFFirstLanderActivity.this, OFFirstLanderActivity.this, OFConstants.ApiHitType.Config.filterSurveys,triggerEventName).start();
 
         setUpHashForActivity();
 
@@ -74,11 +76,8 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
         OFOneFlowSHP shp = OFOneFlowSHP.getInstance(OFFirstLanderActivity.this);
         try {
 
-            //jsFunction = "oneFlowFilterSurvey( '" + jArray.toString() + "','" + new JSONArray(events).toString() + "', '" + conditionsJson.toString() + "')";
-            //jsFunction = "oneFlowFilterSurvey('" + jArray.toString() + "','" + new JSONArray(events).toString() + "')";
-            //jsFunction = "oneFlowFilterSurvey(" + jArray.toString() + ",'" + eventData + "')";
             jsFunction = "oneFlowFilterSurvey(" + new Gson().toJson(returningList) + "," + eventData + ")";
-            //String jsFunction = "oneFlowFilterSurvey()";
+
         } catch (Exception ex) {
             OFHelper.e(tag, "1Flow error[" + ex.getMessage() + "]");
         }
@@ -117,18 +116,16 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
             case lastSubmittedSurvey:
                 OFHelper.v(tag, "1Flow globalThrottling received[" + obj1 + "]");
 
-
+                OFGetSurveyListResponse gslrTH = (OFGetSurveyListResponse) obj2;
                 if (obj1 == null) {
-                    //triggerSurvey(gslr, reserved);
-                    launchSurvey();
+                    launchSurvey(gslrTH);
                 } else {
                     OFSurveyUserInput ofSurveyUserInput = (OFSurveyUserInput) obj1;
                     OFOneFlowSHP ofs1 = OFOneFlowSHP.getInstance(OFFirstLanderActivity.this);
                     OFThrottlingConfig config = ofs1.getThrottlingConfig();
                     OFHelper.v(tag, "1Flow globalThrottling inside else [" + (ofSurveyUserInput.getCreatedOn() < config.getActivatedAt()) + "]");
                     if (ofSurveyUserInput.getCreatedOn() < config.getActivatedAt()) {
-                        //triggerSurvey(gslr, reserved);
-                        launchSurvey();
+                        launchSurvey(gslrTH);
                     }
                 }
 
@@ -138,12 +135,13 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
                 OFHelper.v("1Flow", "1Flow filterSurvey came back ["+obj1+"]");
                 if(obj1!=null) {
                     ArrayList<OFGetSurveyListResponse> returningList = (ArrayList<OFGetSurveyListResponse>) obj1;
-                    OFGetSurveyListResponse gslr = (OFGetSurveyListResponse)obj2;
 
                     OFHelper.v("1Flow", "1Flow filterSurvey came back size["+returningList.size()+"]");
 
                     if(returningList.size()>0){
                         checkWebviewFunction(returningList);
+                    }else{
+                        OFFirstLanderActivity.this.finish();
                     }
                 }
 
@@ -171,7 +169,11 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
                         Gson gson = new Gson();
                         OFGetSurveyListResponse result = gson.fromJson(resultJson, OFGetSurveyListResponse.class);
                         handleResult(result);
+                    }else{
+                        OFFirstLanderActivity.this.finish();
                     }
+                }else{
+                    OFFirstLanderActivity.this.finish();
                 }
             }
 
@@ -183,7 +185,7 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
             if (result != null) {
                 OFFirstLanderActivity.this.finish();
                 //launchSurvey();
-                throtlingCheck();
+                throtlingCheck(result);
             } else {
                 OFHelper.v(tag, "1Flow event flow check failed no survey launch");
             }
@@ -200,28 +202,29 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
         }
     }
 
-    public void throtlingCheck(){
+    Long delayDuration;
+    public void throtlingCheck(OFGetSurveyListResponse surveyToInit){
         OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(OFFirstLanderActivity.this);
         OFThrottlingConfig throttlingConfig = ofs.getThrottlingConfig();
         if (throttlingConfig == null) {
-            //triggerSurvey(gslr, reserved);
-            launchSurvey();
+            //triggerSurvey(gslr, reserved)
+                launchSurvey(surveyToInit);
         } else {
 
-            OFHelper.v(tag, "1Flow globalThrottling[" + surveyItem.getSurveySettings().getOverrideGlobalThrottling() + "]throttlingConfig isActivated[" + throttlingConfig.isActivated() + "]");
+            OFHelper.v(tag, "1Flow globalThrottling[" + surveyToInit.getSurveySettings().getOverrideGlobalThrottling() + "]throttlingConfig isActivated[" + throttlingConfig.isActivated() + "]");
 
 
-            if (surveyItem.getSurveySettings().getOverrideGlobalThrottling()) {
+            if (surveyToInit.getSurveySettings().getOverrideGlobalThrottling()) {
                 //triggerSurvey(gslr, reserved);
-                launchSurvey();
+                launchSurvey(surveyToInit);
             } else {
                 if (throttlingConfig.isActivated()) {
-                    if (throttlingConfig.getActivatedById().equalsIgnoreCase(surveyItem.get_id())) {
+                    if (throttlingConfig.getActivatedById().equalsIgnoreCase(surveyToInit.get_id())) {
 
                         OFHelper.v(tag, "1Flow globalThrottling id matched ");
                         //gslrGlobal = gslr;
                         // check in submitted survey list locally if this survey has been submitted then false
-                        new OFLogUserDBRepoKT().findLastSubmittedSurveyID(OFFirstLanderActivity.this, this, OFConstants.ApiHitType.lastSubmittedSurvey, triggerEventName);
+                        new OFLogUserDBRepoKT().findLastSubmittedSurveyID(OFFirstLanderActivity.this, this, OFConstants.ApiHitType.lastSubmittedSurvey, triggerEventName, surveyToInit);
 
 //                                                        new OFMyDBAsyncTask(mContext,this, OFConstants.ApiHitType.lastSubmittedSurvey,false).execute();
 
@@ -229,26 +232,27 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
                     //else nothing to do
                 } else {
                     //triggerSurvey(gslr, reserved);
-                    launchSurvey();
+                    launchSurvey(surveyToInit);
                 }
             }
 
         }
     }
-    public void launchSurvey() {
-        OFHelper.v(tag, "1Flow eventName[" + triggerEventName + "]surveyId[" + surveyItem.get_id() + "]");
-        Intent surveyIntent = null;
-        if (surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
+    Intent surveyIntent = null;
+    public void launchSurvey(OFGetSurveyListResponse surveyToInit) {
+        OFHelper.v(tag, "1Flow eventName[" + triggerEventName + "]surveyId[" + surveyToInit.get_id() + "]");
+
+        if (surveyToInit.getSurveySettings().getSdkTheme().getWidgetPosition() == null) {
             surveyIntent = new Intent(getApplicationContext(), activityName.get("bottom-center"));
         } else {
-            surveyIntent = new Intent(getApplicationContext(), activityName.get(surveyItem.getSurveySettings().getSdkTheme().getWidgetPosition()));
+            surveyIntent = new Intent(getApplicationContext(), activityName.get(surveyToInit.getSurveySettings().getSdkTheme().getWidgetPosition()));
         }
         //surveyIntent = new Intent(getApplicationContext(), OFFirstLanderActivity.class);
 
         OFOneFlowSHP ofs1 = OFOneFlowSHP.getInstance(this);
 
         HashMap<String, Object> mapValue = new HashMap<>();
-        mapValue.put("flow_id", surveyItem.get_id());
+        mapValue.put("flow_id", surveyToInit.get_id());
         OFEventController ec = OFEventController.getInstance(this);
         ec.storeEventsInDB(OFConstants.AUTOEVENT_SURVEYIMPRESSION, mapValue, 0);
 
@@ -262,7 +266,7 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
 
             OFHelper.v(tag, "1Flow throttling config not null");
             config.setActivated(true);
-            config.setActivatedById(surveyItem.get_id());
+            config.setActivatedById(surveyToInit.get_id());
             config.setActivatedAt(System.currentTimeMillis());
 
             ofs1.setThrottlingConfig(config);
@@ -276,14 +280,42 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
         //ofs1.storeValue(OFConstants.SHP_SURVEY_SEARCH_POSITION, 0);
 
         surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        surveyIntent.putExtra("SurveyType", surveyItem);
+        surveyIntent.putExtra("SurveyType", surveyToInit);
         surveyIntent.putExtra("eventName", triggerEventName);
 
         OFHelper.v(tag, "1Flow activity running[" + OFSDKBaseActivity.isActive + "]");
 
         if (!OFSDKBaseActivity.isActive) {
 
-            getApplicationContext().startActivity(surveyIntent);
+            if (surveyToInit.getSurveyTimeInterval() != null) {
+
+                if (surveyToInit.getSurveyTimeInterval().getType().equalsIgnoreCase("show_after")) {
+
+                    try {
+                        delayDuration = surveyToInit.getSurveyTimeInterval().getValue() * 1000;
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    OFHelper.v("1Flow", "1Flow activity waiting duration[" + delayDuration + "]");
+
+
+                    ContextCompat.getMainExecutor(this).execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            OFDelayedSurveyCountdownTimer delaySurvey = OFDelayedSurveyCountdownTimer.getInstance(OFFirstLanderActivity.this, delayDuration, 1000l, surveyIntent);
+                            delaySurvey.start();
+                        }
+                    });
+
+
+                } else {
+                    startActivity(surveyIntent);
+                }
+
+            } else {
+                startActivity(surveyIntent);
+            }
+
             OFFirstLanderActivity.this.finish();
         }
     }

@@ -216,7 +216,7 @@ class OFLogUserDBRepoKT {
             mrh.onResponseReceived(type, surveyUserInputKT.get(0), 0L, eventName, null, null)
         }
     }*/
-    fun findLastSubmittedSurveyID(context: Context, mrh: OFMyResponseHandlerOneFlow, type: ApiHitType?, eventName: String?){
+    fun findLastSubmittedSurveyID(context: Context, mrh: OFMyResponseHandlerOneFlow, type: ApiHitType?, eventName: String?, surveyToInit :OFGetSurveyListResponse){
         val job = Job()
         val scope = CoroutineScope(job)
         scope.launch {
@@ -226,9 +226,9 @@ class OFLogUserDBRepoKT {
                 val ofSurveyUserInput = surveyUserInput as OFSurveyUserInput
                 OFHelper.v("OFLogUserDBRepoKT", "OneFlow fetching Last submitted survey[" + ofSurveyUserInput.createdOn + "]")
                 OFHelper.v("OFLogUserDBRepoKT", "OneFlow fetching Last submitted survey[" + ofSurveyUserInput.synced + "]")
-                mrh.onResponseReceived(type, surveyUserInput, 0L, eventName, null, null)
+                mrh.onResponseReceived(type, surveyUserInput, 0L, eventName, surveyToInit, null)
             }catch (ex: Exception){
-                mrh.onResponseReceived(type, null, 0L, eventName, null, null)
+                mrh.onResponseReceived(type, null, 0L, eventName, surveyToInit, null)
             }
         }
     }
