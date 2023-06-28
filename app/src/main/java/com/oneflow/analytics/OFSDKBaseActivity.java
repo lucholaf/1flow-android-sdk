@@ -464,7 +464,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
         // event click only for welcome or info screen
 
-        if(screens.get(position).getInput().getInput_type().equalsIgnoreCase("welcome-screen")) {
+        if (screens.get(position).getInput().getInput_type().equalsIgnoreCase("welcome-screen")) {
             HashMap<String, Object> mapValue = new HashMap<>();
             mapValue.put("flow_id", selectedSurveyId);
             mapValue.put("step_id", screenID);
@@ -648,13 +648,16 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         if (found) {
             if (OFHelper.validateString(action).equalsIgnoreCase("the-end")) {
                 //TODO if last screen is thankyou then only move there else close the survey
+                try {
+                    if ((screens.get(screens.size() - 1).getInput().getInput_type().equalsIgnoreCase("thank_you") ||
+                            screens.get(screens.size() - 1).getInput().getInput_type().equalsIgnoreCase("end-screen")
+                    )) {
+                        position = screens.size() - 1;
+                    } else {
+                        position = screens.size();
+                    }
+                } catch (Exception ex) {
 
-                if ((screens.get(screens.size() - 1).getInput().getInput_type().equalsIgnoreCase("thank_you") ||
-                        screens.get(screens.size() - 1).getInput().getInput_type().equalsIgnoreCase("end-screen")
-                )) {
-                    position = screens.size() - 1;
-                }else{
-                    position = screens.size() ;
                 }
                 initFragment(2);
 
