@@ -20,7 +20,7 @@ package com.oneflow.analytics.utils;
 
 public interface OFConstants {
 
-    String currentVersion = "2023.06.23";//2023.06.23//2023.04.16";//2023.03.08";//2023.01.12";//""2022.11.20";
+    String currentVersion = "2023.06.24";//2023.06.23//2023.04.16";//2023.03.08";//2023.01.12";//""2022.11.20";
     String MODE = "prod";//"dev";//""beta";//
 
     String cacheFileName = "logic-engine.js";
@@ -69,6 +69,7 @@ public interface OFConstants {
     String SHP_SURVEY_SEARCH_POSITION = "survey_search_position";
     String SHP_LAST_CLICK_TIME = "survey_last_click_time";
     String SHP_EVENTS_DELETE_PENDING = "survey_events_delete_pending";
+    String SHP_CACHE_FILE_UPDATE_TIME = "shp_cache_file_update_time";
 
 
 
@@ -82,11 +83,9 @@ public interface OFConstants {
 
         Config, FirstOpen, CreateUser, CreateSession, RecordLogs, fetchEventsFromDBBeforeConfig,fetchEventsFromDB, sendEventsToAPI, insertEventsInDB,
         deleteEventsFromDB,deleteEventsFromDBLastSession, submittingOfflineSurvey, logUser, insertSurveyInDB, fetchSurveysFromDB, deleteSurveyFromDB, fetchLocation,
-
+        filterSurveys,
         fetchSurveysFromAPI,fetchEventsBeforSurveyFetched,fetchSubmittedSurvey,checkResurveyNSubmission,updateSurveyIds,
-        surveySubmited,lastSubmittedSurvey,updateSubmittedSurveyLocally,
-
-        directSurvey,filterSurveys
+        surveySubmited,lastSubmittedSurvey,updateSubmittedSurveyLocally, directSurvey
     }
     enum BRActionType{
         submitEvents,submitSurveys
@@ -94,6 +93,7 @@ public interface OFConstants {
 
     String userInputValueTemp = "";
     int screenWidth = 1100;
+    int cacheFileLifeSpan = 1000*60*60*24; //24 hour life span for JS logic
     int buttonActiveValue = 100;
     int buttonInActiveValue = 85;
 }

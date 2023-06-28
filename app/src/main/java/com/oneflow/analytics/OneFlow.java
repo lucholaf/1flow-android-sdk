@@ -965,7 +965,11 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                     OFLogUserRequest lur = oneFlowSHP.getLogUserRequest();
 
-                    new OFCacheHandler(mContext).start();
+                    long diff = System.currentTimeMillis()-oneFlowSHP.getLongValue(OFConstants.SHP_CACHE_FILE_UPDATE_TIME);
+                    OFHelper.v("1Flow", "1Flow create user finish cache file life span diff[" + diff + "]["+(diff>OFConstants.cacheFileLifeSpan)+"]");
+                    if(diff>OFConstants.cacheFileLifeSpan) {
+                        new OFCacheHandler(mContext).start();
+                    }
 
                     OFHelper.v("1Flow", "1Flow create user finish hitting pending logUser[" + lur + "]");
                     if (lur != null && logUserPending) {
@@ -982,7 +986,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 } else {
                     OFHelper.headerKey = "";
                     Intent intent = new Intent("survey_list_fetched");
-                    intent.putExtra("msg", "Invalid project key");
+                    intent.putExtra("msg", "User Not Created");//"Invalid project key");
                     mContext.sendBroadcast(intent);
                     if (OFConstants.MODE.equalsIgnoreCase("dev")) {
                         OFHelper.makeText(mContext, reserved, 1);

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.oneflow.analytics.model.OFApiInterface;
 import com.oneflow.analytics.model.OFRetroBaseService;
+import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 
@@ -20,28 +21,28 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OFCacheHandler extends Thread{
+public class OFCacheHandler extends Thread {
     Context context;
     String tag = this.getClass().getName();
-    public OFCacheHandler(Context context)
-    {
+
+    public OFCacheHandler(Context context) {
         this.context = context;
-        OFHelper.v(tag,"1Flow CacheHandler constructor called");
+        OFHelper.v(tag, "1Flow CacheHandler constructor called");
     }
+
     @Override
     public void run() {
         super.run();
-        OFHelper.v(tag,"1Flow CacheHandler started");
+        OFHelper.v(tag, "1Flow CacheHandler started");
         downloadFileNew();
     }
 
 
-    public void downloadFileNew(){
+    public void downloadFileNew() {
 
         try {
 
-            //String apiUrl = "https://cdn.1flow.app/index-dev.js";
-            String apiUrl = "https://cdn.1flow.app/index.js";
+            String apiUrl = "https://cdn.1flow.app/index-dev.js";
             // Create a URL object with the API endpoint
             URL url = new URL(apiUrl);
 
@@ -72,13 +73,15 @@ public class OFCacheHandler extends Thread{
             outputStream.close();
 
             OFHelper.v(tag, "Data downloaded and cached successfully.");
+            OFOneFlowSHP.getInstance(context).storeValue(OFConstants.SHP_CACHE_FILE_UPDATE_TIME, System.currentTimeMillis());
 
         } catch (IOException e) {
-            OFHelper.e(tag,"Error downloading and caching data: " + e.getMessage());
+            OFHelper.e(tag, "Error downloading and caching data: " + e.getMessage());
         }
     }
-    public void createCacheFile(String fileData){
-        OFHelper.v(tag,"1Flow CacheHandler creating cache File");
+
+    public void createCacheFile(String fileData) {
+        OFHelper.v(tag, "1Flow CacheHandler creating cache File");
         // Get the cache directory
         File cacheDir = context.getCacheDir();
 
@@ -90,7 +93,7 @@ public class OFCacheHandler extends Thread{
 
             // Create the cache file
             if (cacheFile.createNewFile()) {
-                OFHelper.v(tag,"1Flow CacheHandler cache file created");
+                OFHelper.v(tag, "1Flow CacheHandler cache file created");
                 // File creation successful
                 // You can perform read/write operations on the cache file here
 
@@ -99,11 +102,11 @@ public class OFCacheHandler extends Thread{
                 writer.write(fileData);
                 writer.flush();
                 writer.close();
-                OFHelper.v(tag,"1Flow CacheHandler cache file content written["+cacheFile.length()+"]");
+                OFHelper.v(tag, "1Flow CacheHandler cache file content written[" + cacheFile.length() + "]");
             } else {
                 // File creation failed
                 // Handle the error or try a different approach
-                OFHelper.v(tag,"1Flow CacheHandler cache file not created");
+                OFHelper.v(tag, "1Flow CacheHandler cache file not created");
 
             }
         } catch (IOException e) {

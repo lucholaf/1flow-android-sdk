@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.oneflow.analytics.R;
 import com.oneflow.analytics.customwidgets.OFCustomTextView;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
@@ -47,8 +48,15 @@ public class OFSurveyListAdapter extends RecyclerView.Adapter<OFSurveyListAdapte
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         //OFHelper.v(this.getClass().getName(), "OneFlow adapter postion[" + position + "]");
 
-        holder.txtSurveyKey.setText(itemsList.get(position).getTrigger_event_name()+" ("+itemsList.get(position).getName()+")");
-        holder.txtSurveyKey.setTag(itemsList.get(position).getTrigger_event_name());
+        String triggerName = itemsList.get(position).getTrigger_event_name();
+        if(OFHelper.validateString(triggerName).equalsIgnoreCase("NA")) {
+            OFHelper.v(this.getClass().getName(), "OneFlow adapter postion[" + new Gson().toJson(itemsList.get(position).getSurveySettings().getTriggerFilters()) + "]");
+            if(itemsList.get(position).getSurveySettings().getTriggerFilters()!=null && itemsList.get(position).getSurveySettings().getTriggerFilters().size()>0) {
+                triggerName = itemsList.get(position).getSurveySettings().getTriggerFilters().get(0).getField();
+            }
+        }
+        holder.txtSurveyKey.setText(triggerName + " (" + itemsList.get(position).getName() + ")");
+        holder.txtSurveyKey.setTag(triggerName);
         holder.txtSurveyKey.setOnClickListener(gch);
 
         if (itemsList.get(position).getScreens() != null) {
