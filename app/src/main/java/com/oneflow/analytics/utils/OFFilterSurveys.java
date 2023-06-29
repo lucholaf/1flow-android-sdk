@@ -13,12 +13,12 @@ public class OFFilterSurveys extends Thread{
     OFMyResponseHandlerOneFlow responseHandler;
     OFConstants.ApiHitType type;
     //OFGetSurveyListResponse gslr;
-    String eventName;
-    public OFFilterSurveys(Context context, OFMyResponseHandlerOneFlow responseHandler, OFConstants.ApiHitType type,  String eventName) {
+    String eventNames;
+    public OFFilterSurveys(Context context, OFMyResponseHandlerOneFlow responseHandler, OFConstants.ApiHitType type,  String eventNames) {
         this.context = context;
         this.type = type;
         //this.gslr = gslr;
-        this.eventName = eventName;
+        this.eventNames = eventNames;
         this.responseHandler = responseHandler;
     }
 
@@ -46,7 +46,7 @@ public class OFFilterSurveys extends Thread{
             }
             OFHelper.v(tag, "1Flow actual size 1[" + returningList.size() + "]");
         }
-        responseHandler.onResponseReceived(type,returningList,0l,eventName,null,null);
+        responseHandler.onResponseReceived(type,returningList,0l,"",eventNames,null);
 
     }
 

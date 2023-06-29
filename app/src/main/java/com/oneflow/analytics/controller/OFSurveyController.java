@@ -23,6 +23,7 @@ import android.content.Intent;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.oneflow.analytics.OFFirstLanderActivity;
 import com.oneflow.analytics.OFSDKBaseActivity;
 import com.oneflow.analytics.OFSurveyActivityBannerBottom;
 import com.oneflow.analytics.OFSurveyActivityBannerTop;
@@ -38,6 +39,9 @@ import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -100,6 +104,8 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
 
 
     }
+    //ArrayList<HashMap<String, Object>> eventMap;
+    JSONArray eventMapArray;
     @Override
     public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved, Object obj2, Object obj3) {
 
@@ -109,7 +115,6 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
             case fetchSurveysFromAPI:
                 OFHelper.v("SurveyController", "OneFlow survey received throttling[" + reserved + "]");
                 if (obj != null) {
-
 
                     ArrayList<OFGetSurveyListResponse> surveyListResponse = (ArrayList<OFGetSurveyListResponse>) obj;
                     OFOneFlowSHP shp = OFOneFlowSHP.getInstance(mContext);
@@ -150,7 +155,21 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                         String[] name = (String[]) obj;
                         OFHelper.v("SurveyController", "OneFlow events before survey found[" + Arrays.asList(name) + "]length[" + name.length + "]");
                         if (name.length > 0) {
-                            Object[] ret = checkSurveyTitleAndScreens(Arrays.asList(name));
+                            HashMap<String,Object> eventMapLocal;
+                            eventMapArray = new JSONArray();
+
+
+                            for(String nameLocal: name){
+                                OFHelper.v("SurveyController", "OneFlow events for["+nameLocal+"]");
+                                eventMapLocal = new HashMap<>();
+                                eventMapLocal.put("name", nameLocal);
+                                eventMapLocal.put("timestamp", System.currentTimeMillis() / 1000);
+                                //eventMap.add(eventMapLocal);
+                                eventMapArray.put(new JSONObject(eventMapLocal));
+
+                            }
+                            triggerSurveyNew();
+                            /*Object[] ret = checkSurveyTitleAndScreens(Arrays.asList(name));
                             OFGetSurveyListResponse surveyItem = (OFGetSurveyListResponse) ret[1];
                             OFHelper.v("SurveyController", "OneFlow survey found[" + surveyItem + "]");
                             if (surveyItem != null) {
@@ -187,17 +206,31 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
                                         }
                                     }
                                 }
-                            }
+                            }*/
                         }
                     }
                 }
                catch(Exception ex){
 
+                   // ex.printStackTrace();
                }
                 break;
         }
+    }
 
+    private void triggerSurveyNew(){
 
+        OFHelper.v("1Flow", "1Flow activity reached running[" + OFSDKBaseActivity.isActive + "]");
+        final Intent surveyIntent = new Intent(mContext.getApplicationContext(), OFFirstLanderActivity.class);
+
+        surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        surveyIntent.putExtra("eventData", eventMapArray.toString());
+
+        OFHelper.v("1Flow", "1Flow activity running[" + OFSDKBaseActivity.isActive + "]");
+
+        if (!OFSDKBaseActivity.isActive) {
+            mContext.getApplicationContext().startActivity(surveyIntent);
+        }
     }
     private void setupGlobalTimerToDeactivateThrottlingLocally() {
 

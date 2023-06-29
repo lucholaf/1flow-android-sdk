@@ -110,7 +110,7 @@ public class OFCacheHandler extends Thread {
 
             }
         } catch (IOException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
             // Handle the exception
         }
     }

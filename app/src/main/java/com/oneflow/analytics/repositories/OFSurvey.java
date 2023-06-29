@@ -83,7 +83,7 @@ public class OFSurvey {
 
                             mrh.onResponseReceived(type, response.body().getResult(), 0l, throttling,null,null);
                         } catch (Exception ex) {
-                            ex.printStackTrace();
+                           // ex.printStackTrace();
                             mrh.onResponseReceived(type, "", 0l, "",null,null);
                         }
 
@@ -104,7 +104,7 @@ public class OFSurvey {
                 }
             });
         } catch (Exception ex) {
-            ex.printStackTrace();
+           // ex.printStackTrace();
         }
     }
 

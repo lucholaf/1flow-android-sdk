@@ -596,8 +596,9 @@ public class OFHelper {
             date = format.parse(dateInString);
 
         } catch (ParseException e) {
-            if (BuildConfig.DEBUG)
-                e.printStackTrace();
+            if (BuildConfig.DEBUG) {
+                //e.printStackTrace();
+            }
         }
         return date;
     }
@@ -610,8 +611,9 @@ public class OFHelper {
             SimpleDateFormat sdfNewThemeDate = new SimpleDateFormat(format);
             formattedDate = sdfNewThemeDate.format(dateValue);
         } catch (Exception e) {
-            if (BuildConfig.DEBUG)
-                e.printStackTrace();
+            if (BuildConfig.DEBUG) {
+                // e.printStackTrace();
+            }
         }
 
         return formattedDate;
@@ -655,7 +657,7 @@ public class OFHelper {
 
         } catch (JSONException je) {
             if (BuildConfig.DEBUG) {
-                je.printStackTrace();
+               // je.printStackTrace();
             }
         }
         return sb.toString();
@@ -699,8 +701,8 @@ public class OFHelper {
                 }
             }
         } catch (Exception ue) {
-            if (BuildConfig.DEBUG)
-                ue.printStackTrace();
+            if (BuildConfig.DEBUG){}
+               // ue.printStackTrace();
         }
         return fl;
     }
@@ -728,7 +730,7 @@ public class OFHelper {
         } catch (Exception e) {
 
             if (BuildConfig.DEBUG) {
-                e.printStackTrace();
+            //    e.printStackTrace();
             }
         }
         return body;

@@ -63,7 +63,7 @@ public class BaseFragment extends Fragment {
             //sa = null;
             //customFrag = CustomFrag.newInstance();
             // OFHelper.v(tag,"OneFlow custom survery exception ["+customFrag+"]");
-            ex.printStackTrace();
+           // ex.printStackTrace();
         }
 
 
@@ -230,7 +230,7 @@ public class BaseFragment extends Fragment {
             });
             colorAnimation.start();
         } catch (Exception ex) {
-            ex.printStackTrace();
+           // ex.printStackTrace();
         }
     }
 
@@ -259,7 +259,7 @@ public class BaseFragment extends Fragment {
             });
             colorAnimation.start();
         } catch (Exception ex) {
-            ex.printStackTrace();
+           // ex.printStackTrace();
         }
     }
 

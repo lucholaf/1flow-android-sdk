@@ -85,7 +85,7 @@ public class OFCustomeWebView extends WebView {
         CookieSyncManager.getInstance().sync();
         SystemClock.sleep(500); // time in milliseconds
 
-        OFHelper.v(tag, "1Flow at ABVwebView");
+        OFHelper.v(tag, "1Flow at webView");
 
 
 

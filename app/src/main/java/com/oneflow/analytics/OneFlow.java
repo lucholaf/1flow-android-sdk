@@ -76,6 +76,7 @@ import com.oneflow.analytics.utils.OFMyCountDownTimer;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 import com.oneflow.analytics.utils.OFNetworkChangeReceiver;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -535,7 +536,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 OFHelper.v("1Flow", "1Flow no survey available");
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+           // ex.printStackTrace();
         }
 
     }
@@ -740,7 +741,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     return null;
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+               // ex.printStackTrace();
                 return null;
             }
         } else {
@@ -1149,7 +1150,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                                 }
                             }
                         } catch (Exception ex) {
-                            ex.printStackTrace();
+                          //  ex.printStackTrace();
 
                         }
                     } else {
@@ -1311,8 +1312,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                 setUpHashForActivity();
                 if (surveyResponse != null) {
                     OFHelper.v("1Flow", "1Flow survey callback not null");
-                    //triggerSurvey(surveyResponse, "");
-                    directSurveyShowUp(surveyResponse,"");
+
+                    directSurveyShowUp(surveyResponse,"triggered_manually");
                 } else {
                     OFHelper.v("1Flow", "1Flow survey callback null");
                 }
@@ -1351,11 +1352,15 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     }
 
     private void triggerSurveyNew(String eventName){
+
+        JSONArray eventMapArray = new JSONArray();
+        eventMapArray.put(new JSONObject(eventMap));
+
         final Intent surveyIntent = new Intent(mContext.getApplicationContext(), OFFirstLanderActivity.class);
 
         surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         surveyIntent.putExtra("eventName", eventName);
-        surveyIntent.putExtra("eventData", new JSONObject(eventMap).toString());
+        surveyIntent.putExtra("eventData", eventMapArray.toString());
 
 
         OFHelper.v("1Flow", "1Flow activity running[" + OFSDKBaseActivity.isActive + "]");
@@ -1425,7 +1430,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                         try {
                             delayDuration = gslr.getSurveyTimeInterval().getValue() * 1000;
                         } catch (Exception ex) {
-                            ex.printStackTrace();
+                           // ex.printStackTrace();
                         }
                         OFHelper.v("1Flow", "1Flow activity waiting duration[" + delayDuration + "]");
 
@@ -1505,7 +1510,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     try {
                         delayDuration = gslr.getSurveyTimeInterval().getValue() * 1000;
                     } catch (Exception ex) {
-                        ex.printStackTrace();
+                       // ex.printStackTrace();
                     }
                     OFHelper.v("1Flow", "1Flow activity waiting duration[" + delayDuration + "]");
 
