@@ -899,6 +899,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
 
     OFGetSurveyListResponse gslrGlobal;
+    static int createUserCounter = 0;
 
     @Override
     public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved, Object obj2, Object obj3) {
@@ -942,6 +943,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             case CreateUser:
 
                 if (obj != null) {
+                    createUserCounter=0;
                     OFAddUserResponse userResponse = (OFAddUserResponse) obj;
                     OFOneFlowSHP oneFlowSHP = OFOneFlowSHP.getInstance(mContext);
                     oneFlowSHP.setUserDetails(userResponse);
@@ -986,9 +988,17 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     }
                 } else {
                     OFHelper.headerKey = "";
-                    Intent intent = new Intent("survey_list_fetched");
-                    intent.putExtra("msg", "User Not Created");//"Invalid project key");
-                    mContext.sendBroadcast(intent);
+
+                    OFHelper.v("1Flow", "1Flow create user finish failed calling again[" + createUserCounter + "]");
+                    if(createUserCounter<1){
+                        createUserCounter++;
+                            registerUser();
+                    }else {
+                        createUserCounter = 0;
+                        Intent intent = new Intent("survey_list_fetched");
+                        intent.putExtra("msg", "User Not Created");//"Invalid project key");
+                        mContext.sendBroadcast(intent);
+                    }
                     if (OFConstants.MODE.equalsIgnoreCase("dev")) {
                         OFHelper.makeText(mContext, reserved, 1);
                     }
@@ -1363,7 +1373,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         surveyIntent.putExtra("eventData", eventMapArray.toString());
 
 
-        OFHelper.v("1Flow", "1Flow activity running[" + OFSDKBaseActivity.isActive + "]");
+        OFHelper.v("1Flow", "1Flow activity running 0[" + OFSDKBaseActivity.isActive + "]");
 
         if (!OFSDKBaseActivity.isActive) {
             mContext.getApplicationContext().startActivity(surveyIntent);
@@ -1420,7 +1430,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         surveyIntent.putExtra("eventData", new JSONObject(eventMap).toString());
 
 
-        OFHelper.v("1Flow", "1Flow activity running[" + OFSDKBaseActivity.isActive + "]");
+        OFHelper.v("1Flow", "1Flow activity running 1[" + OFSDKBaseActivity.isActive + "]");
 
         if (!OFSDKBaseActivity.isActive) {
             if (gslr.getSurveyTimeInterval() != null) {
@@ -1500,7 +1510,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         surveyIntentD.putExtra("eventData", new JSONObject(eventMap).toString());
 
 
-        OFHelper.v("1Flow", "1Flow activity running[" + OFSDKBaseActivity.isActive + "]");
+        OFHelper.v("1Flow", "1Flow activity running 2[" + OFSDKBaseActivity.isActive + "]");
 
         if (!OFSDKBaseActivity.isActive) {
             if (gslr.getSurveyTimeInterval() != null) {

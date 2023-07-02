@@ -437,11 +437,19 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         isActive = false;
         OFOneFlowSHP.getInstance(this).storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
-        OFHelper.v(tag, "1Flow onStop called");
+        OFHelper.v(tag, "1Flow onDestroy called ["+isActive+"]");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //isActive = false;
+        OFOneFlowSHP.getInstance(this).storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
+        OFHelper.v(tag, "1Flow onStop called ["+isActive+"]");
         /*OFOneFlowSHP ofs1 = new OFOneFlowSHP(this);
         ofs1.storeValue(OFConstants.SHP_SURVEY_RUNNING, true);*/
         //overridePendingTransition(0,R.anim.slide_down_dialog);

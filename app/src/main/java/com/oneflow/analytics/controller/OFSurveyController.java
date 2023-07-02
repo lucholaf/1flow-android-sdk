@@ -226,7 +226,7 @@ public class OFSurveyController implements OFMyResponseHandlerOneFlow {
         surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         surveyIntent.putExtra("eventData", eventMapArray.toString());
 
-        OFHelper.v("1Flow", "1Flow activity running[" + OFSDKBaseActivity.isActive + "]");
+        OFHelper.v("1Flow", "1Flow activity running 4[" + OFSDKBaseActivity.isActive + "]");
 
         if (!OFSDKBaseActivity.isActive) {
             mContext.getApplicationContext().startActivity(surveyIntent);

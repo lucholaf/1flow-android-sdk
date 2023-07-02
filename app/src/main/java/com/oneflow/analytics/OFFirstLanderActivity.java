@@ -70,10 +70,8 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //getSupportActionBar().hide();
 
-        setContentView(R.layout.lander_page);
-        wv = findViewById(R.id.webview_contents_lander);
-        //surveyItem = (OFGetSurveyListResponse) this.getIntent().getSerializableExtra("SurveyType");
-        // triggerEventName = this.getIntent().getStringArrayExtra("eventName");//surveyItem.getTrigger_event_name();
+
+        //wv = findViewById(R.id.webview_contents_lander);
 
         eventData = this.getIntent().getStringExtra("eventData");
 
@@ -104,13 +102,13 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
     private void checkWebviewFunction(String eventData) {
         OFHelper.v(tag, "1Flow webmethod called 0 [" + eventData + "]");
 
-
-
-        //String jsCode = getFileContents("logic-engine1.js");
+        wv = new WebView(OFFirstLanderActivity.this);
+        setContentView(wv);
         StringBuilder jsCode = new StringBuilder();
         OFHelper.v(tag, "1Flow webmethod 11[" + jsCode.length() + "]");
 
         jsCode = getFileContents1(getCacheDir().getPath() + File.separator + OFConstants.cacheFileName);
+
         if (jsCode != null) {
             OFHelper.v(tag, "1Flow webmethod 12[" + jsCode.length() + "]");
             //String jsCode = "function oneFlowFilterSurvey(survey,event){alert(\"I am js alert\");}";
@@ -135,18 +133,11 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
 
             StringBuilder jsCallerMethod = new StringBuilder("function oneFlowCallBack(survey){ console.log(\"reached at callback method\"); android.onResultReceived(JSON.stringify(survey));}");
             StringBuilder finalCode = new StringBuilder(jsCode.toString() + "\n\n" + jsFunction.toString() + "\n\n" + jsCallerMethod.toString());
+
             OFHelper.v(tag, "1Flow webmethod 14[" + finalCode.length() + "]");
-            //String finalCode = jsFunction+"\n\n" + jsCallerMethod;
-            //  OFHelper.v(tag, "1Flow webmethod called2.1 [" +finalCode + "]");
 
-
-
-            /*Handler handler = new Handler(Looper.getMainLooper());
-            handler.post(new Runnable() {
-                @Override
-                public void run() {*/
             wv.clearCache(true);
-
+            wv.clearHistory();
             wv.getSettings().setJavaScriptEnabled(true);
             wv.addJavascriptInterface(new MyJavaScriptInterface(), "android");
             wv.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -167,17 +158,13 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
                 }
             });
 
-            // wv.evaluateJavascript(jsCode + jsFunction + "\n\n" + jsCallerMethod, new ValueCallback<String>() {
-                    /*wv.clearCache(true);
-                    wv.loadUrl("javascript:window.location.reload(true)");*/
             wv.evaluateJavascript(finalCode.toString(), new ValueCallback<String>() {
                 @Override
                 public void onReceiveValue(String result) {
 
                 }
             });
-                /*}
-            });*/
+
         } else {
             OFFirstLanderActivity.this.finish();
         }
@@ -216,19 +203,7 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
                     if (filteredList.size() > 0) {
                         try {
                             String dataLocal ="";
-                            if (eventMapArray.length() == 1) {
-                                //checkWebviewFunction(eventMapArray.get(0).toString());
-                                dataLocal = eventMapArray.get(0).toString();
-
-                            }else{
-                                for(int i=0;i<eventMapArray.length();i++){
-                                    JSONObject jInner = eventMapArray.getJSONObject(i);
-                                    if(jInner.get("name").toString().equalsIgnoreCase("session_start")){
-                                        dataLocal = jInner.toString();
-                                    }
-
-                                }
-                            }
+                            dataLocal = eventMapArray.get(0).toString();
 
                             Message msg = new Message();
                             Bundle bundle = new Bundle();
@@ -241,6 +216,8 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
                     } else {
                         OFFirstLanderActivity.this.finish();
                     }
+                }else {
+                    OFFirstLanderActivity.this.finish();
                 }
 
                 break;
@@ -275,15 +252,16 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
                 if (eventMapArray.length() > 1) {
                     OFHelper.v(tag, "1Flow JavaScript returns1: [" + counter + "]");
                     if ((++counter) < eventMapArray.length()) {
-                        OFFirstLanderActivity.this.finish();
+
                         try {
+                            wv = null;
                             OFHelper.v(tag, "1Flow JavaScript returns1: [" + counter + "][" + eventMapArray.get(counter).toString() + "]");
 
-                            /*Message msg = new Message();
+                            Message msg = new Message();
                             Bundle bundle = new Bundle();
                             bundle.putString("data", eventMapArray.get(counter).toString());
                             msg.setData(bundle);
-                            handler.sendMessage(msg);*/
+                            handler.sendMessage(msg);
 
                             //checkWebviewFunction(eventMapArray.get(counter).toString());
                         } catch (JSONException je) {
@@ -350,7 +328,7 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
                     if (throttlingConfig.getActivatedById().equalsIgnoreCase(surveyToInit.get_id())) {
 
                         OFHelper.v(tag, "1Flow globalThrottling id matched ");
-                        //gslrGlobal = gslr;
+
                         // check in submitted survey list locally if this survey has been submitted then false
                         new OFLogUserDBRepoKT().findLastSubmittedSurveyID(OFFirstLanderActivity.this, this, OFConstants.ApiHitType.lastSubmittedSurvey, triggerEventName, surveyToInit);
 
@@ -413,7 +391,7 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
         surveyIntent.putExtra("SurveyType", surveyToInit);
         surveyIntent.putExtra("eventName", triggerEventName);
 
-        OFHelper.v(tag, "1Flow activity running[" + OFSDKBaseActivity.isActive + "]");
+        OFHelper.v(tag, "1Flow activity running 3[" + OFSDKBaseActivity.isActive + "]");
 
         if (!OFSDKBaseActivity.isActive) {
 
