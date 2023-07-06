@@ -441,7 +441,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         super.onDestroy();
         isActive = false;
         OFOneFlowSHP.getInstance(this).storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
-        OFHelper.v(tag, "1Flow onDestroy called ["+isActive+"]");
+        OFHelper.v(tag, "1Flow onDestroy called [" + isActive + "]");
     }
 
     @Override
@@ -449,7 +449,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         super.onStop();
         //isActive = false;
         OFOneFlowSHP.getInstance(this).storeValue(OFConstants.SHP_SURVEY_RUNNING, false);
-        OFHelper.v(tag, "1Flow onStop called ["+isActive+"]");
+        OFHelper.v(tag, "1Flow onStop called [" + isActive + "]");
         /*OFOneFlowSHP ofs1 = new OFOneFlowSHP(this);
         ofs1.storeValue(OFConstants.SHP_SURVEY_RUNNING, true);*/
         //overridePendingTransition(0,R.anim.slide_down_dialog);
@@ -546,6 +546,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         boolean found = false;
         String action = "", type = "";
 
+        OFHelper.v(tag, "1Flow condition rule[" + screenID + "]answerIndex[" + answerIndex + "][" + answerValue + "]");
         if (screens.get(position - 1).getRules() != null) {
             if (screens.get(position - 1).getRules().getDataLogic() != null) {
                 for (OFDataLogic dataLogic : screens.get(position - 1).getRules().getDataLogic()) {
@@ -590,15 +591,26 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                             }
                         }
                     } else if (dataLogic.getCondition().equalsIgnoreCase("is-not")) {
-
+                        String[] rulesArray2 = dataLogic.getValues().split(",");
                         OFHelper.v(tag, "1Flow condition at is NOT [" + dataLogic.getValues() + "]index[" + answerIndex + "]");
-                        if (!dataLogic.getValues().equalsIgnoreCase(answerIndex)) {
-                            found = true;
-                            break;
-                            //findNextQuestionPosition(dataLogic.getValues());
-                        } /*else {
-                    initFragment();
-                }*/
+                        found = false;
+                        if (answerIndex != null) {
+                            if (!dataLogic.getValues().equalsIgnoreCase(answerIndex)) {
+                                found = true;
+                                break;
+                                //findNextQuestionPosition(dataLogic.getValues());
+                            }
+                        } else {
+                            String[] values = answerValue.split(",");
+                            for (String value : values) {
+                                if (!(Arrays.asList(rulesArray2).contains(value))) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            // breaking outer loop
+                            if (found) break;
+                        }
                     } else if (dataLogic.getCondition().equalsIgnoreCase("is-one-of")) {
 
                         OFHelper.v(tag, "1Flow condition at is one of [" + dataLogic.getValues() + "]index[" + answerIndex + "]answerValue[" + answerValue + "]");
@@ -623,17 +635,17 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                         }
                     } else if (dataLogic.getCondition().equalsIgnoreCase("is-none-of")) {
                         String[] rulesArray1 = dataLogic.getValues().split(",");
-                        found = true;
+                        found = false;
                         if (answerIndex != null) {
-                            if (Arrays.asList(rulesArray1).contains(answerIndex)) {
-                                found = false;
+                            if (!(Arrays.asList(rulesArray1).contains(answerIndex))) {
+                                found = true;
                                 break;
 
                             }
                         } else {
                             String[] values = answerValue.split(",");
                             for (String value : values) {
-                                if (Arrays.asList(rulesArray1).contains(value)) {
+                                if (!(Arrays.asList(rulesArray1).contains(value))) {
                                     found = true;
                                     break;
                                 }
@@ -672,9 +684,6 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
             } else {
                 if (type.equalsIgnoreCase("open-url")) {
                     //todo need to close properly
-
-                    //position = screens.size();
-                    //initFragment();
 
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(action));
                     startActivity(browserIntent);
@@ -732,6 +741,9 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
             index++;
         }
 
+        if(index==screens.size()){
+            index= position;
+        }
         position = index;
         initFragment(4);
     }

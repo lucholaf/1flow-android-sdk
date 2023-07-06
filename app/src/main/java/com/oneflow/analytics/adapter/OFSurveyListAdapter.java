@@ -56,7 +56,7 @@ public class OFSurveyListAdapter extends RecyclerView.Adapter<OFSurveyListAdapte
             }
         }
         holder.txtSurveyKey.setText(triggerName + " (" + itemsList.get(position).getName() + ")");
-        holder.txtSurveyKey.setTag(triggerName);
+        holder.txtSurveyKey.setTag(itemsList.get(position).get_id());
         holder.txtSurveyKey.setOnClickListener(gch);
 
         if (itemsList.get(position).getScreens() != null) {
