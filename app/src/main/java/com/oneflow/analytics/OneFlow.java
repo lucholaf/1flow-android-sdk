@@ -397,7 +397,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             @Override
             public void onBillingServiceDisconnected() {
 
-                Log.v("FakeBillingClass", "1Flow payment billing disconnected");
+                OFHelper.v("FakeBillingClass", "1Flow payment billing disconnected");
             }
         });
 
@@ -948,17 +948,33 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     OFOneFlowSHP oneFlowSHP = OFOneFlowSHP.getInstance(mContext);
                     oneFlowSHP.setUserDetails(userResponse);
 
+
+                    String app_ver = "";
+                    try {
+                        app_ver = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionName;
+
+                    } catch (PackageManager.NameNotFoundException e) {
+
+                        app_ver = "";
+                    }
+
                     if (!oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN, false)) {
 
                         HashMap<String, Object> mapValue = new HashMap<>();
-                        mapValue.put("app_version", OFConstants.currentVersion);
+                        mapValue.put("app_version", app_ver);//OFConstants.currentVersion);confirmed from rohan on 7th july 2023
                         recordEvents(OFConstants.AUTOEVENT_FIRSTOPEN, mapValue);
                         oneFlowSHP.storeValue(OFConstants.AUTOEVENT_FIRSTOPEN, true);
                     }
 
+
+
+                    HashMap<String, Object> mapValueSession = new HashMap<>();
+                    mapValueSession.put("library_version", OFConstants.currentVersion);
+                    mapValueSession.put("app_version", app_ver);
+
                     //if (!oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_SESSIONSTART, false)) {
                     OFEventController ec = OFEventController.getInstance(mContext);
-                    ec.storeEventsInDB(OFConstants.AUTOEVENT_SESSIONSTART, null, 0);
+                    ec.storeEventsInDB(OFConstants.AUTOEVENT_SESSIONSTART, mapValueSession, 0);
 
                     oneFlowSHP.storeValue(OFConstants.AUTOEVENT_SESSIONSTART, true);
                     ProcessLifecycleOwner.get().getLifecycle().addObserver(new AppLifecycleListener(mContext));
@@ -1483,6 +1499,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         mapValue.put("flow_id", gslr.get_id());
         OFEventController ec = OFEventController.getInstance(mContext);
         ec.storeEventsInDB(OFConstants.AUTOEVENT_SURVEYIMPRESSION, mapValue, 0);
+        ec.storeEventsInDB(OFConstants.AUTOEVENT_FLOWSTARTED, mapValue, 0);
 
         ofs1.storeValue(OFConstants.SHP_SURVEY_RUNNING, true);
         ofs1.storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());

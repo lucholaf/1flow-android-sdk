@@ -16,7 +16,7 @@
 
     <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/log_user"
-        style="@style/comman_positive_button_style"
+        style="@style/of_comman_positive_button_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"

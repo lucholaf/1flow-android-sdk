@@ -65,7 +65,7 @@
 
     <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/configure_oneflow"
-        style="@style/comman_positive_button_style"
+        style="@style/of_comman_positive_button_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -81,7 +81,7 @@
 
     <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/direct_survey"
-        style="@style/comman_positive_button_style"
+        style="@style/of_comman_positive_button_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -97,7 +97,7 @@
 
     <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/log_user"
-        style="@style/comman_positive_button_style"
+        style="@style/of_comman_positive_button_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -110,7 +110,7 @@
 
     <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/send_log_to_api"
-        style="@style/comman_positive_button_style"
+        style="@style/of_comman_positive_button_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 

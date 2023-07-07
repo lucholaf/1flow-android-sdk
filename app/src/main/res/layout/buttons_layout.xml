@@ -24,7 +24,7 @@
 
     <com.oneflow.analytics.customwidgets.OFCustomTextViewBold
         android:id="@+id/submit_btn"
-        style="@style/comman_positive_button_style"
+        style="@style/of_comman_positive_button_style"
         android:layout_width="match_parent"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/field_padding"
@@ -35,7 +35,7 @@
 
     <com.oneflow.analytics.customwidgets.OFCustomTextViewBold
         android:id="@+id/cancel_btn"
-        style="@style/comman_positive_button_style"
+        style="@style/of_comman_positive_button_style"
         android:layout_width="wrap_content"
         android:layout_margin="@dimen/field_padding"
         android:layout_toLeftOf="@id/submit_btn"

@@ -74,7 +74,7 @@
             </com.oneflow.analytics.customwidgets.OFCustomEditText>
             <com.oneflow.analytics.customwidgets.OFCustomTextViewBold
                 android:id="@+id/other_submit_btn"
-                style="@style/comman_positive_button_style"
+                style="@style/of_comman_positive_button_style"
                 android:layout_width="wrap_content"
                 android:layout_marginRight="6dp"
                 android:background="@drawable/btn_rounded_rectangle_normal_internal"

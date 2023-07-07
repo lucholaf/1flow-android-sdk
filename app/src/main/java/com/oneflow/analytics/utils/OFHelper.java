@@ -164,7 +164,7 @@ public class OFHelper {
     }
 
     public static void d(String tag, String msg, boolean shouldPrint) {
-        if (shouldPrint) {//OFConstants.MODE.equalsIgnoreCase("dev")) {
+        if (commanLogEnable) {//OFConstants.MODE.equalsIgnoreCase("dev")) {
             if (msg.length() > 4075) {
                 Log.d(tag, msg.substring(0, 4075));
                 Log.d("continue", msg.substring(4076, msg.length()));
@@ -175,7 +175,7 @@ public class OFHelper {
     }
 
     public static void i(String tag, String msg, boolean shouldPrint) {
-        if (shouldPrint) {//OFConstants.MODE.equalsIgnoreCase("dev")) {
+        if (commanLogEnable) {//OFConstants.MODE.equalsIgnoreCase("dev")) {
             if (msg.length() > 4075) {
                 Log.i(tag, msg.substring(0, 4075));
                 Log.i("continue", msg.substring(4076, msg.length()));

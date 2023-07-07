@@ -363,6 +363,7 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
         mapValue.put("flow_id", surveyToInit.get_id());
         OFEventController ec = OFEventController.getInstance(this);
         ec.storeEventsInDB(OFConstants.AUTOEVENT_SURVEYIMPRESSION, mapValue, 0);
+        ec.storeEventsInDB(OFConstants.AUTOEVENT_FLOWSTARTED, mapValue, 0);
 
         ofs1.storeValue(OFConstants.SHP_SURVEY_RUNNING, true);
         ofs1.storeValue(OFConstants.SHP_SURVEYSTART, Calendar.getInstance().getTimeInMillis());

@@ -20,7 +20,7 @@ package com.oneflow.analytics.utils;
 
 public interface OFConstants {
 
-    String currentVersion = "2023.06.28";//2023.06.23//2023.04.16";//2023.03.08";//2023.01.12";//""2022.11.20";
+    String currentVersion = "2023.07.04";//2023.06.23//2023.04.16";//2023.03.08";//2023.01.12";//""2022.11.20";
     String MODE = "prod";//"dev";//""beta";//
 
     String cacheFileName = "logic-engine.js";
@@ -43,7 +43,8 @@ public interface OFConstants {
     String AUTOEVENT_APPUPDATE = "app_updated";
     String AUTOEVENT_SESSIONSTART = "session_start";
     String AUTOEVENT_INAPP_PURCHASE = "in_app_purchase";
-    String AUTOEVENT_SURVEYIMPRESSION = "flow_started";//""survey_impression"; //changed on 31-mar-2023
+    String AUTOEVENT_SURVEYIMPRESSION = "survey_impression"; //changed on 31-mar-2023 -- Rollback as rohan asked this will go always
+    String AUTOEVENT_FLOWSTARTED = "flow_started";
     String AUTOEVENT_CLOSED_SURVEY = "$flow_closed";
 
     String AUTOEVENT_FLOWSTEP_SEEN = "flow_step_seen";
