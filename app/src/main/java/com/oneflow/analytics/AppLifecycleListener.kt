@@ -43,7 +43,7 @@ class AppLifecycleListener : LifecycleObserver {
         if(!shp.getBooleanValue(OFConstants.AUTOEVENT_SESSIONSTART, false)) {
 
             shp.storeValue(OFConstants.AUTOEVENT_SESSIONSTART, true)
-            OneFlow.recordEvents(OFConstants.AUTOEVENT_SESSIONSTART, null);
+            OneFlow.recordEvents(OFConstants.AUTOEVENT_SESSIONSTART, mapvalues);
         }else{
             OFHelper.v(tag, "1Flow app is in start_session already recorded");
         }

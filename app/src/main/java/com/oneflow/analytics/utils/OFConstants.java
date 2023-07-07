@@ -20,7 +20,7 @@ package com.oneflow.analytics.utils;
 
 public interface OFConstants {
 
-    String currentVersion = "2023.07.06";//2023.06.23//2023.04.16";//2023.03.08";//2023.01.12";//""2022.11.20";
+    String currentVersion = "2023.07.07";//2023.06.23//2023.04.16";//2023.03.08";//2023.01.12";//""2022.11.20";
     String MODE = "prod";//"dev";//""beta";//
 
     String cacheFileName = "logic-engine.js";
