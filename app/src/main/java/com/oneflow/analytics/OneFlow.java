@@ -52,7 +52,6 @@ import com.oneflow.analytics.model.adduser.OFAddUserContext;
 import com.oneflow.analytics.model.adduser.OFAddUserReq;
 import com.oneflow.analytics.model.adduser.OFAddUserResponse;
 import com.oneflow.analytics.model.adduser.OFDeviceDetails;
-import com.oneflow.analytics.model.createsession.OFCreateSessionResponse;
 import com.oneflow.analytics.model.events.OFEventAPIRequest;
 import com.oneflow.analytics.model.events.OFRecordEventsTab;
 import com.oneflow.analytics.model.events.OFRecordEventsTabToAPI;
@@ -547,10 +546,10 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
 
     static Map<String, Object> eventMap = new HashMap<>();
-   /* private void createSession(OFCreateSessionRequest csr) {
-        //sdkdb = Room.databaseBuilder(context, SDKDB.class,"one-flow-db").build();
-        OFCreateSession.createSession(OFOneFlowSHP.getInstance(mContext).getStringValue(OFConstants.APPIDSHP), csr, this, OFConstants.ApiHitType.CreateSession);
-    }*/
+
+
+
+
    public static void recordEvents(String eventName) {
        recordEvents(eventName,null);
    }
@@ -563,7 +562,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     public static void recordEvents(String eventName, HashMap eventValues) {
 
 
-        OFHelper.v("1Flow", "1Flow recordEvents record called with[" + eventName + "]at[" + OFHelper.formatedDate(System.currentTimeMillis(), "dd-MM-yyyy hh:mm:ss.SSS") + "]");
+        OFHelper.v("1Flow", "1Flow recordEvents record called with[" + eventName + "] params["+eventValues.toString()+"]at[" + OFHelper.formatedDate(System.currentTimeMillis(), "dd-MM-yyyy hh:mm:ss.SSS") + "]");
+
+
 
         try {
             if (!OFHelper.validateString(eventName.trim()).equalsIgnoreCase("NA")) {
@@ -948,6 +949,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     OFOneFlowSHP oneFlowSHP = OFOneFlowSHP.getInstance(mContext);
                     oneFlowSHP.setUserDetails(userResponse);
 
+                    OFEventController ec = OFEventController.getInstance(mContext);
 
                     String app_ver = "";
                     try {
@@ -962,7 +964,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                         HashMap<String, Object> mapValue = new HashMap<>();
                         mapValue.put("app_version", app_ver);//OFConstants.currentVersion);confirmed from rohan on 7th july 2023
-                        recordEvents(OFConstants.AUTOEVENT_FIRSTOPEN, mapValue);
+                        //recordEvents(OFConstants.AUTOEVENT_FIRSTOPEN, mapValue);
+                        ec.storeEventsInDB(OFConstants.AUTOEVENT_FIRSTOPEN,mapValue,0);
                         oneFlowSHP.storeValue(OFConstants.AUTOEVENT_FIRSTOPEN, true);
                     }
 
@@ -973,7 +976,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     mapValueSession.put("app_version", app_ver);
 
                     //if (!oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_SESSIONSTART, false)) {
-                    OFEventController ec = OFEventController.getInstance(mContext);
+
                     ec.storeEventsInDB(OFConstants.AUTOEVENT_SESSIONSTART, mapValueSession, 0);
 
                     oneFlowSHP.storeValue(OFConstants.AUTOEVENT_SESSIONSTART, true);
@@ -1020,39 +1023,6 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     }
                 }
 
-
-                break;
-            case CreateSession:
-                if (obj != null) {
-                    //Earlier calling parallel with create user. Flow changed now calling once session created
-                    OFCreateSessionResponse createSession = (OFCreateSessionResponse) obj;
-                    if (createSession != null) {
-                        OFOneFlowSHP oneFlowSHP = OFOneFlowSHP.getInstance(mContext);
-
-                        OFHelper.v("1Flow", "1Flow checking firstOpen [" + oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN, false) + "]");
-                        if (!oneFlowSHP.getBooleanValue(OFConstants.AUTOEVENT_FIRSTOPEN, false)) {
-
-                            HashMap<String, Object> mapValue = new HashMap<>();
-                            mapValue.put("app_version", OFConstants.currentVersion);
-                            recordEvents(OFConstants.AUTOEVENT_FIRSTOPEN, mapValue);
-                            oneFlowSHP.storeValue(OFConstants.AUTOEVENT_FIRSTOPEN, true);
-                        }
-
-
-                       /* oneFlowSHP.storeValue(OFConstants.SESSIONDETAIL_IDSHP, createSession.get_id());
-                        oneFlowSHP.storeValue(OFConstants.SESSIONDETAIL_SYSTEM_IDSHP, createSession.getSystem_id());*/
-
-                        //calling fetch survey api on create session success
-                        OFSurveyController.getInstance(mContext).getSurveyFromAPI();
-                    } else {
-                        OFHelper.headerKey = "";
-                        if (OFConstants.MODE.equalsIgnoreCase("dev")) {
-                            OFHelper.makeText(mContext, reserved, 1);
-                        }
-                    }
-                } else {
-                    OFHelper.e("1Flow", "1Flow subimission failed CreateSession");
-                }
 
                 break;
 
