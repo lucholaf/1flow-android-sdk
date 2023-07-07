@@ -38,24 +38,24 @@
                 android:id="@+id/survey_title_que"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/field_padding"
+                android:layout_marginLeft="@dimen/of_field_padding"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="30dp"
-                android:layout_marginBottom="@dimen/field_padding"
+                android:layout_marginBottom="@dimen/of_field_padding"
                 android:textColor="@color/txtblack"
-                android:textSize="@dimen/page_sub_header_1"
+                android:textSize="@dimen/of_page_sub_header_1"
                 android:visibility="invisible" />
 
             <com.oneflow.analytics.customwidgets.OFCustomTextView
                 android:id="@+id/survey_description_que"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/field_padding"
+                android:layout_marginLeft="@dimen/of_field_padding"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="@dimen/field_padding"
+                android:layout_marginRight="@dimen/of_field_padding"
                 android:layout_marginBottom="10dp"
                 android:textColor="@color/txtgray"
-                android:textSize="@dimen/page_sub_header_3"
+                android:textSize="@dimen/of_page_sub_header_3"
                 android:visibility="invisible" />
 
 
@@ -63,7 +63,7 @@
                 android:id="@+id/option_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/field_padding"
+                android:layout_margin="@dimen/of_field_padding"
                 android:gravity="center_horizontal"
                 android:visibility="invisible">
 
@@ -86,11 +86,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/survey_options_list"
-                    android:layout_marginTop="@dimen/field_padding"
+                    android:layout_marginTop="@dimen/of_field_padding"
                     android:gravity="start"
                     android:text=""
                     android:textColor="@color/txtgray"
-                    android:textSize="@dimen/page_sub_header_4" />
+                    android:textSize="@dimen/of_page_sub_header_4" />
 
                 <com.oneflow.analytics.customwidgets.OFCustomTextView
                     android:id="@+id/star_ratings_label"
@@ -98,10 +98,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/survey_options_list"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/field_padding"
+                    android:layout_marginTop="@dimen/of_field_padding"
                     android:text="Please select an option"
                     android:textColor="@color/select_option_color"
-                    android:textSize="@dimen/page_sub_header_4"
+                    android:textSize="@dimen/of_page_sub_header_4"
                     android:visibility="gone" />
 
                 <com.oneflow.analytics.customwidgets.OFCustomTextView
@@ -109,12 +109,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/survey_options_list"
-                    android:layout_marginTop="@dimen/field_padding"
+                    android:layout_marginTop="@dimen/of_field_padding"
                     android:gravity="end"
                     android:text=""
 
                     android:textColor="@color/txtgray"
-                    android:textSize="@dimen/page_sub_header_4" />
+                    android:textSize="@dimen/of_page_sub_header_4" />
 
             </RelativeLayout>
         </LinearLayout>

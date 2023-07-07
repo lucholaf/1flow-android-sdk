@@ -36,7 +36,7 @@
             android:id="@+id/child_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/field_padding"
+            android:layout_margin="@dimen/of_field_padding"
             android:paddingLeft="15dp"
             android:paddingRight="5dp"
             android:paddingTop="5dp"
@@ -48,7 +48,7 @@
             android:text=""
 
             android:textColor="@color/txtblack"
-            android:textSize="@dimen/page_sub_header_3" />
+            android:textSize="@dimen/of_page_sub_header_3" />
 
         <LinearLayout
             android:id="@+id/other_child_layout"
@@ -76,10 +76,10 @@
                 android:id="@+id/other_submit_btn"
                 style="@style/of_comman_positive_button_style"
                 android:layout_width="wrap_content"
-                android:layout_marginRight="6dp"
+                android:layout_marginRight="4dp"
                 android:background="@drawable/btn_rounded_rectangle_normal_internal"
                 android:drawableRight="@drawable/ic_baseline_keyboard_return_18"
-                android:textSize="@dimen/enter_btn_size"
+                android:textSize="@dimen/of_enter_btn_size"
 
                 android:text="Enter"
                 android:visibility="visible" />

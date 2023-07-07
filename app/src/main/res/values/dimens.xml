@@ -23,17 +23,17 @@
   <!--New design dimen-->
   <dimen name="new_theme_txt_size_10sp">10sp</dimen>
 
-  <dimen name="enter_btn_size">12sp</dimen>
-  <dimen name="page_sub_header_4">12sp</dimen>
-  <dimen name="page_sub_header_3">14sp</dimen>
-  <dimen name="page_sub_header_2">16sp</dimen>
-  <dimen name="page_sub_header_1">18sp</dimen>
-  <dimen name="rating_text_size">16dp</dimen>
-  <dimen name="page_header_size">24sp</dimen>
-  <dimen name="btn_txt_size">14sp</dimen>
-  <dimen name="field_padding">8dp</dimen>
-  <dimen name="page_margin">16dp</dimen>
-  <dimen name="btn_left_right_padding">15dp</dimen>
-  <dimen name="btn_top_bottom_padding">8dp</dimen>
+  <dimen name="of_enter_btn_size">12sp</dimen>
+  <dimen name="of_page_sub_header_4">12sp</dimen>
+  <dimen name="of_page_sub_header_3">14sp</dimen>
+  <dimen name="of_page_sub_header_2">16sp</dimen>
+  <dimen name="of_page_sub_header_1">18sp</dimen>
+  <dimen name="of_rating_text_size">16dp</dimen>
+  <dimen name="of_page_header_size">24sp</dimen>
+  <dimen name="of_btn_txt_size">14sp</dimen>
+  <dimen name="of_field_padding">8dp</dimen>
+  <dimen name="of_page_margin">16dp</dimen>
+  <dimen name="of_btn_left_right_padding">15dp</dimen>
+  <dimen name="of_btn_top_bottom_padding">10dp</dimen>
 
 </resources>

@@ -28,23 +28,23 @@
         android:id="@+id/survey_trigger_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/field_padding"
-        android:paddingLeft="@dimen/field_padding"
-        android:paddingRight="@dimen/field_padding"
+        android:paddingTop="@dimen/of_field_padding"
+        android:paddingLeft="@dimen/of_field_padding"
+        android:paddingRight="@dimen/of_field_padding"
         android:textColor="@color/txtblack"
-        android:textSize="@dimen/page_sub_header_1" />
+        android:textSize="@dimen/of_page_sub_header_1" />
 
     <com.oneflow.analytics.customwidgets.OFCustomTextView
         android:id="@+id/survey_trigger_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/survey_trigger_name"
-        android:paddingTop="@dimen/field_padding"
-        android:paddingBottom="@dimen/field_padding"
-        android:paddingRight="@dimen/field_padding"
-        android:paddingLeft="@dimen/field_padding"
+        android:paddingTop="@dimen/of_field_padding"
+        android:paddingBottom="@dimen/of_field_padding"
+        android:paddingRight="@dimen/of_field_padding"
+        android:paddingLeft="@dimen/of_field_padding"
         android:textColor="@color/txtlightgray"
-        android:textSize="@dimen/page_sub_header_2" />
+        android:textSize="@dimen/of_page_sub_header_2" />
 
 
 </RelativeLayout>

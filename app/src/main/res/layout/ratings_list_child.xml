@@ -30,7 +30,7 @@
         android:id="@+id/ratings_list_child_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="@dimen/rating_text_size"
+        android:textSize="@dimen/of_rating_text_size"
         android:layout_centerInParent="true"
         android:text="X"
         android:padding="0dp"

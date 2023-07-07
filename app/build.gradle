@@ -31,11 +31,11 @@ android {
 
     defaultConfig {
 
-      //  applicationId "com.circo.oneflow"
+        //applicationId "com.circo.oneflow"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 34
-        versionName "2023.07.05"
+        versionCode 35
+        versionName "2023.07.06"
 
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

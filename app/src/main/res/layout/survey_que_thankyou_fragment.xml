@@ -46,10 +46,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/thankyou_img"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/field_padding"
+                android:layout_margin="@dimen/of_field_padding"
                 android:text="Thank you!"
                 android:textColor="@color/txtblack"
-                android:textSize="@dimen/page_sub_header_1" />
+                android:textSize="@dimen/of_page_sub_header_1" />
 
             <com.oneflow.analytics.customwidgets.OFCustomTextView
                 android:id="@+id/survey_sub_title"
@@ -57,10 +57,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/survey_title"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/field_padding"
+                android:layout_margin="@dimen/of_field_padding"
                 android:text="Your answer has been recorded."
                 android:textColor="@color/powored_by_txt_color"
-                android:textSize="@dimen/page_sub_header_3" />
+                android:textSize="@dimen/of_page_sub_header_3" />
 
             <include
                 android:id="@+id/weblayout"

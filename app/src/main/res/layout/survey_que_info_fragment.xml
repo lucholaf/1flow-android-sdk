@@ -39,7 +39,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="30dp"
                 android:orientation="vertical"
-                android:padding="@dimen/field_padding">
+                android:padding="@dimen/of_field_padding">
 
 
                 <com.oneflow.analytics.customwidgets.OFCustomTextViewBold
@@ -47,11 +47,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/field_padding"
-                    android:layout_marginBottom="@dimen/field_padding"
+                    android:layout_marginTop="@dimen/of_field_padding"
+                    android:layout_marginBottom="@dimen/of_field_padding"
                     android:text="Thank you!"
                     android:textColor="@color/txtblack"
-                    android:textSize="@dimen/page_sub_header_1"
+                    android:textSize="@dimen/of_page_sub_header_1"
                     android:visibility="invisible" />
 
                 <com.oneflow.analytics.customwidgets.OFCustomTextView
@@ -61,12 +61,12 @@
                     android:layout_below="@id/survey_title"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/field_padding"
-                    android:layout_marginBottom="@dimen/field_padding"
+                    android:layout_marginTop="@dimen/of_field_padding"
+                    android:layout_marginBottom="@dimen/of_field_padding"
 
                     android:text="Your answer has been recorded."
                     android:textColor="@color/powored_by_txt_color"
-                    android:textSize="@dimen/page_sub_header_3"
+                    android:textSize="@dimen/of_page_sub_header_3"
                     android:visibility="invisible" />
 
                 <LinearLayout
@@ -96,10 +96,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                        android:layout_marginTop="@dimen/field_padding"
+                        android:layout_marginTop="@dimen/of_field_padding"
                         android:text="Real-time feedback powered by "
                         android:textColor="@color/txtgray"
-                        android:textSize="@dimen/page_sub_header_4" />
+                        android:textSize="@dimen/of_page_sub_header_4" />
 
                     <ImageView
                         android:id="@+id/watermark_img"
