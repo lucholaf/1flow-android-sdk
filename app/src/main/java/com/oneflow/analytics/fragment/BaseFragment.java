@@ -197,7 +197,7 @@ public class BaseFragment extends Fragment {
 
 
             String webData = "<html><head></head><body style='margin:0;padding:0;'>" + surveyScreens.getMediaEmbedHTML() + "</body></html>";
-            OFHelper.v(tag, "1Flow htmlData after [" + webData + "]");
+            //OFHelper.v(tag, "1Flow htmlData after [" + webData + "]");
 
             webContent.loadDataWithBaseURL(null, webData, "text/html", "UTF-8", null);
 

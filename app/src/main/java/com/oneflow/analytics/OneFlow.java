@@ -67,6 +67,7 @@ import com.oneflow.analytics.repositories.OFLogUserDBRepoKT;
 import com.oneflow.analytics.repositories.OFLogUserRepo;
 import com.oneflow.analytics.repositories.OFSurvey;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
+import com.oneflow.analytics.utils.OFConfigCallback;
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFDelayedSurveyCountdownTimer;
 import com.oneflow.analytics.utils.OFHelper;
@@ -97,6 +98,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
     static BillingClient bcFake;
 
+    public OFConfigCallback configCallback;
     HashMap<String, Class> activityName;
 
     private OneFlow(Context context) {
@@ -114,6 +116,10 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         }
     }
 
+    public static void getConfigCallback(OFConfigCallback callback){
+        OneFlow ofO = new OneFlow(mContext);
+        ofO.configCallback = callback;
+    }
     public static void shouldPrintLog(Boolean shouldShow) {
         try {
             OFHelper.v("1Flow", "1Flow shouldShowLog[" + shouldShow + "]");
@@ -541,7 +547,13 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     }
 
     public void initDirectSurvey(String userId, String surveyID) {
-        OFSurvey.getSurveyWithoutCondition(mContext, this, surveyID, OFConstants.ApiHitType.directSurvey, userId, OFConstants.currentVersion);
+
+        if(!OFHelper.validateString(OFOneFlowSHP.getInstance(mContext).getUserDetails().getAnalytic_user_id()).equalsIgnoreCase("na"))
+        {
+            OFSurvey.getSurveyWithoutCondition(mContext, this, surveyID, OFConstants.ApiHitType.directSurvey, userId, OFConstants.currentVersion);
+        }else{
+            OFHelper.e("1Flow","1Flow direct survey failed, config not completed");
+        }
     }
 
 
@@ -944,6 +956,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
             case CreateUser:
 
                 if (obj != null) {
+
                     createUserCounter=0;
                     OFAddUserResponse userResponse = (OFAddUserResponse) obj;
                     OFOneFlowSHP oneFlowSHP = OFOneFlowSHP.getInstance(mContext);
@@ -985,13 +998,16 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                         OFHelper.v("1Flow", "1Flow app is in start_session already recorded.");
                     }*/
 
-                    OFLogUserRequest lur = oneFlowSHP.getLogUserRequest();
-
                     long diff = System.currentTimeMillis()-oneFlowSHP.getLongValue(OFConstants.SHP_CACHE_FILE_UPDATE_TIME);
                     OFHelper.v("1Flow", "1Flow create user finish cache file life span diff[" + diff + "]["+(diff>OFConstants.cacheFileLifeSpan)+"]");
                     if(diff>OFConstants.cacheFileLifeSpan) {
                         new OFCacheHandler(mContext).start();
                     }
+
+                    if(configCallback!=null) {
+                        configCallback.oneFlowSetupDidFinish();
+                    }
+                    OFLogUserRequest lur = oneFlowSHP.getLogUserRequest();
 
                     OFHelper.v("1Flow", "1Flow create user finish hitting pending logUser[" + lur + "]");
                     if (lur != null && logUserPending) {
@@ -1013,6 +1029,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                         createUserCounter++;
                             registerUser();
                     }else {
+                        configCallback.oneFlowSetupDidFail();
                         createUserCounter = 0;
                         Intent intent = new Intent("survey_list_fetched");
                         intent.putExtra("msg", "User Not Created");//"Invalid project key");

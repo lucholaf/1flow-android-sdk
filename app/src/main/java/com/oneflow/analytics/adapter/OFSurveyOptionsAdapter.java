@@ -54,6 +54,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private int listSize = 0;
     private int strokeWidth = 4;
     private int viewType = -1;
+    private int clickedPosition = -1;
     private OFSurveyInputs surveyInputs;
     String tag = this.getClass().getName();
     private String themeColor;
@@ -326,6 +327,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                             return false;
                         }
                     });
+
                     if (surveyInputs.getRatingsList().get(position).getSelected()) {
                         gd.setColor(Color.parseColor(themeColor));
                         ((RatingsViewHolder) holder).title.setTextColor(mContext.getResources().getColor(R.color.txtwhite));
@@ -334,20 +336,23 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         ((RatingsViewHolder) holder).title.setTextColor(Color.parseColor(themeTextColor));//mContext.getResources().getColor(R.color.txtblack));
                     }
 
+                    if(clickedPosition>0){
+                        ((RatingsViewHolder) holder).title.setFocusableInTouchMode(false);
+                        ((RatingsViewHolder) holder).title.setClickable(false);
+                        ((RatingsViewHolder) holder).title.setOnTouchListener(null);
+                    }
+
                     ((RatingsViewHolder) holder).title.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            clickedPosition=position;
+                            notifyDataSetChanged();
                             gch.itemClicked(v, null, "");
                         }
                     });
                     break;
                 case 1:
                     //Radio
-
-                    //below block was used to check others option as it was not coming from api
-                    /*if(surveyInputs.getChoices().get(position).getTitle().equalsIgnoreCase("Others") || surveyInputs.getChoices().get(position).getTitle().equalsIgnoreCase("Other")) {
-                     surveyInputs.setOtherOption("0db4b95a7f8e192867e3630a");
-                    }*/
 
                     ((MCQRadioViewHolder) holder).title.setTypeface(typeface);
 
@@ -662,10 +667,21 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     } else {
                         gdEmojis.setColor(null);//mContext.getResources().getColor(R.color.white));
                     }
+
+                    // this snippet is for disabling second click
+                    if(clickedPosition>0){
+                        ((RatingsEmojis) holder).emojis.setFocusableInTouchMode(false);
+                        ((RatingsEmojis) holder).emojis.setClickable(false);
+                        ((RatingsEmojis) holder).emojis.setOnTouchListener(null);
+                    }
+
                     ((RatingsEmojis) holder).emojis.setTag(position);
                     ((RatingsEmojis) holder).emojis.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
+                            clickedPosition = position;
+                            notifyDataSetChanged();
                             gch.itemClicked(v, null, "");
                         }
                     });
@@ -680,11 +696,17 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         // DrawableCompat.setTint(((RatingsStar) holder).stars.getDrawable(), Color.parseColor(themeColor));
                     }
 
+                    if(clickedPosition>0){
+                        ((RatingsStar) holder).stars.setFocusableInTouchMode(false);
+                        ((RatingsStar) holder).stars.setClickable(false);
+                    }
+
                     ((RatingsStar) holder).stars.setTag(position);
                     ((RatingsStar) holder).stars.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            clickedPosition = position;
+                            notifyDataSetChanged();
                             gch.itemClicked(v, null, "");
                         }
                     });
@@ -696,6 +718,7 @@ public class OFSurveyOptionsAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             OFHelper.e(tag, "OnBind" + ex.getMessage());
         }
     }
+
 
 
 
