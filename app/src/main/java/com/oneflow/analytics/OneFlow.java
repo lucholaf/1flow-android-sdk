@@ -599,8 +599,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     eventMap.put("timestamp", System.currentTimeMillis() / 1000);
 
                     //Checking if any survey available under coming event.
-                    //of.checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
-                    of.triggerSurveyNew(eventName);
+                    of.checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
+                    //of.triggerSurveyNew(eventName);
 
                 } else {
                     OFHelper.v("1Flow", "1Flow null context for event");
@@ -1203,7 +1203,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
                                         setUpHashForActivity();
 
-                                        triggerSurvey(gslr, reserved);
+                                        triggerSurveyNew(reserved);
 
                                         /*
                                         //throttling condition below
