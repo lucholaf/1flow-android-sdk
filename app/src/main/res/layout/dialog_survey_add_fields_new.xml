@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:padding="10dp">
+
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true" />
+
+        <com.oneflow.analytics.customwidgets.OFCustomEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/divider"
+            android:layout_margin="5dp"
+            android:padding="10dp"
+            android:hint="Key 1"
+            style="@style/EditTextCustomStyle"
+            android:textColor="@color/txtblack"
+            android:id="@+id/key1"
+            />
+        <com.oneflow.analytics.customwidgets.OFCustomEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/divider"
+            android:layout_margin="5dp"
+            android:padding="10dp"
+            style="@style/EditTextCustomStyle"
+            android:hint="Value 1"
+            android:textColor="@color/txtblack"
+            android:id="@+id/value1"
+            />
+
+</RelativeLayout>

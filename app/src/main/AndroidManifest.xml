@@ -30,19 +30,22 @@
     <!--android:supportsRtl="true"
     android:theme="@style/Theme.TrySkySDK"-->
 
-    <application>
+    <application
+
+        >
 
         <activity android:name="com.oneflow.analytics.OFProjectSetup"></activity>
 
+        <activity android:name="com.oneflow.analytics.OFSecondActivity"/>
 
         <activity android:name="com.oneflow.analytics.OFFirstActivity"
 
             >
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
 
         <!--

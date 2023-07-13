@@ -192,7 +192,6 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         OneFlow.shouldPrintLog(true);
 
 
-
        /* HashMap<String, Object> mapValue = new HashMap<>();
         mapValue.put("location", "MP");
         mapValue.put("env", "Prod");
@@ -206,7 +205,8 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_project_key);
         OFCustomEditText projectKeyET = dialog.findViewById(R.id.project_key);
-        String projectKey = "oneflow_prod_UjlFunf96DxcEXXXgJKqm32q1RDIYXbmDkepkDmomBoDdlzXQM/U9qzEAKh6yj34xfQQT1Ejp0ltJnF9wGJU5Q==";// [TEST] All Screens
+        //String projectKey = "oneflow_prod_UjlFunf96DxcEXXXgJKqm32q1RDIYXbmDkepkDmomBoDdlzXQM/U9qzEAKh6yj34xfQQT1Ejp0ltJnF9wGJU5Q==";// [TEST] All Screens
+        //String projectKey = "oneflow_prod_yxwI14oGAEhYgOEJjo43IsoKuWbSPoXBcKD+Bj5UkiZtPXb1vuuBkRUm5YxfBCs6thcsxPWbxDeJHJZlSGzxkw==";// SANVEDI'S PROJECT
         //String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";// AmitRepeatTest
         //String projectKey = "oneflow_prod_CE5Cvb8EahGdiyeu7TkY4DDR8inq1u8qLHvV2XnJM5UuZNW1V0I+XMQi2Qo5raeyrk7b3GEl+a9iz6F2EWGtNg==";// QA-2
         //String projectKey = "oneflow_prod_z1IhZWJa3hgnvqPoaK7GiTRD0gB329MKOuXHgyGj4zE5dWXGhtlPAd4q9nVCKqS8qOc0YtSEAlDR1fysr8SqiQ==";// NewScreenTestProj
@@ -214,6 +214,11 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         //String projectKey = "oneflow_prod_SR8Fn2G0BMPY4RW7ZE/bG37M2VbOQrG8KKfOCkW6K8MdYNMKj2Ug9VPkwtbgTLXZE6YZ2fvm6M9UxuEBcVB9Xw==";// Ahsan project key
         //String projectKey = "oneflow_prod_hlXx+7J/PLaZmjrScYvDqVr75+oIAS+Fyc2Hs7hO4o1GcsbyeMTJ74XKceugfPhDZ3MPdbB65rltbhP9cWmaYA==";// Embed I&V Android
         //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
+        //String projectKey = "oneflow_prod_S2Fhp9kIgnuUifdybu416l5zcTJ1H2olfCwMbq2stQKvH/tvurEgpBSWgUIRFRxMkmc2cs7KOwALqzr235/wpw==";//AndroidTestinProject
+        String projectKey = "oneflow_prod_XYDk9mmRqZHYwKnG5s+3bkB3kqTnmew74mxqUQS8S4fcsfxx2E6ItOnNA3DKmMiWoKrQz0IqAvra9UbXDhGP6A==";//Ahsan's Project 10_july
+        //String projectKey = "oneflow_prod_43WVuVjDSygeAejX5uzRQUaYHpzs9eV6zrG+wPRRI2aCHjRwKRftCzVsEJ+Fp2+cBnB8rYogwdXjFnVKZEjxpw==";//AndroidTestinProject
+        //String projectKey = "oneflow_prod_/xygSKirAO9POupz31Ef7RIO8gvkkRiqfeO4Q98hQHS6QugUesc/Fme4AXuIFvlwSe8KsMt9ochqOO71ojMXpg==";//AmitV2Testing
+        //String projectKey = "oneflow_prod_FMmrAqrKisPtrNzr1nn2Fapz0hutCSAhwo7Ln7G2521f0JZV/G1iYhSRnnUgsgnUWVrtLdzq1Y00B8+lshncfg==";//AndroidTestinProject
         //String projectKey = "oneflow_prod_Aj1cg38j4iAzpwhl/jEACm1HTDFgYJhj5yxEDDHlMo9u53RNdpqcDjZvGeBW17CldKelGu2/TXfUfTE4bDgR3Q==";//Rohan's Arabic
         //String projectKey = "oneflow_prod_SR8Fn2G0BMPY4RW7ZE/bGxkFmyfC4mcHfsqjNpy5zHnO+GcpXBdg+Dw6pJmVBC2lcGFgTpHQziPqFUsmcaWAIA==";//Rohan's Arabic
         //String projectKey = "oneflow_prod_yxwI14oGAEhYgOEJjo43IsoKuWbSPoXBcKD+Bj5UkiZtPXb1vuuBkRUm5YxfBCs6thcsxPWbxDeJHJZlSGzxkw==";//[TEST]Flutter/React Native SDKs
@@ -275,18 +280,20 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         public void onClick(View v) {
             String tag = (String) v.getTag();
 
+            OFHelper.v(tag,"1Flow clicked on tag["+tag+"]");
             String tagArray[] = tag.split(",");
             //GetSurveyListResponse surveyItem = checkSurveyTitleAndScreens(tag);
 
-            if (tagArray[0].trim().equalsIgnoreCase("")) {
+            /*if (tagArray[0].trim().equalsIgnoreCase("")) {
                 OFHelper.showAlert(OFFirstActivity.this, "", "Event name not defined, Unable to trigger");
-            } else {
-                HashMap<String, Object> mapvalues = new HashMap<String, Object>();
+            } else {*/
+                /*HashMap<String, Object> mapvalues = new HashMap<String, Object>();
                 mapvalues.put("testKey1", "testValue1");
                 mapvalues.put("testKey2", 25);
                 mapvalues.put("testKey3", "testValue3");
-                OneFlow.recordEvents(tagArray[0], mapvalues);
-            }
+                OneFlow.recordEvents(tagArray[0], mapvalues);*/
+            OneFlow.startFlow(tagArray[0]);
+            //}
             /*Intent intent = new Intent(SurveyList.this, SurveyActivity.class);
             intent.putExtra("SurveyType", surveyItem);
             startActivity(intent);*/
@@ -355,13 +362,17 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
             OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");
         }*/
-        if (v.getId() == R.id.send_log_to_api) {
+        if (v.getId() == R.id.trigger_survey) {
+            startActivity(new Intent(OFFirstActivity.this,OFSecondActivity.class));
+        }else if (v.getId() == R.id.send_log_to_api) {
             // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
             OneFlow.sendEventsToApi(this);
 
         } else if (v.getId() == R.id.configure_oneflow) {
             showCofigureDialog();
-        }/* else if (v.getId() == R.id.start_session) {
+        }
+
+        /* else if (v.getId() == R.id.start_session) {
            // OneFlow.recordEvents("start_session",null);
 
             OFEventController ec = OFEventController.getInstance(OFFirstActivity.this);
@@ -443,6 +454,30 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         }
     }
 
+    public void showDirectSurveyDialog(){
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.activity_project_key);
+        OFCustomEditText projectKeyET = dialog.findViewById(R.id.project_key);
+        String projectKey = "8a88f2103aaf49641d5efd37";
+        projectKeyET.setHint("Enter Survey Id");
+        projectKeyET.setText(projectKey);
+        OFCustomTextView registerButton = dialog.findViewById(R.id.register_project);
+        registerButton.setText("Init Survey");
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (projectKeyET.getText().toString().equalsIgnoreCase("")) {
+                    OFHelper.makeText(getApplicationContext(), "Please enter survey ID", 1);
+                } else {
+                    dialog.cancel();
+
+                    OneFlow.startFlow(projectKeyET.getText().toString());
+                }
+            }
+        });
+        dialog.show();
+
+    }
     @Override
     public void onResponseReceived(OFConstants.ApiHitType hitType, Object obj, Long reserve, String reserved, Object Obj2, Object obj3) {
         OFHelper.v(tag, "1Flow reached onResponseEvent["+hitType+"]obj["+obj+"]");

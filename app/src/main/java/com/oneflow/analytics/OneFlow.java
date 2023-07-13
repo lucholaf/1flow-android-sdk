@@ -574,7 +574,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     public static void recordEvents(String eventName, HashMap eventValues) {
 
 
-        OFHelper.v("1Flow", "1Flow recordEvents record called with[" + eventName + "] params["+eventValues.toString()+"]at[" + OFHelper.formatedDate(System.currentTimeMillis(), "dd-MM-yyyy hh:mm:ss.SSS") + "]");
+        //OFHelper.v("1Flow", "1Flow recordEvents record called with[" + eventName + "] params["+eventValues.toString()+"]at[" + OFHelper.formatedDate(System.currentTimeMillis(), "dd-MM-yyyy hh:mm:ss.SSS") + "]");
 
 
 
