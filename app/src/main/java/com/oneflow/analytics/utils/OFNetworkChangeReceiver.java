@@ -57,8 +57,6 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
         }
     }
 
-
-
     int counter = 0;
     public void checkOffLineSurvey() {
         OFHelper.v("OFNetworkChangeReceiver", "1Flow calling checkOffLineSurvey["+(counter++)+"] ");
@@ -77,7 +75,7 @@ public class OFNetworkChangeReceiver extends BroadcastReceiver implements OFMyRe
                 if(obj!=null) {
                     OFSurveyUserInput survey = (OFSurveyUserInput) obj;
                     if (survey != null) {
-                        OFSurvey.submitUserResponseOffline(context, survey, this, OFConstants.ApiHitType.logUser);
+                        OFSurvey.submitUserResponseOffline(context, survey, this, OFConstants.ApiHitType.submittingOfflineSurvey);
                     }
                 }else{
                     counter=0;

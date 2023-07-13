@@ -46,8 +46,6 @@ import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
 import com.oneflow.analytics.utils.OFMyResponseHandlerOneFlow;
 
-import org.bson.types.ObjectId;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -138,9 +136,6 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
        // FirebaseApp.initializeApp(this);
        // retriveCurrentFCMToken();
 
-
-        ObjectId id = new ObjectId(new Date());
-        OFHelper.v(tag,"1Flow mongodb id lib["+id+"]");
     //    OFHelper.v(tag,"1Flow mongodb id method["+objectIdMy()+"]");
 
     }

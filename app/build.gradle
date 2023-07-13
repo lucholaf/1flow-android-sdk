@@ -34,8 +34,8 @@ android {
         //applicationId "com.circo.oneflow"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 40
-        versionName "2023.07.10"
+        versionCode 41
+        versionName "2023.07.11"
 
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -94,12 +94,6 @@ dependencies {
 
     implementation "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxjavaVersion"
-
-    /*implementation "com.google.dagger:dagger:$daggerVersion"
-    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
-    implementation "com.google.dagger:dagger-compiler:$daggerVersion"
-    implementation "com.google.dagger:dagger-android-processor:$daggerVersion"*/
-
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     //implementation "android.arch.lifecycle:extensions:$lifeCycleVersion"
     implementation 'androidx.lifecycle:lifecycle-process:2.4.0'
@@ -139,7 +133,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.15'
 
 
-    implementation 'org.mongodb:bson:3.4.3'
+    //implementation 'org.mongodb:bson:3.4.3'
 
 
     //implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
