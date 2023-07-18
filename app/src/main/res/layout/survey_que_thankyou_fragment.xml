@@ -57,7 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/survey_title"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/of_field_padding"
+                android:gravity="center_horizontal"
+                android:layout_margin="12dp"
                 android:text="Your answer has been recorded."
                 android:textColor="@color/powored_by_txt_color"
                 android:textSize="@dimen/of_page_sub_header_3" />
