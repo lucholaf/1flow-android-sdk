@@ -664,6 +664,10 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     }*/
     static boolean logUserPending = false;
 
+    public static void logUser(String uniqueId){
+
+        logUser(uniqueId,null);
+    }
     /**
      * This method will help to recognize user. Below mentioned 2 values will be required
      *
@@ -693,7 +697,6 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     lur.setAnonymous_user_id(aurr.getAnalytic_user_id());
                     // this api calling shifted to send Event api response
                 }
-
 
                 OFOneFlowSHP.getInstance(mContext).setLogUserRequest(lur);
                 OFHelper.v("1Flow", "1Flow createUserRunning Status[" + aurr + "]");

@@ -504,6 +504,33 @@ const cohortFilter = async (filter,cohort) => {
   /*==================EVENT FILTER END==================*/
 
 
+/*======================================PARSE FILTER DATA ACCORDING TO DATA TYPE======================*/
+const  parseFilterRules=async(filters)=>{
+    try{
+        let result=[];
+        filters.forEach(async (filter)=>{
+            result.push(new Promise(async(resolve)=>{
+                const isGp=await isGroupTypeFilter(filter.type);
+                if(isGp){
+                    filter=await parseFilterRules(filter.filters);
+                    resolve(filter)
+                }else{
+                    if(filter.data_type === 'boolean'){
+                        filter.values=filter.values.map((v)=> v === 'true' ? true : false);
+                    }
+                    resolve(filter)
+                }
+            }))
+        })
+        result=await Promise.all(result);
+        return filters;
+
+    }catch(e){
+        console.log("TRIGGER PARSE ERROR:-",e.message);
+        return [];
+    }
+}
+/*======================================PARSE FILTER DATA ACCORDING TO DATA TYPE END======================*/
 
 
 /*-------------------------------------------------------------------------SMART AUDIENCE UTILLS END --------------------------------------------*/
@@ -531,7 +558,7 @@ const filterProperty=async (propertyValues,cs,value)=>{
             return val === propertyValues[0] ? true : false
         case "ends-with":
             val = (value) ? value.substring(value.length - propertyValues[0].length) : value;
-            
+
             return val === propertyValues[0] ? true : false
         case "contains":
             return (value) ? value.includes(propertyValues[0]) : false;
@@ -577,7 +604,7 @@ const isGroupTypeFilter=async( type)=> type == 'filter_group' ;
 const  filterRules=async(filters,event,operator,isPageRule=false)=>{
     try{
         let result=[];
-        let res=false
+        let res=false;
         filters.map(async (filter)=>{
             result.push(new Promise(async(resolve)=>{
                 const isGp=await isGroupTypeFilter(filter.type);
@@ -596,11 +623,11 @@ const  filterRules=async(filters,event,operator,isPageRule=false)=>{
             }))
         })
         result=await Promise.all(result);
-      
+
         if(operator == 'OR'){
             return result.includes(true);
         }
-        
+
         return !result.includes(false)
 
     }catch(e){
@@ -699,7 +726,8 @@ const triggerEventFilter=async(surveys,event,isPageUrl,web)=>{
 							if(eventsExists?.length > 0) {
 								let survey = null;
 								for(const eventExists of eventsExists) {
-									const valid= await filterRules(eventExists.property_filters.filters,event,eventExists.property_filters.operator);
+                                    const filter=await parseFilterRules(eventExists.property_filters.filters);
+									const valid= await filterRules(filter,event,eventExists.property_filters.operator);
 									// Only for JS SDK
 									if(valid === true && eventExists.timingOption.type == "show_after" && web == true){
 										await Promise.all([new Promise((resolve)=>{
