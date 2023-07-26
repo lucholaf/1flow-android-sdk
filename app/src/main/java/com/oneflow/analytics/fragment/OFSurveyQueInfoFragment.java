@@ -21,6 +21,7 @@ package com.oneflow.analytics.fragment;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -159,7 +160,7 @@ public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClic
 
             int colorAlpha = OFHelper.manipulateColor(Color.parseColor(themeColor), 0.5f);
             gdSubmit.setColor(colorAlpha);//Color.parseColor(themeColor));
-
+            submitButton.setTypeface(null, Typeface.BOLD);
 
             submitButton.setOnTouchListener(new View.OnTouchListener() {
 

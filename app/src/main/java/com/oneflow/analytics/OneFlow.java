@@ -259,7 +259,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
     }
 
-    public static void configureLocal(Context mContext, String projectKey) {
+    private static void configureLocal(Context mContext, String projectKey) {
         final OneFlow fc = new OneFlow(mContext);
         //fc.setUpHashForActivity();
         bcFake = BillingClient.newBuilder(mContext)
@@ -529,19 +529,25 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
 
     }
 
+    /**
+     * You can start survey directly by passing survey id
+     * @param surveyId
+     */
 
     public static void startFlow(String surveyId) {
-        OFOneFlowSHP shp = OFOneFlowSHP.getInstance(mContext);
+
         try {
+            OFOneFlowSHP shp = OFOneFlowSHP.getInstance(mContext);
             String userId = shp.getUserDetails().getAnalytic_user_id();
             if (!OFHelper.validateString(userId).equalsIgnoreCase("na")) {
                 OneFlow of = new OneFlow(mContext);
                 of.initDirectSurvey(userId, surveyId);
             } else {
-                OFHelper.v("1Flow", "1Flow no survey available");
+                OFHelper.v("1Flow", "1Flow no survey available, config pending");
             }
         } catch (Exception ex) {
            // ex.printStackTrace();
+            OFHelper.v("1Flow", "1Flow no survey available.config pending");
         }
 
     }
@@ -1032,7 +1038,9 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                         createUserCounter++;
                             registerUser();
                     }else {
-                        configCallback.oneFlowSetupDidFail();
+                        if(configCallback!=null) {
+                            configCallback.oneFlowSetupDidFail();
+                        }
                         createUserCounter = 0;
                         Intent intent = new Intent("survey_list_fetched");
                         intent.putExtra("msg", "User Not Created");//"Invalid project key");

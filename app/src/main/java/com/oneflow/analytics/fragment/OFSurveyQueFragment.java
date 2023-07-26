@@ -19,6 +19,7 @@
 package com.oneflow.analytics.fragment;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,6 +33,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -229,7 +231,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
         ratingsNotLike.setTextColor(colorlike);
         ratingsFullLike.setTextColor(colorlike);
         starRatingLabel.setTextColor(colorlike);
-        //((TextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
+        ((TextView) waterMarkLayout.getChildAt(1)).setTextColor(colorlike);
 
 
         handleWaterMarkStyle(sdkTheme);
@@ -396,6 +398,8 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
             int colorAlpha = OFHelper.manipulateColorNew(Color.parseColor(themeColor), OFConstants.buttonActiveValue);
 
             submitButton.setText(surveyScreens.getButtons().get(0).getTitle());
+            submitButton.setTypeface(null,Typeface.BOLD);
+
             submitButton.setOnTouchListener(new View.OnTouchListener() {
 
                 @Override

@@ -46,6 +46,7 @@
     <color name="ratings_focused">#C4C4C4</color>
     <color name="ratings_normal">#FFFFFF</color>
     <color name="new_theme_gray">#F3F3F3</color>
+    <color name="progress_empty">#E5E5E5</color>
     <color name="powored_by_txt_color">#50555C</color>
     <color name="full_transparancy">#00000000</color>
 </resources>

@@ -275,16 +275,12 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
         try {
             pagePositionPBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(themeColor)));
-            //pagePositionPBar.getProgressDrawable().setColorFilter(Color.parseColor(styleColor.toString()), PorterDuff.Mode.DARKEN);
         } catch (NumberFormatException nfe) {
 
             themeColor = "#" + Integer.toHexString(ContextCompat.getColor(this, R.color.colorPrimaryDark));
             pagePositionPBar.setProgressTintList(ColorStateList.valueOf(Color.parseColor(themeColor)));
         }
 
-
-        //This is temp remove in prod
-        //surveyItem.getSurveySettings().getSdkTheme().setText_color(themeColor);
 
         sdkTheme = surveyItem.getSurveySettings().getSdkTheme();
 

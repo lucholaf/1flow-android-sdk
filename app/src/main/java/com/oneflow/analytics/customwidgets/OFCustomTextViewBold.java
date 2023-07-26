@@ -32,7 +32,7 @@ import com.oneflow.analytics.utils.OFHelper;
 
 
 /**
- * Created by Hiral on 06-10-2017.
+ * Created by Amit on 06-10-2022.
  */
 
 public class OFCustomTextViewBold extends AppCompatTextView {

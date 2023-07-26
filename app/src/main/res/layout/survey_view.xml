@@ -124,8 +124,9 @@
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="-6dp"
                 android:indeterminate="false"
+                android:progressDrawable="@drawable/empty_progress_bar"
                 android:progress="100"
-                android:scaleY="1.2" />
+                android:scaleY=".55" />
             <!--android:background="@color/plainwhite"-->
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
