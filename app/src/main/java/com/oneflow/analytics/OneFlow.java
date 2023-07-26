@@ -117,8 +117,12 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
     }
 
     public static void getConfigCallback(OFConfigCallback callback){
-        OneFlow ofO = new OneFlow(mContext);
-        ofO.configCallback = callback;
+        if(mContext!=null) {
+            OneFlow ofO = new OneFlow(mContext);
+            ofO.configCallback = callback;
+        }else{
+            OFHelper.v("1Flow", "1Flow callback not set as context null");
+        }
     }
     public static void shouldPrintLog(Boolean shouldShow) {
         try {
