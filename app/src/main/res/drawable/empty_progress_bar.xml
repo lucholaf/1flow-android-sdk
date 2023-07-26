@@ -1,0 +1,20 @@
+<!-- progressbar_custom.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background (empty progress) -->
+    <item android:id="@android:id/background">
+        <shape>
+            <!-- Set the empty progress color (e.g., gray) here -->
+            <solid android:color="@color/progress_empty" />
+        </shape>
+    </item>
+
+    <!-- Progress (filled progress) -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <!-- Set the filled progress color here if needed (default color is usually blue) -->
+
+            </shape>
+        </clip>
+    </item>
+</layer-list>
