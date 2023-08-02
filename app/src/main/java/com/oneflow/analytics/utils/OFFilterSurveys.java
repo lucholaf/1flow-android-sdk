@@ -2,19 +2,21 @@ package com.oneflow.analytics.utils;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.oneflow.analytics.model.survey.OFGetSurveyListResponse;
 import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class OFFilterSurveys extends Thread{
+public class OFFilterSurveys extends Thread {
     Context context;
     OFMyResponseHandlerOneFlow responseHandler;
     OFConstants.ApiHitType type;
     //OFGetSurveyListResponse gslr;
     String eventNames;
-    public OFFilterSurveys(Context context, OFMyResponseHandlerOneFlow responseHandler, OFConstants.ApiHitType type,  String eventNames) {
+
+    public OFFilterSurveys(Context context, OFMyResponseHandlerOneFlow responseHandler, OFConstants.ApiHitType type, String eventNames) {
         this.context = context;
         this.type = type;
         //this.gslr = gslr;
@@ -34,19 +36,32 @@ public class OFFilterSurveys extends Thread{
         ArrayList<OFGetSurveyListResponse> currentList = OFOneFlowSHP.getInstance(context).getSurveyList();
         ArrayList<OFGetSurveyListResponse> returningList = new ArrayList<>();
 
-        if(currentList!=null) {
+        ArrayList<String> closedSurveyList = OFOneFlowSHP.getInstance(context).getClosedSurveyList();
+        boolean hasClosed = false;
+
+        if (currentList != null) {
             OFHelper.v(tag, "1Flow actual size[" + currentList.size() + "]");
             for (OFGetSurveyListResponse gslrLocal : currentList) {
+
+
                 if (checkSurveyAvailability(gslrLocal)) {
                     OFHelper.v(tag, "1Flow actual found true");
-                    returningList.add(gslrLocal);
+
+                    hasClosed = false;
+                    if (closedSurveyList != null) {
+                        hasClosed = closedSurveyList.contains(gslrLocal.get_id()); //checking locally if survey has already been completed
+                    }
+
+                    if (!(gslrLocal.getSurveySettings().getClosedAsFinished() && hasClosed)) {
+                        returningList.add(gslrLocal);
+                    }
                 } else {
                     OFHelper.v(tag, "1Flow actual found false");
                 }
             }
             OFHelper.v(tag, "1Flow actual size 1[" + returningList.size() + "]");
         }
-        responseHandler.onResponseReceived(type,returningList,0l,"",eventNames,null);
+        responseHandler.onResponseReceived(type, returningList, 0l, "", eventNames, null);
 
     }
 
@@ -54,9 +69,9 @@ public class OFFilterSurveys extends Thread{
 
 
         Long submittedSurvey = OFOneFlowSHP.getInstance(context).getLongValue(gslr.get_id());
-
+        OFHelper.v(tag, "1Flow actual at checkSurveyAvailability[" + new Gson().toJson(gslr) + "]");
         if (gslr.getSurveySettings().getResurvey_option()) {
-            OFHelper.v(tag,"1Flow actual size inside if");
+            OFHelper.v(tag, "1Flow checking list recursive [" + gslr.getSurveySettings().getTriggerFilters().get(0).getField() + "]");
             Long totalInterval = 0l;
             Long diff = Calendar.getInstance().getTimeInMillis() - submittedSurvey;
             int diffDuration = 0;
@@ -81,8 +96,9 @@ public class OFFilterSurveys extends Thread{
                 return true;
             }
         } else {
-            OFHelper.v(tag,"1Flow actual size inside else");
-            if(!(submittedSurvey>0)){
+            OFHelper.v(tag, "1Flow checking list single use[" + gslr.getSurveySettings().getTriggerFilters().get(0).getField() + "]");
+
+            if (!(submittedSurvey > 0)) {
                 return true;
             }
         }

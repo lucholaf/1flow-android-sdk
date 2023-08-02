@@ -116,7 +116,6 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
         if (jsCode == null) {
             jsCode = getFileContentsFromLocal1(OFConstants.cacheFileName);
         }
-        OFHelper.v(tag, "1Flow webmethod 13[" + jsCode.length() + "]");
 
         if (jsCode != null) {
             StringBuilder jsFunction = new StringBuilder();
@@ -188,6 +187,8 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
                     OFHelper.v(tag, "1Flow globalThrottling inside else [" + (ofSurveyUserInput.getCreatedOn() < config.getActivatedAt()) + "]");
                     if (ofSurveyUserInput.getCreatedOn() < config.getActivatedAt()) {
                         launchSurvey(gslrTH);
+                    }else{
+                        OFFirstLanderActivity.this.finish();
                     }
                 }
 
@@ -334,8 +335,10 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
 
 //                                                        new OFMyDBAsyncTask(mContext,this, OFConstants.ApiHitType.lastSubmittedSurvey,false).execute();
 
+                    }else{
+                        OFFirstLanderActivity.this.finish();
                     }
-                    //else nothing to do
+
                 } else {
                     //triggerSurvey(gslr, reserved);
                     launchSurvey(surveyToInit);

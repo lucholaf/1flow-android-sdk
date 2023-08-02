@@ -609,8 +609,8 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                     eventMap.put("timestamp", System.currentTimeMillis() / 1000);
 
                     //Checking if any survey available under coming event.
-                    of.checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
-                    //of.triggerSurveyNew(eventName);
+                    //of.checkSurveyTitleAndScreensInBackground(OFConstants.ApiHitType.checkResurveyNSubmission, eventName);
+                    of.triggerSurveyNew(eventName);
 
                 } else {
                     OFHelper.v("1Flow", "1Flow null context for event");
@@ -892,9 +892,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
                         OFHelper.v(tag, "1Flow survey not found for [" + firedEventName + "] ");
                     }
                 }
-            } /*else {
-            Helper.makeText(mContext, "Configure project first", 1);
-        }*/
+            }
 
             OFHelper.v("1Flow", "1Flow counter value after[" + counter + "]size[" + slr.size() + "]");
             if (counter < slr.size()) {
