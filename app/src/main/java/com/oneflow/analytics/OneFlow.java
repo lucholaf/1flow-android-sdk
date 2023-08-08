@@ -1524,6 +1524,7 @@ public class OneFlow implements OFMyResponseHandlerOneFlow {
         surveyIntentD.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         surveyIntentD.putExtra("SurveyType", gslr);
         surveyIntentD.putExtra("eventName", eventName);
+        surveyIntentD.putExtra("surveySingleScreen",false);
         surveyIntentD.putExtra("eventData", new JSONObject(eventMap).toString());
 
 

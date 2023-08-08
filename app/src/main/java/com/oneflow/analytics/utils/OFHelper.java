@@ -143,7 +143,7 @@ public class OFHelper {
     //Log methods
     public static void v(String tag, String msg) {
 
-        int printRange = 4000;
+        int printRange = 3900;
 
         if (commanLogEnable) {//OFConstants.MODE.equalsIgnoreCase("dev")) {
 

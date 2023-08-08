@@ -391,9 +391,11 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
         // resetting counter for similar type of event name
         //ofs1.storeValue(OFConstants.SHP_SURVEY_SEARCH_POSITION, 0);
 
+
         surveyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         surveyIntent.putExtra("SurveyType", surveyToInit);
         surveyIntent.putExtra("eventName", triggerEventName);
+        surveyIntent.putExtra("surveySingleScreen",false);
 
         OFHelper.v(tag, "1Flow activity running 3[" + OFSDKBaseActivity.isActive + "]");
 

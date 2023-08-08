@@ -76,8 +76,17 @@
                     <FrameLayout
                         android:id="@+id/fragment_view"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        />
 
+                    <LinearLayout
+                        android:id="@+id/single_screen_survey"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        />
                 </RelativeLayout>
 
                 <ImageView
@@ -88,16 +97,27 @@
                     android:layout_marginTop="2dp"
                     android:src="@drawable/ic_baseline_close_24" />
 
-                <!--<LinearLayout
+
+                <include
+                    android:id="@+id/btn_layout_activity"
+                    layout="@layout/buttons_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:layout_below="@id/inner_child_view"
+                    ></include>
+
+                <LinearLayout
                     android:id="@+id/bottom_water_mark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/inner_child_view"
-                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/btn_layout_activity"
 
+                    android:layout_centerHorizontal="true"
                     android:background="@drawable/btn_rounded_rectangle_watermark"
                     android:baselineAligned="true"
                     android:gravity="center_vertical"
+                    android:visibility="gone"
                     android:padding="10dp">
 
                     <ImageView
@@ -111,7 +131,10 @@
                         android:layout_marginLeft="5dp"
                         android:text="@string/powered_by"
                         android:textColor="@color/powored_by_txt_color" />
-                </LinearLayout>-->
+                </LinearLayout>
+
+
+
 
             </RelativeLayout>
 

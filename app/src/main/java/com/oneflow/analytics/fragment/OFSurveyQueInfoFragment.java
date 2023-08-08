@@ -266,128 +266,137 @@ public class OFSurveyQueInfoFragment extends BaseFragment implements View.OnClic
             animateViews = new View[]{surveyTitle, surveyDescription, infoWebLayout, submitButton};
         }
 
+        if (weakReference != null) {
+            if (weakReference.get().surveySingleScreen) {
 
-        Animation[] annim = new Animation[]{animation1, animation2, animation3, animation4, animation5};
-
-        if (i == 0) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    annim[i].setFillAfter(true);
-                    animateViews[i].startAnimation(annim[i]);
-
-                }
-            }, 500);
-
-            animation1.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    //OFHelper.v(tag, "1Flow animation START [" + i + "]");
+                for (int i = 0; i < animateViews.length; i++) {
+                    animateViews[i].setVisibility(View.VISIBLE);
                 }
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                   // OFHelper.v(tag, "1Flow animation END[" + i + "]");
-                    //
-                    i++;
-                    if (i < animateViews.length) {
-                        animateViews[i].setVisibility(View.VISIBLE);
-                        //animateViews[i].clearAnimation();
-                        animateViews[i].startAnimation(annim[i]);
-                    }
+            } else {
+                Animation[] annim = new Animation[]{animation1, animation2, animation3, animation4, animation5};
 
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                    OFHelper.v(tag, "1Flow animation REPEAT[" + i + "]");
-                }
-            });
-            animation2.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    OFHelper.v(tag, "1Flow animation START [" + i + "]");
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    OFHelper.v(tag, "1Flow animation END[" + i + "]");
-                    //
-                    i++;
-                    if (i < animateViews.length) {
-                        animateViews[i].setVisibility(View.VISIBLE);
-                        //animateViews[i].clearAnimation();
-                        animateViews[i].startAnimation(annim[i]);
-                    }
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                    OFHelper.v(tag, "1Flow animation REPEAT[" + i + "]");
-                }
-            });
-            animation3.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    OFHelper.v(tag, "1Flow animation START [" + i + "]");
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    OFHelper.v(tag, "1Flow animation END[" + i + "]");
-
-                    i++;
-
-                    if (i < animateViews.length) {
-                        /* if (surveyScreens.getInput().getMin_chars() <= 0) {*/
-                        try {
-                            OFHelper.v(tag, "1Flow min char reached [" + surveyScreens.getButtons().get(0).getTitle() + "]");
-                            if (!OFHelper.validateString(surveyScreens.getButtons().get(0).getTitle()).equalsIgnoreCase("NA")) {
-                                ((OFCustomTextViewBold) animateViews[i]).setText(surveyScreens.getButtons().get(0).getTitle());
-                            }
-                            animateViews[i].setVisibility(View.VISIBLE);
+                if (i == 0) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            annim[i].setFillAfter(true);
                             animateViews[i].startAnimation(annim[i]);
 
-                        } catch (Exception ex) {
-                            OFHelper.e(tag, "Button list not found");
                         }
-                    }
+                    }, 500);
 
+                    animation1.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            //OFHelper.v(tag, "1Flow animation START [" + i + "]");
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            // OFHelper.v(tag, "1Flow animation END[" + i + "]");
+                            //
+                            i++;
+                            if (i < animateViews.length) {
+                                animateViews[i].setVisibility(View.VISIBLE);
+                                //animateViews[i].clearAnimation();
+                                animateViews[i].startAnimation(annim[i]);
+                            }
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                            OFHelper.v(tag, "1Flow animation REPEAT[" + i + "]");
+                        }
+                    });
+                    animation2.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            OFHelper.v(tag, "1Flow animation START [" + i + "]");
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            OFHelper.v(tag, "1Flow animation END[" + i + "]");
+                            //
+                            i++;
+                            if (i < animateViews.length) {
+                                animateViews[i].setVisibility(View.VISIBLE);
+                                //animateViews[i].clearAnimation();
+                                animateViews[i].startAnimation(annim[i]);
+                            }
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                            OFHelper.v(tag, "1Flow animation REPEAT[" + i + "]");
+                        }
+                    });
+                    animation3.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            OFHelper.v(tag, "1Flow animation START [" + i + "]");
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            OFHelper.v(tag, "1Flow animation END[" + i + "]");
+
+                            i++;
+
+                            if (i < animateViews.length) {
+                                /* if (surveyScreens.getInput().getMin_chars() <= 0) {*/
+                                try {
+                                    OFHelper.v(tag, "1Flow min char reached [" + surveyScreens.getButtons().get(0).getTitle() + "]");
+                                    if (!OFHelper.validateString(surveyScreens.getButtons().get(0).getTitle()).equalsIgnoreCase("NA")) {
+                                        ((OFCustomTextViewBold) animateViews[i]).setText(surveyScreens.getButtons().get(0).getTitle());
+                                    }
+                                    animateViews[i].setVisibility(View.VISIBLE);
+                                    animateViews[i].startAnimation(annim[i]);
+
+                                } catch (Exception ex) {
+                                    OFHelper.e(tag, "Button list not found");
+                                }
+                            }
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                            OFHelper.v(tag, "1Flow animation REPEAT[" + i + "]");
+                        }
+                    });
+                    animation4.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+                            OFHelper.v(tag, "1Flow animation4 START [" + i + "]");
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+
+
+                            OFHelper.v(tag, "1Flow animation4 END[" + i + "]len[" + animateViews.length + "][" + surveyScreens.getInput().getMin_chars() + "]");
+
+
+                            i++;
+                            if (i < animateViews.length) {
+                                animateViews[i].setVisibility(View.VISIBLE);
+                                //animateViews[i].clearAnimation();
+                                animateViews[i].startAnimation(annim[i]);
+                            }
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+                            OFHelper.v(tag, "1Flow animation REPEAT[" + i + "]");
+                        }
+                    });
                 }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                    OFHelper.v(tag, "1Flow animation REPEAT[" + i + "]");
-                }
-            });
-            animation4.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-                    OFHelper.v(tag, "1Flow animation4 START [" + i + "]");
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-
-
-                    OFHelper.v(tag, "1Flow animation4 END[" + i + "]len[" + animateViews.length + "][" + surveyScreens.getInput().getMin_chars() + "]");
-
-
-                    i++;
-                    if (i < animateViews.length) {
-                        animateViews[i].setVisibility(View.VISIBLE);
-                        //animateViews[i].clearAnimation();
-                        animateViews[i].startAnimation(annim[i]);
-                    }
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-                    OFHelper.v(tag, "1Flow animation REPEAT[" + i + "]");
-                }
-            });
+            }
         }
 
     }

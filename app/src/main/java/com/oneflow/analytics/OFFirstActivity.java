@@ -203,14 +203,16 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
         //String projectKey = "oneflow_prod_UjlFunf96DxcEXXXgJKqm32q1RDIYXbmDkepkDmomBoDdlzXQM/U9qzEAKh6yj34xfQQT1Ejp0ltJnF9wGJU5Q==";// [TEST] All Screens
         //String projectKey = "oneflow_prod_yxwI14oGAEhYgOEJjo43IsoKuWbSPoXBcKD+Bj5UkiZtPXb1vuuBkRUm5YxfBCs6thcsxPWbxDeJHJZlSGzxkw==";// SANVEDI'S PROJECT
         //String projectKey = "oneflow_sandbox_oV+xY+hArzT2i4lMP69YZnRBLK1a/qmYW16MboVc208IVjiNKPfHRIylm0rVFgEubtaRuhKMTdlTt5TEuP+8Pw==";// AmitRepeatTest
+        //String projectKey = "oneflow_prod_mnIy0sLLQ1k7ljLTTsuZnBUlWJbzmgp9Gmh5VmdX/7oGk4M9Ki3rU1AKN9xO8/3bCqL7iWEPNJf1e/MCbwaTlg==";// Sparsh Project
         //String projectKey = "oneflow_prod_CE5Cvb8EahGdiyeu7TkY4DDR8inq1u8qLHvV2XnJM5UuZNW1V0I+XMQi2Qo5raeyrk7b3GEl+a9iz6F2EWGtNg==";// QA-2
+        //String projectKey = "oneflow_prod_Wl3l4jvO6pS+sljMrS57wNbqZBwHMjP+bvpADic7ezDdewUFd2KWIJSDsx/oizwLfQI+FvtrsmPz3HBFqZVQtw==";//  Android + iOS build sanity
         //String projectKey = "oneflow_prod_z1IhZWJa3hgnvqPoaK7GiTRD0gB329MKOuXHgyGj4zE5dWXGhtlPAd4q9nVCKqS8qOc0YtSEAlDR1fysr8SqiQ==";// NewScreenTestProj
         //String projectKey = "oneflow_prod_cfgHr2eqbDESMQHMpnjxO8rGR+QXltsFaJ5nIcm9lt/BjeXwaTMK/J+d9JanbLtsDEkBnuEf2xkl26D+hJz2+g=="; //Conversation AI
         //String projectKey = "oneflow_prod_SR8Fn2G0BMPY4RW7ZE/bG37M2VbOQrG8KKfOCkW6K8MdYNMKj2Ug9VPkwtbgTLXZE6YZ2fvm6M9UxuEBcVB9Xw==";// Ahsan project key
         //String projectKey = "oneflow_prod_hlXx+7J/PLaZmjrScYvDqVr75+oIAS+Fyc2Hs7hO4o1GcsbyeMTJ74XKceugfPhDZ3MPdbB65rltbhP9cWmaYA==";// Embed I&V Android
-        //String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
+        String projectKey = "oneflow_prod_YMslXVT1uFOldcBl5kuupFSuLY1yaWkg1lC9lnsZ9jYDvB1KQdRyp4w34VOvMZwlUZ5efuXUWAV5JEizYPzfwA==";//AndroidTestinProject
         //String projectKey = "oneflow_prod_S2Fhp9kIgnuUifdybu416l5zcTJ1H2olfCwMbq2stQKvH/tvurEgpBSWgUIRFRxMkmc2cs7KOwALqzr235/wpw==";//AndroidTestinProject
-        String projectKey = "oneflow_prod_XYDk9mmRqZHYwKnG5s+3bkB3kqTnmew74mxqUQS8S4fcsfxx2E6ItOnNA3DKmMiWoKrQz0IqAvra9UbXDhGP6A==";//Ahsan's Project 10_july
+       // String projectKey = "oneflow_prod_XYDk9mmRqZHYwKnG5s+3bkB3kqTnmew74mxqUQS8S4fcsfxx2E6ItOnNA3DKmMiWoKrQz0IqAvra9UbXDhGP6A==";//Ahsan's Project 10_july
         //String projectKey = "oneflow_prod_43WVuVjDSygeAejX5uzRQUaYHpzs9eV6zrG+wPRRI2aCHjRwKRftCzVsEJ+Fp2+cBnB8rYogwdXjFnVKZEjxpw==";//AndroidTestinProject
         //String projectKey = "oneflow_prod_/xygSKirAO9POupz31Ef7RIO8gvkkRiqfeO4Q98hQHS6QugUesc/Fme4AXuIFvlwSe8KsMt9ochqOO71ojMXpg==";//AmitV2Testing
         //String projectKey = "oneflow_prod_FMmrAqrKisPtrNzr1nn2Fapz0hutCSAhwo7Ln7G2521f0JZV/G1iYhSRnnUgsgnUWVrtLdzq1Y00B8+lshncfg==";//AndroidTestinProject
@@ -314,49 +316,7 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
     public void clickHandler(View v) {
 
-        /*if (v.getId() == R.id.get_location) {
-            // Helper.makeText(FirstActivity.this, "Clicked on button 3", 1);
-            //new FeedbackController(this).getLocation();
-        } else if (v.getId() == R.id.fetch_survey_list) {
-            //  Helper.makeText(FirstActivity.this, "Clicked on button 4", 1);
-            //FeedbackController.getSurvey(this);
-        } else if (v.getId() == R.id.project_details) {
-            // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
-            //new FeedbackController(this).getProjectDetails();
-        } else*/
-       /* else if (v.getId() == R.id.connect_vpn) {
-            // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
 
-            HashMap<String, String> mapvalues = new HashMap<String, String>();
-            mapvalues.put("platform", "android");
-            mapvalues.put("location", "bihar");
-            mapvalues.put("webhook_test_andrid", "test_event_name");
-            //OneFlow.recordEvents("connect_vpn", mapvalues);
-            OneFlow.recordEvents("PopularOS", mapvalues);
-
-
-        } else if (v.getId() == R.id.disconnect_vpn) {
-            // Helper.makeText(FirstActivity.this, "Clicked on button 0", 1);
-
-            HashMap<String, String> mapvalues = new HashMap<String, String>();
-            mapvalues.put("disconnect1", "testValue1");
-            mapvalues.put("Location", "Nepal");
-            mapvalues.put("disconnect3", "testValue3");
-            OneFlow.recordEvents("Others", mapvalues);
-
-        } else if (v.getId() == R.id.record_log) {
-            OFHelper.v(tag, "OneFlow Clicked on button record log");
-            String localTag = (String) v.getTag();
-            HashMap<String, Object> mapvalues = new HashMap<String, Object>();
-            mapvalues.put("testKey1_" + localTag, "testValue1");
-            mapvalues.put("namewa", "Bigu");
-            mapvalues.put("testKey3_" + localTag, "testValue3");
-            mapvalues.put("testKey3_" + localTag, 23);
-            OneFlow.recordEvents(localTag, mapvalues);
-        } else if (v.getId() == R.id.configure_project) {
-
-            OneFlow.configure(this, "7oKyqBl/myk8h1Zkq1uSkxffXe9U+p6trHLqA2q1JOU=");
-        }*/
         if (v.getId() == R.id.trigger_survey) {
             startActivity(new Intent(OFFirstActivity.this,OFSecondActivity.class));
         }else if (v.getId() == R.id.send_log_to_api) {
@@ -365,6 +325,9 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
 
         } else if (v.getId() == R.id.configure_oneflow) {
             showCofigureDialog();
+        }else if (v.getId() == R.id.direct_survey) {
+            OFHelper.v(tag,"1Flow clicked on direct survey");
+            OneFlow.startFlow("3432498320480909w3");
         }
 
         /* else if (v.getId() == R.id.start_session) {
@@ -425,11 +388,12 @@ public class OFFirstActivity extends AppCompatActivity implements OFMyResponseHa
                             OFHelper.v(tag, "1Flow date[" + OFHelper.formatDateIntoCustomFormat(new Date(), "YYYY-MM-dd") + "]");
 
                             HashMap<String, Object> mapValue = new HashMap<>();
-                            mapValue.put("test_date", OFHelper.formatDateIntoCustomFormat(new Date(), "YYYY-MM-dd"));
-                            mapValue.put("tested_by", "DummyBuild_2023.02.09");
+                            //mapValue.put("test_date", OFHelper.formatDateIntoCustomFormat(new Date(), "YYYY-MM-dd"));
+                            //mapValue.put("tested_by", "DummyBuild_2023.02.09");
 
 
-                            OneFlow.logUser(edittext.getText().toString(), mapValue);
+                            OneFlow.logUser(edittext.getText().toString(),null);//edittext.getText().toString());//, mapValue);
+
                         }
                     }
                 }

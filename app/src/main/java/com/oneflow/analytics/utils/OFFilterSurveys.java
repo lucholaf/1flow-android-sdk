@@ -9,6 +9,9 @@ import com.oneflow.analytics.sdkdb.OFOneFlowSHP;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+/**
+ * This class intented to return list of all possible survey
+ */
 public class OFFilterSurveys extends Thread {
     Context context;
     OFMyResponseHandlerOneFlow responseHandler;

@@ -25,10 +25,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.oneflow.analytics.utils.OFConstants;
 import com.oneflow.analytics.utils.OFHelper;
@@ -58,6 +60,9 @@ public class OFSurveyActivityBottom extends OFSDKBaseActivity {
         basePopupLayout = (RelativeLayout) findViewById(R.id.base_popup_layout);
         mainChildForBackground = (RelativeLayout) findViewById(R.id.view_layout);
         fragmentView = (FrameLayout) findViewById(R.id.fragment_view);
+        fragContainer = (LinearLayout) findViewById(R.id.single_screen_survey);
+        buttonLayout = (View) findViewById(R.id.btn_layout_activity);
+        waterMarkLayout = (LinearLayout) findViewById(R.id.bottom_water_mark);
 
         window = this.getWindow();
 

@@ -64,6 +64,8 @@ public class OFSurveyActivityFullScreen extends OFSDKBaseActivity {
         mainChildForBackground = (RelativeLayout) findViewById(R.id.view_layout);
         fragmentView = (FrameLayout) findViewById(R.id.fragment_view);
         waterMarkLayout = (LinearLayout) findViewById(R.id.bottom_water_mark);
+        fragContainer = (LinearLayout) findViewById(R.id.single_screen_survey);
+        buttonLayout = (View) findViewById(R.id.btn_layout_activity);
 
 
         window = this.getWindow();

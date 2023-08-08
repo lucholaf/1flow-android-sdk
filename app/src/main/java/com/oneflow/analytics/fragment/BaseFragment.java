@@ -268,7 +268,7 @@ public class BaseFragment extends Fragment {
         try {
 
             if(weakReference.get()!=null) {
-                if (weakReference.get() instanceof OFSurveyActivityFullScreen) {
+                if ((weakReference.get() instanceof OFSurveyActivityFullScreen) || weakReference.get().surveySingleScreen){
                     waterMarkLayout.setVisibility(View.GONE);
                 } else {
                     if (theme.getRemove_watermark()) {
