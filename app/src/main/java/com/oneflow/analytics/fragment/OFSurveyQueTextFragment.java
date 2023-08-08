@@ -531,6 +531,7 @@ public class OFSurveyQueTextFragment extends BaseFragment implements View.OnClic
         OFHelper.v(tag, "1Flow lastHit[" + lastHitGap + "]");
         if (lastHitGap > 1500) {
             OFOneFlowSHP.getInstance(getActivity()).storeValue("userInput", "");
+            OFOneFlowSHP.getInstance(getActivity()).storeValue(OFConstants.SHP_LAST_CLICK_TIME, System.currentTimeMillis());
             if (v.getId() == R.id.skip_btn) {
                 if (weakReference != null) {
                     weakReference.get().addUserResponseToList(surveyScreens.get_id(), null, null);
