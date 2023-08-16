@@ -70,10 +70,6 @@ import java.util.regex.Pattern;
 public class OFHelper {
 
     public static boolean commanLogEnable = false;
-    //static boolean verbose = commanEnable;
-    //static boolean info = commanEnable;
-    //static boolean debug = commanEnable;
-    //static boolean error = false;
     static boolean builds = false;
 
     public static String headerKey = "";
@@ -217,14 +213,6 @@ public class OFHelper {
     }
 
 
-    /*public static String getIMEI(Context context) {
-        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            return "no permission";
-        }
-        return telephonyManager.getDeviceId();
-    }*/
-
     public static String formatedDate(long milisec, String format) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(new Date(milisec));
@@ -298,33 +286,6 @@ public class OFHelper {
             return false;
         }
     }
-
-
-   /* public static boolean isConnected(Context context) {
-        boolean connected = false;
-        try {
-            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo info = null;
-            if (cm != null) {
-                info = cm.getActiveNetworkInfo();
-            }
-            connected = info != null && info.isConnected();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                NetworkCapabilities nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
-                int downSpeed = nc.getLinkDownstreamBandwidthKbps();
-                v("OneFlow:::::", "Network bandwidth :::: " + downSpeed + "");
-                if (downSpeed == 0.0) {
-                    connected = false;
-                } else {
-                    connected = info != null && info.isConnected();
-                }
-            }
-            return connected;
-        } catch (Exception e) {
-            e("Helper", "OneFlow Error[" + e.getMessage() + "]");
-        }
-        return connected;
-    }*/
 
     public static void showAlert1(Context context, String titleStr, String message) {//, View.OnClickListener listenter) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
@@ -662,27 +623,6 @@ public class OFHelper {
         }
         return sb.toString();
     }
-
-    /*public static ArrayList<Object> breakListIntoChunk(ArrayList<Object> arrayItem, int startPosition, int chunk) {
-        ArrayList<Object> newList = new ArrayList<>();
-        try {
-            if (arrayItem.size() > chunk) {
-                for (int i = startPosition; i < chunk; i++) {
-                    Object item = arrayItem.get(i);
-                    newList.add(item);
-                }
-            } else {
-                newList.addAll(arrayItem);
-            }
-        } catch (Exception e) {
-            if (BuildConfig.DEBUG) {
-                e.printStackTrace();
-            }
-        }
-        return newList;
-    }*/
-
-
     public static File createLogFile() {
         File fl = null;
         try {
@@ -845,28 +785,12 @@ public class OFHelper {
 
     public static int manipulateColor(int color, float factor) {
         factor = 1.0f - factor;
-       /* int a = Color.alpha(color);
-        int r = Math.round(Color.red(color) * factor);
-        int g = Math.round(Color.green(color) * factor);
-        int b = Math.round(Color.blue(color) * factor);
-        return Color.argb(a,
-                Math.min(r,255),
-                Math.min(g,255),
-                Math.min(b,255));*/
+
         return ColorUtils.blendARGB(color, Color.WHITE, factor);
     }
 
     public static int manipulateColorNew(int color, int factor) {
-       // factor = 1.0f - factor;
-       // v("Helper", "1Flow color in helper factor[" + factor + "]");
-       /* int a = Color.alpha(color);
-        int r = Math.round(Color.red(color) * factor);
-        int g = Math.round(Color.green(color) * factor);
-        int b = Math.round(Color.blue(color) * factor);
-        return Color.argb(a,
-                Math.min(r,255),
-                Math.min(g,255),
-                Math.min(b,255));*/
+
         int blendedColor = ColorUtils.setAlphaComponent(color, factor);
         //v("Helper", "1Flow color in helper factor[" + blendedColor + "]");
         return blendedColor;

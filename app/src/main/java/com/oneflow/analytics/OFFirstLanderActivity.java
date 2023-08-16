@@ -107,6 +107,8 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
         StringBuilder jsCode = new StringBuilder();
         OFHelper.v(tag, "1Flow webmethod 11[" + jsCode.length() + "]");
 
+
+
         jsCode = getFileContents1(getCacheDir().getPath() + File.separator + OFConstants.cacheFileName);
 
         if (jsCode != null) {
@@ -295,8 +297,7 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
             // Do something with the result
             OFHelper.v(tag, "1Flow JavaScript returns2: " + result.toString());
             if (result != null) {
-                //OFFirstLanderActivity.this.finish();
-                //launchSurvey();
+
                 throtlingCheck(result);
             } else {
                 OFFirstLanderActivity.this.finish();
@@ -314,7 +315,7 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
         OFOneFlowSHP ofs = OFOneFlowSHP.getInstance(OFFirstLanderActivity.this);
         OFThrottlingConfig throttlingConfig = ofs.getThrottlingConfig();
         if (throttlingConfig == null) {
-            //triggerSurvey(gslr, reserved)
+
             launchSurvey(surveyToInit);
         } else {
 
@@ -322,7 +323,7 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
 
 
             if (surveyToInit.getSurveySettings().getOverrideGlobalThrottling()) {
-                //triggerSurvey(gslr, reserved);
+
                 launchSurvey(surveyToInit);
             } else {
                 if (throttlingConfig.isActivated()) {
@@ -340,7 +341,6 @@ public class OFFirstLanderActivity extends AppCompatActivity implements OFMyResp
                     }
 
                 } else {
-                    //triggerSurvey(gslr, reserved);
                     launchSurvey(surveyToInit);
                 }
             }

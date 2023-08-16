@@ -769,12 +769,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
         sur.setUser_id(ofs.getStringValue(OFConstants.USERUNIQUEIDSHP));
         sur.setCreatedOn(System.currentTimeMillis());
         new OFLogUserDBRepoKT().insertUserInputs(this, sur, this, OFConstants.ApiHitType.insertSurveyInDB);
-        //new OFMyDBAsyncTask(this,this, OFConstants.ApiHitType.insertSurveyInDB,false).execute(sur);
-        /*if (!(screens.get(screens.size() - 1).getInput().getInput_type().equalsIgnoreCase("thank_you") ||
-                screens.get(screens.size() - 1).getInput().getInput_type().equalsIgnoreCase("end-screen")
-        )) {
-            OFSDKBaseActivity.this.finish();
-        }*/
+
     }
 
 
@@ -967,11 +962,6 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                     frag = OFSurveyQueInfoFragment.newInstance(screen, sdkTheme, themeColor);
 
                 } else {
-                    /*if(position%2==0) {
-                        screen.setMediaEmbedHTML(tempImage);
-                    }else{
-                        screen.setMediaEmbedHTML(tempImage1);
-                    }*/
                     frag = OFSurveyQueFragment.newInstance(screen, sdkTheme, themeColor);
                 }
             }

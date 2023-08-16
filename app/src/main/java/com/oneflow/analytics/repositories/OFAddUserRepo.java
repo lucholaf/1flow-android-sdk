@@ -42,10 +42,7 @@ public class OFAddUserRepo {
         try {
             Call<OFGenericResponse<OFAddUserResponse>> responseCall = null;
 
-
-            String url = "https://us-west-2.aws.webhooks.mongodb-realm.com/api/client/v2.0/app/1flow-wslxs/service/project-analytics-user/incoming_webhook/add-user";
-            //String url = "https://webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-xqiin/service/project-analytics-user/incoming_webhook/add-user";
-            responseCall = connectAPI.addUserComman(headerKey,aur);//,url);
+            responseCall = connectAPI.addUserComman(headerKey,aur);
 
             responseCall.enqueue(new Callback<OFGenericResponse<OFAddUserResponse>>() {
                 @Override

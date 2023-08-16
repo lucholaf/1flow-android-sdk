@@ -31,12 +31,6 @@ import java.util.ArrayList;
 @Entity(tableName = "SurveyUserInput")
 public class OFSurveyUserInput {
 
-
-    /*@PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "_id")
-    @SerializedName("_id")
-    private Integer _id;*/
-
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "_lid")
     @SerializedName("_lid")
