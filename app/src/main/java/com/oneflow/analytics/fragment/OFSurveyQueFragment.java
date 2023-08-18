@@ -264,7 +264,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
                 surveyTitle.setTextSize(OneFlow.titleFace.getFontSize());
             }
         }
-        surveyTitle.setText(surveyScreens.getTitle() + "##");
+        surveyTitle.setText(surveyScreens.getTitle());
 
         if (surveyScreens.getMessage() != null && surveyScreens.getMessage().length() > 0) {
             OFHelper.v(tag, "1Flow progress bar inside if");

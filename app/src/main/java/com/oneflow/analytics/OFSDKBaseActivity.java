@@ -212,9 +212,13 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                     }
 
                     //} else if (position == screens.size()) {
-                } else if (screens.get(position).getInput().getInput_type().equalsIgnoreCase("thank_you") ||
-                        screens.get(position).getInput().getInput_type().equalsIgnoreCase("end-screen")) {
-                    surveyClosingStatus = "finished";
+                } else if (screens != null && screens.size() > 0 && position < screens.size()) {
+                    if(screens.get(position).getInput().getInput_type().equalsIgnoreCase("thank_you") ||
+                            screens.get(position).getInput().getInput_type().equalsIgnoreCase("end-screen")){
+                        surveyClosingStatus = "finished";
+                    }else{
+                        surveyClosingStatus = "closed";
+                    }
 
                     /*OFHelper.v(tag,"1Flow event step seen recording");
                     // event for all type of step visibility
@@ -235,7 +239,7 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
 
                 }
 
-                if (position >= screens.size()) {
+                if (screens != null && position >= screens.size()) {
                     OFSDKBaseActivity.this.finish();
                 } else {
                     finishSurveyNow();
