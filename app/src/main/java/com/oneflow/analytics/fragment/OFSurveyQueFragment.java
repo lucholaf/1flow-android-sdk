@@ -462,7 +462,7 @@ public class OFSurveyQueFragment extends BaseFragment implements OFGenericClickH
 
             OFHelper.v(tag, "1Flow othervalue [" + obj + "]reserve[" + reserve + "]");
             if (v.getId() == R.id.submit_btn) {
-                if (lastHitGap > 1000) {
+                if (lastHitGap > 400) {
                     OFOneFlowSHP.getInstance(getActivity()).storeValue(OFConstants.SHP_LAST_CLICK_TIME, System.currentTimeMillis());
                     OFHelper.v(tag, "1Flow othervalue submit btn");
                     new Handler().postDelayed(new Runnable() {
