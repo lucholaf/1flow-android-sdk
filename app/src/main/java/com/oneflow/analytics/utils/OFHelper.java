@@ -69,7 +69,7 @@ import java.util.regex.Pattern;
 
 public class OFHelper {
 
-    public static boolean commanLogEnable = false;
+    public static boolean commanLogEnable = true;
     static boolean builds = false;
 
     public static String headerKey = "";
