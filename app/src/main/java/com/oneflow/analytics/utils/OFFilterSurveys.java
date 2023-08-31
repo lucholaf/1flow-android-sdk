@@ -71,7 +71,9 @@ public class OFFilterSurveys extends Thread {
         Long submittedSurvey = OFOneFlowSHP.getInstance(context).getLongValue(gslr.get_id());
         OFHelper.v(tag, "1Flow actual at checkSurveyAvailability[" + new Gson().toJson(gslr) + "]");
         if (gslr.getSurveySettings().getResurvey_option()) {
-            OFHelper.v(tag, "1Flow checking list recursive [" + gslr.getSurveySettings().getTriggerFilters().get(0).getField() + "]");
+            if (gslr.getSurveySettings().getTriggerFilters() != null && gslr.getSurveySettings().getTriggerFilters().size() > 0) {
+                OFHelper.v(tag, "1Flow checking list recursive [" + gslr.getSurveySettings().getTriggerFilters().get(0).getField() + "]");
+            }
             Long totalInterval = 0l;
             Long diff = Calendar.getInstance().getTimeInMillis() - submittedSurvey;
             int diffDuration = 0;
@@ -96,7 +98,9 @@ public class OFFilterSurveys extends Thread {
                 return true;
             }
         } else {
-            OFHelper.v(tag, "1Flow checking list single use[" + gslr.getSurveySettings().getTriggerFilters().get(0).getField() + "]");
+            if (gslr.getSurveySettings().getTriggerFilters() != null && gslr.getSurveySettings().getTriggerFilters().size() > 0) {
+                OFHelper.v(tag, "1Flow checking list single use[" + gslr.getSurveySettings().getTriggerFilters().get(0).getField() + "]");
+            }
 
             if (!(submittedSurvey > 0)) {
                 return true;
