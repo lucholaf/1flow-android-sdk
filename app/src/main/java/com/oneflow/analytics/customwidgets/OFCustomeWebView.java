@@ -181,12 +181,12 @@ public class OFCustomeWebView extends WebView {
         this.getSettings().setSupportZoom(false);
 
         this.getSettings().setDatabaseEnabled(true);
-        appCachePath = context.getApplicationContext().getCacheDir().getAbsolutePath();
-        this.getSettings().setAppCachePath(appCachePath);
-        this.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
+//        appCachePath = context.getApplicationContext().getCacheDir().getAbsolutePath();
+//        this.getSettings().setAppCachePath(appCachePath);
+//        this.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
         //this.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         this.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
-        this.getSettings().setAppCacheEnabled(true);
+//        this.getSettings().setAppCacheEnabled(true);
 
         this.getSettings().setAllowFileAccess(true);
         this.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);

@@ -26,16 +26,16 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
-    buildToolsVersion "30.0.3"
+    compileSdkVersion 34
+//    buildToolsVersion "30.0.3"
 
     defaultConfig {
 
         //applicationId "com.circo.oneflow"
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 34
         versionCode 49
-        versionName "2023.08.29"
+        versionName "2023.08.28"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -69,11 +69,11 @@ android {
 def lifeCycleVersion = '1.1.1'
 def retroFitVersion = '2.9.0'
 //def daggerVersion = '2.13'
-def glideVersion = '4.12.0'
+def glideVersion = '4.15.1'
 //def mockitoVersion = '2.11.0'
-def rxjavaVersion = '2.0.1'
-def room_version = "2.3.0"
-def billing_version = "6.0.0"
+//def rxjavaVersion = '2.0.1'
+def room_version = "2.5.2"
+def billing_version = "6.0.1"
 //def core_version = "1.6.0"
 
 dependencies {
@@ -88,26 +88,26 @@ dependencies {
 
     implementation "com.squareup.retrofit2:retrofit:$retroFitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retroFitVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retroFitVersion"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$retroFitVersion"
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.6.0'
 
-    implementation "io.reactivex.rxjava2:rxjava:$rxjavaVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$rxjavaVersion"
+//    implementation "io.reactivex.rxjava3:rxjava:3.1.5"
+//    implementation "io.reactivex.rxjava3:rxandroid:3.0.2"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     //implementation "android.arch.lifecycle:extensions:$lifeCycleVersion"
-    implementation 'androidx.lifecycle:lifecycle-process:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-process:2.6.2'
     /*implementation "com.jakewharton:butterknife:$butterKnife"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnife"*/
 
-    implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'com.google.code.gson:gson:2.10.1'
 
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     //annotationProcessor "androidx.room:room-compiler:$room_version"
-    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
 
     // optional - RxJava2 support for Room
-    implementation "androidx.room:room-rxjava2:$room_version"
+//    implementation "androidx.room:room-rxjava2:$room_version"
 
     // optional - RxJava3 support for Room
     implementation "androidx.room:room-rxjava3:$room_version"
@@ -119,7 +119,7 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
 
     // optional - Paging 3 Integration
-    implementation "androidx.room:room-paging:2.4.0-alpha04"
+    implementation "androidx.room:room-paging:$room_version"
 
     //in-app purchase
     implementation "com.android.billingclient:billing:$billing_version"
@@ -128,8 +128,8 @@ dependencies {
     //implementation "com.google.android.play:core:1.8.0"
     implementation 'com.google.android.play:review:2.0.1'
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.15'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1'
 
 
     //implementation 'org.mongodb:bson:3.4.3'
