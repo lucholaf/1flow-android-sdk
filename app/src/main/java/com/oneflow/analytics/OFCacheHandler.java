@@ -42,8 +42,8 @@ public class OFCacheHandler extends Thread {
 
         try {
 
-//            String apiUrl = "https://cdn.1flow.app/index-dev.js";//original url
-            String apiUrl = "https://cdn-development.1flow.ai/js-sdk/filter.js";
+            String apiUrl = "https://cdn.1flow.app/index-dev.js";//original url
+//            String apiUrl = "https://cdn-development.1flow.ai/js-sdk/filter.js";
             // Create a URL object with the API endpoint
             URL url = new URL(apiUrl);
 
