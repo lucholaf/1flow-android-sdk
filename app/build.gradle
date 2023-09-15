@@ -35,7 +35,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 34
         versionCode 49
-        versionName "2023.08.22"
+        versionName "2023.08.21"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -105,6 +105,9 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     //annotationProcessor "androidx.room:room-compiler:$room_version"
 //    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
+
+    implementation "android.arch.persistence.room:runtime:1.1.1"
+    kapt "android.arch.persistence.room:compiler:1.1.1"
 
     // optional - RxJava2 support for Room
 //    implementation "androidx.room:room-rxjava2:$room_version"
