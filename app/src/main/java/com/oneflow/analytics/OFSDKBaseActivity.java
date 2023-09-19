@@ -506,20 +506,21 @@ public class OFSDKBaseActivity extends AppCompatActivity implements OFMyResponse
                 surveyResponseChildren.add(asrc);
             }
 
-            // event for all type of step visibility
-            HashMap<String, Object> mapValue1 = new HashMap<>();
-            mapValue1.put("question_id", surveyItem.get_id());
-            mapValue1.put("flow_id", selectedSurveyId);
-            mapValue1.put("step_id", screenID);
-            mapValue1.put("type", screens.get(position).getInput().getInput_type());
-            mapValue1.put("answer", OFHelper.validateString(answerValue).equalsIgnoreCase("na") ? answerIndex : answerValue);
-            mapValue1.put("question_title", screens.get(position).getTitle());
-            mapValue1.put("question_description", screens.get(position).getMessage());
-            mapValue1.put("survey_name", surveyItem.getName());
+            if(position < screens.size()){
+                // event for all type of step visibility
+                HashMap<String, Object> mapValue1 = new HashMap<>();
+                mapValue1.put("question_id", surveyItem.get_id());
+                mapValue1.put("flow_id", selectedSurveyId);
+                mapValue1.put("step_id", screenID);
+                mapValue1.put("type", screens.get(position).getInput().getInput_type());
+                mapValue1.put("answer", OFHelper.validateString(answerValue).equalsIgnoreCase("na") ? answerIndex : answerValue);
+                mapValue1.put("question_title", screens.get(position).getTitle());
+                mapValue1.put("question_description", screens.get(position).getMessage());
+                mapValue1.put("survey_name", surveyItem.getName());
 
-
-            ec.storeEventsInDB(OFConstants.AUTOEVENT_QUESTION_ANSWERED, mapValue1, 0);
-            OFHelper.v(tag, "1Flow auto event answered recording [" + mapValue1 + "]");
+                ec.storeEventsInDB(OFConstants.AUTOEVENT_QUESTION_ANSWERED, mapValue1, 0);
+                OFHelper.v(tag, "1Flow auto event answered recording [" + mapValue1 + "]");
+            }
 
         }
 
